@@ -246,7 +246,6 @@ const highlightPairsOnHover = <T>(
 		}
 	}
 
-	// @ts-expect-error Allow PointerEvent
 	addListener(wrapper, "click", handler)
 	addListener(wrapper, "pointerover", handler)
 	addListener(wrapper, "pointerleave", () => {
