@@ -20,10 +20,10 @@
     "vite": "^6.3.6",
     "vite-plugin-dts": "^4.5.4"
   },
-  "author": "FlameCaster",
+  "author": "Jonas Pytte",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FIameCaster/prism-code-editor.git"
+    "url": "git+https://github.com/jonpyt/prism-code-editor.git"
   },
   "license": "MIT",
   "sideEffects": false,

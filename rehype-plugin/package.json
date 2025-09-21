@@ -27,10 +27,10 @@
     "unified": "^11.0.5",
     "unist-util-visit-parents": "^6.0.1"
   },
-  "author": "FlameCaster",
+  "author": "Jonas Pytte",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FIameCaster/prism-code-editor.git"
+    "url": "git+https://github.com/jonpyt/prism-code-editor.git"
   },
   "license": "MIT",
   "sideEffects": false,

@@ -55,7 +55,7 @@ export default defineConfig({
 				{
 					icon: "github",
 					label: "GitHub",
-					href: "https://github.com/fiamecaster/prism-code-editor",
+					href: "https://github.com/jonpyt/prism-code-editor",
 				},
 			],
 			plugins: [

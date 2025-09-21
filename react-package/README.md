@@ -7,7 +7,7 @@ Code editor component for React apps
 
 ## What?
 
-This is a rewrite of [Prism code editor](https://github.com/FIameCaster/prism-code-editor) using React and hooks. It's a lightweight, extensible code editor optimized for fast load times with many optional extensions.
+This is a rewrite of [Prism code editor](https://github.com/jonpyt/prism-code-editor) using React and hooks. It's a lightweight, extensible code editor optimized for fast load times with many optional extensions.
 
 ## Contents
 
@@ -305,7 +305,7 @@ Prism supports syntax highlighting for hundreds of languages, but none of them a
 If you need access to many languages, you can import the following entry points:
 
 - `prism-react-editor/prism/languages` for all languages (~180kB)
-- `prism-react-editor/prism/languages/common` for [42 common languages](https://github.com/FIameCaster/prism-code-editor/tree/main/package/src/prism/languages/common.js) (~30kB)
+- `prism-react-editor/prism/languages/common` for [42 common languages](https://github.com/jonpyt/prism-code-editor/tree/main/package/src/prism/languages/common.js) (~30kB)
 
 This library also supports auto-indenting, comment toggling and self-closing tags for most of these languages. For it to work, you need the `useDefaultCommands()` hook (or the basic setup) and to import the behavior for the language.
 

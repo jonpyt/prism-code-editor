@@ -1,4 +1,4 @@
-Rehype plugin to create code editors and highlight code blocks using [prism code editor](https://github.com/FIameCaster/prism-code-editor).
+Rehype plugin to create code editors and highlight code blocks using [prism code editor](https://github.com/jonpyt/prism-code-editor).
 
 [![NPM package](https://img.shields.io/npm/v/rehype-prism-code-editor)](https://npmjs.com/rehype-prism-code-editor)
 

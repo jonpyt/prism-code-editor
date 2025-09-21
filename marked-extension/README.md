@@ -1,4 +1,4 @@
-Marked extension to create code editors and highlight code blocks using [prism code editor](https://github.com/FIameCaster/prism-code-editor).
+Marked extension to create code editors and highlight code blocks using [prism code editor](https://github.com/jonpyt/prism-code-editor).
 
 [![Bundle size](https://img.shields.io/bundlephobia/minzip/marked-prism-code-editor?label=size)](https://bundlephobia.com/package/marked-prism-code-editor)
 [![NPM package](https://img.shields.io/npm/v/marked-prism-code-editor)](https://npmjs.com/marked-prism-code-editor)

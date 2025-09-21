@@ -10,7 +10,7 @@
   <strong>Lightweight, extensible code editor component for the web using <a href="https://github.com/PrismJS/prism">Prism</a>.</strong>
 </p>
 <p align="center">
-  <a href="https://prism-code-editor.netlify.app"><img src="https://github.com/FIameCaster/prism-code-editor/blob/8eccecab74f07067c846a05612bd5d7c7e0fc86e/assets/demo.png?raw=true" width="640" alt="Editor example"></a>
+  <a href="https://prism-code-editor.netlify.app"><img src="https://github.com/jonpyt/prism-code-editor/blob/8eccecab74f07067c846a05612bd5d7c7e0fc86e/assets/demo.png?raw=true" width="640" alt="Editor example"></a>
 </p>
 
 ## Why?
@@ -76,8 +76,8 @@ For more advanced usage where you have full control over styling and the added e
 
 This library has rewrites for both React and SolidJS. These rewrites better integrate with their respective framework than any wrapper ever could and are recommended if you're already using React or SolidJS.
 
-- [React rewrite](https://github.com/FIameCaster/prism-react-editor)
-- [SolidJS rewrite](https://github.com/FIameCaster/solid-prism-editor)
+- [React rewrite](https://github.com/jonpyt/prism-react-editor)
+- [SolidJS rewrite](https://github.com/jonpyt/solid-prism-editor)
 
 ## Examples
 

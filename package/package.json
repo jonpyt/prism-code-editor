@@ -101,10 +101,10 @@
     "highlight",
     "prismjs"
   ],
-  "author": "FlameCaster",
+  "author": "Jonas Pytte",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FIameCaster/prism-code-editor.git"
+    "url": "git+https://github.com/jonpyt/prism-code-editor.git"
   },
   "license": "MIT",
   "sideEffects": [
