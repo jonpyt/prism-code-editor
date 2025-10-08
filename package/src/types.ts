@@ -5,6 +5,7 @@ import { SearchWidget } from "./extensions/search/widget.js"
 import { ReadOnlyCodeFolding } from "./extensions/folding/index.js"
 import { TokenStream } from "./prism/types.js"
 import { EditHistory } from "./extensions/commands.js"
+import { AutoComplete } from "./extensions/autocomplete/types.js"
 
 export type EditorOptions = {
 	/**
@@ -152,6 +153,7 @@ export interface PrismEditor<T extends {} = {}> {
 		searchWidget?: SearchWidget
 		codeFold?: ReadOnlyCodeFolding
 		history?: EditHistory
+		autoComplete?: AutoComplete
 	}
 	/**
 	 * Set new options for the editor. Omitted properties will use their old value.
@@ -162,8 +164,15 @@ export interface PrismEditor<T extends {} = {}> {
 	update(this: void): void
 	/** Gets `selectionStart`, `selectionEnd` and `selectionDirection` for the `textarea`. */
 	getSelection(this: void): InputSelection
-	/** Adds a listener for events with the specified name. */
-	on<U extends keyof EditorEventMap>(this: void, name: U, listener: EditorEventMap<T>[U]): () => void
+	/**
+	 * Adds a listener for editor events with the specified name.
+	 * @returns A cleanup function that removes the listener.
+	 */
+	on<U extends keyof EditorEventMap>(
+		this: void,
+		name: U,
+		listener: EditorEventMap<T>[U],
+	): () => void
 	/** Adds extensions to the editor and calls their update methods. */
 	addExtensions(this: void, ...extensions: EditorExtension<T>[]): void
 	/** Removes the editor from the DOM. */

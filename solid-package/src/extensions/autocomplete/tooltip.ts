@@ -147,9 +147,11 @@ const autoComplete =
 			updateActive()
 		}
 
-		const insertOption = (index: number) => {
+		const insertOption = (index: number) =>
+			insertCompletion(currentOptions[index][4], currentOptions[index][2], currentOptions[index][3])
+
+		const insertCompletion = (completion: Completion, start: number, end = start) => {
 			if (props.readOnly) return
-			let [, , start, end, completion] = currentOptions[index]
 			let { label, tabStops: tabStops = [], insert } = completion
 			let l = tabStops.length
 			tabStops = tabStops.map(stop => stop + start)
@@ -206,7 +208,7 @@ const autoComplete =
 			updateMatched(tabStopsContainer, sorted.flat(), editor.value)
 		}
 
-		const startQuery = (explicit = false) => {
+		const startQuery = (explicit?: boolean) => {
 			const [start, end, dir] = getSelection()
 			const language = getLanguage(editor, (pos = dir < "f" ? start : end))
 			const definition = map[language]
@@ -218,7 +220,7 @@ const autoComplete =
 					before,
 					lineBefore,
 					language,
-					explicit,
+					explicit: !!explicit,
 					pos,
 				}
 				const newContext = Object.assign(context, definition.context?.(context, editor))
@@ -466,8 +468,14 @@ const autoComplete =
 			}
 		})
 
+		editor.extensions.autoComplete = {
+			startQuery,
+			insertCompletion,
+		}
+
 		onCleanup(() => {
 			cleanUps.forEach(c => c())
+			delete editor.extensions.autoComplete
 		})
 
 		addListener(list, "mousedown", e => {

@@ -1,5 +1,30 @@
 import { PrismEditor } from "../../index.js"
 
+export interface AutoComplete {
+	/**
+	 * Starts a completion query.
+	 * @param explicit When a query is started by this extension, `explicit` gets set to
+	 * `true` whenever the query was started with Ctrl+Space, and `false` if the query was
+	 * started implicitly while typing.
+	 */
+	startQuery(explicit?: boolean): void
+	/**
+	 * Inserts a completion option, replacing the text in the document between `start` and
+	 * `end` with the `label` (or `insert` if present) property of the completion. If the
+	 * completion has tab stops, these are displayed and can be selected by the user.
+	 *
+	 * This is very useful to insert snippets since this method will preserve current
+	 * indentation on new lines and replace tabs with spaces when `options.insertSpaces`
+	 * isn't set to `false`.
+	 *
+	 * @param completion The completion to insert.
+	 * @param start Starting position of the text replaced by the completion.
+	 * @param end Ending position of the text replaced by the completion. Defaults to
+	 * `start`.
+	 */
+	insertCompletion(completion: Completion, start: number, end?: number): void
+}
+
 export interface Completion {
 	/**
 	 * Label of the option. The label is displayed in the option and used to filter and sort

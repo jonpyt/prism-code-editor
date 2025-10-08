@@ -5,6 +5,7 @@ import type { EditHistory } from "./extensions/commands"
 import type { TagMatcher } from "./extensions/match-tags"
 import type { SearchWidget } from "./extensions/search/widget"
 import type { ReadOnlyCodeFolding } from "./extensions/folding"
+import type { AutoComplete } from "./extensions/autocomplete"
 import type { ReactNode } from "react"
 
 export type EditorProps = {
@@ -46,7 +47,14 @@ export type EditorProps = {
 	children?(editor: PrismEditor): ReactNode
 }
 
-type OmittedTextareaProps = "ref" | "autoFocus" | "value" | "defaultValue" | "className" | "cols" | "rows"
+type OmittedTextareaProps =
+	| "ref"
+	| "autoFocus"
+	| "value"
+	| "defaultValue"
+	| "className"
+	| "cols"
+	| "rows"
 
 /**
  * Function called when a certain key is pressed.
@@ -101,6 +109,7 @@ export type PrismEditor = {
 		searchWidget?: SearchWidget
 		history?: EditHistory
 		folding?: ReadOnlyCodeFolding
+		autoComplete?: AutoComplete
 	}
 	/** Whether the `textarea` is focused. */
 	readonly focused: boolean

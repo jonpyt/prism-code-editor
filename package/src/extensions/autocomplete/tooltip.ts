@@ -1,4 +1,4 @@
-import { BasicExtension, InputSelection } from "../../index.js"
+import { InputSelection } from "../../index.js"
 import { addListener, createTemplate, preventDefault } from "../../core.js"
 import { addTooltip } from "../../tooltips.js"
 import {
@@ -11,7 +11,13 @@ import {
 	setSelection,
 } from "../../utils/index.js"
 import { Cursor, cursorPosition } from "../cursor.js"
-import { AutoCompleteConfig, Completion, CompletionContext, CompletionDefinition } from "./types.js"
+import {
+	AutoComplete,
+	AutoCompleteConfig,
+	Completion,
+	CompletionContext,
+	CompletionDefinition,
+} from "./types.js"
 import { searchTemplate } from "../search/search.js"
 import { updateMatched } from "./utils.js"
 import { getStyleValue, updateNode } from "../../utils/local.js"
@@ -53,9 +59,8 @@ const registerCompletions = <T extends object>(
  *
  * @see {@link Completion.icon} for how to style your own icons.
  */
-const autoComplete =
-	(config: AutoCompleteConfig): BasicExtension =>
-	(editor, options) => {
+const autoComplete = (config: AutoCompleteConfig) => {
+	const self: AutoComplete = (editor, options) => {
 		let isOpen: boolean
 		let isTyping: boolean
 		let shouldOpen: boolean
@@ -142,9 +147,15 @@ const autoComplete =
 			updateActive()
 		}
 
-		const insertOption = (index: number) => {
+		const insertOption = (index: number) =>
+			insertCompletion(currentOptions[index][4], currentOptions[index][2], currentOptions[index][3])
+
+		const insertCompletion = (self.insertCompletion = (
+			completion: Completion,
+			start: number,
+			end = start,
+		) => {
 			if (options.readOnly) return
-			let [, , start, end, completion] = currentOptions[index]
 			let { label, tabStops: tabStops = [], insert } = completion
 			let l = tabStops.length
 			tabStops = tabStops.map(stop => stop + start)
@@ -180,7 +191,7 @@ const autoComplete =
 				currentSelection = getSelection()
 			}
 			cursor!.scrollIntoView()
-		}
+		})
 
 		const moveActiveStop = (offset: number) => {
 			activeStop += offset
@@ -201,7 +212,7 @@ const autoComplete =
 			updateMatched(tabStopsContainer, sorted.flat(), editor.value)
 		}
 
-		const startQuery = (explicit = false) => {
+		const startQuery = (self.startQuery = (explicit?: boolean) => {
 			const [start, end, dir] = getSelection()
 			const language = getLanguage(editor, (pos = dir < "f" ? start : end))
 			const definition = map[language]
@@ -213,7 +224,7 @@ const autoComplete =
 					before,
 					lineBefore,
 					language,
-					explicit,
+					explicit: !!explicit,
 					pos,
 				}
 				const newContext = Object.assign(context, definition.context?.(context, editor))
@@ -267,7 +278,7 @@ const autoComplete =
 					updateActive()
 				} else hide()
 			} else hide()
-		}
+		})
 
 		const addSelectionHandler = () => {
 			if (!cursor && (cursor = editor.extensions.cursor)) {
@@ -463,6 +474,12 @@ const autoComplete =
 		addListener(tooltip, "focusout", e => {
 			if (config.closeOnBlur != false && e.relatedTarget != textarea) hide()
 		})
+
+		editor.extensions.autoComplete = self
 	}
+
+	self.startQuery = self.insertCompletion = () => {}
+	return self
+}
 
 export { autoComplete, registerCompletions, map }
