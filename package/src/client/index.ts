@@ -18,7 +18,7 @@ import { renderEditor } from "../ssr/index.js"
  *
  * @param root Root element to search for editors under.
  * @param getExtensions Function used to get the extensions that should be added to each
- * editor. If the editor's were created with extra options, these will be parsed from
+ * editor. If the editors were created with extra options, these will be parsed from
  * JSON and passed to this function together with all other editor options. This is very
  * useful if you want to configure different extensions for different editors.
  * @returns Array of the mounted editors. These editors are in document order.
@@ -39,9 +39,9 @@ const mountEditorsUnder = <T extends {} = {}>(
 		if (!json) continue
 
 		let wrapper = element.firstChild as HTMLDivElement
-		let lines = <HTMLCollectionOf<HTMLDivElement>>wrapper.children
+		let lines = wrapper.children as HTMLCollectionOf<HTMLDivElement>
 		let overlays = lines[0]
-		let textarea = <HTMLTextAreaElement>overlays.firstChild
+		let textarea = overlays.firstChild as HTMLTextAreaElement
 		let language: string
 		let prevLines: string[]
 		let activeLine: HTMLDivElement
@@ -202,7 +202,7 @@ const mountEditorsUnder = <T extends {} = {}>(
 		}
 
 		const self: PrismEditor<T> = {
-			container: element as HTMLDivElement,
+			container: element,
 			wrapper,
 			lines,
 			textarea,

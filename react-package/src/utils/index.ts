@@ -3,6 +3,14 @@ import { addListener, doc, numLines, selectionChange } from "../core"
 import { PrismEditor, InputSelection } from "../types"
 import { getLineEnd, getLineStart } from "./local.ts"
 
+/**
+ * If {@link insertText} has been called, this variable stores the editor's selection
+ * before the call. This variable is set to 0 right before {@link insertText} returns.
+ * This can therefore be used inside a `beforeinput` handler to determine if
+ * {@link insertText} fired the event, and if true, get the selection before the call.
+ * 
+ * Intended for internal use only.
+ */
 let prevSelection: InputSelection | 0
 
 /** Escapes all special regex characters with a backslash and returns the escaped string. */
@@ -168,8 +176,11 @@ const getModifierCode = (
 ): number => e.altKey + e.ctrlKey * 2 + e.metaKey * 4 + e.shiftKey * 8
 
 const userAgent = doc ? navigator.userAgent : ""
-const isMac = doc ? /Mac|iPhone|iPod|iPad/i.test(navigator.platform) : false
+/** Whether the user is on an Apple-based system. */
+const isMac = doc ? /Mac|iPhone|iP[ao]d/.test(navigator.platform) : false
+/** Whether the browser is Chromium based. */
 const isChrome = /Chrome\//.test(userAgent)
+/** Whether the browser uses the WebKit browser engine. */
 const isWebKit = !isChrome && /AppleWebKit\//.test(userAgent)
 
 /**

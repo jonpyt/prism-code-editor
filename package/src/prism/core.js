@@ -4,8 +4,10 @@ var plainTextGrammar = {};
 var rest = Symbol();
 var tokenize = Symbol();
 
+/** @param {*} id */
 var resolve = id => typeof id == 'string' ? languages[id] : id;
 
+/** @type {Record<string, any>} */
 var languages = {
 	plain: plainTextGrammar,
 	plaintext: plainTextGrammar,
@@ -24,8 +26,10 @@ var tokenizeText = (text, grammar) => (grammar[tokenize] || withoutTokenizer)(te
  * @param {any} grammar
  */
 var withoutTokenizer = (text, grammar) => {
+	/** @type {LinkedListNode} */
 	var startNode = [text];
 	var restGrammar;
+	/** @type {(string | Token)[]} */
 	var array = [], i = 0;
 	while (restGrammar = resolve(grammar[rest])) {
 		delete grammar[rest];
@@ -38,6 +42,11 @@ var withoutTokenizer = (text, grammar) => {
 	return array;
 }
 
+/**
+ * @param {string} string
+ * @param {RegExp} pattern
+ * @param {string} replacement
+ */
 var escapeHtml = (string, pattern, replacement) => {
 	return string.replace(/&/g, '&amp;').replace(pattern, replacement);
 }
@@ -46,13 +55,17 @@ var closingTag = '</span>';
 var openingTags = '';
 var closingTags = '';
 
+/** @param {(string | Token)[]} tokens */
 var highlightTokens = tokens => {
 	var str = '', l = tokens.length, i = 0;
 	while (i < l) str += stringify(tokens[i++]);
 	return str;
 }
 
-/** @param {string | Token | (string | Token)[]} token */
+/**
+ * @param {string | Token | (string | Token)[]} token
+ * @returns {string}
+ */
 var stringify = token => {
 	if (token instanceof Token) {
 		var { type, alias, content } = token;
@@ -80,6 +93,10 @@ var stringify = token => {
 	return token;
 }
 
+/**
+ * @param {string} text
+ * @param {*} ref
+ */
 var highlightText = (text, ref) => highlightTokens(tokenizeText(text, resolve(ref)));
 
 /**
@@ -87,9 +104,7 @@ var highlightText = (text, ref) => highlightTokens(tokenizeText(text, resolve(re
  * @param {any} grammar
  * @param {LinkedListNode} startNode
  * @param {number} startPos
- * @param {[string, number, number]} rematch
- * @returns {number | undefined}
- * @private
+ * @param {[string, number, number]} [rematch]
  *
  * @typedef {[string | Token, LinkedListNode?]} LinkedListNode
  */
