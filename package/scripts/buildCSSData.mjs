@@ -288,7 +288,7 @@ data.atDirectives.forEach(({ name }) => {
 	if (name[1] != "-") line += name.slice(1) + ","
 })
 
-lines.push(line + 'container,scope,position-try,starting-style,view-transition")', "")
+lines.push(line.slice(0, -1) + '")', "")
 
 const pseudos = new Set()
 functions.clear()
@@ -345,6 +345,7 @@ data.pseudoElements.forEach(({ name: value }) => {
 functions.add("part")
 functions.add("slotted")
 functions.add("highlight")
+functions.add("picker")
 
 line = 'const pseudoElements = /* @__PURE__ */ toCompletions("::", "function", "'
 

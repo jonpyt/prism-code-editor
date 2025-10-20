@@ -33,7 +33,7 @@ const data = JSON.parse(
 /** @type {Set<string>} */
 const usedValueSets = new Set()
 
-/** @param {string} name */
+/** @param {string | undefined} name */
 const getAttrVariable = name => {
 	if (!name || name == "v") return "null"
 	usedValueSets.add(name)
@@ -55,21 +55,6 @@ const lines = [
 ]
 
 const globals = new Set()
-
-data.globalAttributes.splice(
-	data.globalAttributes.findIndex(attr => attr.name == "exportparts"),
-	0,
-	{
-		name: "enterkeyhint",
-		valueSet: "ekh",
-	},
-)
-
-data.globalAttributes.splice(
-	data.globalAttributes.findIndex(attr => attr.name == "inputmode"),
-	0,
-	{ name: "inert" },
-)
 
 data.globalAttributes.find(attr => attr.name == "inputmode").valueSet = "im"
 data.globalAttributes.find(attr => attr.name == "contenteditable").valueSet = "ce"
@@ -119,18 +104,13 @@ data.tags.forEach(tag => {
 	}
 })
 
+/** @type {string[]} */
 const valueSets = []
 
-data.valueSets.push(
-	{
-		name: "ekh",
-		values: ["enter", "done", "go", "next", "previous", "search", "send"].map(name => ({ name })),
-	},
-	{
-		name: "ce",
-		values: ["true", "false", "plaintext-only"].map(name => ({ name })),
-	},
-)
+data.valueSets.push({
+	name: "ce",
+	values: ["true", "false", "plaintext-only"].map(name => ({ name })),
+})
 
 data.valueSets.find(set => set.name == "im").values = [
 	"none",

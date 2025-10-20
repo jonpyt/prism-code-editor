@@ -1,6 +1,6 @@
 // generated from @vscode/web-custom-data package
 
-import { AttributeConfig, TagConfig } from "../types"
+import { AttributeConfig, TagConfig } from "../types.js"
 
 const attrValueB = ["true", "false"]
 const attrValueU = ["true", "false", "undefined"]
@@ -13,7 +13,7 @@ const attrValueFm = ["get", "post"]
 const attrValueS = ["row", "col", "rowgroup", "colgroup"]
 const attrValueT = ["hidden", "text", "search", "tel", "url", "email", "password", "datetime", "date", "month", "week", "time", "datetime-local", "number", "range", "color", "checkbox", "radio", "file", "submit", "image", "reset", "button"]
 const attrValueIm = ["none", "text", "decimal", "numeric", "tel", "search", "email", "url"]
-const attrValueBt = ["button", "submit", "reset", "menu"]
+const attrValueBt = ["button", "submit", "reset"]
 const attrValueLt = ["1", "a", "A", "i", "I"]
 const attrValueEt = ["application/x-www-form-urlencoded", "multipart/form-data", "text/plain"]
 const attrValueTk = ["subtitles", "captions", "descriptions", "chapters", "metadata"]
@@ -37,7 +37,9 @@ const attrValueHaspopup = ["true", "false", "menu", "listbox", "tree", "grid", "
 const attrValueDecoding = ["sync", "async", "auto"]
 const attrValueLoading = ["eager", "lazy"]
 const attrValueReferrerpolicy = ["no-referrer", "no-referrer-when-downgrade", "origin", "origin-when-cross-origin", "same-origin", "strict-origin", "strict-origin-when-cross-origin", "unsafe-url"]
-const attrValueEkh = ["enter", "done", "go", "next", "previous", "search", "send"]
+const attrValueEnterkeyhint = ["enter", "done", "go", "next", "previous", "search", "send"]
+const attrValuePopover = ["auto", "hint", "manual"]
+const attrValueFetchpriority = ["high", "low", "auto"]
 const attrValueCe = ["true", "false", "plaintext-only"]
 
 const htmlEventHandlers: AttributeConfig = {
@@ -167,13 +169,15 @@ const globalHtmlAttributes: AttributeConfig = {
 	...htmlEventHandlers,
 	accesskey: null,
 	autocapitalize: null,
+	autocorrect: attrValueO,
+	autofocus: null,
 	class: null,
 	contenteditable: attrValueCe,
 	contextmenu: null,
 	dir: attrValueD,
 	draggable: attrValueB,
 	dropzone: null,
-	enterkeyhint: attrValueEkh,
+	enterkeyhint: attrValueEnterkeyhint,
 	exportparts: null,
 	hidden: null,
 	id: null,
@@ -186,7 +190,9 @@ const globalHtmlAttributes: AttributeConfig = {
 	itemscope: null,
 	itemtype: null,
 	lang: null,
+	nonce: null,
 	part: null,
+	popover: attrValuePopover,
 	role: attrValueRoles,
 	slot: null,
 	spellcheck: attrValueB,
@@ -194,6 +200,7 @@ const globalHtmlAttributes: AttributeConfig = {
 	tabindex: null,
 	title: null,
 	translate: attrValueY,
+	virtualkeyboardpolicy: attrValueB,
 }
 
 const empty: AttributeConfig = {}
@@ -234,7 +241,6 @@ const htmlTags: TagConfig = {
 	},
 	style: {
 		media: null,
-		nonce: null,
 		type: null,
 		scoped: null,
 	},
@@ -381,6 +387,7 @@ const htmlTags: TagConfig = {
 		height: null,
 		decoding: attrValueDecoding,
 		loading: attrValueLoading,
+		fetchpriority: attrValueFetchpriority,
 		referrerpolicy: attrValueReferrerpolicy,
 		sizes: null,
 		importance: null,
@@ -548,7 +555,6 @@ const htmlTags: TagConfig = {
 		accept: null,
 		alt: null,
 		autocomplete: attrValueInputautocomplete,
-		autofocus: null,
 		checked: null,
 		dirname: null,
 		disabled: null,
@@ -568,6 +574,8 @@ const htmlTags: TagConfig = {
 		name: null,
 		pattern: null,
 		placeholder: null,
+		popovertarget: null,
+		popovertargetaction: null,
 		readonly: null,
 		required: null,
 		size: null,
@@ -578,7 +586,6 @@ const htmlTags: TagConfig = {
 		width: null,
 	},
 	button: {
-		autofocus: null,
 		disabled: null,
 		form: null,
 		formaction: null,
@@ -587,13 +594,14 @@ const htmlTags: TagConfig = {
 		formnovalidate: null,
 		formtarget: null,
 		name: null,
+		popovertarget: null,
+		popovertargetaction: null,
 		type: attrValueBt,
 		value: null,
 		autocomplete: null,
 	},
 	select: {
 		autocomplete: attrValueInputautocomplete,
-		autofocus: null,
 		disabled: null,
 		form: null,
 		multiple: null,
@@ -614,7 +622,6 @@ const htmlTags: TagConfig = {
 	},
 	textarea: {
 		autocomplete: attrValueInputautocomplete,
-		autofocus: null,
 		cols: null,
 		dirname: null,
 		disabled: null,
@@ -666,7 +673,6 @@ const htmlTags: TagConfig = {
 		async: null,
 		defer: null,
 		crossorigin: attrValueXo,
-		nonce: null,
 		integrity: null,
 		nomodule: null,
 		referrerpolicy: null,
@@ -687,6 +693,13 @@ const htmlTags: TagConfig = {
 	},
 	hgroup: empty,
 	menu: empty,
+	search: empty,
+	fencedframe: {
+		allow: null,
+		height: null,
+		width: null,
+	},
+	selectedcontent: empty,
 }
 
 export {
@@ -729,6 +742,8 @@ export {
 	attrValueDecoding,
 	attrValueLoading,
 	attrValueReferrerpolicy,
-	attrValueEkh,
+	attrValueEnterkeyhint,
+	attrValuePopover,
+	attrValueFetchpriority,
 	attrValueCe,
 }
