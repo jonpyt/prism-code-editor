@@ -59,7 +59,7 @@ Original: https://github.com/dracula/visual-studio-code */
 
 [class*="language-"],
 .token.punctuation,
-.language-markdown .code.keyword {
+.token.code.keyword {
 	color: #f8f8f2;
 }
 
@@ -80,7 +80,7 @@ Original: https://github.com/dracula/visual-studio-code */
 .token.token.anchor,
 .token.regex-flags,
 .token.atrule .rule,
-.language-markdown .url .content {
+.token.url > .content {
 	color: #ff79c6;
 }
 
@@ -113,12 +113,11 @@ Original: https://github.com/dracula/visual-studio-code */
 .token.inserted,
 .token.function,
 .token.doctype,
-.language-markdown .code-language,
-.language-markdown .code-snippet.code {
+.token.code-language,
+.token.code.code-snippet {
 	color: #50fa7b;
 }
 
-.token.url,
 .token.variable {
 	color: #f8f8f2;
 }
@@ -144,9 +143,9 @@ Original: https://github.com/dracula/visual-studio-code */
 .token.group,
 .token.regex .punctuation,
 .token.generic,
-.token.url,
+.token.url:not(.string),
 .token.atrule,
-.language-markdown .bold *,
+.token.bold *,
 .token.constant {
 	color: #ffb86c;
 }

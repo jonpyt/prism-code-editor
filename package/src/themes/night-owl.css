@@ -80,8 +80,8 @@ Original: https://github.com/sdras/night-owl-vscode-theme */
 [class*="language-"],
 .language-css .punctuation,
 .block > .punctuation,
-.language-markdown .code.keyword,
-.language-markdown .url .content {
+.token.code.keyword,
+.token.url > .content {
 	color: #d6deeb;
 }
 
@@ -129,7 +129,7 @@ Original: https://github.com/sdras/night-owl-vscode-theme */
 .token.property-access,
 .token.quantifier,
 .token.alternation,
-.token.url .markup-bracket {
+.token.url > .markup-bracket {
 	color: #7fdbca;
 }
 
@@ -159,8 +159,8 @@ Original: https://github.com/sdras/night-owl-vscode-theme */
 .selector .pseudo-element,
 .selector .pseudo-class,
 .token.builtin,
-.language-markdown .bold *,
-.language-markdown .code.code-snippet {
+.token.bold *,
+.token.code.code-snippet {
 	color: #c5e478;
 }
 
@@ -173,7 +173,7 @@ Original: https://github.com/sdras/night-owl-vscode-theme */
 .token.token.char-set,
 .token.title.important,
 .token.title > .punctuation,
-.language-markdown .url .variable {
+.token.url > .variable {
 	color: #82aaff;
 }
 

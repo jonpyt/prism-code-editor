@@ -48,19 +48,14 @@
 	--bg-guide-indent: #eee6;
 }
 
-[class*="language-"] {
+[class*="language-"],
+.token.url {
 	color: #9cdcfe;
 }
 
 /* Tokens */
 .token.namespace {
 	opacity: 0.7;
-}
-
-.token.comment,
-.token.prolog,
-.token.blockquote.punctuation {
-	color: #6a9955;
 }
 
 .pce-tooltip,
@@ -70,6 +65,12 @@
 .token.combinator,
 .token.plain-text {
 	color: #d4d4d4;
+}
+
+.token.comment,
+.token.prolog,
+.token.blockquote {
+	color: #6a9955;
 }
 
 .token.number,
@@ -91,10 +92,6 @@
 .token.attr-value:not(.script):not(.style) > .punctuation,
 .token.color {
 	color: #ce9178;
-}
-
-.url .token.string.url {
-	text-decoration: underline;
 }
 
 .token.doctype,
@@ -119,10 +116,6 @@
 
 .token.italic {
 	font-style: italic;
-}
-
-.token.strike {
-	text-decoration: line-through;
 }
 
 .token.class-name,
@@ -168,6 +161,12 @@
 	color: #d16969;
 }
 
+.token.important.title .punctuation,
+.token.list,
+.token.bold * {
+	color: #569cd6;
+}
+
 .language-markup,
 .language-markdown,
 .language-md,
@@ -180,23 +179,14 @@
 .language-astro,
 .language-css,
 .language-sass,
-.language-scss {
+.language-scss,
+.token.code.keyword,
+.language-markdown .token.url {
 	color: #d4d4d4;
 }
 
-.token.important.title .punctuation,
-.token.list.punctuation,
-.language-markdown .token.bold * {
-	color: #569cd6;
-}
-
-.language-markdown .token.code > .punctuation,
-.language-markdown .token.code.keyword {
-	color: #d4d4d4;
-}
-
-.language-markdown .token.url .content,
-.language-markdown .token.code-snippet.keyword,
+.token.token.url > .content,
+.token.code.code-snippet,
 .token.url-reference .variable {
 	color: #ce9178;
 }

@@ -56,7 +56,8 @@
 [class*="language-"],
 .token.punctuation,
 .token.attr-equals,
-.language-css .token.property {
+.language-css .token.property,
+.token.url {
 	color: #abb2bf;
 }
 
@@ -114,20 +115,19 @@
 .token.inserted,
 .token.string-property,
 .token.attr-value,
-.token.string.url,
+.token.string.url.url,
 .token.attr-value:not(.script):not(.style) > .punctuation,
-.token.code-snippet.code {
+.token.code.code-snippet {
 	color: #98c379;
 }
 
-.language-markdown .url > .variable,
-.language-markdown .url > .content,
+.token.url > .variable,
+.token.url > .content,
 .token.function,
 .token.selector .id {
 	color: #61afef;
 }
 
-.token.url,
 .token.regex,
 .language-regex,
 .token.char-class .operator,
@@ -145,34 +145,37 @@
 
 .language-css .token.important,
 .token.atrule .token.rule,
-.language-markdown .italic {
+.language-markdown .italic,
+.language-markdown .url > .url,
+.token.url.url-reference {
 	color: #c678dd;
 }
 
 .language-json .token.keyword-null,
-.language-markdown .bold * {
+.token.bold *,
+.token.url-reference .variable,
+.token.url-reference .punctuation {
 	color: #d19a66;
 }
 
-.language-markdown .code.keyword,
+.token.code.keyword,
 .language-json .token.operator,
-.language-markdown .token.url,
-.language-markdown .url > .operator,
-.language-markdown .token.url-reference > .string {
+.token.url > .operator {
 	color: #abb2bf;
 }
 
 .language-css .function,
-.language-markdown .token.blockquote.punctuation,
-.language-markdown .token.hr.punctuation,
-.language-markdown .token.url > .token.url,
-.language-markdown .token.url-reference.url {
+.token.blockquote,
+.token.hr {
 	color: #56b6c2;
 }
 
+
+
 .language-markdown .strike *,
-.language-markdown .token.list.punctuation,
-.language-markdown .token.title.important > .token.punctuation {
+.token.url-reference .string,
+.token.list,
+.token.title.important > .punctuation {
 	color: #e06c75;
 }
 
