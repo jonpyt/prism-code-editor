@@ -1,4 +1,7 @@
-import type { CustomTokenizer, Grammar, GrammarTokens, TokenName } from "./index.js"
+import type { matchBrackets } from "../extensions/match-brackets/index.js"
+import type { matchTags } from "../extensions/match-tags.js"
+import type { showInvisibles } from "../extensions/search/invisibles.js"
+import type { CustomTokenizer, Grammar, GrammarTokens, TokenName, TokenStream } from "./index.js"
 
 /**
  * Creates a deep clone of the given grammar definition.
@@ -98,3 +101,112 @@ export declare const extend: (id: string, reDef?: Grammar) => Grammar
  * or the name of a grammar.
  */
 export declare const embeddedIn: (hostGrammar: Grammar | string) => CustomTokenizer
+
+/**
+ * Tokenizes all strings in the token stream with the given tokenization function.
+ *
+ * @param tokens Tokens to mutate.
+ * @param tokenize Function applied to all strings in the token stream. The token stream
+ * returned must have the same text content as the given text.
+ */
+export function tokenizeStrings(tokens: TokenStream, tokenize: (code: string) => TokenStream): void
+
+/**
+ * Function that will highlight all tabs and spaces in a token stream. Similar to
+ * {@link showInvisibles} with `alwaysShow` set to `true`, but this highlights tabs
+ * and spaces as tokens instead. This not only works with code blocks, but also performs
+ * better. However, if you only want to show spaces and tabs that are selected, then
+ * {@link showInvisibles} must be used instead.
+ *
+ * Requires styling from `solid-prism-editor/invisibles.css`.
+ *
+ * ## Usage
+ *
+ * Note that this function should be the last tokenization function that's called. This
+ * is not just a performance optimization since {@link tokenizeDataUris} doesn't work
+ * when it's called after.
+ *
+ * To use this function add it to `onTokenize`.
+ *
+ * ```jsx
+ * <Editor
+ *   language="jsx" value="foo"
+ *   onTokenize={tokenizeInvisibles}
+ * />
+ *
+ * <CodeBlock
+ *   language="jsx" code="foo"
+ *   onTokenize={tokenizeInvisibles}
+ * />
+ * ```
+ *
+ * Alternatively, make an extension that calls it inside a computation for editors.
+ *
+ * ```jsx
+ * <Editor
+ *   language="jsx" value="foo"
+ *   extensions={[
+ *     // More extensions before
+ *
+ *     editor => {
+ *       createComputed(() => {
+ *         tokenizeInvisibles(editor.tokens())
+ *       })
+ *     }
+ *   ]}
+ * />
+ * ```
+ *
+ * @param tokens Tokens to mutate.
+ */
+export function tokenizeInvisibles(tokens: TokenStream): void
+
+/**
+ * Function that will highlight the body of data URIs. If you have
+ * `'data:image/svg+xml,<svg></svg>'`, then this will highlight `<svg></svg>` as XML for
+ * example.
+ *
+ * ## Usage
+ *
+ * Note that this function should be the first tokenization function that's called. If
+ * {@link matchBrackets} is called before this function is added as a `tokenize`
+ * listener, then brackets created by this won't be matched together.
+ *
+ * ### With editors
+ *
+ * To use this function with editors, make an extension that calls it inside a
+ * computation.
+ *
+ * ```jsx
+ * <Editor
+ *   language="jsx" value="foo"
+ *   extensions={[
+ *     editor => {
+ *       createComputed(() => {
+ *         tokenizeDataUris(editor.tokens())
+ *       })
+ *     }
+ *
+ *     // More extensions after
+ *   ]}
+ * />
+ * ```
+ *
+ * ### With code blocks
+ *
+ * To use this function with code blocks, call it inside `onTokenize`.
+ *
+ * ```jsx
+ * <CodeBlock
+ *   language="jsx" code="foo"
+ *   onTokenize={tokens => {
+ *     tokenizeDataUris(tokens)
+ *
+ *     // Other tokenizers after
+ *   }}
+ * />
+ * ```
+ *
+ * @param tokens Tokens to mutate.
+ */
+export function tokenizeDataUris(tokens: TokenStream): void

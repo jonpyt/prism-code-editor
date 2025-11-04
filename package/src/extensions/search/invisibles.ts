@@ -1,11 +1,13 @@
 import { BasicExtension } from "../../index.js"
+import { tokenizeInvisibles } from "../../prism/utils/invisibles.js"
 import { createSearchAPI } from "./search.js"
 
 /**
- * Extension that shows tabs and spaces.
- * @param alwaysShow By default, spaces and tabs are only shown when they're selected.
- * By passing `true`, they're always shown, which negatively impacts performance when
- * typing, and increases the amount of elements in the DOM.
+ * Extension that highlights selected tabs and spaces as an overlay.
+ *
+ * @param alwaysShow By passing `true`, they're always shown. This is not recommended
+ * and will be removed in the future. Instead use {@link tokenizeInvisibles} to highlight
+ * tabs and spaces as tokens for better performance.
  *
  * Requires styling from `prism-code-editor/invisibles.css`.
  */

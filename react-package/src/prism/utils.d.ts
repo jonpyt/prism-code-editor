@@ -1,4 +1,7 @@
-import type { CustomTokenizer, Grammar, GrammarTokens, TokenName } from "./index.js"
+import type { useBracketMatcher } from "../extensions/match-brackets/index.js"
+import type { useTagMatcher } from "../extensions/match-tags.js"
+import type { useShowInvisibles } from "../extensions/search/invisibles.js"
+import type { CustomTokenizer, Grammar, GrammarTokens, TokenName, TokenStream } from "./index.js"
 
 /**
  * Creates a deep clone of the given grammar definition.
@@ -98,3 +101,102 @@ export declare const extend: (id: string, reDef?: Grammar) => Grammar
  * or the name of a grammar.
  */
 export declare const embeddedIn: (hostGrammar: Grammar | string) => CustomTokenizer
+
+/**
+ * Tokenizes all strings in the token stream with the given tokenization function.
+ *
+ * @param tokens Tokens to mutate.
+ * @param tokenize Function applied to all strings in the token stream. The token stream
+ * returned must have the same text content as the given text.
+ */
+export function tokenizeStrings(tokens: TokenStream, tokenize: (code: string) => TokenStream): void
+
+/**
+ * Function that will highlight all tabs and spaces in a token stream. Similar to
+ * {@link useShowInvisibles} with `alwaysShow` set to `true`, but this highlights tabs
+ * and spaces as tokens instead. This not only works with code blocks, but also performs
+ * better. However, if you only want to show spaces and tabs that are selected, then
+ * {@link useShowInvisibles} must be used instead.
+ *
+ * Requires styling from `prism-react-editor/invisibles.css`.
+ *
+ * ## Usage
+ *
+ * Note that this function should be the last tokenization function that's called. This
+ * is not just a performance optimization since {@link tokenizeDataUris} doesn't work
+ * when it's called after.
+ *
+ * To use this function add it to `onTokenize`.
+ *
+ * ```jsx
+ * <Editor
+ *   language="jsx" value="foo"
+ *   onTokenize={tokenizeInvisibles}
+ * />
+ *
+ * <CodeBlock
+ *   language="jsx" code="foo"
+ *   onTokenize={tokenizeInvisibles}
+ * />
+ * ```
+ *
+ * Alternatively, you can create an extension for editors.
+ *
+ * ```ts
+ * const MyExtension = ({ editor }: { editor: PrismEditor }) => {
+ *   // Call extensions like useMatchBrackets before
+ *
+ *   useLayoutEffect(() => {
+ *     return editor.on("tokenize", tokenizeInvisibles)
+ *   }, [])
+ * }
+ * ```
+ *
+ * @param tokens Tokens to mutate.
+ */
+export function tokenizeInvisibles(tokens: TokenStream): void
+
+/**
+ * Function that will highlight the body of data URIs. If you have
+ * `'data:image/svg+xml,<svg></svg>'`, then this will highlight `<svg></svg>` as XML for
+ * example.
+ *
+ * ## Usage
+ *
+ * Note that this function should be the first tokenization function that's called. If
+ * {@link useBracketMatcher} or {@link useTagMatcher} are called before this function is
+ * added as a `tokenize` listener, then tags and brackets created by this won't be
+ * matched together.
+ *
+ * ### With editors
+ *
+ * To use this function with editors, add it as a `tokenize` listener inside an extension.
+ *
+ * ```ts
+ * const MyExtension = ({ editor }: { editor: PrismEditor }) => {
+ *   useLayoutEffect(() => {
+ *     return editor.on("tokenize", tokenizeDataUris)
+ *   }, [])
+ * 
+ *   // Call extensions like useMatchBrackets after
+ * }
+ * ```
+ *
+ * ### With code blocks
+ *
+ * To use this function with code blocks, call it inside `onTokenize`.
+ *
+ * ```jsx
+ * <CodeBlock
+ *   language="jsx" code="foo"
+ *   onTokenize={useCallback(tokens => {
+ *     tokenizeInvisibles(tokens)
+ *
+ *     // Other tokenizers after
+ *   }, [])}
+ * />
+ * ```
+ *
+ * @param tokens Tokens to mutate.
+ */
+export function tokenizeDataUris(tokens: TokenStream): void
