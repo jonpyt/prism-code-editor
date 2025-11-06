@@ -40,10 +40,10 @@ export interface ReplaceAPI extends SearchAPI {
  */
 export const useEditorReplace = (
 	editor: PrismEditor,
-	initClassName?: string,
-	initZIndex?: number,
+	className?: string,
+	zIndex?: number,
 ) => {
-	const search = useEditorSearch(editor, initClassName, initZIndex)
+	const search = useEditorSearch(editor, className, zIndex)
 	const getSelection = editor.getSelection
 
 	const matches = search.matches

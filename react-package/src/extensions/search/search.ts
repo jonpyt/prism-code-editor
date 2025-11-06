@@ -52,18 +52,18 @@ export interface SearchAPI {
 	readonly regex: RegExp
 	/** Array of positions of all the matches. */
 	readonly matches: [number, number][]
-	/** Hides the search container and removes all the matches. */
+	/** Removes the search container and all matches. */
 	stopSearch(): void
 }
 
 /**
  * Hook that allows searching the content of the editor and highlighting the matches.
  * The matches are appended to a container appended to the editors overlays.
- * @param initClassName Class name the container is initialized with.
- * @param initZIndex Z-index the container is initialized with.
+ * @param className Class name for the container.
+ * @param zIndex Z-index of the container.
  * @returns Object with methods and properties for searching.
  */
-const useEditorSearch = (editor: PrismEditor, initClassName?: string, initZIndex?: number) => {
+const useEditorSearch = (editor: PrismEditor, className?: string, zIndex?: number) => {
 	const searcher = useMemo<SearchAPI>(() => {
 		const container = searchTemplate()
 		const nodes: ChildNode[] = [container?.firstChild!]
@@ -77,9 +77,6 @@ const useEditorSearch = (editor: PrismEditor, initClassName?: string, initZIndex
 
 		let regex: RegExp
 		let lastNode = 0
-
-		if (initClassName && container) container.className = initClassName
-		if (initZIndex && container) container.style.zIndex = initZIndex as any
 
 		return {
 			search(str, caseSensitive, wholeWord, useRegExp, selection, filter, pattern) {
@@ -146,7 +143,14 @@ const useEditorSearch = (editor: PrismEditor, initClassName?: string, initZIndex
 		}
 	}, [])
 
+	const container = searcher.container
+
 	useEffect(() => searcher.stopSearch, [])
+
+	if (container) {
+		container.className = className || ""
+		container.style.zIndex = zIndex || ("" as any)
+	}
 
 	return searcher
 }
