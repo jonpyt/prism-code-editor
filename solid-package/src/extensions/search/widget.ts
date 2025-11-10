@@ -134,7 +134,7 @@ export const searchWidget = (): Extension => editor => {
 	const resize = () =>
 		div.style.setProperty(
 			"--search-width",
-			`min(${container.clientWidth - 2}px - 2.4em - var(--padding-left),20em)`,
+			`min(${container.clientWidth - 2}px - 2.9em,20em)`,
 		)
 
 	const observer = window.ResizeObserver && new ResizeObserver(resize)
