@@ -68,7 +68,7 @@ const useTagMatcher = (editor: PrismEditor) => {
 						const notSelfClosing =
 							content[content.length - 1].length < 2 && (noVoidTags || !voidTags.test(tagName))
 
-						if (content[2] && noVoidTags) matchTagsRecursive(content, language, position)
+						if (content[2]) matchTagsRecursive(content, language, position)
 
 						if (notSelfClosing) {
 							if (openLen > 1) {
