@@ -3,7 +3,7 @@ import { clikePunctuation } from '../utils/patterns.js';
 
 languages.hs = languages.haskell = {
 	'comment': {
-		pattern: /(^|[^.#$?@~:\\%&|^!=<>/*+-])(?:--(?![.#$?@~:\\%&|^!=<>/*+-]).*|\{-[\s\S]*?-\})/,
+		pattern: /(^|[^\\.:#$?@~%&|^!=<>/*+-])(?:--(?![\\.:#$?@~%&|^!=<>/*+-]).*|\{-[\s\S]*?-\})/,
 		lookbehind: true
 	},
 	'char': {

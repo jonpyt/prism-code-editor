@@ -33,7 +33,7 @@ languages.abnf = {
 		}
 	},
 	'core-rule': {
-		pattern: RegExp(`(?:(^|[^<\\w-])${coreRules}|<${coreRules}>)(?![\\w-])`, 'i'),
+		pattern: RegExp(`(?:(^|[^\\w<-])${coreRules}|<${coreRules}>)(?![\\w-])`, 'i'),
 		lookbehind: true,
 		alias: 'rule constant',
 		inside: {

@@ -91,7 +91,7 @@ languages.dotnet = languages.cs = languages.csharp = {
 			inside: createInterpolationInside(mInterpolation, mInterpolationRound),
 		},
 		{
-			pattern: re(/(^|[^@\\])\$"(?:\\.|\{\{|<0>|[^\\"{])*"/.source, [sInterpolation], 'g'),
+			pattern: re(/(^|[^\\@])\$"(?:\\.|\{\{|<0>|[^\\"{])*"/.source, [sInterpolation], 'g'),
 			lookbehind: true,
 			greedy: true,
 			inside: createInterpolationInside(sInterpolation, sInterpolationRound),
@@ -103,12 +103,12 @@ languages.dotnet = languages.cs = languages.csharp = {
 	},
 	'string': [
 		{
-			pattern: re(/(^|[^$\\])<0>/.source, [verbatimString], 'g'),
+			pattern: re(/(^|[^\\$])<0>/.source, [verbatimString], 'g'),
 			lookbehind: true,
 			greedy: true
 		},
 		{
-			pattern: re(/(^|[^@$\\])<0>/.source, [regularString], 'g'),
+			pattern: re(/(^|[^\\@$])<0>/.source, [regularString], 'g'),
 			lookbehind: true,
 			greedy: true
 		}

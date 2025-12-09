@@ -75,7 +75,7 @@ var bash = commandAfterHeredoc.inside = languages.sh = languages.shell = languag
 		alias: 'important'
 	},
 	'comment': {
-		pattern: /(^|[^"{\\$])#.*/,
+		pattern: /(^|[^\\"{$])#.*/,
 		lookbehind: true
 	},
 	'function-name': [
@@ -149,7 +149,7 @@ var bash = commandAfterHeredoc.inside = languages.sh = languages.shell = languag
 		},
 		{
 			// https://www.gnu.org/software/bash/manual/html_node/Single-Quotes.html
-			pattern: /(^|[^$\\])'[^']*'/g,
+			pattern: /(^|[^\\$])'[^']*'/g,
 			lookbehind: true,
 			greedy: true
 		},

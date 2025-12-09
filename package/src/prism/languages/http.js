@@ -73,7 +73,7 @@ var http = languages.http = {
 		? '(?:' + contentType + '|\\w+/(?:[\\w.-]+\\+)+' + lang + '(?![\\w.+-]))' : contentType;
 
 	http[contentType.replace('/', '-')] = {
-		pattern: RegExp('(content-type:\\s*'+ pattern + '(?:;.*)?(?:\n[\\w-].*)*\n)[^ \t\\w-][^]*', 'i'),
+		pattern: RegExp('(content-type:\\s*'+ pattern + '(?:;.*)?(?:\n[\\w-].*)*\n)[^\\w \t-][^]*', 'i'),
 		lookbehind: true,
 		alias: 'language-' + lang,
 		inside: lang == 'json' ? languages.json || 'js' : lang

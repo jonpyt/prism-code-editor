@@ -44,7 +44,7 @@ languages.qs = languages.qsharp = {
 	},
 	'string': [
 		{
-			pattern: re(/(^|[^$\\])<0>/.source, [regularString], 'g'),
+			pattern: re(/(^|[^\\$])<0>/.source, [regularString], 'g'),
 			lookbehind: true,
 			greedy: true
 		}

@@ -10,12 +10,12 @@ languages.sql = {
 		/@[\w.$]+/
 	],
 	'string': {
-		pattern: /(^|[^@\\])(["'])(?:\\[\s\S]|(?!\2)[^\\]|\2\2)*\2/g,
+		pattern: /(^|[^\\@])(["'])(?:\\[\s\S]|(?!\2)[^\\]|\2\2)*\2/g,
 		lookbehind: true,
 		greedy: true
 	},
 	'identifier': {
-		pattern: /(^|[^@\\])`(?:\\[\s\S]|[^\\`]|``)*`/g,
+		pattern: /(^|[^\\@])`(?:\\[\s\S]|[^\\`]|``)*`/g,
 		lookbehind: true,
 		greedy: true,
 		inside: {

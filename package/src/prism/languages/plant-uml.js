@@ -45,7 +45,7 @@ expression.inside = languages.plantuml = languages['plant-uml'] = {
 	},
 
 	'arrow': {
-		pattern: RegExp(/(^|[^-.<>?|\\[\]ox])/.source + arrow + /(?![-.<>?|\\\]ox])/.source, 'g'),
+		pattern: RegExp(/(^|[^\\[\].?|ox<>-])/.source + arrow + /(?![\\\].?|ox<>-])/.source, 'g'),
 		lookbehind: true,
 		greedy: true,
 		alias: 'operator',

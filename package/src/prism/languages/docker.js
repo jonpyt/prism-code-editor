@@ -57,7 +57,7 @@ languages.dockerfile = languages.docker = {
 				},
 				{
 					// https://docs.docker.com/engine/reference/builder/#from
-					pattern: re(/(^(?:onbuild<0>)?from<0>(?:<1><0>)*(?!--)[^ \t\\]+<0>)as/.source, [space, option], 'gi'),
+					pattern: re(/(^(?:onbuild<0>)?from<0>(?:<1><0>)*(?!--)[^\\ \t]+<0>)as/.source, [space, option], 'gi'),
 					lookbehind: true,
 					greedy: true
 				},
@@ -74,7 +74,7 @@ languages.dockerfile = languages.docker = {
 			],
 			'comment': commentRule,
 			'string': stringRule,
-			'variable': /\$(?:\w+|\{[^{}"'\\]*\})/,
+			'variable': /\$(?:\w+|\{[^\\{}"']*\})/,
 			'operator': /\\$/m
 		}
 	},

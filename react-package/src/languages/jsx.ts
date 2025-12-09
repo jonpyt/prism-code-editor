@@ -6,7 +6,7 @@ import { getClosestToken, getLineBefore } from "../utils"
 import { autoCloseTags, braces, clikeComment, clikeIndent, space, testBracketPair } from "./shared"
 
 const openingTag = RegExp(
-	`(?:^|[^$\\w])<(?:(?!\\d)([^\\s%=<>/]+)(?:(?:${space}|${space}*<(?:[^<>=]|=[^<]|=?<(?:[^<>]|<[^<>]*>)*>)*>)(?:${space}*(?:[^\\s"'{=<>/*]+(?:${space}*=${space}*(?!\\s)(?:"[^"]*"|'[^']*'|${braces})?|(?=[\\s/>]))|${braces}))+)?${space}*)?>[ 	]*$`,
+	`(?:^|[^\\w$])<(?:(?!\\d)([^\\s%=<>/]+)(?:(?:${space}|${space}*<(?:[^<>=]|=[^<]|=?<(?:[^<>]|<[^<>]*>)*>)*>)(?:${space}*(?:[^\\s"'{=<>/*]+(?:${space}*=${space}*(?!\\s)(?:"[^"]*"|'[^']*'|${braces})?|(?=[\\s/>]))|${braces}))+)?${space}*)?>[ 	]*$`,
 )
 
 const closingTag = /^<\/(?!\d)[^\s%=<>/]*\s*>/

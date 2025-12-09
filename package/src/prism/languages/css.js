@@ -20,7 +20,7 @@ var atruleInside = {
 atruleInside[rest] = languages.css = {
 	'comment': /\/\*[\s\S]*?\*\//,
 	'atrule': {
-		pattern: RegExp(`@[\\w-](?:[^;{\\s"']|\\s+(?!\\s)|${stringSrc})*?(?:;|(?=\\s*\\{))`),
+		pattern: RegExp(`@[\\w-](?:[^\\s;{"']|\\s+(?!\\s)|${stringSrc})*?(?:;|(?=\\s*\\{))`),
 		inside: atruleInside
 	},
 	'url': {
@@ -37,7 +37,7 @@ atruleInside[rest] = languages.css = {
 		}
 	},
 	'selector': {
-		pattern: RegExp(`(^|[{}\\s])[^{}\\s](?:[^{};"'\\s]|\\s+(?![\\s{])|${stringSrc})*(?=\\s*\\{)`),
+		pattern: RegExp(`(^|[{}\\s])[^\\s{}](?:[^\\s{};"']|\\s+(?![\\s{])|${stringSrc})*(?=\\s*\\{)`),
 		lookbehind: true
 	},
 	'string': {

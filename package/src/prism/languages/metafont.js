@@ -31,7 +31,7 @@ languages.metafont = {
 			lookbehind: true
 		},
 		{
-			pattern: /(^|[^/*\\])(?:\\|\\\\)(?![/*\\])/,
+			pattern: /(^|[^\\/*])(?:\\|\\\\)(?![/*\\])/,
 			lookbehind: true
 		},
 		/\b(?:_|blankpicture|bp|cc|cm|dd|ditto|down|eps|epsilon|fullcircle|halfcircle|identity|in|infinity|left|mm|nullpen|nullpicture|origin|pc|penrazor|penspeck|pensquare|penstroke|proof|pt|quartercircle|relax|right|smoke|unitpixel|unitsquare|up)\b/
@@ -54,7 +54,7 @@ languages.metafont = {
 			lookbehind: true
 		},
 		{
-			pattern: /(^|[^/*\\])(?:\*|\*\*|\/)(?![/*\\])/,
+			pattern: /(^|[^\\/*])(?:\*|\*\*|\/)(?![/*\\])/,
 			lookbehind: true
 		},
 		{

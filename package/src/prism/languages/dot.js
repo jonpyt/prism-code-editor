@@ -43,7 +43,7 @@ languages.gv = languages.dot = {
 		alias: 'builtin'
 	},
 	'node': {
-		pattern: re(/(^|[^-.\w\x80-\uffff\\])<0>/.source, [ID], 'g'),
+		pattern: re(/(^|[^\\\w\x80-\uffff.-])<0>/.source, [ID], 'g'),
 		lookbehind: true,
 		greedy: true,
 		inside: IDInside
