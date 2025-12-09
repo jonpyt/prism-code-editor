@@ -78,12 +78,13 @@
     "solid-js": "*"
   },
   "keywords": [
+    "code",
     "editor",
-    "code editor",
+    "code-editor",
     "textarea",
     "solid",
     "highlight",
-    "prismjs"
+    "prism"
   ],
   "author": "Jonas Pytte",
   "repository": {

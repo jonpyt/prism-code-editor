@@ -39,7 +39,7 @@
   ],
   "keywords": [
     "rehype",
-    "prismjs"
+    "prism"
   ],
   "packageManager": "pnpm@9.0.4+sha1.b198ac6d38244fd829253720f9daafd6a606834d"
 }

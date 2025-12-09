@@ -78,12 +78,13 @@
     "vite-plugin-dts": "^4.5.4"
   },
   "keywords": [
+    "code",
     "editor",
-    "code editor",
+    "code-editor",
     "textarea",
     "react",
     "highlight",
-    "prismjs"
+    "prism"
   ],
   "author": "Jonas Pytte",
   "repository": {
