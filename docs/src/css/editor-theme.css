@@ -193,8 +193,8 @@ div.code-block {
 [class*="language-"],
 .language-css .punctuation,
 .block > .punctuation,
-.language-markdown .code.keyword,
-.language-markdown .url .content {
+.token.code.keyword,
+.token.url > .content {
 	color: var(--pce-text);
 }
 
@@ -275,8 +275,8 @@ div.code-block {
 .selector .pseudo-element,
 .selector .pseudo-class,
 .token.builtin,
-.language-markdown .bold *,
-.language-markdown .code.code-snippet {
+.token.bold *,
+.token.code.code-snippet {
 	color: var(--attr-name);
 }
 
@@ -288,7 +288,7 @@ div.code-block {
 .token.token.char-set,
 .token.title.important,
 .token.title > .punctuation,
-.language-markdown .url .variable {
+.token.url > .variable {
 	color: var(--function);
 }
 

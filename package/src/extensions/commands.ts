@@ -409,9 +409,9 @@ export interface EditHistory extends BasicExtension {
  * Without this extension, the browser's native undo/redo is used, which can be sufficient
  * in some cases.
  *
- * It should be noted that the history stack is not automatically cleared when the editors
- * value is changed programmatically using `editor.setOptions`. Instead you can clear the
- * stack any time using {@link EditHistory.clear}.
+ * It should be noted that the history stack is not automatically cleared when the
+ * editor's value is changed programmatically using `editor.setOptions`. Instead you can
+ * clear the stack any time using {@link EditHistory.clear}.
  *
  * Once added to an editor, this extension can be accessed from `editor.extensions.history`.
  *

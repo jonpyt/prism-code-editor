@@ -219,7 +219,7 @@ const setSelection = (
 }
 
 /**
- * Adds an overlay by appending the element to the editors overlays.
+ * Adds an overlay by appending the element to the editor's overlays.
  * Equivalent to calling `editor.lines[0].append(overlay)`.
  * @param editor Editor you want to add an overlay to.
  * @param overlay The overlay you want to add.

@@ -11,7 +11,7 @@ import {
 import { template } from "solid-js/web"
 import { defaultCommands } from "./commands"
 
-/** Postion of the cursor relative to the editors overlays. */
+/** Postion of the cursor relative to the editor's overlays. */
 export type CursorPosition = {
 	top: number
 	bottom: number

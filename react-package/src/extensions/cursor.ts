@@ -5,7 +5,7 @@ import { getLineEnd, getPosition, scrollToEl, updateNode } from "../utils/local"
 import { createTemplate, addTextareaListener } from "../utils/local"
 import { useDefaultCommands } from "./commands"
 
-/** Postion of the cursor relative to the editors overlays. */
+/** Postion of the cursor relative to the editor's overlays. */
 export type CursorPosition = {
 	top: number
 	bottom: number

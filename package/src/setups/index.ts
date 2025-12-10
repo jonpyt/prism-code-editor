@@ -70,9 +70,10 @@ const minimalEditor = (
 }
 
 /**
- * Same as {@link minimalEditor}, but also adds {@link indentGuides}, {@link highlightSelectionMatches},
- * {@link matchBrackets}, {@link highlightBracketPairs}, {@link defaultCommands}, {@link editHistory},
- * {@link searchWidget}, {@link showInvisibles}, and {@link matchTags} extensions and language specific
+ * Same as {@link minimalEditor}, but also adds the {@link indentGuides},
+ * {@link highlightSelectionMatches},  {@link matchBrackets}, {@link highlightBracketPairs},
+ * {@link defaultCommands}, {@link editHistory}, {@link searchWidget},
+ * {@link showInvisibles}, and {@link matchTags} extensions and language specific
  * behavior.
  *
  * There's also an extension added that clears the history stack every time the value is

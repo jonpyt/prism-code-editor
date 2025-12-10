@@ -58,7 +58,7 @@ export interface SearchAPI {
 
 /**
  * Hook that allows searching the content of the editor and highlighting the matches.
- * The matches are appended to a container appended to the editors overlays.
+ * The matches are added to a container appended to the editor's overlays.
  * @param className Class name for the container.
  * @param zIndex Z-index of the container.
  * @returns Object with methods and properties for searching.

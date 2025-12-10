@@ -12,7 +12,7 @@ import {
 } from "../utils/local.js"
 import { defaultCommands } from "./commands.js"
 
-/** Postion of the cursor relative to the editors overlays. */
+/** Postion of the cursor relative to the editor's overlays. */
 export type CursorPosition = {
 	top: number
 	bottom: number

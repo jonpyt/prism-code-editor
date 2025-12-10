@@ -212,7 +212,7 @@ const getModifierCode = (
 ): number => e.altKey + e.ctrlKey * 2 + e.metaKey * 4 + e.shiftKey * 8
 
 /**
- * Adds an overlay by appending the element to the editors overlays.
+ * Adds an overlay by appending the element to the editor's overlays.
  * Equivalent to calling `editor.lines[0].append(overlay)`.
  * @param editor Editor or code block you want to add an overlay to.
  * @param overlay The overlay you want to add.

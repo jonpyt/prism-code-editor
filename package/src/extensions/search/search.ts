@@ -52,7 +52,7 @@ export interface SearchAPI {
 	readonly regex: RegExp
 	/** Array of positions of all the matches. */
 	readonly matches: [number, number][]
-	/** Hides the search container and removes all the matches. */
+	/** Removes the search container and all matches. */
 	stopSearch(): void
 }
 

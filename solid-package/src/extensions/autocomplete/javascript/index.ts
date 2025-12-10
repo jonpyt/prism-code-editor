@@ -11,7 +11,7 @@ import { findWords } from "../utils.js"
 export type JSContext = {
 	/**
 	 * Whether autocomplete should be disabled due to happening inside a regex, string,
-	 * comment or variable name declaration
+	 * comment or variable name declaration.
 	 */
 	disabled: boolean
 	/**

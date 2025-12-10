@@ -8671,7 +8671,7 @@ main
 		undef( sid )
 	};
 	provide
-		[ addElement( request ) ]{
+		[ addElement( request ) ]{
 			if( request instanceof NodeType ) {
 				netmodule
 			}

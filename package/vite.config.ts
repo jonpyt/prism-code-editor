@@ -3,7 +3,7 @@ import MagicString from "magic-string"
 import dts from "vite-plugin-dts"
 import fs from "node:fs/promises"
 
-const entries = {
+const entries: Record<string, string> = {
 	index: "src/index.ts",
 	"extensions/guides": "src/extensions/guides.ts",
 	"extensions/commands": "src/extensions/commands.ts",

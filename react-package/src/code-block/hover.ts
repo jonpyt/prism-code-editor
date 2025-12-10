@@ -302,7 +302,6 @@ const useHighlightOnHover = <T>(
 		}
 
 		const cleanUps = [
-			// @ts-expect-error Allow PointerEvent
 			addListener2(wrapper, "click", handler),
 			addListener2(wrapper, "pointerover", handler),
 			addListener2(wrapper, "pointerleave", () => {

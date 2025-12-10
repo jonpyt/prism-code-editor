@@ -279,7 +279,6 @@ const highlightPairsOnHover = <T>(
 		cache = null
 	})
 
-	// @ts-expect-error Allow PointerEvent
 	onCleanup(addListener2(wrapper, "click", handler))
 	onCleanup(addListener2(wrapper, "pointerover", handler))
 	onCleanup(
