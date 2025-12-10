@@ -1,6 +1,6 @@
 {
   "name": "prism-react-editor",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "type": "module",
   "description": "Lightweight, extensible code editor component for React apps",
   "main": "./dist/index.js",
