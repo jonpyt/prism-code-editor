@@ -281,6 +281,7 @@ Multiple extensions have an entry on `editor.extensions` allowing you to interac
 - `searchWidget: SearchWidget`: Allows you to open or close the search widget.
 - `history: EditHistory`: Allows you to clear the history or navigate it.
 - `folding: ReadOnlyCodeFolding`: Allows access to the full unfolded code and to toggle folded ranges.
+- `autoComplete: AutoComplete`: Allows inserting snippets and starting completion queries programmatically.
 
 ## Utilities
 
