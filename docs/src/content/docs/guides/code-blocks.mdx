@@ -11,7 +11,7 @@ import { Aside } from "@astrojs/starlight/components"
 
 <CodeBlock />
 
-This library can also render static code blocks. The code blocks require no JavaScript to work and support some features that can't be added to editors. Every code block on this page has been generated with this library.
+This library can also render static code blocks. The code blocks require no JavaScript to work and support some features that editors don't. Every code block on this page has been generated with this library.
 
 Below you can toggle most of the boolean options for every code block on this page.
 
@@ -39,13 +39,13 @@ import { renderCodeBlock } from "prism-code-editor/ssr"
 
 const html = renderCodeBlock({
 	language: "javascript",
-	code: "const foo = 'bar'"
+	value: "const foo = 'bar'"
 })
 ```
 
 ## Options
 
-The only argument to `renderCodeBlock(){:js}` is a [`CodeBlockOptions{:js}`](/api-reference/ssr/t-codeblockoptions) object. These options include a few properties not present in `EditorOptions{:js}` such as `lineNumberStart`, `preserveIndent`, and `guideIndents`.
+The only argument to `renderCodeBlock(){:js}` is a [`CodeBlockOptions{:js}`](/api-reference/ssr/t-codeblockoptions) object. These options include a few properties not present in `EditorOptions{:js}` such as `lineNumberStart`, `preserveIndent`, `guideIndents`, and `tokenizeCallback`.
 
 ### `preserveIndent`
 
@@ -63,14 +63,14 @@ When indentation preservation is enabled, wrapped lines get the same indentation
 
 ### `lineNumberStart`
 
-`lineNumberStart` can be used to configure the line number of the first line. This defaults to 1, obviously.
+`lineNumberStart` can be used to configure the line number of the first line.
 
 ```js editor="false" lineNumberStart="5"
 import { renderCodeBlock } from "prism-code-editor/ssr"
 
 const html = renderCodeBlock({
 	language: "javascript",
-	code: "const foo = 'bar'",
+	value: "const foo = 'bar'",
 	lineNumbers: true,
 	lineNumberStart: 5
 })
@@ -79,6 +79,10 @@ const html = renderCodeBlock({
 ### `guideIndents`
 
 Unlike the indentation guides in the editors, these are rendered as a repeating linear gradient on `.pce-line::after{:selector}`. This has the advantage of not requiring any extra elements and supporting `wordWrap`.
+
+### `tokenizeCallback`
+
+Just like editors, code blocks support modifying tokens through the `tokenizeCallback` option. See the [SSR guide](/guides/server-side-rendering#modifying-tokens) for more info.
 
 ## Styling
 
@@ -118,7 +122,7 @@ The [`forEachCodeBlock(){:js}`](/api-reference/code-blocks/f-foreachcodeblock) f
 
 ### Adding copy buttons
 
-`forEachCodeBlock(){:js}` can be used to add code block with [`addCodeBlock(){:js}`](/api-reference/code-blocks/f-addcopybutton).
+`forEachCodeBlock(){:js}` can be used to add a copy button with [`addCopyButton(){:js}`](/api-reference/code-blocks/f-addcopybutton).
 
 ```js editor="false"
 import "prism-code-editor/copy-button.css"
@@ -131,7 +135,7 @@ const codeBlocks = forEachCodeBlock(document, codeBlock => {
 
 #### Customizing copied text
 
-The second parameter to `addCodeBlock(){:js}` can be used to customize the copied text. If you're using [line highlighting](/markdown-plugins/features#line-highlighting) with one markdown plugins for example, you may want to use [`omitLines(){:js}`](/api-reference/code-blocks/f-omitlines) to remove lines marked as deleted from the copied text.
+The second parameter to `addCopyButton(){:js}` can be used to customize the copied text. If you're using [line highlighting](/markdown-plugins/features#line-highlighting) with one of the markdown plugins for example, you may want to use [`omitLines(){:js}`](/api-reference/code-blocks/f-omitlines) to remove lines marked as deleted from the copied text.
 
 ```js editor="false"
 const codeBlocks = forEachCodeBlock(document, codeBlock => {

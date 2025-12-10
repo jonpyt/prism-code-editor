@@ -24,18 +24,23 @@ const html = renderEditor({
 })
 ```
 
-### Rainbow brackets
+### Modifying tokens
 
-The `tokenizeCallback` option can be used to modify the tokens before they're stringified. If you're using an extension that modifies tokens such as [`matchBrackets(){:js}`](/api-reference/match-brackets/f-matchbrackets), the same modifications should be done on the server to prevent the editor from flashing with incorrect tokens.
+If you're using extensions that modify tokens, then the same modifications should be done on the server to prevent the editor from flashing with incorrect tokens. This includes [`tokenizeDataUris(){:js}`](/api-reference/prism/utils/f-tokenizedatauris), [`matchBrackets(){:js}`](/api-reference/match-brackets/f-matchbrackets), and [`tokenizeInvisibles(){:js}`](/api-reference/prism/utils/f-tokenizeinvisibles). This can be achieved through the `tokenizeCallback` option.
 
 ```js editor
 import "prism-code-editor/prism/languages/javascript"
 import { renderEditor, rainbowBrackets } from "prism-code-editor/ssr"
+import { tokenizeDataUris, tokenizeInvisibles } from "prism-code-editor/prism/utils"
 
 const html = renderEditor({
 	language: "javascript",
 	value: 'const foo = "bar"',
-	tokenizeCallback: rainbowBrackets()
+	tokenizeCallback(tokens) {
+		tokenizeDataUris(tokens)
+		rainbowBrackets()(tokens)
+		tokenizeInvisibles(tokens)
+	}
 })
 ```
 

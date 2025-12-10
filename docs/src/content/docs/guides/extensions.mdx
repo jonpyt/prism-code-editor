@@ -11,9 +11,7 @@ import { Aside } from "@astrojs/starlight/components"
 
 One of the key features of this library is that most features are implemented by optional extensions. This is to keep the core light for those who don't need the extra functionality.
 
-## List of extensions
-
-Non-exhaustive list of extensions you can add:
+## Common extensions
 
 - [`defaultCommands(){:js}`](/api-reference/commands/f-defaultcommands/) adds many commands expected from an editor.
 - [`editHistory(){:js}`](/api-reference/commands/f-edithistory/) overrides the browsers native undo/redo functionality.
@@ -24,9 +22,9 @@ Non-exhaustive list of extensions you can add:
 - [`cursorPosition(){:js}`](/api-reference/cursor/f-cursorposition/) can scroll the cursor into view and calculate its position. Used by multiple other extensions.
 - [`highlightBracketPairs(){:js}`](/api-reference/highlight-brackets/f-highlightbracketpairs/) highlights a bracket pair when the cursor is between them. Requires `matchBrackets(){:js}`.
 - [`searchWidget(){:js}`](/api-reference/search/f-searchwidget/) adds a widget for search and replace.
-- [`highlightSelectionMatches(){:js}`](/api-reference/search/f-highlightselectionmatches/) highlights all copies of user selected text.
+- [`highlightSelectionMatches(){:js}`](/api-reference/search/f-highlightselectionmatches/) highlights all instances of the user's selected text.
 
-Later guides will show some of the more sophisticated extensions in more detail.
+Once added to an editor, many extensions can be accessed from the [`editor.extensions{:js}`](/api-reference/index/i-prismeditor/#extensions) property. Later guides will show some of the more sophisticated extensions in detail.
 
 <Aside type="note">
 	When using `editHistory(){:js}`, programmatically updating an editor's value using `setOptions(){:js}` won't reset the history. Call `editor.extensions.history.clear(){:js}` to clear the history. This isn't necessary when using setups.

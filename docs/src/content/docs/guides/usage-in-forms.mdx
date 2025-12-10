@@ -11,7 +11,9 @@ import "../../../css/editor-theme.css"
 
 Since this library is using a textarea element under the hood, it's trivial to use the editor in forms. The [`PrismEditor{:js}`](/api-reference/index/i-prismeditor#textarea) object exposes the editor's textarea through its `textarea` property, so all you need to do is to add a `name` attribute to it. Ideally, you'd also add an `id` to it to bind a `<label>{:html}` element to the editor. [Working example](https://stackblitz.com/edit/vitejs-vite-pk9ud7?file=src%2Fmain.ts).
 
-The web components can also be used in forms, just add a `name` attribute to the element. However, they don't support validation attributes such as `required`, `minLength`, etc. The web components are therefore not always ideal in forms. The setups won't work in forms at all since the textarea element is not exposed to the form through the shadow root.
+The web components can also be used in forms, just add a `name` attribute to the custom element. However, they don't support validation attributes such as `required`, `minlength`, etc. The web components are therefore not always ideal in forms.
+
+The setups won't work in forms at all since the shadow root doesn't expose the textarea element to the form.
 
 ## Adding reset support
 

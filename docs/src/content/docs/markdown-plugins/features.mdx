@@ -50,7 +50,7 @@ To remove the tokenize callback for individual code blocks, you can add `tokeniz
 
 ## Custom render function
 
-You can provide a custom render function to wrap the default render function or completely override it. The example below wraps to output to add a title with a file name for code blocks. Add a `title` meta property to the code block, and you should see a `<figcaption>{:html}` element with the specified title.
+You can provide a custom render function to wrap the default render function or completely override it. The example below wraps the output to add a title with a file name for code blocks. Add a `title` meta property to the code block, and you should see a `<figcaption>{:html}` element with the specified title.
 
 ```js editor="false"
 /** @type {import("rehype-prism-code-editor").PcePluginOptions} */
