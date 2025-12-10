@@ -52,9 +52,9 @@ This won't add `js-templates` features to `typescript` because it extended `java
 
 This library only includes functions similar to Prism's low-level functions since the high-level functions are rather useless for a code editor.
 
-Firstly, we have [`highlightText(){:js}`](/api-reference/prism/f-highlighttext). This function is very similar to [`Prism.highlight(){:js}`](https://prismjs.com/docs/Prism.html#.highlight) and converts a string of code to an HTML string.
+Firstly, we have [`highlightText(){:js}`](/api-reference/prism/v-highlighttext). This function is very similar to [`Prism.highlight(){:js}`](https://prismjs.com/docs/Prism.html#.highlight) and converts a string of code to an HTML string.
 
-If you want to modify the tokens before they're converted to HTML, you can use [`tokenizeText(){:js}`](/api-reference/prism/f-tokenizetext) followed by [`highlightTokens(){:js}`](/api-reference/prism/f-highlighttokens).
+If you want to modify the tokens before they're converted to HTML, you can use [`tokenizeText(){:js}`](/api-reference/prism/v-tokenizetext) followed by [`highlightTokens(){:js}`](/api-reference/prism/v-highlighttokens).
 
 The HTML produced by `highlightText(){:js}` and `highlightTokens(){:js}` differs slightly from that created by PrismJS. It can be safely split into lines with something like `html.split("\n"){:js}`. Splitting the HTML into lines makes it easier to add line numbers and do simple line-based diffing for better performance in an editor.
 
@@ -72,7 +72,7 @@ languages["my-language"] = {
 
 ### Helper functions
 
-The helpers from Prism such as [`extend(){:js}`](/api-reference/prism/utils/f-extend) and [`insertBefore(){:js}`](/api-reference/prism/utils/f-insertbefore), are exported from a different entry point (`prism-code-editor/prism/utils`). `insertBefore(){:js}` is useful for modifying existing language definitions. `extend(){:js}` is used to create languages that are similar to existing languages.
+The helpers from Prism such as [`extend(){:js}`](/api-reference/prism/utils/v-extend) and [`insertBefore(){:js}`](/api-reference/prism/utils/v-insertbefore), are exported from a different entry point (`prism-code-editor/prism/utils`). `insertBefore(){:js}` is useful for modifying existing language definitions. `extend(){:js}` is used to create languages that are similar to existing languages.
 
 
 ## Grammar differences
@@ -89,7 +89,7 @@ PrismJS v2 adds custom tokenizers through a `tokenize` symbol. This library has 
 
 ### Removed grammars
 
-The `markup-templating` language has been removed in favor of the [`embeddedIn(){:js}`](/api-reference/prism/utils/f-embeddedin) helper which is much more flexible and powerful. This is a feature that's also planned for PrismJS v2.
+The `markup-templating` language has been removed in favor of the [`embeddedIn(){:js}`](/api-reference/prism/utils/v-embeddedin) helper which is much more flexible and powerful. This is a feature that's also planned for PrismJS v2.
 
 The `js-extras` language has been removed and most of its features have been moved to the plain `javascript` grammar instead.
 
