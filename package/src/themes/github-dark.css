@@ -5,25 +5,25 @@
 .prism-code-editor {
 	caret-color: #2f81f7;
 	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-	--editor__bg: #0d1117;
-	--widget__border: #303741;
-	--widget__bg: #161b22;
-	--widget__color: #b8bfc7;
-	--widget__color-active: #fff;
-	--widget__color-options: #7d8590;
-	--widget__bg-input: #0d1117;
-	--widget__bg-hover: #5a5d5e4f;
-	--widget__bg-active: #1f6feb66;
-	--widget__focus-ring: #007acc;
-	--search__bg-find: #f2cc6080;
-	--widget__bg-error: #5a1d1d;
-	--widget__error-ring: #be1100;
-	--editor__bg-highlight: #6e76811a;
-	--editor__bg-selection-match: #3fb95040;
-	--editor__line-number: #6e7681;
-	--editor__bg-scrollbar: 210, 10%, 32%;
-	--editor__bg-fold: #7d8590;
-	--bg-guide-indent: #e6edf31f;
+	--pce-bg: #0d1117;
+	--pce-widget-border: #303741;
+	--pce-widget-bg: #161b22;
+	--pce-widget-color: #b8bfc7;
+	--pce-widget-color-active: #fff;
+	--pce-widget-color-options: #7d8590;
+	--pce-widget-bg-input: #0d1117;
+	--pce-widget-bg-hover: #5a5d5e4f;
+	--pce-widget-bg-active: #1f6feb66;
+	--pce-widget-focus: #007acc;
+	--pce-search-match: #f2cc6080;
+	--pce-widget-bg-error: #5a1d1d;
+	--pce-widget-error: #be1100;
+	--pce-bg-highlight: #6e76811a;
+	--pce-selection-match: #3fb95040;
+	--pce-line-number: #6e7681;
+	--pce-scrollbar: 210, 10%, 32%;
+	--pce-bg-fold: #7d8590;
+	--pce-guide-indent: #e6edf31f;
 	--pce-ac-icon-class: #f0883e;
 	--pce-ac-icon-enum: #f0883e;
 	--pce-ac-icon-event: #6e7681;
@@ -42,15 +42,15 @@
 }
 
 .pce-match {
-	--search__bg-find: #8c8d6c;
+	--pce-search-match: #8c8d6c;
 }
 
 .active-line {
-	--editor__line-number: #e6edf3;
+	--pce-line-number: #e6edf3;
 }
 
 .active-indent {
-	--bg-guide-indent: #e6edf33d;
+	--pce-guide-indent: #e6edf33d;
 }
 
 [class*="language-"],

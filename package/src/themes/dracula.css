@@ -4,25 +4,25 @@ Original: https://github.com/dracula/visual-studio-code */
 .prism-code-editor {
 	caret-color: #aeafad;
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-	--editor__bg: #282a36;
-	--widget__border: #454545;
-	--widget__bg: #21222c;
-	--widget__color: #f8f8f2;
-	--widget__color-active: #fff;
-	--widget__color-options: #b2b2a8;
-	--widget__bg-input: #282a36;
-	--widget__bg-hover: #5a5d5e80;
-	--widget__bg-active: #6272a466;
-	--widget__focus-ring: #bd93f9;
-	--search__bg-find: #ffffff40;
-	--widget__bg-error: #5a1d1d;
-	--widget__error-ring: #ff5555;
-	--editor__border-highlight: 2px solid #44475a;
-	--editor__bg-selection-match: #424450;
-	--editor__line-number: #6272a4;
-	--editor__bg-scrollbar: 0, 0%, 50%;
-	--editor__bg-fold: #c5c5c5;
-	--bg-guide-indent: #ffffff1a;
+	--pce-bg: #282a36;
+	--pce-widget-border: #454545;
+	--pce-widget-bg: #21222c;
+	--pce-widget-color: #f8f8f2;
+	--pce-widget-color-active: #fff;
+	--pce-widget-color-options: #b2b2a8;
+	--pce-widget-bg-input: #282a36;
+	--pce-widget-bg-hover: #5a5d5e80;
+	--pce-widget-bg-active: #6272a466;
+	--pce-widget-focus: #bd93f9;
+	--pce-search-match: #ffffff40;
+	--pce-widget-bg-error: #5a1d1d;
+	--pce-widget-error: #ff5555;
+	--pce-border-highlight: 2px solid #44475a;
+	--pce-selection-match: #424450;
+	--pce-line-number: #6272a4;
+	--pce-scrollbar: 0, 0%, 50%;
+	--pce-bg-fold: #c5c5c5;
+	--pce-guide-indent: #ffffff1a;
 	--pce-ac-icon-class: #ee9d28;
 	--pce-ac-icon-enum: #ee9d28;
 	--pce-ac-icon-event: #ee9d28;
@@ -34,19 +34,19 @@ Original: https://github.com/dracula/visual-studio-code */
 }
 
 .match-highlight {
-	--editor__bg-highlight: #44475a;
+	--pce-bg-highlight: #44475a;
 }
 
 .pce-match {
-	--search__bg-find: #ffb86c80;
+	--pce-search-match: #ffb86c80;
 }
 
 .active-line {
-	--editor__line-number: #c6c6c6;
+	--pce-line-number: #c6c6c6;
 }
 
 .active-indent {
-	--bg-guide-indent: #ffffff45;
+	--pce-guide-indent: #ffffff45;
 }
 
 /* Tokens */

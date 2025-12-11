@@ -4,25 +4,25 @@ Original: https://github.com/sdras/night-owl-vscode-theme */
 .prism-code-editor {
 	caret-color: #80a4c2;
 	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-	--editor__bg: #011627;
-	--widget__border: #122d42;
-	--widget__bg: #021320;
-	--widget__color: #d6deeb;
-	--widget__color-active: #fff;
-	--widget__color-options: #b3bccc;
-	--widget__bg-input: #0b253a;
-	--widget__bg-hover: #5a5d5e80;
-	--widget__bg-active: #122d4266;
-	--widget__focus-ring: #5f7e97;
-	--search__bg-find: #5f7e9778;
-	--widget__bg-error: #ab0300f2;
-	--widget__error-ring: #ef5350;
-	--editor__bg-highlight: #0003;
-	--editor__bg-selection-match: #5f7e9778;
-	--editor__line-number: #4b6479;
-	--editor__bg-scrollbar: 206, 88%, 27%;
-	--editor__bg-fold: #c5c5c5;
-	--bg-guide-indent: #5e81ce52;
+	--pce-bg: #011627;
+	--pce-widget-border: #122d42;
+	--pce-widget-bg: #021320;
+	--pce-widget-color: #d6deeb;
+	--pce-widget-color-active: #fff;
+	--pce-widget-color-options: #b3bccc;
+	--pce-widget-bg-input: #0b253a;
+	--pce-widget-bg-hover: #5a5d5e80;
+	--pce-widget-bg-active: #122d4266;
+	--pce-widget-focus: #5f7e97;
+	--pce-search-match: #5f7e9778;
+	--pce-widget-bg-error: #ab0300f2;
+	--pce-widget-error: #ef5350;
+	--pce-bg-highlight: #0003;
+	--pce-selection-match: #5f7e9778;
+	--pce-line-number: #4b6479;
+	--pce-scrollbar: 206, 88%, 27%;
+	--pce-bg-fold: #c5c5c5;
+	--pce-guide-indent: #5e81ce52;
 	--pce-ac-icon-class: #ee9d28;
 	--pce-ac-icon-enum: #ee9d28;
 	--pce-ac-icon-event: #ee9d28;
@@ -34,19 +34,19 @@ Original: https://github.com/sdras/night-owl-vscode-theme */
 }
 
 .match-highlight {
-	--editor__bg-highlight: #7e57c259;
+	--pce-bg-highlight: #7e57c259;
 }
 
 .pce-match {
-	--search__bg-find: #545a8b;
+	--pce-search-match: #545a8b;
 }
 
 .active-line {
-	--editor__line-number: #c5e4fd;
+	--pce-line-number: #c5e4fd;
 }
 
 .active-indent {
-	--bg-guide-indent: #b3cfe7b3;
+	--pce-guide-indent: #b3cfe7b3;
 }
 
 /* Tokens */

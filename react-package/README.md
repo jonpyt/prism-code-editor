@@ -325,7 +325,7 @@ Lastly, if you only need support for a few languages, you can do individual impo
 This library does not inject any styles onto the webpage, instead you must import them. If the default styles don't work for you, you can import your own styles instead.
 
 - `prism-react-editor/layout.css`: layout for the editor.
-- `prism-react-editor/scrollbar.css`: custom scrollbar to desktop Chrome and Safari you can color with `--editor__bg-scrollbar`.
+- `prism-react-editor/scrollbar.css`: custom scrollbar to desktop Chrome and Safari you can color with `--pce-scrollbar`.
 - `prism-react-editor/copy-button.css`: styles for the `useCopybutton()` extension.
 - `prism-react-editor/search.css`: styles for the `useSearchWidget()` extension.
 - `prism-react-editor/rtl-layout.css`: adds support for the `rtl` prop.

@@ -322,8 +322,8 @@ pre.prism-code-editor {
 	right: 0.5em;
 	white-space: normal;
 	padding: 0.4em;
-	border: 1px solid var(--widget__border);
-	background: var(--widget__bg);
+	border: 1px solid var(--pce-widget-border);
+	background: var(--pce-widget-bg);
 	border-radius: 0.3em;
 	overflow-y: auto;
 }

@@ -317,7 +317,7 @@ Lastly, if you only need support for a few languages, you can do individual impo
 This library does not inject any styles onto the webpage, instead you must import them. If the default styles don't work for you, you can import your own styles instead.
 
 - `solid-prism-editor/layout.css`: layout for the editor.
-- `solid-prism-editor/scrollbar.css`: custom scrollbar to desktop Chrome and Safari you can color with `--editor__bg-scrollbar`.
+- `solid-prism-editor/scrollbar.css`: custom scrollbar to desktop Chrome and Safari you can color with `--pce-scrollbar`.
 - `solid-prism-editor/copy-button.css`: styles for the `useCopybutton()` extension.
 - `solid-prism-editor/search.css`: styles for the `useSearchWidget()` extension.
 - `solid-prism-editor/rtl-layout.css`: adds support for the `rtl` prop.

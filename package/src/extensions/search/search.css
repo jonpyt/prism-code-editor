@@ -1,14 +1,14 @@
 .prism-search {
 	display: grid;
-	border: 1px solid var(--widget__border);
+	border: 1px solid var(--pce-widget-border);
 	grid: auto / 1em auto;
 	gap: 0.3em;
 	padding: 0.3em;
 	border-radius: 0.3em;
 	margin: -99in 0 0 0;
 	line-height: 1.5;
-	color: var(--widget__color);
-	background: var(--widget__bg);
+	color: var(--pce-widget-color);
+	background: var(--pce-widget-bg);
 	position: sticky;
 	top: 0.5em;
 	right: 0.5em;
@@ -40,7 +40,7 @@
 	font: inherit;
 	border: none;
 	background: #0000;
-	color: var(--widget__color);
+	color: var(--pce-widget-color);
 }
 
 .prism-search ::placeholder {
@@ -58,7 +58,7 @@
 }
 
 .pce-options {
-	color: var(--widget__color-options);
+	color: var(--pce-widget-color-options);
 	font-size: 80%;
 	gap: 0.25em;
 }
@@ -75,20 +75,20 @@
 }
 
 .prism-search button:focus-visible {
-	outline: 1px solid var(--widget__focus-ring);
+	outline: 1px solid var(--pce-widget-focus);
 	z-index: 1;
 }
 
 .prism-search .pce-input,
 .pce-options button {
-	box-shadow: 0 0 0 1px var(--_border, var(--widget__border));
+	box-shadow: 0 0 0 1px var(--_border, var(--pce-widget-border));
 	margin: 1px;
 }
 
 .prism-search .pce-input {
 	display: flex;
 	position: relative;
-	background: var(--widget__bg-input);
+	background: var(--pce-widget-bg-input);
 	border-radius: 0.15em;
 	height: 1.5em;
 }
@@ -98,7 +98,7 @@
 }
 
 .pce-input:focus-within {
-	--_border: var(--widget__focus-ring);
+	--_border: var(--pce-widget-focus);
 }
 
 .pce-find button {
@@ -117,7 +117,7 @@
 }
 
 .pce-input button {
-	box-shadow: -1px 0 0 0 var(--widget__border);
+	box-shadow: -1px 0 0 0 var(--pce-widget-border);
 	margin-left: 1px;
 }
 
@@ -132,14 +132,14 @@
 
 @media (hover: hover) {
 	.prism-search button:hover {
-		background: var(--widget__bg-hover);
+		background: var(--pce-widget-bg-hover);
 	}
 }
 
 .pce-options button[aria-pressed="true"] {
-	background: var(--widget__bg-active);
-	color: var(--widget__color-active);
-	--_border: var(--widget__focus-ring);
+	background: var(--pce-widget-bg-active);
+	color: var(--pce-widget-color-active);
+	--_border: var(--pce-widget-focus);
 }
 
 .pce-input > :nth-child(3) {
@@ -147,7 +147,7 @@
 }
 
 .pce-input.pce-error {
-	--_border: var(--widget__error-ring);
+	--_border: var(--pce-widget-error);
 }
 
 .search-error {
@@ -159,7 +159,7 @@
 	white-space: normal;
 	word-break: break-word;
 	left: 0;
-	background: var(--widget__bg-error);
+	background: var(--pce-widget-bg-error);
 	padding: 0.5em;
 	z-index: 1;
 }
@@ -301,7 +301,7 @@ button.pce-whole {
 }
 
 .pce-matches span {
-	background: var(--search__bg-find);
+	background: var(--pce-search-match);
 }
 
 .pce-matches :empty {

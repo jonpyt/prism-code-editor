@@ -12,16 +12,16 @@
 	}
 	.prism-code-editor::-webkit-scrollbar-thumb,
 	.prism-code-editor ::-webkit-scrollbar-thumb {
-		background: hsla(var(--editor__bg-scrollbar), 0.36);
+		background: hsla(var(--pce-scrollbar), 0.36);
 		width: 2em;
 		height: 2em;
 	}
 	.prism-code-editor::-webkit-scrollbar-thumb:hover,
 	.prism-code-editor ::-webkit-scrollbar-thumb:hover {
-		background: hsla(var(--editor__bg-scrollbar), 0.5);
+		background: hsla(var(--pce-scrollbar), 0.5);
 	}
 	.prism-code-editor::-webkit-scrollbar-thumb:active,
 	.prism-code-editor ::-webkit-scrollbar-thumb:active {
-		background: hsla(var(--editor__bg-scrollbar), 0.66);
+		background: hsla(var(--pce-scrollbar), 0.66);
 	}
 }

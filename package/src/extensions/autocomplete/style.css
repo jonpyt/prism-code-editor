@@ -1,6 +1,6 @@
 .pce-ac-tooltip {
-	background: var(--widget__bg);
-	border: 1px solid var(--widget__border);
+	background: var(--pce-widget-bg);
+	border: 1px solid var(--pce-widget-border);
 	pointer-events: auto;
 	box-sizing: border-box;
 	position: sticky;
@@ -54,7 +54,7 @@
 
 .pce-ac-row[aria-selected] {
 	background: #1094ff36;
-	color: var(--widget__color-active);
+	color: var(--pce-widget-color-active);
 }
 
 .pce-tabstops span {

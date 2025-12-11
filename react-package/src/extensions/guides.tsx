@@ -5,7 +5,7 @@ import { getIndentGuides } from "prism-code-editor/guides"
 import { usePrismEditor } from "."
 
 const guideTemplate = /* @__PURE__ */ createTemplate(
-	"<div style=width:1px;position:absolute;background:var(--bg-guide-indent)>",
+	"<div style=width:1px;position:absolute;background:var(--pce-guide-indent)>",
 )
 
 /** Component adding indent guides to an editor. Does not support word wrap. */

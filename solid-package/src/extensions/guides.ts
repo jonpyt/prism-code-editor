@@ -8,7 +8,7 @@ const template = /* @__PURE__ */ _template(
 )
 
 const indentTemplate = /* @__PURE__ */ _template(
-	"<div style=width:1px;position:absolute;background:var(--bg-guide-indent)>",
+	"<div style=width:1px;position:absolute;background:var(--pce-guide-indent)>",
 )
 
 /** Extension adding indent guides to an editor. Does not work with word wrap. */

@@ -77,11 +77,11 @@ You can import a stylesheet that adds a custom scrollbar to desktop Chrome and S
 ```css editor
 .prism-code-editor {
 	/* Values are: Hue, saturation, lightness */
-	--editor__bg-scrollbar: 210, 10%, 40%;
+	--pce-scrollbar: 210, 10%, 40%;
 }
 ```
 
-You can change the color of the scrollbar thumb using the custom property `--editor__bg-scrollbar{:css}`. Different alpha values will be set based on the state of the scrollbar thumb.
+You can change the color of the scrollbar thumb using the custom property `--pce-scrollbar{:css}`. Different alpha values will be set based on the state of the scrollbar thumb.
 
 ## CSS variables
 
@@ -89,34 +89,34 @@ The list below shows most of the CSS variables that can be used to customize the
 
 - `--padding-inline{:css}`: Horizontal padding for the editor. Defaults to `0.75em{:css}`.
 - `--number-spacing{:css}`: Spacing between line numbers and the code. Defaults to `0.75em{:css}`.
-- `--editor__bg{:css}`: Background for the editor. Set by all themes.
+- `--pce-bg{:css}`: Background for the editor. Set by all themes.
 - `--pce-selection{:css}`: Background color for selected text. Set by all themes.
 - `--pce-scroll-padding{:css}`: Scroll padding to ensure the cursor isn't too close to the edges while typing. Defaults to `2ch{:css}`.
-- `--editor__line-number{:css}`: Text color for the line numbers. Set by all themes.
-- `--editor__bg-highlight{:css}`: Background for the line with the cursor.
-- `--editor__border-highlight{:css}`: Border for the line with the cursor.
-- `--editor__bg-selection-match{:css}`: Background color of selection matches. Set by all themes.
-- `--editor__bg-scrollbar{:css}`: See [scrollbar styling](#scrollbar-styling). Set by all themes.
-- `--bg-guide-indent{:css}`: Indentation guide color. Set by all themes.
+- `--pce-line-number{:css}`: Text color for the line numbers. Set by all themes.
+- `--pce-bg-highlight{:css}`: Background for the line with the cursor.
+- `--pce-border-highlight{:css}`: Border for the line with the cursor.
+- `--pce-selection-match{:css}`: Background color of selection matches. Set by all themes.
+- `--pce-scrollbar{:css}`: See [scrollbar styling](#scrollbar-styling). Set by all themes.
+- `--pce-guide-indent{:css}`: Indentation guide color. Set by all themes.
 - `--pce-invisibles{:css}`: Color used by the [`showInvisibles(){:js}`](/api-reference/search/f-showinvisibles) extension. Defaults to `#e3e4e229{:css}`.
 - `--pce-ac-match{:css}`: Color of matched characters in completion options. Defaults to `#52b1ff{:css}`.
 - `--pce-tabstop{:css}`: Color of tab stop indicators. Defaults to `#7c7c7c4d{:css}`.
-- `--editor__bg-fold{:css}`: Color of the chevrons used to fold code. Defaults to `#777{:css}`.
-- `--widget__bg{:css}`: Background for editor widgets. Set by all themes.
-- `--widget__color{:css}`: Text color for editor widgets. Set by all themes.
-- `--widget__border{:css}`: Border color for editor widgets. Set by all themes.
-- `--widget__bg-input{:css}`: Background for input elements. Set by all themes.
-- `--widget__bg-active{:css}`: Background for selected widget buttons. Set by all themes.
-- `--widget__bg-hover{:css}`: Background for hovered widget buttons. Set by all themes.
-- `--widget__color-active{:css}`: Text color for selected widget buttons. Set by all themes.
-- `--widget__focus-ring{:css}`: Focus ring color for widgets. Set by all themes.
-- `--widget__error-ring{:css}`: Border color for invalid input elements. Set by all themes.
-- `--widget__bg-error{:css}`: Background for the error message popup. Set by all themes.
-- `--widget__color-options{:css}`: Text color used by the bottom row in the search widget. Set by all themes.
-- `--search__bg-find{:css}`: Background for search matches. Set by all themes.
+- `--pce-bg-fold{:css}`: Color of the chevrons used to fold code. Defaults to `#777{:css}`.
+- `--pce-widget-bg{:css}`: Background for editor widgets. Set by all themes.
+- `--pce-widget-color{:css}`: Text color for editor widgets. Set by all themes.
+- `--pce-widget-border{:css}`: Border color for editor widgets. Set by all themes.
+- `--pce-widget-bg-input{:css}`: Background for input elements. Set by all themes.
+- `--pce-widget-bg-active{:css}`: Background for selected widget buttons. Set by all themes.
+- `--pce-widget-bg-hover{:css}`: Background for hovered widget buttons. Set by all themes.
+- `--pce-widget-color-active{:css}`: Text color for selected widget buttons. Set by all themes.
+- `--pce-widget-focus{:css}`: Focus ring color for widgets. Set by all themes.
+- `--pce-widget-error{:css}`: Border color for invalid input elements. Set by all themes.
+- `--pce-widget-bg-error{:css}`: Background for the error message popup. Set by all themes.
+- `--pce-widget-color-options{:css}`: Text color used by the bottom row in the search widget. Set by all themes.
+- `--pce-search-match{:css}`: Background for search matches. Set by all themes.
 
 <Aside type="note">
-	Most of the variable names will likely change in the next major release to ensure they're all prefixed with `pce`.
+	Most variable names were recently changed in the 5.0.0 release. Check the [release notes](https://github.com/jonpyt/prism-code-editor/releases/tag/5.0.0) for which names were changed.
 </Aside>
 
 ## Advanced styling

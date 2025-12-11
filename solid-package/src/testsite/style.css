@@ -47,9 +47,9 @@ body {
 
 .tooltip {
   font-family: Arial, Helvetica, sans-serif;
-  background: var(--widget__bg);
+  background: var(--pce-widget-bg);
   padding: 0.4em;
-  border: 1px solid var(--widget__border);
+  border: 1px solid var(--pce-widget-border);
   border-radius: 0.4em;
   position: sticky;
   left: 0.5em;
@@ -132,8 +132,8 @@ label {
 	right: 0.5em;
 	white-space: normal;
 	padding: 0.25em 0.4em;
-	border: 1px solid var(--widget__border);
-	background: var(--widget__bg);
+	border: 1px solid var(--pce-widget-border);
+	background: var(--pce-widget-bg);
 	border-radius: 0.3em;
 	overflow-y: auto;
 }

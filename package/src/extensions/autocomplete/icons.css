@@ -15,7 +15,7 @@
 }
 
 .pce-ac-row[aria-selected] .pce-ac-icon::before {
-	color: var(--widget__color-active);
+	color: var(--pce-widget-color-active);
 }
 
 /* Icons from https://github.com/microsoft/vscode-codicons, but rewritten to 28% the size gzipped */

@@ -34,7 +34,7 @@
 
 .pce-rtl.show-line-numbers .pce-line::before {
 	padding: 0 0 0 var(--_ns);
-	background: var(--editor__bg);
+	background: var(--pce-bg);
 }
 
 .pce-rtl.pce-nowrap .pce-line::before {

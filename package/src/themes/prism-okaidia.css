@@ -7,25 +7,25 @@
 .prism-code-editor {
 	caret-color: #f8f8f2;
 	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-	--editor__bg: #272822;
-	--widget__border: #4f5148;
-	--widget__bg: #242622;
-	--widget__color: #cfd1c7;
-	--widget__color-active: #fff;
-	--widget__color-options: #9ea092;
-	--widget__bg-input: #35372f;
-	--widget__bg-hover: #5a5d5e4f;
-	--widget__bg-active: #99947c66;
-	--widget__focus-ring: #99947c;
-	--search__bg-find: #ea5c0054;
-	--widget__bg-error: #5a1d1d;
-	--widget__error-ring: #be1100;
-	--editor__bg-highlight: #36362b;
-	--editor__bg-selection-match: #575b6180;
-	--editor__line-number: #90908a;
-	--editor__bg-scrollbar: 0, 0%, 45%;
-	--editor__bg-fold: #c5c5c5;
-	--bg-guide-indent: #9e9f9640;
+	--pce-bg: #272822;
+	--pce-widget-border: #4f5148;
+	--pce-widget-bg: #242622;
+	--pce-widget-color: #cfd1c7;
+	--pce-widget-color-active: #fff;
+	--pce-widget-color-options: #9ea092;
+	--pce-widget-bg-input: #35372f;
+	--pce-widget-bg-hover: #5a5d5e4f;
+	--pce-widget-bg-active: #99947c66;
+	--pce-widget-focus: #99947c;
+	--pce-search-match: #ea5c0054;
+	--pce-widget-bg-error: #5a1d1d;
+	--pce-widget-error: #be1100;
+	--pce-bg-highlight: #36362b;
+	--pce-selection-match: #575b6180;
+	--pce-line-number: #90908a;
+	--pce-scrollbar: 0, 0%, 45%;
+	--pce-bg-fold: #c5c5c5;
+	--pce-guide-indent: #9e9f9640;
 	--pce-ac-icon-class: #ee9d28;
 	--pce-ac-icon-enum: #ee9d28;
 	--pce-ac-icon-event: #ee9d28;
@@ -37,15 +37,15 @@
 }
 
 .pce-match {
-	--search__bg-find: #885a3c;
+	--pce-search-match: #885a3c;
 }
 
 .active-line {
-	--editor__line-number: #c2c2bf;
+	--pce-line-number: #c2c2bf;
 }
 
 .active-indent {
-	--bg-guide-indent: #dbdbd973;
+	--pce-guide-indent: #dbdbd973;
 }
 
 .token.comment,

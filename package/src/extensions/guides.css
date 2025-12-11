@@ -7,5 +7,5 @@ div.guide-indents {
 .guide-indents div {
 	width: 1px;
 	position: absolute;
-	background: var(--bg-guide-indent);
+	background: var(--pce-guide-indent);
 }

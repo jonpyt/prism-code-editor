@@ -1,7 +1,7 @@
 .prism-code-editor {
 	overflow: auto;
 	display: grid;
-	background: var(--editor__bg);
+	background: var(--pce-bg);
 	line-height: 1.4;
 	--_pse: var(--padding-inline, 0.75em);
 	--_ns: var(--number-spacing, 0.75em);
@@ -63,7 +63,7 @@
 	margin: 0 0 0 calc(-1 * var(--padding-left));
 	padding: 0 var(--_ns) 0 0;
 	box-sizing: border-box;
-	color: var(--editor__line-number);
+	color: var(--pce-line-number);
 	text-align: end;
 }
 
@@ -105,8 +105,8 @@ pre.pce-guides .pce-line::after,
 }
 
 .active-line::after {
-	border: var(--editor__border-highlight);
-	background: var(--editor__bg-highlight);
+	border: var(--pce-border-highlight);
+	background: var(--pce-bg-highlight);
 	z-index: -2;
 }
 
@@ -116,7 +116,7 @@ pre.pce-guides .pce-line::after,
 }
 
 .selection-matches span {
-	background: var(--editor__bg-selection-match);
+	background: var(--pce-selection-match);
 }
 
 .pce-nowrap .active-bracket {

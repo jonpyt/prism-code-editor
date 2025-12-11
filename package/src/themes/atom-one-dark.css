@@ -5,25 +5,25 @@
 .prism-code-editor {
 	caret-color: #528bff;
 	font-family: "Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
-	--editor__bg: #292c33;
-	--widget__border: #3a3f4b;
-	--widget__bg: #21252b;
-	--widget__color: #ccc;
-	--widget__color-active: #fff;
-	--widget__color-options: #b2b2b2;
-	--widget__bg-input: #1b1d23;
-	--widget__bg-hover: #5a5d5e4f;
-	--widget__bg-active: #336699;
-	--widget__focus-ring: #5299e0;
-	--search__bg-find: #528bff3d;
-	--widget__bg-error: #5a1d1d;
-	--widget__error-ring: #be1100;
-	--editor__bg-highlight: #99bbff0a;
-	--editor__bg-selection-match: #4a566d66;
-	--editor__line-number: #636d83;
-	--editor__bg-scrollbar: 220, 13%, 41%;
-	--editor__bg-fold: #c5c5c5;
-	--bg-guide-indent: #abb2bf26;
+	--pce-bg: #292c33;
+	--pce-widget-border: #3a3f4b;
+	--pce-widget-bg: #21252b;
+	--pce-widget-color: #ccc;
+	--pce-widget-color-active: #fff;
+	--pce-widget-color-options: #b2b2b2;
+	--pce-widget-bg-input: #1b1d23;
+	--pce-widget-bg-hover: #5a5d5e4f;
+	--pce-widget-bg-active: #336699;
+	--pce-widget-focus: #5299e0;
+	--pce-search-match: #528bff3d;
+	--pce-widget-bg-error: #5a1d1d;
+	--pce-widget-error: #be1100;
+	--pce-bg-highlight: #99bbff0a;
+	--pce-selection-match: #4a566d66;
+	--pce-line-number: #636d83;
+	--pce-scrollbar: 220, 13%, 41%;
+	--pce-bg-fold: #c5c5c5;
+	--pce-guide-indent: #abb2bf26;
 	--pce-ac-icon-class: #ee9d28;
 	--pce-ac-icon-enum: #ee9d28;
 	--pce-ac-icon-event: #ee9d28;
@@ -36,15 +36,15 @@
 
 
 .pce-match {
-	--search__bg-find: #515c6a;
+	--pce-search-match: #515c6a;
 }
 
 .active-line {
-	--editor__line-number: #abb2bf;
+	--pce-line-number: #abb2bf;
 }
 
 .active-indent {
-	--bg-guide-indent: #abb2c280;
+	--pce-guide-indent: #abb2c280;
 }
 
 .token.comment,

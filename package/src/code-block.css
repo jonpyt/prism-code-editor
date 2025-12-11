@@ -20,8 +20,8 @@ code.pce-wrapper {
 	background: no-repeat var(--padding-left) / calc(var(--indent) - 1px)
 		repeating-linear-gradient(
 			90deg,
-			var(--bg-guide-indent),
-			var(--bg-guide-indent) 1px,
+			var(--pce-guide-indent),
+			var(--pce-guide-indent) 1px,
 			#0000 1px,
 			#0000 calc(var(--tab-size) * 1ch)
 		);
