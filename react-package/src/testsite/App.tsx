@@ -18,7 +18,6 @@ import "../languages/jsx"
 import { useBracketMatcher } from "../extensions/match-brackets"
 import { useHighlightBracketPairs } from "../extensions/match-brackets/highlight"
 import { IndentGuides } from "../extensions/guides"
-import { PrismEditor } from "../types"
 import { useHighlightSelectionMatches, useShowInvisibles } from "../extensions/search"
 import { useOverscroll } from "../extensions/overscroll"
 import { useHighlightMatchingTags, useTagMatcher } from "../extensions/match-tags"
@@ -64,10 +63,12 @@ import {
 } from "../code-block"
 import { svelteBlockSnippets, svelteCompletion } from "../extensions/autocomplete/svelte"
 import { vueCompletion } from "../extensions/autocomplete/vue"
+import { usePrismEditor } from "../extensions"
 
 const ReadOnly = lazy(() => import("./readOnly"))
 
-const Extensions = ({ editor }: { editor: PrismEditor }) => {
+const Extensions = () => {
+	const [editor, props] = usePrismEditor()
 	useBracketMatcher(editor)
 	useHighlightBracketPairs(editor)
 	useOverscroll(editor)
@@ -86,18 +87,15 @@ const Extensions = ({ editor }: { editor: PrismEditor }) => {
 
 	useLayoutEffect(() => {
 		editor.container?.scrollTo(0, 0)
-	}, [editor.props.value])
+	}, [props.value])
 
-	return (
-		<>
-			{editor.props.readOnly && (
-				<Suspense>
-					<ReadOnly editor={editor} />
-				</Suspense>
-			)}
-			<IndentGuides editor={editor} />
-		</>
-	)
+	if (props.readOnly) {
+		return (
+			<Suspense>
+				<ReadOnly />
+			</Suspense>
+		)
+	}
 }
 
 const coreCode = core.replace(/<T [ \w]+>/g, "")
@@ -195,24 +193,19 @@ function App() {
 					wordWrap
 					onTokenize={onTokenize}
 				>
-					{(block, props) => (
-						<>
-							<HoverDescriptions
-								callback={types => {
-									if (types.includes("string")) return ["This is a string token."]
-								}}
-								codeBlock={block}
-								props={props}
-							/>
-							<CopyButton codeBlock={block} props={props} />
-							<HighlightTagPairsOnHover codeBlock={block} props={props} />
-							<HighlightBracketPairsOnHover codeBlock={block} props={props} />
-						</>
-					)}
+					<HoverDescriptions
+						callback={types => {
+							if (types.includes("string")) return ["This is a string token."]
+						}}
+					/>
+					<CopyButton />
+					<HighlightTagPairsOnHover />
+					<HighlightBracketPairsOnHover />
 				</CodeBlock>
 			) : (
 				<Editor readOnly={readOnly} language={lang} value={value} insertSpaces={false}>
-					{editor => <Extensions editor={editor} />}
+					<Extensions />
+					<IndentGuides />
 				</Editor>
 			)}
 		</>

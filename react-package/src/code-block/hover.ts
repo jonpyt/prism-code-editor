@@ -7,7 +7,7 @@ import {
 	voidlessLangs,
 	voidTags,
 } from "../utils/local"
-import { CodeBlockProps, PrismCodeBlock } from "."
+import { usePrismCodeBlock } from "."
 import { useStableRef } from "../core"
 import { addOverlay } from "../utils"
 
@@ -34,7 +34,6 @@ type HoverCallback = (
  */
 const HoverDescriptions = ({
 	callback,
-	codeBlock,
 	above,
 	maxWidth,
 	maxHeight,
@@ -51,8 +50,6 @@ const HoverDescriptions = ({
 	 * If `null` or `undefined` is returned, no tooltip is shown for the token.
 	 */
 	callback: HoverCallback
-	codeBlock: PrismCodeBlock
-	props: CodeBlockProps
 	/** Whether the prefered position of the tooltip is above the token. @default false */
 	above?: boolean
 	/** A CSS length value for the tooltip's max width. */
@@ -60,6 +57,7 @@ const HoverDescriptions = ({
 	/** A CSS length value for the tooltip's max height. */
 	maxHeight?: string
 }): undefined => {
+	const [codeBlock] = usePrismCodeBlock()
 	const props = useStableRef<[string | undefined, string | undefined, boolean, HoverCallback]>(
 		[] as any,
 	)
@@ -141,20 +139,14 @@ const HoverDescriptions = ({
  */
 const HighlightBracketPairsOnHover = ({
 	pairs = "()[]{}",
-	codeBlock,
-	props,
 }: {
 	/**
 	 * Which characters to match together. The opening character must be followed
 	 * by the corresponding closing character. @default "()[]{}"
 	 */
 	pairs?: string
-	codeBlock: PrismCodeBlock
-	props: CodeBlockProps
 }): undefined => {
 	useHighlightOnHover<number>(
-		codeBlock,
-		props,
 		"active-bracket",
 		"punctuation",
 		useCallback(
@@ -191,13 +183,7 @@ const HighlightBracketPairsOnHover = ({
  * Highlights tag pairs when a tag name is hovered. Clicking on a pair keeps it
  * highlighted. Clicking anywhere inside the code block removes the highlight.
  */
-const HighlightTagPairsOnHover = ({
-	codeBlock,
-	props,
-}: {
-	codeBlock: PrismCodeBlock
-	props: CodeBlockProps
-}): undefined => {
+const HighlightTagPairsOnHover = (): undefined => {
 	const partialTags: [Element, boolean][] = []
 	const matchTag = (
 		nameEl: Element,
@@ -228,8 +214,6 @@ const HighlightTagPairsOnHover = ({
 	}
 
 	useHighlightOnHover<string>(
-		codeBlock,
-		props,
 		"active-tagname",
 		"tag",
 		useStableRef((token, stack, map) => {
@@ -259,12 +243,11 @@ type TokenCallback<T> = (
 ) => void
 
 const useHighlightOnHover = <T>(
-	codeBlock: PrismCodeBlock,
-	props: CodeBlockProps,
 	highlightClass: string,
 	tokenName: string,
 	forEachToken: TokenCallback<T>,
 ) => {
+	const [codeBlock, , codeLines] = usePrismCodeBlock()
 	useEffect(() => {
 		let cache: WeakMap<Element, Element> | null
 		const active: [Element[], Element[]] = [[], []]
@@ -311,16 +294,7 @@ const useHighlightOnHover = <T>(
 		]
 
 		return () => cleanUps.forEach(c => c())
-	}, [
-		props.code,
-		props.language,
-		// (props.preserveIndent ?? !!props.wordWrap) && (props.tabSize ?? 2),
-		props.preserveIndent,
-		props.wordWrap,
-		props.tabSize,
-		props.onTokenize,
-		forEachToken,
-	])
+	}, [codeLines, forEachToken])
 }
 
 export { HighlightTagPairsOnHover, HighlightBracketPairsOnHover, HoverDescriptions }

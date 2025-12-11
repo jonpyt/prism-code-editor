@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { CodeBlockProps, PrismCodeBlock } from "."
+import { usePrismCodeBlock } from "."
 import { addListener, doc, useStableRef } from "../core"
 import { createCopyButton } from "../extensions/copy-button"
 import { addOverlay } from "../utils"
@@ -8,13 +8,8 @@ import { addOverlay } from "../utils"
  * Copy button component for code blocks. Requires styles from
  * `prism-react-editor/copy-button.css`.
  */
-const CopyButton = ({
-	codeBlock,
-	props,
-}: {
-	codeBlock: PrismCodeBlock
-	props: CodeBlockProps
-}): undefined => {
+const CopyButton = (): undefined => {
+  const [codeBlock, props] = usePrismCodeBlock()
   const code = useStableRef<string[]>([])
   code[0] = props.code
 

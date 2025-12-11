@@ -1,15 +1,15 @@
 import { useLayoutEffect, useMemo, useRef } from "react"
-import { PrismEditor } from "../types"
 import { createTemplate } from "../utils/local"
 import { useStableRef } from "../core"
 import { getIndentGuides } from "prism-code-editor/guides"
+import { usePrismEditor } from "."
 
 const guideTemplate = /* @__PURE__ */ createTemplate(
 	"<div style=width:1px;position:absolute;background:var(--bg-guide-indent)>",
 )
 
-/** Component adding indent guides to an editor. Does not work with word wrap. */
-const IndentGuides = ({ editor }: { editor: PrismEditor }) => {
+/** Component adding indent guides to an editor. Does not support word wrap. */
+const IndentGuides = () => {
 	let prevLength = 0
 	let lineIndentMap: number[]
 	let active: HTMLDivElement | undefined
@@ -17,6 +17,7 @@ const IndentGuides = ({ editor }: { editor: PrismEditor }) => {
 	const container = useRef<HTMLDivElement>(null)
 	const lines: HTMLDivElement[] = []
 	const indents: number[][] = []
+	const [editor, props] = usePrismEditor()
 
 	const update = (code: string) => {
 		lineIndentMap = []
@@ -58,7 +59,6 @@ const IndentGuides = ({ editor }: { editor: PrismEditor }) => {
 		}
 	}
 
-	const props = editor.props
 	const noWrap = !props.wordWrap
 
 	useLayoutEffect(

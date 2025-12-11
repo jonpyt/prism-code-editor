@@ -43,8 +43,8 @@ export type EditorProps = {
 	onSelectionChange?(selection: InputSelection, value: string, editor: PrismEditor): void
 	/** Function called before the tokens are stringified to HTML. */
 	onTokenize?(tokens: TokenStream, language: string, value: string, editor: PrismEditor): void
-	/** Function used to add extensions and render overlays. */
-	children?(editor: PrismEditor): ReactNode
+	/** Extensions and overlays for the editor. */
+	children?: ReactNode
 }
 
 type OmittedTextareaProps =

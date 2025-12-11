@@ -8,7 +8,16 @@ import type {
 	EditorEventMap,
 } from "./types"
 import { TokenStream, highlightTokens, languages, tokenizeText } from "./prism"
-import { useLayoutEffect, memo, forwardRef, useImperativeHandle, useRef } from "react"
+import {
+	useLayoutEffect,
+	memo,
+	forwardRef,
+	useImperativeHandle,
+	useRef,
+	createContext,
+} from "react"
+
+const EditorContext = createContext<[PrismEditor, EditorProps] | null>(null)
 
 /**
  * The core editor component of the library.
@@ -238,7 +247,9 @@ const Editor = memo(
 							className="pce-textarea"
 							ref={textareaRef}
 						/>
-						{props.children?.(editor)}
+						<EditorContext.Provider value={[editor, props]}>
+							{props.children}
+						</EditorContext.Provider>
 					</div>
 				</div>
 			</div>
@@ -293,4 +304,5 @@ export {
 	numLines,
 	useStableRef,
 	doc,
+	EditorContext,
 }

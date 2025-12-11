@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from "react"
+import { createContext, ReactNode, useMemo, JSX, useContext } from "react"
 import { highlightTokens, languages, tokenizeText, TokenStream } from "../prism"
 import { useStableRef } from "../core"
 
@@ -44,10 +44,10 @@ export type CodeBlockProps = {
 	 */
 	onTokenize?(tokens: TokenStream): void
 	/**
-	 * Function used to call components that modify the code block. Examples include adding
-	 * a copy button, hover descriptions, and bracket pair highlighting on hover.
+	 * Components that modify the code block. Examples include adding a copy button, hover
+	 * descriptions, and bracket pair highlighting on hover.
 	 */
-	children?(codeBlock: PrismCodeBlock, props: CodeBlockProps): ReactNode
+	children?: ReactNode
 }
 
 export type PrismCodeBlock = {
@@ -60,6 +60,24 @@ export type PrismCodeBlock = {
 	 * are the code lines. This means the first line starts at index 1.
 	 */
 	lines?: HTMLCollectionOf<HTMLDivElement>
+}
+
+const CodeBlockContext = createContext<[PrismCodeBlock, CodeBlockProps, JSX.Element[]] | null>(null)
+
+/**
+ * Hook used to access the code block and its props.
+ *
+ * @throws {Error} when called outside a code block.
+ * 
+ * @example
+ * const [codeBlock, props, codeLines] = usePrismCodeBlock()
+ */
+const usePrismCodeBlock = () => {
+	const context = useContext(CodeBlockContext)
+
+	if (!context) throw Error("'usePrismCodeBlock' called outside code block")
+
+	return context
 }
 
 /**
@@ -168,7 +186,11 @@ const CodeBlock = (props: CodeBlockProps) => {
 			}}
 		>
 			<code className="pce-wrapper">
-				<div className="pce-overlays">{props.children?.(codeBlock, props)}</div>
+				<div className="pce-overlays">
+					<CodeBlockContext.Provider value={[codeBlock, props, codeLines]}>
+						{props.children}
+					</CodeBlockContext.Provider>
+				</div>
 				{codeLines}
 			</code>
 		</pre>
@@ -178,4 +200,4 @@ const CodeBlock = (props: CodeBlockProps) => {
 export * from "./brackets"
 export * from "./copy"
 export * from "./hover"
-export { CodeBlock }
+export { CodeBlock, usePrismCodeBlock }

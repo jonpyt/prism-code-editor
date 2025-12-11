@@ -17,7 +17,7 @@ import {
 	useReadOnlyCodeFolding,
 } from "./extensions/folding"
 import { useCopyButton } from "./extensions/copy-button"
-import { PrismEditor } from "./types"
+import { usePrismEditor } from "./extensions"
 
 /**
  * Component adding the following extensions:
@@ -36,7 +36,8 @@ import { PrismEditor } from "./types"
  * Requires styling from `prism-react-editor/search.css` for the search widget.
  * To highlight selected spaces and tabs, import `prism-react-editor/invisibles.css`.
  */
-const BasicSetup = ({ editor }: { editor: PrismEditor }) => {
+const BasicSetup = () => {
+	const [editor] = usePrismEditor()
 	useBracketMatcher(editor)
 	useHighlightBracketPairs(editor)
 	useTagMatcher(editor)
@@ -48,7 +49,7 @@ const BasicSetup = ({ editor }: { editor: PrismEditor }) => {
 	useShowInvisibles(editor)
 	useCursorPosition(editor)
 
-	return <IndentGuides editor={editor} />
+	return <IndentGuides />
 }
 
 /**
@@ -68,7 +69,8 @@ const BasicSetup = ({ editor }: { editor: PrismEditor }) => {
  * Requires styling from `prism-react-editor/copy-button.css` for the copy button
  * and from `prism-react-editor/code-folding.css` for the code folding.
  */
-const ReadOnlySetup = ({ editor }: { editor: PrismEditor }) => {
+const ReadOnlySetup = () => {
+	const [editor] = usePrismEditor()
 	useBracketMatcher(editor)
 	useHighlightBracketPairs(editor)
 	useTagMatcher(editor)
@@ -77,7 +79,7 @@ const ReadOnlySetup = ({ editor }: { editor: PrismEditor }) => {
 	useCopyButton(editor)
 	useReadOnlyCodeFolding(editor, bracketFolding, tagFolding, blockCommentFolding, markdownFolding)
 
-	return <IndentGuides editor={editor} />
+	return <IndentGuides />
 }
 
 export { BasicSetup, ReadOnlySetup }
