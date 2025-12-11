@@ -125,7 +125,6 @@ const mountEditorsUnder = <T extends {} = {}>(
 				while (i < end1) newHTML += `<div class=pce-line aria-hidden=true>${newLines[++i]}\n</div>`
 				for (i = end1 < start ? end1 : start - 1; i < end2; i++) lines[start + 1].remove()
 				if (newHTML) lines[insertStart + 1].insertAdjacentHTML("afterend", newHTML)
-				for (i = insertStart + 1; i < lineCount; ) lines[++i].setAttribute("data-line", <any>i)
 				style.setProperty("--number-width", (0 | Math.log10(lineCount)) + 1 + ".001ch")
 			}
 

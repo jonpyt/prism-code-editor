@@ -78,7 +78,7 @@ const renderEditor = <T extends {} = {}>(options: RenderOptions & Omit<T, keyof 
 	html += "</div>"
 
 	while (i < l) {
-		html += `<div class="pce-line${i ? "" : " active-line"}" aria-hidden=true data-line=${i + 1}>${
+		html += `<div class=${i ? "pce-line" : '"pce-line active-line"'} aria-hidden=true>${
 			lines[i++]
 		}\n</div>`
 	}

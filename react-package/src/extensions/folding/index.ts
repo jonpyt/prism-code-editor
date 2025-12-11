@@ -122,22 +122,16 @@ const useReadOnlyCodeFolding = (editor: PrismEditor, ...providers: FoldingRangeP
 	const update = (line?: number) => {
 		value = ""
 		let pos = 0
-		let ln = 1
-		let skippedLines: number[] = []
-		let sortedRanges = [...foldedRanges].sort((a, b) => a[0] - b[0])
 		let textarea = editor.textarea!
 
-		for (let [start, end] of sortedRanges) {
+		for (let [start, end] of [...foldedRanges].sort((a, b) => a[0] - b[0])) {
 			value += code.slice(pos, start) + "   "
-			skippedLines[(ln += numLines(code, pos, start) - 1)] = numLines(code, start, (pos = end))
+			pos = end
 		}
 
 		textarea.value = value += code.slice(pos)
 		if (line) textarea.setSelectionRange((pos = getPosition(foldPositions[line]![0])), pos)
 		editor.update()
-
-		for (let i = 1, j = 0, l = lines.length; i < l; i++)
-			lines[i].setAttribute("data-line", <any>(j += skippedLines[i - 1] || 1))
 
 		editor.container!.style.setProperty("--number-width", lineNumberWidth)
 		updateFolds()
@@ -166,6 +160,7 @@ const useReadOnlyCodeFolding = (editor: PrismEditor, ...providers: FoldingRangeP
 						el = foldPlaceholders[line] = template2()
 						addListener(el, "click", () => toggleAndUpdate(line))
 					}
+					el.style.counterIncrement = `line ${numLines(code, ...foldPositions[line]!) - 1}`
 					updateNode(el.firstChild as Text, getLineBefore(value, pos))
 					updateNode(el.lastChild as Text, value.slice(pos2, getLineEnd(value, pos2)))
 					if (parent != el.parentNode) parent.prepend(el)

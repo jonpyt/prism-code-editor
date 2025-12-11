@@ -15,11 +15,6 @@ code.pce-wrapper {
 	background: var(--pce-selection);
 }
 
-pre.show-line-numbers .pce-line::before {
-	counter-increment: line;
-	content: counter(line);
-}
-
 .pce-guides .pce-line::after {
 	pointer-events: none;
 	background: no-repeat var(--padding-left) / calc(var(--indent) - 1px)
