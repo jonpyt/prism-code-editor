@@ -2,8 +2,8 @@
 Original: https://github.com/sdras/night-owl-vscode-theme */
 
 .prism-code-editor {
-	caret-color: #80a4c2;
 	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+	--pce-cursor: #80a4c2;
 	--pce-bg: #011627;
 	--pce-widget-border: #122d42;
 	--pce-widget-bg: #021320;

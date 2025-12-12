@@ -3,8 +3,8 @@
 */
 
 .prism-code-editor {
-	caret-color: #2f81f7;
 	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+	--pce-cursor: #2f81f7;
 	--pce-bg: #0d1117;
 	--pce-widget-border: #303741;
 	--pce-widget-bg: #161b22;

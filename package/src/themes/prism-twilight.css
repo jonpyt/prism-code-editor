@@ -4,8 +4,8 @@
 * @author Remy Bach
 */
 .prism-code-editor {
-	caret-color: #fff;
 	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+	--pce-cursor: #fff;
 	--pce-bg: #141414;
 	--pce-widget-border: #383838;
 	--pce-widget-bg: #141414;

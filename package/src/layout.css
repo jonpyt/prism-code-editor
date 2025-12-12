@@ -45,6 +45,7 @@
 	user-select: auto;
 	overflow: hidden;
 	pointer-events: auto;
+	caret-color: var(--pce-cursor);
 }
 
 .pce-textarea::selection {

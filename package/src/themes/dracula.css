@@ -2,8 +2,8 @@
 Original: https://github.com/dracula/visual-studio-code */
 
 .prism-code-editor {
-	caret-color: #aeafad;
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	--pce-cursor: #aeafad;
 	--pce-bg: #282a36;
 	--pce-widget-border: #454545;
 	--pce-widget-bg: #21222c;

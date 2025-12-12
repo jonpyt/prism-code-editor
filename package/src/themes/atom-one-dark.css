@@ -3,8 +3,8 @@
  */
 
 .prism-code-editor {
-	caret-color: #528bff;
 	font-family: "Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+	--pce-cursor: #528bff;
 	--pce-bg: #292c33;
 	--pce-widget-border: #3a3f4b;
 	--pce-widget-bg: #21252b;
