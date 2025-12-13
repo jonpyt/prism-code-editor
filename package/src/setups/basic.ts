@@ -14,7 +14,7 @@ import { matchTags } from "../extensions/matchTags.js"
 import searchStyle from "../extensions/search/search.css?inline"
 import invisibles from "../extensions/search/invisibles.css?inline"
 
-export const basic = (history = editHistory()): EditorExtension[] => [
+export const basic = (): EditorExtension[] => [
 	defaultCommands(),
 	indentGuides(),
 	matchBrackets(),
@@ -24,12 +24,7 @@ export const basic = (history = editHistory()): EditorExtension[] => [
 	searchWidget(),
 	showInvisibles(),
 	matchTags(),
-	history,
-	{
-		update(editor) {
-			if (editor.value != editor.textarea.value) history.clear()
-		},
-	},
+	editHistory(),
 ]
 
 export const style = searchStyle + invisibles

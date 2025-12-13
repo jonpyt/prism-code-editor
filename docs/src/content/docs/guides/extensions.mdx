@@ -5,7 +5,6 @@ description: Learn which extension you can use and how to create your own.
 
 import MountEditors from "../../../components/languages/ts.astro"
 import "../../../css/editor-theme.css"
-import { Aside } from "@astrojs/starlight/components"
 
 <MountEditors />
 
@@ -25,10 +24,6 @@ One of the key features of this library is that most features are implemented by
 - [`highlightSelectionMatches(){:js}`](/api-reference/search/f-highlightselectionmatches/) highlights all instances of the user's selected text.
 
 Once added to an editor, many extensions can be accessed from the [`editor.extensions{:js}`](/api-reference/index/i-prismeditor/#extensions) property. Later guides will show some of the more sophisticated extensions in detail.
-
-<Aside type="note">
-	When using `editHistory(){:js}`, programmatically updating an editor's value using `setOptions(){:js}` won't reset the history. Call `editor.extensions.history.clear(){:js}` to clear the history. This isn't necessary when using setups.
-</Aside>
 
 ## Adding overlays
 

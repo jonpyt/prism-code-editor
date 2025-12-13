@@ -409,10 +409,6 @@ export interface EditHistory extends BasicExtension {
  * Without this extension, the browser's native undo/redo is used, which can be sufficient
  * in some cases.
  *
- * It should be noted that the history stack is not automatically cleared when the
- * editor's value is changed programmatically using `editor.setOptions`. Instead you can
- * clear the stack any time using {@link EditHistory.clear}.
- *
  * Once added to an editor, this extension can be accessed from `editor.extensions.history`.
  *
  * If you want to create a new editor with different extensions while keeping the undo/redo
@@ -504,9 +500,15 @@ const editHistory = (historyLimit = 999) => {
 				}
 			}
 		})
+
+		editor.addExtensions({
+			update() {
+				if (editor.value != textarea.value) reset()
+			}
+		})
 	}
 
-	self.clear = () => {
+	const reset = self.clear = () => {
 		update(0)
 		allowMerge = false
 	}
