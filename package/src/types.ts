@@ -1,6 +1,6 @@
 import { BracketMatcher } from "./extensions/matchBrackets/index.js"
 import { TagMatcher } from "./extensions/matchTags.js"
-import { Cursor } from "./extensions/cursor.js"
+import { Cursor } from "./extensions/cursor/index.js"
 import { SearchWidget } from "./extensions/search/widget.js"
 import { ReadOnlyCodeFolding } from "./extensions/folding/index.js"
 import { TokenStream } from "./prism/types.js"

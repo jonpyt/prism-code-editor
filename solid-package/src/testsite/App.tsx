@@ -23,6 +23,7 @@ import "../extensions/search/search.css"
 import "../extensions/search/invisibles.css"
 import "../extensions/autocomplete/style.css"
 import "../extensions/autocomplete/icons.css"
+import "../extensions/cursor/cursor.css"
 import { matchBrackets } from "../extensions/match-brackets"
 import { highlightBracketPairs } from "../extensions/match-brackets/highlight"
 import { indentGuides } from "../extensions/guides"
@@ -30,7 +31,7 @@ import { searchWidget } from "../extensions/search/widget"
 import { highlightSelectionMatches, showInvisibles } from "../extensions/search"
 import core from "../core?raw"
 import { highlightMatchingTags, matchTags } from "../extensions/match-tags"
-import { cursorPosition } from "../extensions/cursor"
+import { cursorPosition, customCursor } from "../extensions/cursor"
 import { defaultCommands, editHistory } from "../extensions/commands"
 import {
 	blockCommentFolding,
@@ -115,6 +116,7 @@ const App: Component = () => {
 
 	const extensions: Extension[] = [
 		matchBrackets(),
+		customCursor(),
 		searchWidget(),
 		indentGuides(),
 		highlightBracketPairs(),

@@ -1,6 +1,6 @@
 import { PrismEditor } from "./index.js"
 import { createTemplate } from "./core.js"
-import { cursorPosition } from "./extensions/cursor.js"
+import { cursorPosition } from "./extensions/cursor/index.js"
 import { getStyleValue } from "./utils/local.js"
 import { addOverlay } from "./utils/index.js"
 

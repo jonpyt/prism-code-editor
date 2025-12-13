@@ -1,9 +1,9 @@
 import { useLayoutEffect } from "react"
-import { InputSelection, PrismEditor } from "../types"
-import { getLineBefore } from "../utils"
-import { getLineEnd, getPosition, scrollToEl, updateNode } from "../utils/local"
-import { createTemplate, addTextareaListener } from "../utils/local"
-import { useDefaultCommands } from "./commands"
+import { InputSelection, PrismEditor } from "../../types"
+import { getLineBefore } from "../../utils"
+import { getLineEnd, getPosition, scrollToEl, updateNode } from "../../utils/local"
+import { createTemplate, addTextareaListener } from "../../utils/local"
+import { useDefaultCommands } from "../commands"
 
 /** Postion of the cursor relative to the editor's overlays. */
 export type CursorPosition = {

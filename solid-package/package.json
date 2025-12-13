@@ -16,6 +16,7 @@
     "./scrollbar.css": "./dist/scrollbar.css",
     "./autocomplete.css": "./dist/autocomplete.css",
     "./autocomplete-icons.css": "./dist/autocomplete-icons.css",
+    "./cursor.css": "./dist/cursor.css",
     "./utils": "./dist/utils/index.js",
     "./layout.css": "./dist/layout.css",
     "./rtl-layout.css": "./dist/rtl-layout.css",

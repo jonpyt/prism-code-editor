@@ -10,7 +10,7 @@ import {
 	prevSelection,
 	setSelection,
 } from "../../utils/index.js"
-import { Cursor, cursorPosition } from "../cursor.js"
+import { Cursor, cursorPosition } from "../cursor/index.js"
 import {
 	AutoComplete,
 	AutoCompleteConfig,

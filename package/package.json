@@ -18,6 +18,7 @@
     "./autocomplete.css": "./dist/autocomplete.css",
     "./autocomplete-icons.css": "./dist/autocomplete-icons.css",
     "./guides.css": "./dist/guides.css",
+    "./cursor.css": "./dist/cursor.css",
     "./setups": "./dist/setups/index.js",
     "./utils": "./dist/utils/index.js",
     "./layout.css": "./dist/layout.css",

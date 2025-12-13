@@ -2,7 +2,7 @@ import "../languages/index.js"
 import { matchBrackets } from "../extensions/matchBrackets/index.js"
 import { highlightBracketPairs } from "../extensions/matchBrackets/highlight.js"
 import { indentGuides } from "../extensions/guides.js"
-import { cursorPosition } from "../extensions/cursor.js"
+import { cursorPosition } from "../extensions/cursor/index.js"
 import { defaultCommands, editHistory } from "../extensions/commands.js"
 import { EditorExtension } from "../index.js"
 import {

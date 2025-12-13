@@ -11,7 +11,7 @@ import "../extensions/folding/folding.css"
 import "../extensions/autocomplete/style.css"
 import "../extensions/autocomplete/icons.css"
 import "../extensions/guides.css"
-import { cursorPosition } from "../extensions/cursor"
+import { cursorPosition, customCursor } from "../extensions/cursor/index"
 import { indentGuides } from "../extensions/guides"
 import guides from "../prism/core?raw"
 import readme from "/readme.md?raw"
@@ -80,6 +80,7 @@ const runBtn = <HTMLButtonElement>document.getElementById("run"),
 			defaultCommands(),
 			editHistory(),
 			showInvisibles(),
+			customCursor({ animate: true, smooth: true }),
 			autoComplete({
 				filter: fuzzyFilter,
 				// closeOnBlur: false,

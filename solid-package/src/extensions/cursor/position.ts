@@ -1,15 +1,15 @@
-import { Extension } from "../types"
+import { Extension } from "../../types"
 import { onCleanup, createComputed } from "solid-js"
-import { getLineBefore } from "../utils"
+import { getLineBefore } from "../../utils"
 import {
 	addTextareaListener,
 	getLineEnd,
 	getPosition,
 	scrollToEl,
 	updateNode,
-} from "../utils/local"
+} from "../../utils/local"
 import { template } from "solid-js/web"
-import { defaultCommands } from "./commands"
+import { defaultCommands } from "../commands"
 
 /** Postion of the cursor relative to the editor's overlays. */
 export type CursorPosition = {

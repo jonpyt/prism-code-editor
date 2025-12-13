@@ -1,0 +1,22 @@
+div.pce-cursor {
+  right: auto;
+  bottom: auto;
+  transition: top 0.1s ease-out, left 0.1s ease-out;
+  z-index: 1;
+  animation: pce-blink 1.06s infinite;
+}
+
+.pce-focus .pce-cursor {
+  background: var(--pce-cursor);
+}
+
+@keyframes pce-blink {
+  0%,
+  29% {
+    opacity: 1;
+  }
+  43%,
+  86% {
+    opacity: 0;
+  }
+}

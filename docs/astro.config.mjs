@@ -66,7 +66,7 @@ export default defineConfig({
 						"../package/src/utils/index.ts",
 						"../package/src/extensions/guides.ts",
 						"../package/src/extensions/commands.ts",
-						"../package/src/extensions/cursor.ts",
+						"../package/src/extensions/cursor/index.ts",
 						"../package/src/setups/index.ts",
 						"../package/src/webComponent.ts",
 						"../package/src/extensions/autocomplete/index.ts",

@@ -9,6 +9,7 @@ import "../extensions/copy-button/copy.css"
 import "../extensions/folding/folding.css"
 import "../extensions/autocomplete/style.css"
 import "../extensions/autocomplete/icons.css"
+import "../extensions/cursor/cursor.css"
 import "../prism/languages/tsx"
 import "../prism/languages/jsdoc"
 import "./style.css"
@@ -26,7 +27,7 @@ import { useCopyButton } from "../extensions/copy-button"
 import { useSearchWidget } from "../extensions/search/widget"
 import { languages } from "../prism"
 import { loadTheme } from "../themes"
-import { useCursorPosition } from "../extensions/cursor"
+import { useCursorPosition, useCustomCursor } from "../extensions/cursor"
 import {
 	fuzzyFilter,
 	completeFromList,
@@ -84,6 +85,7 @@ const Extensions = () => {
 	useAutoComplete(editor, {
 		filter: fuzzyFilter,
 	})
+	useCustomCursor(editor, { animate: true, smooth: true })
 
 	useLayoutEffect(() => {
 		editor.container?.scrollTo(0, 0)
