@@ -7,7 +7,7 @@ const entries: Record<string, string> = {
 	index: "src/index.ts",
 	"extensions/guides": "src/extensions/guides.ts",
 	"extensions/commands": "src/extensions/commands.ts",
-	"extensions/cursor": "src/extensions/cursor/index.ts",
+	"extensions/cursor/index": "src/extensions/cursor/index.ts",
 	"setups/index": "src/setups/index.ts",
 	webComponent: "src/webComponent.ts",
 	"extensions/matchBrackets/index": "src/extensions/matchBrackets/index.ts",

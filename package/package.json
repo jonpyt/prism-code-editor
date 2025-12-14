@@ -44,7 +44,7 @@
     "./client": "./dist/client/index.js",
     "./code-blocks": "./dist/client/code-block.js",
     "./commands": "./dist/extensions/commands.js",
-    "./cursor": "./dist/extensions/cursor.js",
+    "./cursor": "./dist/extensions/cursor/index.js",
     "./code-folding": "./dist/extensions/folding/index.js",
     "./search": "./dist/extensions/search/index.js",
     "./search/api": "./dist/extensions/search/api.js",
