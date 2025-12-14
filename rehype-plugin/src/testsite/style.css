@@ -135,17 +135,17 @@ button {
 	margin: 1em 0;
 }
 
-.deleted {
+.del {
 	background: #862d2766;
 	box-shadow: inset 2px 0 0 #b4554bd0;
 }
 
-.inserted {
+.ins {
 	background: #1e571566;
 	box-shadow: inset 2px 0 0 #487f3bd0;
 }
 
-.highlighted {
+.highlight {
 	background: #ffffff17;
 	box-shadow: inset 2px 0 0 #ffffff40;
 }

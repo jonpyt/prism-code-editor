@@ -1,8 +1,7 @@
 import { renderCodeBlock, renderEditor } from "prism-code-editor/ssr"
 import { CodeBlockProps } from "./types"
 
-const parseValue = (value: string, numLines: number) => {
-	if (value[0] == "{") return parseRanges(value, numLines)
+const parseValue = (value = "") => {
 	if (value[0] == '"' || value[0] == "'") value = value.slice(1, -1)
 
 	if (!value || value == "true") return true
@@ -12,50 +11,48 @@ const parseValue = (value: string, numLines: number) => {
 	return value
 }
 
-const parseRanges = (ranges: string, numLines: number) => {
+const addClasses = (
+	name: string,
+	ranges: string,
+	classes: (string | undefined)[],
+	numLines: number,
+) => {
 	let pattern = /(\d+)(?:\s*-\s*(\d+))?/g
 	let match: RegExpExecArray | null
-	let result = new Set<number>()
 	while ((match = pattern.exec(ranges))) {
 		let start = +match[1]
 		let end = Math.min(+match[2] || start, numLines)
-		while (start <= end) result.add(start++)
+		while (start <= end) {
+			if (classes[start]) classes[start] += " " + name
+			else classes[start] = name
+			start++
+		}
 	}
-	return result
-}
-
-const getRanges = (props: CodeBlockProps, prop: string): Set<number> | undefined => {
-	let ranges = props[prop]
-	delete props[prop]
-	if (ranges instanceof Set) return ranges
 }
 
 export const parseMeta = (meta: string, numLines: number) => {
 	let result: Record<string, any> = {}
+	let classes: (string | undefined)[] = []
 	let pattern = /([^\s"'{}=]+)(?:\s*=\s*("[^"]*"|'[^']*'|\{[^}]*\}|[^\s"'{}=]+))?/g
 	let match: RegExpExecArray | null
 	while ((match = pattern.exec(meta))) {
-		result[match[1]] = parseValue(match[2] || "", numLines)
+		if (match[2]?.[0] == "{") {
+			addClasses(match[1], match[2], classes, numLines)
+		} else {
+			result[match[1]] = parseValue(match[2])
+		}
 	}
+	result.classes = classes
 	return result as CodeBlockProps
 }
 
-export const createEditor = (props: CodeBlockProps) => {
+export const createEditor = ({ classes, ...props }: CodeBlockProps) => {
 	return renderEditor(props)
 }
 
-export const createCodeBlock = (props: CodeBlockProps) => {
-	const highlight = getRanges(props, "highlight")
-	const ins = getRanges(props, "ins")
-	const del = getRanges(props, "del")
-
-	if (highlight || ins || del) {
-		props.addLineClass = (line: number) => {
-			if (highlight?.has(line)) return "highlighted"
-			if (ins?.has(line)) return "inserted"
-			if (del?.has(line)) return "deleted"
-			return ""
-		}
+export const createCodeBlock = ({ classes, ...props }: CodeBlockProps) => {
+	if (classes.length && !props.addLineClass) {
+		props.addLineClass = (line: number) => classes[line]
 	}
 
 	return renderCodeBlock(props)

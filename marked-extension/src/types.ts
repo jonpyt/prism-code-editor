@@ -1,9 +1,12 @@
 import type { TokenStream } from "prism-code-editor/prism"
 import type { CodeBlockOptions, RenderOptions } from "prism-code-editor/ssr"
 
-export type CodeBlockProps = Record<string, any> & {
+export type CodeBlockProps = {
+	[prop: string]: any
 	language: string
 	value: string
+	/** Extra classes that will be added to the code lines in code blocks. */
+	classes: (string | undefined)[]
 }
 
 export type PcePluginOptions = {
@@ -20,7 +23,7 @@ export type PcePluginOptions = {
 	/**
 	 * Default props used when rendering code blocks.
 	 */
-	defaultCodeBlockProps?: Omit<CodeBlockOptions, "value" | "language" | "addLineClass">
+	defaultCodeBlockProps?: Omit<CodeBlockOptions, "value" | "language">
 	/**
 	 * Function that allows you to wrap the default render function or completely override
 	 * it.
