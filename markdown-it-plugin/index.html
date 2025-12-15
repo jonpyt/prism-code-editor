@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>markdown-it plugin</title>
+  <script type="module" src="/src/demo/index.ts"></script>
+</head>
+<body>
+	<main>
+		<div class="wrapper">
+			<div class="header">
+				<button class="tab active">Markdown</button>
+				<button class="tab">Config</button>
+				<div class="error" tabindex="0" aria-hidden="true">
+					<svg viewbox="0 0 19 17"><path d="M9.5 2L2 15l15 0Z"/></svg>
+					<pre class="message"></pre>
+				</div>
+			</div>
+		</div>
+		<div id="dragbar"></div>
+		<div class="wrapper">
+			<div class="header">
+				<div class="tab">Result</div>
+			</div>
+			<div id="markdown"></div>
+		</div>
+	</main>
+</body>
+</html>

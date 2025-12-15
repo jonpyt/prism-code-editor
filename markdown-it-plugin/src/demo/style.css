@@ -1,0 +1,183 @@
+:root {
+	color-scheme: dark;
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	height: 100%;
+	line-height: 1.5;
+	background: #30363d;
+	color: #e6edf3;
+	font-family: Roboto, -apple-system, Arial, Helvetica, sans-serif;
+}
+
+main {
+	height: 100%;
+	display: flex;
+}
+
+button {
+	background: 0 0;
+	border: none;
+	color: inherit;
+	cursor: pointer;
+	display: inline-block;
+	font: inherit;
+	margin: 0;
+	padding: 0;
+	text-align: inherit;
+}
+
+.wrapper {
+	flex: 1 50%;
+	display: grid;
+	grid-template-rows: auto 1fr;
+	min-height: 4rem;
+	background: #0d1117;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	font-size: 0.875rem;
+	padding: 0 1em;
+	gap: 0.5em;
+	height: 2.7rem;
+	background: #161b22;
+	position: relative;
+}
+
+.header .tab {
+	font-size: 1rem;
+	padding: 0.6em 0.2em;
+	border-bottom: 2px solid #0000;
+}
+
+.header .tab.active {
+	border-bottom-color: hsl(210, 80%, 50%);
+}
+
+.header [aria-hidden="true"] {
+	visibility: hidden;
+}
+
+.error {
+	display: grid;
+	place-items: center;
+	width: 1.7rem;
+	margin-left: auto;
+}
+
+.message {
+	display: none;
+	top: 2em;
+	padding: 0.2em 0.4em;
+	border-radius: 0.3em;
+	background: #0d1117;
+	border: 1px solid #30363d;
+	position: absolute;
+	font-size: 0.8rem;
+	z-index: 2;
+	width: 15em;
+	right: 1em;
+	white-space: normal;
+	text-wrap: balance;
+	text-align: center;
+}
+
+:hover > .message {
+	display: block;
+}
+
+:focus-visible + .message {
+	display: block;
+}
+
+.error::after {
+	font-weight: 700;
+	content: "!";
+	position: absolute;
+	transform: translateY(0.1em);
+	color: #0d1117;
+	font-size: 1rem;
+}
+
+.error > svg {
+	width: 100%;
+	fill: #e64d19;
+	stroke: #e64d19;
+	stroke-width: 3;
+	stroke-linejoin: round;
+}
+
+#dragbar {
+	flex: 0 0 5px;
+	margin: 0 -2px;
+	opacity: 0;
+	touch-action: none;
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: ew-resize;
+	background: #1f6feb;
+	transition: opacity 0.1s ease-out;
+	z-index: 1;
+}
+
+#markdown {
+	padding: 0 1em;
+	overflow: auto;
+}
+
+#markdown .prism-code-editor {
+	border: 1px solid #30363d;
+	border-radius: 1px;
+	margin: 1em 0;
+}
+
+.del {
+	background: #862d2766;
+	box-shadow: inset 2px 0 0 #b4554bd0;
+}
+
+.ins {
+	background: #1e571566;
+	box-shadow: inset 2px 0 0 #487f3bd0;
+}
+
+.highlight {
+	background: #ffffff17;
+	box-shadow: inset 2px 0 0 #ffffff40;
+}
+
+.pce-line::before {
+	background: inherit;
+	box-shadow: inherit;
+}
+
+code:not(.pce-wrapper) {
+	font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+	padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  white-space: break-spaces;
+  background: #656c7633;
+  border-radius: 0.4em;
+}
+
+@media (hover: hover) {
+	#dragbar:hover {
+		transition-delay: 0.3s;
+		opacity: 1;
+	}
+}
+
+@media (max-aspect-ratio: 1 / 1) {
+	main {
+		flex-direction: column-reverse;
+	}
+	#dragbar {
+		cursor: ns-resize !important;
+		margin: -2px 0;
+	}
+}
