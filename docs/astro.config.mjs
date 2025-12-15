@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config"
 import starlight from "@astrojs/starlight"
 import starlightTypeDoc from "starlight-typedoc"
-import { rehypePrismCodeEditor } from "rehype-prism-code-editor"
+import prismCodeEditor from "rehype-prism-code-editor"
 import { indentGuides, rainbowBrackets } from "prism-code-editor/ssr"
 import { languages } from "prism-code-editor/prism"
 import "prism-code-editor/prism/languages/common"
@@ -41,7 +41,7 @@ const pluginOptions = {
 // https://astro.build/config
 export default defineConfig({
 	markdown: {
-		rehypePlugins: [[rehypePrismCodeEditor, pluginOptions]],
+		rehypePlugins: [[prismCodeEditor, pluginOptions]],
 	},
 	integrations: [
 		starlight({

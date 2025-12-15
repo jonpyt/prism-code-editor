@@ -29,7 +29,7 @@ import {
 } from "prism-code-editor/code-blocks"
 import { mountEditorsUnder } from "prism-code-editor/client"
 import { markdown, options } from "./code"
-import { markedPrismCodeEditor } from "../plugin"
+import { prismCodeEditor } from "../plugin"
 import { Marked } from "marked"
 
 let timeout: number
@@ -71,7 +71,7 @@ const run = () => {
 			optionsEditor.value + "\n;return options",
 		)(rainbowBrackets)
 
-		const marked = new Marked(markedPrismCodeEditor(options))
+		const marked = new Marked(prismCodeEditor(options))
 		const file = marked.parse(markdownEditor.value)
 
 		markdownContainer.innerHTML = String(file)

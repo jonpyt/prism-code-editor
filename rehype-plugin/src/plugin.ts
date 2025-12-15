@@ -7,7 +7,7 @@ import { PcePluginOptions } from "./types.js"
 import { numLines } from "prism-code-editor"
 import { highlightTokens, languages, tokenizeText } from "prism-code-editor/prism"
 
-export const rehypePrismCodeEditor: Plugin<[PcePluginOptions?], Root> = ({
+export const prismCodeEditor: Plugin<[PcePluginOptions?], Root> = ({
 	editorsOnly,
 	defaultEditorProps,
 	defaultCodeBlockProps,

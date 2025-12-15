@@ -13,10 +13,10 @@ This extension has prism-code-editor version 4.0.0 or greater as a peer dependen
 
 ```js
 import { marked } from "marked"
-import { markedPrismCodeEditor } from "marked-prism-code-editor"
+import prismCodeEditor from "marked-prism-code-editor"
 import "prism-code-editor/prism/languages/common"
 
-marked.use(markedPrismCodeEditor({
+marked.use(prismCodeEditor({
   // Configuration options
 }))
 

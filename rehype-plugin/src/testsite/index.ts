@@ -29,7 +29,7 @@ import {
 } from "prism-code-editor/code-blocks"
 import { mountEditorsUnder } from "prism-code-editor/client"
 import { markdown, options } from "./code"
-import { rehypePrismCodeEditor } from "../plugin"
+import { prismCodeEditor } from "../plugin"
 import rehypeStringify from "rehype-stringify"
 import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
@@ -76,7 +76,7 @@ const run = async () => {
 		const file = await unified()
 			.use(remarkParse)
 			.use(remarkRehype)
-			.use(rehypePrismCodeEditor, options)
+			.use(prismCodeEditor, options)
 			.use(rehypeStringify)
 			.process(markdownEditor.value)
 

@@ -12,10 +12,10 @@ This plugin has prism-code-editor version 4.0.0 or greater as a peer dependency
 
 ```js
 import rehype from "rehype"
-import { rehypePrismCodeEditor } from "rehype-prism-code-editor"
+import prismCodeEditor from "rehype-prism-code-editor"
 import "prism-code-editor/prism/languages/common"
 
-rehype().use(rehypePrismCodeEditor, {
+rehype().use(prismCodeEditor, {
   // Configuration options
 }).process(/* some html */)
 ```
