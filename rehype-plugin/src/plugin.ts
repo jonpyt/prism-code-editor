@@ -14,6 +14,7 @@ export const prismCodeEditor: Plugin<[PcePluginOptions?], Root> = ({
 	customRenderer,
 	inline,
 	silenceWarnings,
+	trimEndingNewline = true,
 } = {}) => {
 	return tree => {
 		const nodes: [Element, Element, Element, string][] = []
@@ -28,11 +29,15 @@ export const prismCodeEditor: Plugin<[PcePluginOptions?], Root> = ({
 			if (parent.tagName != "pre") {
 				if (inline) spans.push([node, text.value])
 			} else if (!parent.children[1]) {
-				nodes.push([node, parent, grandParent, text.value.slice(0, -1)])
+				nodes.push([node, parent, grandParent, text.value])
 			}
 		})
 
 		nodes.forEach(([codeEl, pre, parent, code]) => {
+			if (trimEndingNewline && code.slice(-1) == "\n") {
+				code = code.slice(0, -1)
+			}
+
 			const properties = codeEl.properties
 			const meta = ((codeEl.data as any)?.meta || properties.metastring || "") as string
 			const props = parseMeta(meta, numLines(code))

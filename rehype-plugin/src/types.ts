@@ -53,4 +53,12 @@ export type PcePluginOptions = {
 	 * grammar. Set this to true to disable the warnings.
 	 */
 	silenceWarnings?: boolean
+	/**
+	 * `mdast-util-to-hast` will add a trailing newline to fenced code blocks. This plugin
+	 * removes this trailing newline by default, but this can be disabled by passing
+	 * `false`.
+	 *
+	 * @default true
+	 */
+	trimEndingNewline?: boolean
 }
