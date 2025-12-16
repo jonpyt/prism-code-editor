@@ -21,7 +21,9 @@ const template = /* @__PURE__ */ createTemplate(
 )
 
 const getLanguageAt = (token: Element) => {
-	return /language-(\S*)/.exec(token.closest("[class*=language-")!.className)![1]
+	return /language-(\S*)/.exec(
+		token.closest("[class*=language-]")?.className || "language-text",
+	)![1]
 }
 
 /**
@@ -114,12 +116,18 @@ const addHoverDescriptions = (
  * Highlights bracket pairs when hovered. Clicking on a pair keeps it highlighted.
  * Clicking anywhere inside the code block removes the highlight.
  *
- * @param codeBlock Code block to add bracket pair highlighting to.
+ * This will match all brackets under the container together. If there are multiple code
+ * blocks underneath, then brackets from different code blocks might get matched together.
+ *
+ * @param container Code block to add bracket pair highlighting to.
  * @param pairs Which characters to match together. The opening character must be followed
  * by the corresponding closing character. Defaults to "()[]{}".
  */
-const highlightBracketPairsOnHover = (codeBlock: PrismCodeBlock, pairs = "()[]{}") => {
-	highlightPairsOnHover<number>(codeBlock, "active-bracket", "punctuation", (token, stack, map) => {
+const highlightBracketPairsOnHover = (
+	container: PrismCodeBlock | HTMLElement,
+	pairs = "()[]{}",
+) => {
+	highlightPairsOnHover<number>(container, "active-bracket", "punctuation", (token, stack, map) => {
 		const text = token.textContent!
 		const last = text.length - 1
 		const bracketType = testBracket(text, pairs, last)
@@ -147,10 +155,14 @@ const highlightBracketPairsOnHover = (codeBlock: PrismCodeBlock, pairs = "()[]{}
 
 /**
  * Highlights tag pairs when a tag name is hovered. Clicking on a pair keeps it
- * highlighted. Clicking anywhere inside the code block removes the highlight.
- * @param codeBlock Code block to add tag pair highlighting to.
+ * highlighted. Clicking anywhere inside the container removes the highlight.
+ *
+ * This will match all tags under the container together. If there are multiple code
+ * blocks underneath, then tags from different code blocks might get matched together.
+ *
+ * @param container Container to add tag pair highlighting to.
  */
-const highlightTagPairsOnHover = (codeBlock: PrismCodeBlock) => {
+const highlightTagPairsOnHover = (container: PrismCodeBlock | HTMLElement) => {
 	const partialTags: [Element, boolean][] = []
 	const matchTag = (
 		nameEl: Element,
@@ -180,7 +192,7 @@ const highlightTagPairsOnHover = (codeBlock: PrismCodeBlock) => {
 		}
 	}
 
-	highlightPairsOnHover<string>(codeBlock, "active-tagname", "tag", (token, stack, map) => {
+	highlightPairsOnHover<string>(container, "active-tagname", "tag", (token, stack, map) => {
 		const children = token.children
 		const text = token.textContent!
 		const lastChild = children[children.length - 1]
@@ -206,20 +218,20 @@ type TokenCallback<T> = (
 ) => void
 
 const highlightPairsOnHover = <T>(
-	codeBlock: PrismCodeBlock,
+	container: PrismCodeBlock | HTMLElement,
 	highlightClass: string,
 	tokenName: string,
 	forEachToken: TokenCallback<T>,
 ) => {
 	let cache: WeakMap<Element, Element>
 	const active: [Element[], Element[]] = [[], []]
-	const wrapper = codeBlock.wrapper
+	const element = (container as PrismCodeBlock).wrapper || container
 	const toggleHighlight = (index: 0 | 1, add?: boolean) =>
 		active[index].forEach(el => el.classList.toggle(highlightClass, !!add))
 
 	const setCache = () => {
 		cache = new WeakMap()
-		let tokens = wrapper.getElementsByClassName(tokenName)
+		let tokens = element.getElementsByClassName(tokenName)
 		let i = (sp = 0)
 		let stack: [Element, T][] = []
 		let token: HTMLSpanElement
@@ -246,9 +258,9 @@ const highlightPairsOnHover = <T>(
 		}
 	}
 
-	addListener(wrapper, "click", handler)
-	addListener(wrapper, "pointerover", handler)
-	addListener(wrapper, "pointerleave", () => {
+	addListener(element, "click", handler)
+	addListener(element, "pointerover", handler)
+	addListener(element, "pointerleave", () => {
 		toggleHighlight(1)
 		active[1] = []
 	})
