@@ -3,7 +3,6 @@ title: Configuration
 description: Learn how to configure the rehype plugin or marked extension.
 ---
 
-
 import "../../../css/configuration.css"
 
 This page will tell you which configuration options are available for the rehype plugin and marked extension.
@@ -39,3 +38,7 @@ Options for highlighting inline code between backticks. If this option is omitte
 ### `silenceWarnings`
 
 These plugins will warn you when a code block has a language without a registered grammar. Set this option to `true` to disable the warnings.
+
+### `trimEndingNewline`
+
+markdown-it's highlight function and [`mdast-util-to-hast`](https://github.com/syntax-tree/mdast-util-to-hast/) will both add a trailing newline to fenced code blocks. These plugins remove this trailing newline by default, but this can be disabled by passing `false`. This option does not apply to the marked extension.

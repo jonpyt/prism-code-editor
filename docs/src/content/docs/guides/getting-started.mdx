@@ -37,6 +37,8 @@ yarn add prism-code-editor
 	</TabItem>
 </Tabs>
 
+If you're not using NPM and a bundler in your project, then you might be interested in this [bundle builder](https://stackblitz.com/edit/pce-bundle-builder) where you can create a customized, minified bundle to use directly.
+
 ## Basic usage
 
 This library provides multiple ways to create editors. Perhaps the easiest is to use one of the 3 different setups: [`minimalEditor(){:js}`](/api-reference/setups/f-minimaleditor), [`basicEditor(){:js}`](/api-reference/setups/f-basiceditor), or [`readOnlyEditor(){:js}`](/api-reference/setups/f-readonlyeditor). These will automatically import the necessary styles and scope them with a shadow root, add various extensions, and import all language specific behavior. There are multiple downsides to using the setups, but they're a viable option for anyone who wants an editor that works well out of the box.
@@ -85,7 +87,7 @@ There are three different events both you and extensions can listen to: `tokeniz
 
 - `tokenize` handlers run after the code is tokenized, which makes it possible to change the tokens before the HTML string is created.
 - `update` handlers run after the syntax highlighted DOM has been updated.
-- `selectionChange` handlers run right after `update` handlers or when the user changes the selection.
+- `selectionChange` handlers run right after `update` handlers or after the selection changes.
 
 ## Web components
 

@@ -22,6 +22,13 @@ npm i prism-code-editor
 npm i rehype-prism-code-editor
 ```
 </TabItem>
+<TabItem label="markdown-it">
+```bash editor="false"
+npm i prism-code-editor
+npm i markdown-it-prism-code-editor
+npm i @olets/markdown-it-wrapperless-fence-rule
+```
+</TabItem>
 <TabItem label="marked">
 ```bash editor="false"
 npm i prism-code-editor
@@ -41,10 +48,10 @@ To write markdown and view the resulting editors and code blocks, check [the dem
 
 ```js editor="false"
 import rehype from "rehype"
-import { rehypePrismCodeEditor } from "rehype-prism-code-editor"
+import prismCodeEditor from "rehype-prism-code-editor"
 import "prism-code-editor/prism/languages/common"
 
-rehype().use(rehypePrismCodeEditor, {
+rehype().use(prismCodeEditor, {
 	// More on configuration later
 }).process(/* some html */)
 ```
@@ -53,7 +60,7 @@ With [Next.js](https://nextjs.org/):
 
 ```js editor="false" ins={2,3,5-8,17-19} file="next.config.mjs"
 import createMDX from "@next/mdx"
-import { rehypePrismCodeEditor } from "rehype-prism-code-editor"
+import prismCodeEditor from "rehype-prism-code-editor"
 import "prism-code-editor/prism/languages/common"
 
 /** @type {import("rehype-prism-code-editor").PcePluginOptions} */
@@ -69,7 +76,7 @@ const nextConfig = {
 const withMDX = createMDX({
   options: {
     rehypePlugins: [
-			[rehypePrismCodeEditor, rehypePrismCodeEditorOptions]
+			[prismCodeEditor, rehypePrismCodeEditorOptions]
 		],
   },
 })
@@ -81,7 +88,7 @@ With [Astro](https://astro.build/):
 
 ```js editor="false" ins={2,3,5-8,11-15} file="astro.config.mjs"
 import { defineConfig } from "astro/config"
-import { rehypePrismCodeEditor } from "rehype-prism-code-editor"
+import prismCodeEditor from "rehype-prism-code-editor"
 import "prism-code-editor/prism/languages/common"
 
 /** @type {import("rehype-prism-code-editor").PcePluginOptions} */
@@ -92,12 +99,30 @@ const rehypePrismCodeEditorOptions = {
 export default defineConfig({
   markdown: {
 		rehypePlugins: [
-			[rehypePrismCodeEditor, rehypePrismCodeEditorOptions]
+			[prismCodeEditor, rehypePrismCodeEditorOptions]
 		]
 	}
 })
 ```
 
+</TabItem>
+<TabItem label="markdown-it">
+```js editor="false"
+import MarkdownIt from "markdown-it"
+import prismCodeEditor from "markdown-it-prism-code-editor"
+import markdownItWrapperlessFenceRule from "@olets/markdown-it-wrapperless-fence-rule"
+
+const md = MarkdownIt()
+
+md.renderer.rules.fence = markdownItWrapperlessFenceRule
+md.use(prismCodeEditor, {
+	// More on configuration later
+})
+
+md.render(/* some markdown */)
+```
+
+`markdown-it` will enforce `<pre><code>{:html}` as the outermost elements of fenced code blocks. Since the editors don't use `<pre><code>{:html}`, [`@olets/markdown-it-wrapperless-fence-rule`](https://github.com/olets/markdown-it-wrapperless-fence-rule) is recommended.
 </TabItem>
 <TabItem label="marked">
 

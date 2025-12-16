@@ -47,6 +47,9 @@ This library overlays syntax highlighted code over a `<textarea>`. Libraries lik
 
     npm i prism-code-editor
 
+
+If you're not using NPM and a bundler in your project, then you might be interested in this [bundle builder](https://stackblitz.com/edit/pce-bundle-builder) where you can create a customized, minified bundle to use directly.
+
 ## Basic usage
 
 The library includes 3 different setups you can import. These will automatically import the necessary styles and scope them with a shadow root, add various extensions and import all language specific behavior. There are also web components wrapping these setups if that's preferred.

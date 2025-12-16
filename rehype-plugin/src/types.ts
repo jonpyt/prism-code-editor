@@ -13,7 +13,9 @@ export type PcePluginOptions = {
 	/**
 	 * When true, code blocks without the `editor` property are ignored, but you can still
 	 * create code blocks with `editor=false`. This is useful if you're using another
-	 * plugin to create the code blocks. @default false
+	 * plugin to create the code blocks.
+	 *
+	 * @default false
 	 */
 	editorsOnly?: boolean
 	/**
@@ -51,6 +53,8 @@ export type PcePluginOptions = {
 	/**
 	 * This plugin will warn you when a code block has a language without a registered
 	 * grammar. Set this to true to disable the warnings.
+	 *
+	 * @default false
 	 */
 	silenceWarnings?: boolean
 	/**

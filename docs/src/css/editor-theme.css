@@ -374,12 +374,12 @@ div.code-block {
 	color: var(--sl-color-text);
 }
 
-.inserted {
+.ins {
 	background: #1e571566;
 	box-shadow: inset 2px 0 0 #487f3bd0;
 }
 
-[data-theme="light"] .inserted {
+[data-theme="light"] .ins {
 	background: #8ec77d66;
 }
 
