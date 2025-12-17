@@ -7,7 +7,7 @@ import { TokenStream } from "./prism/types.js"
 import { EditHistory } from "./extensions/commands.js"
 import { AutoComplete } from "./extensions/autocomplete/types.js"
 
-export type EditorOptions = {
+export type EditorOptions<T extends {} = {}> = {
 	/**
 	 * Language used for syntax highlighting. If the language doesn't have a registered
 	 * Prism grammar, syntax highlighting will be disabled. @default "text"
@@ -37,11 +37,11 @@ export type EditorOptions = {
 	 */
 	class?: string
 	/** Function called when the code of the editor changes. */
-	onUpdate?: EditorEventMap["update"] | null
+	onUpdate?(value: string, editor: PrismEditor<T>): void
 	/** Function called when the selection changes in the editor. */
-	onSelectionChange?: EditorEventMap["selectionChange"] | null
+	onSelectionChange?(selection: InputSelection, value: string, editor: PrismEditor<T>): void
 	/** Function called before the tokens are stringified to HTML. */
-	onTokenize?: EditorEventMap["tokenize"] | null
+	onTokenize?(tokens: TokenStream, language: string, value: string, editor: PrismEditor<T>): void
 }
 
 export type CommentTokens = {
@@ -138,7 +138,7 @@ export interface PrismEditor<T extends {} = {}> {
 	 * Current options for the editor. The event handlers can be changed by
 	 * mutating this object. Use `setOptions` to change the other options.
 	 */
-	readonly options: EditorOptions & Omit<T, keyof EditorOptions>
+	readonly options: EditorOptions<T> & Omit<T, keyof EditorOptions>
 	/** Record mapping an input to a function called when that input is typed. */
 	readonly inputCommandMap: Record<string, InputCommandCallback | null | undefined>
 	/** Record mapping KeyboardEvent.key to a function called when that key is pressed. */
@@ -159,7 +159,7 @@ export interface PrismEditor<T extends {} = {}> {
 	 * Set new options for the editor. Omitted properties will use their old value.
 	 * @param options New options for the editor
 	 */
-	setOptions(this: void, options: Partial<EditorOptions & Omit<T, keyof EditorOptions>>): void
+	setOptions(this: void, options: Partial<EditorOptions<T> & Omit<T, keyof EditorOptions>>): void
 	/** Forces the editor to update. Can be useful after adding a tokenize listener or modifying a grammar. */
 	update(this: void): void
 	/** Gets `selectionStart`, `selectionEnd` and `selectionDirection` for the `textarea`. */

@@ -22,7 +22,7 @@ import { highlightTokens, languages, tokenizeText, TokenStream } from "./prism/i
  */
 const createEditor = <T extends {} = {}>(
 	container?: ParentNode | string | null,
-	options?: (Partial<EditorOptions> & Omit<T, keyof EditorOptions>) | null,
+	options?: (Partial<EditorOptions<T>> & Omit<T, keyof EditorOptions>) | null,
 	...extensions: EditorExtension<T>[]
 ): PrismEditor<T> => {
 	let language: string
@@ -149,7 +149,7 @@ const createEditor = <T extends {} = {}>(
 		// @ts-expect-error
 		listeners[name]?.forEach(handler => handler.apply(self, args))
 		// @ts-expect-error
-		currentOptions["on" + name[0].toUpperCase() + name.slice(1)]?.apply(self, args)
+		currentOptions["on" + name[0].toUpperCase() + name.slice(1)]?.(...args, self)
 	}
 
 	const dispatchSelection = (force?: boolean) => {
@@ -249,8 +249,8 @@ const createEditor = <T extends {} = {}>(
  */
 const editorFromPlaceholder = <T extends {} = {}>(
 	placeholder: string | ChildNode,
-	options: Partial<EditorOptions> & Omit<T, keyof EditorOptions>,
-	...extensions: EditorExtension[]
+	options: Partial<EditorOptions<T>> & Omit<T, keyof EditorOptions>,
+	...extensions: EditorExtension<T>[]
 ) => {
 	const el = getElement(placeholder)!
 	const editor = createEditor<T>(
