@@ -2,17 +2,7 @@ import { useLayoutEffect } from "react"
 import { PrismEditor } from "../.."
 import { createTemplate } from "../../utils/local"
 import { addOverlay } from "../../utils"
-import { useStableRef } from "../../core"
 import { useCursorPosition } from "./position"
-
-export type CursorConfig = {
-	/** Whether or not to animate the position. @default false */
-	animate?: boolean
-	/** Whether or not the blinking animation is smooth. @default false */
-	smooth?: boolean
-	/** CSS length value for the width of the cursor. @default "2px" */
-	width?: string
-}
 
 const template = createTemplate("<div class=pce-cursor>")
 
@@ -27,37 +17,24 @@ const template = createTemplate("<div class=pce-cursor>")
  *
  * Requires the {@link useCursorPosition} extension and styling from
  * `prism-react-editor/cursor.css` to work.
- *
- * @param config Allows customizing the appearance of the cursor.
  */
-const useCustomCursor = (editor: PrismEditor, config: CursorConfig = {}) => {
-	const conf = useStableRef([config])
-	conf[0] = config
-
+const useCustomCursor = (editor: PrismEditor) => {
 	useLayoutEffect(() => {
-		const textareaStyle = editor.textarea!.style
-		const cursor = template()
-		const style = cursor.style
-		const remove = editor.on("selectionChange", () => {
+		let textareaStyle = editor.textarea!.style
+		let cursor = template()
+		let toggle: number
+		let remove = editor.on("selectionChange", () => {
 			const pos = editor.extensions.cursor?.getPosition()
 
 			if (pos) {
-				style.height = pos.height + "px"
-				style.width = conf[0].width || "2px"
-				style.animationTimingFunction = conf[0].smooth ? "linear" : "steps(1)"
-
-				// Appending every time resets the blinking animation
-				addOverlay(editor, cursor)
-
-				// Triggering a reflow allows the position to animate
-				if (conf[0].animate) cursor.offsetTop
-
-				style.left = pos.left + "px"
-				style.top = pos.top + "px"
+				cursor.style = `left:${pos.left}px;top:${pos.top}px;height:${
+					pos.height
+				}px;animation-name:pce-blink${(toggle = +!toggle)}`
 			}
 		})
 
 		textareaStyle.zIndex = textareaStyle.caretColor = "auto"
+		addOverlay(editor, cursor)
 
 		return () => {
 			remove()
