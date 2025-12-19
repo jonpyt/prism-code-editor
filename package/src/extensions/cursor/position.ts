@@ -1,4 +1,4 @@
-import { BasicExtension, InputSelection, PrismEditor } from "../../index.js"
+import { BasicExtension, PrismEditor } from "../../index.js"
 import { createTemplate } from "../../core.js"
 import { getLineBefore } from "../../utils/index.js"
 import {
@@ -44,7 +44,7 @@ export const cursorPosition = () => {
 	const cursorContainer = cursorTemplate()
 	const [before, span] = <[Text, HTMLSpanElement]>(<unknown>cursorContainer.childNodes)
 	const [cursor, after] = <[HTMLSpanElement, Text]>(<unknown>span.childNodes)
-	const selectionChange = (selection: InputSelection) => {
+	const selectionChange = (selection = cEditor.getSelection()) => {
 		const value = cEditor.value
 		const activeLine = cEditor.lines[cEditor.activeLine]
 		const position = selection[selection[2] < "f" ? 0 : 1]
@@ -64,10 +64,13 @@ export const cursorPosition = () => {
 			if (/history/.test((<InputEvent>e).inputType)) scrollIntoView()
 		})
 
-		if (editor.activeLine) selectionChange(editor.getSelection())
+		if (editor.activeLine) selectionChange()
 	}
 
-	self.getPosition = () => getPosition(cEditor, cursor)
+	self.getPosition = () => {
+		selectionChange()
+		return getPosition(cEditor, cursor)
+	}
 
 	self.scrollIntoView = scrollIntoView
 	self.element = cursor

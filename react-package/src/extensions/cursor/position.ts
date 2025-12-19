@@ -1,5 +1,5 @@
 import { useLayoutEffect } from "react"
-import { InputSelection, PrismEditor } from "../../types"
+import { PrismEditor } from "../../types"
 import { getLineBefore } from "../../utils"
 import { getLineEnd, getPosition, scrollToEl, updateNode } from "../../utils/local"
 import { createTemplate, addTextareaListener } from "../../utils/local"
@@ -36,7 +36,7 @@ export const useCursorPosition = (editor: PrismEditor) => {
 		const cursorContainer = cursorTemplate()
 		const [before, span] = <[Text, HTMLSpanElement]>(<unknown>cursorContainer.childNodes)
 		const [cursor, after] = <[HTMLSpanElement, Text]>(<unknown>span.childNodes)
-		const selectionChange = (selection: InputSelection) => {
+		const selectionChange = (selection = editor.getSelection()) => {
 			const value = editor.value
 			const activeLine = editor.lines![editor.activeLine]
 			const position = selection[selection[2] < "f" ? 0 : 1]
@@ -54,7 +54,10 @@ export const useCursorPosition = (editor: PrismEditor) => {
 
 		editor.extensions.cursor = {
 			scrollIntoView,
-			getPosition: () => getPosition(editor, cursor),
+			getPosition: () => {
+				selectionChange()
+				return getPosition(editor, cursor)
+			},
 		}
 
 		return () => {
