@@ -34,16 +34,17 @@
 	display: flex;
 }
 
-.prism-search input {
+.pce-input input {
 	padding: 0 0 0 0.3em;
 	width: calc(var(--search-width, 20em) - 10ch - 4px);
 	font: inherit;
 	border: none;
 	background: #0000;
 	color: var(--pce-widget-color);
+	outline: 0;
 }
 
-.prism-search ::placeholder {
+.pce-input ::placeholder {
 	color: inherit;
 	opacity: 0.6;
 }
@@ -79,22 +80,18 @@
 	z-index: 1;
 }
 
-.prism-search .pce-input,
+.pce-input,
 .pce-options button {
 	box-shadow: 0 0 0 1px var(--_border, var(--pce-widget-border));
 	margin: 1px;
 }
 
-.prism-search .pce-input {
+.pce-input {
 	display: flex;
 	position: relative;
 	background: var(--pce-widget-bg-input);
 	border-radius: 0.15em;
 	height: 1.5em;
-}
-
-.prism-search input:focus {
-	outline: 0;
 }
 
 .pce-input:focus-within {
@@ -121,11 +118,11 @@
 	margin-left: 1px;
 }
 
-.prev-match::before {
+.pce-prev::before {
 	transform: rotate(-90deg);
 }
 
-.next-match::before,
+.pce-next::before,
 .pce-expand::before {
 	transform: rotate(90deg);
 }
