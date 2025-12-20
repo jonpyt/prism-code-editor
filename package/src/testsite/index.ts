@@ -81,7 +81,7 @@ const runBtn = <HTMLButtonElement>document.getElementById("run"),
 			defaultCommands(),
 			editHistory(),
 			showInvisibles(),
-			customCursor({ animate: true, smooth: true }),
+			customCursor(),
 			autoComplete({
 				filter: fuzzyFilter,
 				// closeOnBlur: false,

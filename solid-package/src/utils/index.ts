@@ -7,7 +7,7 @@ import { getLineEnd, getLineStart } from "./local"
  * before the call. This variable is set to 0 right before {@link insertText} returns.
  * This can therefore be used inside a `beforeinput` handler to determine if
  * {@link insertText} fired the event, and if true, get the selection before the call.
- * 
+ *
  * Intended for internal use only.
  */
 let prevSelection: InputSelection | 0
@@ -217,6 +217,33 @@ const getModifierCode = (
 	e: KeyboardEvent, // @ts-expect-error
 ): number => e.altKey + e.ctrlKey * 2 + e.metaKey * 4 + e.shiftKey * 8
 
+/**
+ * Gets the position of the cursor in the document. It returns a tuple with three numbers:
+ *
+ * 1. The line number of the cursor
+ * 2. The 1-based column of the cursor
+ * 3. Number of characters selected
+ *
+ * @example
+ * const [line, col, selected] = getDocumentPosition(editor)
+ */
+const getDocumentPosition = (editor: PrismEditor): [number, number, number] => {
+	let [start, end, dir] = editor.getSelection()
+	let pos = dir < "f" ? start : end
+	let value = editor.value
+	let col = 0
+	let chars = 0
+	let tabSize = editor.props.tabSize || 2
+
+	for (const char of getLineBefore(value, pos)) {
+		col += char == "\t" ? tabSize - (col % tabSize) : 1
+	}
+
+	for (const _ of value.slice(start, end)) chars++
+
+	return [editor.activeLine, col + 1, chars]
+}
+
 export {
 	regexEscape,
 	getLineBefore,
@@ -226,6 +253,7 @@ export {
 	insertText,
 	getModifierCode,
 	setSelection,
+	getDocumentPosition,
 	isMac,
 	isChrome,
 	isWebKit,

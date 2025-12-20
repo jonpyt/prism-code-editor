@@ -9,7 +9,7 @@ import { escapeHtml } from "../prism/core.js"
  * before the call. This variable is set to 0 right before {@link insertText} returns.
  * This can therefore be used inside a `beforeinput` handler to determine if
  * {@link insertText} fired the event, and if true, get the selection before the call.
- * 
+ *
  * Intended for internal use only.
  */
 let prevSelection: InputSelection | 0
@@ -220,6 +220,33 @@ const getModifierCode = (
 const addOverlay = (editor: PrismEditor | PrismCodeBlock, overlay: HTMLElement) =>
 	editor.lines[0].append(overlay)
 
+/**
+ * Gets the position of the cursor in the document. It returns a tuple with three numbers:
+ *
+ * 1. The line number of the cursor
+ * 2. The 1-based column of the cursor
+ * 3. Number of characters selected
+ *
+ * @example
+ * const [line, col, selected] = getDocumentPosition(editor)
+ */
+const getDocumentPosition = (editor: PrismEditor): [number, number, number] => {
+	let [start, end, dir] = editor.getSelection()
+	let pos = dir < "f" ? start : end
+	let value = editor.value
+	let col = 0
+	let chars = 0
+	let tabSize = editor.options.tabSize || 2
+
+	for (const char of getLineBefore(value, pos)) {
+		col += char == "\t" ? tabSize - (col % tabSize) : 1
+	}
+
+	for (const _ of value.slice(start, end)) chars++
+
+	return [editor.activeLine, col + 1, chars]
+}
+
 export {
 	regexEscape,
 	getLineBefore,
@@ -230,6 +257,7 @@ export {
 	getModifierCode,
 	setSelection,
 	addOverlay,
+	getDocumentPosition,
 	isMac,
 	isChrome,
 	isWebKit,

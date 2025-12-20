@@ -85,7 +85,7 @@ const Extensions = () => {
 	useAutoComplete(editor, {
 		filter: fuzzyFilter,
 	})
-	useCustomCursor(editor, { animate: true, smooth: true })
+	useCustomCursor(editor)
 
 	useLayoutEffect(() => {
 		editor.container?.scrollTo(0, 0)
