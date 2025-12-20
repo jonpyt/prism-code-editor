@@ -1,6 +1,7 @@
 import { createTemplate } from "../../core.js"
 import { BasicExtension } from "../../types.js"
 import { addOverlay } from "../../utils/index.js"
+import { addTextareaListener } from "../../utils/local.js"
 import { cursorPosition } from "./position.js"
 
 const template = createTemplate("<div class=pce-cursor>")
@@ -23,16 +24,19 @@ const customCursor = (): BasicExtension => {
 		let textareaStyle = editor.textarea.style
 		let toggle: number
 
-		textareaStyle.zIndex = textareaStyle.caretColor = "auto"
-
 		editor.on("selectionChange", () => {
 			const pos = editor.extensions.cursor?.getPosition()
 
 			if (pos) {
+				textareaStyle.zIndex = textareaStyle.caretColor = "auto"
 				cursor.style = `left:${pos.left}px;top:${pos.top}px;height:${
 					pos.height
 				}px;animation-name:pce-blink${(toggle = +!toggle)}`
 			}
+		})
+
+		addTextareaListener(editor, "dragover", () => {
+			textareaStyle.caretColor = ""
 		})
 
 		addOverlay(editor, cursor)

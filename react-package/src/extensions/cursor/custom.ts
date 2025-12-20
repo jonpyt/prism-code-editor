@@ -1,6 +1,6 @@
 import { useLayoutEffect } from "react"
 import { PrismEditor } from "../.."
-import { createTemplate } from "../../utils/local"
+import { addTextareaListener, createTemplate } from "../../utils/local"
 import { addOverlay } from "../../utils"
 import { useCursorPosition } from "./position"
 
@@ -23,21 +23,25 @@ const useCustomCursor = (editor: PrismEditor) => {
 		let textareaStyle = editor.textarea!.style
 		let cursor = template()
 		let toggle: number
-		let remove = editor.on("selectionChange", () => {
+		let remove1 = editor.on("selectionChange", () => {
 			const pos = editor.extensions.cursor?.getPosition()
 
 			if (pos) {
+				textareaStyle.zIndex = textareaStyle.caretColor = "auto"
 				cursor.style = `left:${pos.left}px;top:${pos.top}px;height:${
 					pos.height
 				}px;animation-name:pce-blink${(toggle = +!toggle)}`
 			}
 		})
+		let remove2 = addTextareaListener(editor, "dragover", () => {
+			textareaStyle.caretColor = ""
+		})
 
-		textareaStyle.zIndex = textareaStyle.caretColor = "auto"
 		addOverlay(editor, cursor)
 
 		return () => {
-			remove()
+			remove1()
+			remove2()
 			cursor.remove()
 			textareaStyle.zIndex = textareaStyle.caretColor = ""
 		}

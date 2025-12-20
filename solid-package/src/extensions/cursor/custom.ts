@@ -2,6 +2,7 @@ import { template } from "solid-js/web"
 import { Extension } from "../.."
 import { createRenderEffect, onCleanup } from "solid-js"
 import { cursorPosition } from "./position"
+import { addTextareaListener } from "../../utils/local"
 
 const cursorTemplate = template("<div class=pce-cursor>")
 
@@ -23,13 +24,12 @@ const customCursor = (): Extension => {
 		let textareaStyle = editor.textarea.style
 		let toggle: number
 
-		textareaStyle.zIndex = textareaStyle.caretColor = "auto"
-
 		createRenderEffect(() => {
 			editor.selection()
 			const pos = editor.extensions.cursor?.getPosition()
 
 			if (pos) {
+				textareaStyle.zIndex = textareaStyle.caretColor = "auto"
 				cursor.style = `left:${pos.left}px;top:${pos.top}px;height:${
 					pos.height
 				}px;animation-name:pce-blink${(toggle = +!toggle)}`
@@ -39,6 +39,11 @@ const customCursor = (): Extension => {
 		onCleanup(() => {
 			textareaStyle.zIndex = textareaStyle.caretColor = ""
 		})
+		onCleanup(
+			addTextareaListener(editor, "dragover", () => {
+				textareaStyle.caretColor = ""
+			}),
+		)
 
 		return cursor
 	}
