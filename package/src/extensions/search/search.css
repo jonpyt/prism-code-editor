@@ -148,6 +148,7 @@
 
 .pce-input.pce-error {
 	--_border: var(--pce-widget-error);
+	--pce-widget-focus: var(--_border);
 }
 
 .search-error {
