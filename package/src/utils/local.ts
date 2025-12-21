@@ -6,12 +6,14 @@ import { PrismCodeBlock } from "../client/code-block.js"
 const scrollToEl = (editor: PrismEditor, el: HTMLElement, paddingTop = 0) => {
 	const style = editor.container.style
 
+	style.setProperty("--_sp", "var(--pce-scroll-padding, 2ch)")
 	style.scrollPaddingBlock = `calc(var(--_sp) + ${paddingTop}px) calc(var(--_sp) + ${
-		isChrome && !el.textContent ? el.offsetHeight : 0
+		isChrome && !el.offsetWidth ? el.offsetHeight : 0
 	}px)`
 
 	el.scrollIntoView({ block: "nearest" })
 	style.scrollPaddingBlock = ""
+	style.removeProperty("--_sp")
 }
 
 const getLineStart = (text: string, position: number) =>

@@ -6,7 +6,8 @@
 	--_pse: var(--padding-inline, 0.75em);
 	--_ns: var(--number-spacing, 0.75em);
 	--padding-left: var(--_pse);
-	--_sp: var(--pce-scroll-padding, 2ch);
+	--_sp: 0px;
+	scroll-padding: var(--_sp);
 	-webkit-user-select: none;
 	user-select: none;
 	isolation: isolate;
@@ -15,16 +16,13 @@
 
 .show-line-numbers {
 	--padding-left: calc(var(--_pse) + var(--number-width) + var(--_ns));
+	scroll-padding-left: calc(var(--padding-left) + var(--_sp));
 	grid: 1fr / 0 1fr;
 	counter-reset: line;
 }
 
 .pce-focus {
-	scroll-padding: var(--_sp);
-}
-
-.pce-focus.show-line-numbers {
-	scroll-padding-left: calc(var(--padding-left) + var(--_sp));
+	--_sp: var(--pce-scroll-padding, 2ch);
 }
 
 .pce-wrapper {
