@@ -17,7 +17,7 @@ The `prism-code-editor/search` entry point exports extensions for searching edit
 
 ### `showInvisibles`
 
-[`showInvisibles(){:js}`](/api-reference/search/f-showinvisibles) highlights spaces and tabs in the editor. Highlighting all tabs and spaces in an editor comes with a significant performance hit which is why only those that are selected will be highlighted by default, but they can be shown at all times by passing `true` to the extension.
+[`showInvisibles(){:js}`](/api-reference/search/f-showinvisibles) highlights all selected spaces and tabs in the editor. To highlight all spaces and tabs instead, use [`tokenizeInvisibles(){:js}`](/api-reference/prism/utils/f-tokenizeinvisibles/).
 
 Styles from `prism-code-editor/invisibles.css` are required by the extension. The default color of these highlights works well for most dark themes, but light themes should use the CSS variable `--pce-invisibles{:css}` to override the color.
 

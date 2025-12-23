@@ -113,10 +113,9 @@ export function tokenizeStrings(tokens: TokenStream, tokenize: (code: string) =>
 
 /**
  * Function that will highlight all tabs and spaces in a token stream. Similar to
- * {@link showInvisibles} with `alwaysShow` set to `true`, but this highlights tabs
- * and spaces as tokens instead. This not only works with code blocks, but also performs
- * better. However, if you only want to show spaces and tabs that are selected, then
- * {@link showInvisibles} must be used instead.
+ * {@link showInvisibles}, but this highlights all spaces and tabs as tokens instead.
+ * This also works with code blocks. If you only want to show spaces and tabs that are
+ * selected, then {@link showInvisibles} must be used instead.
  *
  * Requires styling from `solid-prism-editor/invisibles.css`.
  *

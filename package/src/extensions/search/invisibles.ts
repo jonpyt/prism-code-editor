@@ -3,15 +3,12 @@ import { tokenizeInvisibles } from "../../prism/utils/invisibles.js"
 import { createSearchAPI } from "./search.js"
 
 /**
- * Extension that highlights selected tabs and spaces as an overlay.
- *
- * @param alwaysShow By passing `true`, they're always shown. This is not recommended
- * and will be removed in the future. Instead use {@link tokenizeInvisibles} to highlight
- * tabs and spaces as tokens for better performance.
+ * Extension that highlights selected tabs and spaces as an overlay. To instead highlight
+ * all spaces and tabs, use {@link tokenizeInvisibles}.
  *
  * Requires styling from `prism-code-editor/invisibles.css`.
  */
-const showInvisibles = (alwaysShow?: boolean): BasicExtension => {
+const showInvisibles = (): BasicExtension => {
 	return editor => {
 		let prev: string
 		const searchAPI = createSearchAPI(editor)
@@ -23,8 +20,8 @@ const showInvisibles = (alwaysShow?: boolean): BasicExtension => {
 			const value = editor.value
 			const [start, end] = editor.getSelection()
 
-			if (!alwaysShow || prev != (prev = value)) {
-				searchAPI.search(" |\t", true, false, true, alwaysShow ? undefined : [start, end])
+			if (prev != (prev = value)) {
+				searchAPI.search(" |\t", true, false, true, [start, end])
 				for (let i = 0, l = matches.length; i < l; i++) {
 					if ((value[matches[i][0]] == "\t") == !tabs[i]) {
 						nodes[i].className = (tabs[i] = !tabs[i]) ? "pce-tab" : ""
