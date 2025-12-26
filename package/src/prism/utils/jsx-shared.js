@@ -5,8 +5,6 @@ import { replace, re } from './shared.js';
 var space = /\s|\/\/.*(?!.)|\/\*(?:[^*]|\*(?!\/))*\*\//.source;
 var braces = /\{(?:[^{}]|\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\})*\}/.source;
 
-var isText = token => token && (!token.type || token.type == 'plain-text');
-
 /**
  * @param {string} code
  * @param {*} grammar
@@ -14,16 +12,27 @@ var isText = token => token && (!token.type || token.type == 'plain-text');
 var tokenizer = (code, grammar) => {
 	var position = 0, tokens = withoutTokenizer(code, grammar);
 	var i = 0, openedTags = [], l = 0;
-	for ( ; i < tokens.length; i++, position += length) {
-		var token = tokens[i];
-		var length = token.length;
-		var type = token.type;
-		var notTagNorBrace = !type;
-		var last, tag, start, plainText, content;
+	var result = [];
+	var token;
+	var j = 0;
+	var textStartPos;
+	var content;
+	var addStoredText = () => {
+		if (textStartPos) {
+			content = code.slice(textStartPos, position);
+			result[j++] = new Token('plain-text', content, content);
+			textStartPos = 0;
+		}
+	};
 
-		if (type) {
+	for ( ; token = tokens[i]; i++, position += length) {
+		var length = token.length;
+		var isNeverText = token.type;
+		var last, tag, start;
+
+		if (isNeverText) {
 			content = token.content;
-			if (type == 'tag') {
+			if (isNeverText == 'tag') {
 				// We found a tag, now find its kind
 				start = content[0].length;
 				tag = content[2] ? code.substr(position + start, content[1].length) : '';
@@ -39,37 +48,30 @@ var tokenizer = (code, grammar) => {
 						openedTags[l++] = [tag, 0];
 					}
 				}
-			} else if (l && type == 'punctuation') {
+			} else if (l && isNeverText == 'punctuation') {
 				last = openedTags[l - 1];
 				if (content == '{') last[1]++;
 				else if (last[1] && content == '}') last[1]--;
 				else {
-					notTagNorBrace = !"}()[]".includes(content);
+					isNeverText = "}()[]".includes(content);
 				}
 			} else {
-				notTagNorBrace = true;
+				isNeverText = false;
 			}
 		}
-		if (notTagNorBrace && l && !openedTags[l - 1][1]) {
+		if (!isNeverText && l && !openedTags[l - 1][1]) {
 			// Here we are inside a tag, and not inside a JSX context.
 			// That's plain text: drop any tokens matched.
-			start = position;
-
-			// And merge text with adjacent text
-			if (isText(tokens[i + 1])) {
-				length += tokens[i + 1].length;
-				tokens.splice(i + 1, 1);
+			if (!textStartPos) {
+				textStartPos = position;
 			}
-			if (isText(tokens[i - 1])) {
-				start -= tokens[--i].length;
-				tokens.splice(i, 1);
-			}
-
-			plainText = code.slice(start, position + length);
-			tokens[i] = new Token('plain-text', plainText, plainText);
+		} else {
+			addStoredText();
+			result[j++] = token;
 		}
 	}
-	return tokens;
+	addStoredText();
+	return result;
 };
 
 /**

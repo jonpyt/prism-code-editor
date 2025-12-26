@@ -53,85 +53,84 @@ var xquery = languages.xquery = extend('xml', {
 		lookbehind: true
 	},
 	'punctuation': /[()[\]{},:;/]/,
-	[tokenize]: (code, grammar) => walkTokens(withoutTokenizer(code, grammar), code, 0)
+	[tokenize](code, grammar) {
+		var position = 0, tokens = withoutTokenizer(code, grammar);
+		var i = 0, openedTags = [], l = 0;
+		var result = [];
+		var token;
+		var j = 0;
+		var textStartPos;
+		var textStartIndex;
+		var content;
+		var addStoredText = () => {
+			if (textStartPos) {
+				content = code.slice(textStartPos, position);
+				result[j++] = new Token('plain-text', content, content);
+				textStartPos = 0;
+			}
+		};
+
+		for ( ; token = tokens[i]; i++) {
+			var length = token.length;
+			var isNeverText = token.type;
+			var last, tag, start;
+
+			if (isNeverText && isNeverText != 'comment') {
+				content = token.content;
+				if (isNeverText == 'tag') {
+					// We found a tag, now find its kind
+					start = content[0].length;
+					tag = code.substr(position + start, content[1].length);
+					if (start > 1) {
+						// Closing tag
+						if (l && openedTags[l - 1][0] == tag) {
+							// Pop matching opening tag
+							l--;
+						}
+					} else {
+						if (content[content.length - 1].length < 2) {
+							// Opening tag
+							openedTags[l++] = [tag, 0];
+						}
+					}
+				} else if (l && isNeverText == 'punctuation') {
+					last = openedTags[l - 1];
+					if (content == '{') {
+						// Ignore `{{`
+						if (code[position + 1] == content) {
+							tokens[i + 1] = content;
+							isNeverText = false;
+						} else {
+							last[1]++;
+						}
+					}
+					else if (last[1] && content == '}') last[1]--;
+					else {
+						isNeverText = false;
+					}
+				} else {
+					isNeverText = false;
+				}
+			}
+			if (!isNeverText && l && !openedTags[l - 1][1]) {
+				// Here we are inside a tag, and not inside an XQuery expression.
+				// That's plain text: drop any tokens matched.
+				if (!textStartPos) {
+					textStartPos = position;
+				}
+			} else {
+				addStoredText();
+				result[j++] = token;
+			}
+			position += length
+		}
+		addStoredText();
+		return result;
+	}
 });
 
 var tag = xquery.tag;
 var attrValue = tag.inside['attr-value'][0];
-var isText = token => token && (!token.type || token.type == 'plain-text');
-
-/**
- * @param {(string | Token)[]} tokens
- * @param {string} code
- * @param {number} position
- */
-var walkTokens = (tokens, code, position) => {
-	for (var i = 0, openedTags = [], l = 0; i < tokens.length; i++) {
-		var token = tokens[i];
-		var length = token.length;
-		var type = token.type;
-		var notTagNorBrace = !type;
-		var last, tag, start, plainText, content;
-
-		if (type && type != 'comment') {
-			content = token.content;
-			if (type == 'tag') {
-				// We found a tag, now find its kind
-				start = content[0].length;
-				tag = code.substr(position + start, content[1].length);
-				if (start > 1) {
-					// Closing tag
-					if (l && openedTags[l - 1][0] == tag) {
-						// Pop matching opening tag
-						l--;
-					}
-				} else {
-					if (content[content.length - 1].length < 2) {
-						// Opening tag
-						openedTags[l++] = [tag, 0];
-					}
-				}
-			} else if (l && type == 'punctuation') {
-				last = openedTags[l - 1];
-				if (content == '{') {
-					// Ignore `{{`
-					if (code[position + 1] == content) {
-						tokens[i + 1] = content;
-						notTagNorBrace = true;
-					} else {
-						last[1]++;
-					}
-				}
-				else if (last[1] && content == '}') last[1]--;
-				else {
-					notTagNorBrace = true;
-				}
-			} else {
-				notTagNorBrace = true;
-			}
-		}
-		if (notTagNorBrace && l && !openedTags[l - 1][1]) {
-			// Here we are inside a tag, and not inside an XQuery expression.
-			// That's plain text: drop any tokens matched.
-			start = position;
-
-			// And merge text with adjacent text
-			if (isText(tokens[i + 1])) {
-				length += tokens[i + 1].length;
-				tokens.splice(i + 1, 1);
-			}
-			if (isText(tokens[i - 1])) {
-				start -= tokens[--i].length;
-				tokens.splice(i, 1);
-			}
-
-			plainText = code.slice(start, position + length);
-			tokens[i] = new Token('plain-text', plainText, plainText);
-		}
-		position += length;
-	}
-	return tokens;
-};
 
 // Allow for two levels of nesting
 var expression = [/\{(?!\{)(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}/.source];
