@@ -12,15 +12,15 @@ var braces = /\{(?:[^{}]|\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\})*\}/.source;
 var tokenizer = (code, grammar) => {
 	var position = 0, tokens = withoutTokenizer(code, grammar);
 	var i = 0, openedTags = [], l = 0;
-	var result = [];
 	var token;
 	var j = 0;
 	var textStartPos;
 	var content;
+	var last;
 	var addStoredText = () => {
 		if (textStartPos) {
 			content = code.slice(textStartPos, position);
-			result[j++] = new Token('plain-text', content, content);
+			tokens[j++] = new Token('plain-text', content, content);
 			textStartPos = 0;
 		}
 	};
@@ -28,7 +28,7 @@ var tokenizer = (code, grammar) => {
 	for ( ; token = tokens[i]; i++, position += length) {
 		var length = token.length;
 		var isNeverText = token.type;
-		var last, tag, start;
+		var tag, start;
 
 		if (isNeverText) {
 			content = token.content;
@@ -38,18 +38,17 @@ var tokenizer = (code, grammar) => {
 				tag = content[2] ? code.substr(position + start, content[1].length) : '';
 				if (start > 1) {
 					// Closing tag
-					if (l && openedTags[l - 1][0] == tag) {
+					if (l && last[0] == tag) {
 						// Pop matching opening tag
-						l--;
+						last = openedTags[--l - 1];
 					}
 				} else {
 					if (content[content.length - 1].length < 2) {
 						// Opening tag
-						openedTags[l++] = [tag, 0];
+						openedTags[l++] = last = [tag, 0];
 					}
 				}
 			} else if (l && isNeverText == 'punctuation') {
-				last = openedTags[l - 1];
 				if (content == '{') last[1]++;
 				else if (last[1] && content == '}') last[1]--;
 				else {
@@ -59,7 +58,7 @@ var tokenizer = (code, grammar) => {
 				isNeverText = false;
 			}
 		}
-		if (!isNeverText && l && !openedTags[l - 1][1]) {
+		if (!isNeverText && l && !last[1]) {
 			// Here we are inside a tag, and not inside a JSX context.
 			// That's plain text: drop any tokens matched.
 			if (!textStartPos) {
@@ -67,11 +66,12 @@ var tokenizer = (code, grammar) => {
 			}
 		} else {
 			addStoredText();
-			result[j++] = token;
+			tokens[j++] = token;
 		}
 	}
 	addStoredText();
-	return result;
+	tokens.length = j;
+	return tokens;
 };
 
 /**
