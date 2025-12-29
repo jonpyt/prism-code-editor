@@ -85,7 +85,6 @@ var addJsxTag = (grammar, name) => {
 			pattern: re(
 				/<\/?(?:(?!\d)[^\s%=<>/]+(?:<0>(?:<0>*(?:[^\s{=<>/*]+(?:<0>*=<0>*(?!\s)(?:"[^"]*"|'[^']*'|<1>)?|(?=[\s/>]))|<1>))*)?<0>*\/?)?>/.source, [space, braces], 'g'
 			),
-			greedy: true,
 			inside: {
 				'punctuation': /^<\/?|\/?>$/,
 				'tag': {
@@ -104,7 +103,6 @@ var addJsxTag = (grammar, name) => {
 				},
 				'expression': {
 					pattern: RegExp(braces, 'g'),
-					greedy: true,
 					alias: 'language-' + name,
 					inside: grammar
 				},

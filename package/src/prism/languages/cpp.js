@@ -25,10 +25,7 @@ var cpp = languages.cpp = extend('c', {
 		/\b\w+(?=\s*<(?:[^<>]|<(?:[^<>]|<[^<>]*>)*>)*>\s*::\s*\w+\s*\()/
 	],
 	'keyword': keyword,
-	'number': {
-		pattern: /(?:\b0b[01']+|\b0x(?:[a-f\d']+(?:\.[a-f\d']*)?|\.[a-f\d']+)(?:p[+-]?[\d']+)?|(?:\b[\d']+(?:\.[\d']*)?|\B\.[\d']+)(?:e[+-]?[\d']+)?)[ful]{0,4}/gi,
-		greedy: true
-	},
+	'number': /(?:\b0b[01']+|\b0x(?:[a-f\d']+(?:\.[a-f\d']*)?|\.[a-f\d']+)(?:p[+-]?[\d']+)?|(?:\b[\d']+(?:\.[\d']*)?|\B\.[\d']+)(?:e[+-]?[\d']+)?)[ful]{0,4}/gi,
 	'operator': /->|--|\+\+|&&|\|\||[?:~]|<=>|>>=?|<<=?|[%&|^!=<>/*+-]=?|\b(?:and|and_eq|bitand|bitor|not|not_eq|x?or|x?or_eq)\b/,
 	'boolean': boolean
 });
@@ -40,7 +37,6 @@ insertBefore(cpp, 'string', {
 			/(\b(?:import|module)\s+)(?:"(?:\\[\s\S]|[^\\\n"])*"|<[^<>\n]*>|<0>(?:\s*:\s*<0>)?|:\s*<0>)/.source, [`\\b(?!${keyword.source})\\w+(?:\\s*\\.\\s*\\w+)*\\b`], 'g'
 		),
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'string': /^[<"][\s\S]+/,
 			'operator': /:/,
@@ -49,7 +45,6 @@ insertBefore(cpp, 'string', {
 	},
 	'raw-string': {
 		pattern: /R"([^\\() ]{0,16})\([\s\S]*?\)\1"/g,
-		greedy: true,
 		alias: 'string'
 	}
 });
@@ -83,7 +78,6 @@ insertBefore(cpp, 'class-name', {
 	'base-clause': {
 		pattern: /(\b(?:class|struct)\s+\w+\s*:\s*)[^;{}"'\s]+(?:\s+[^;{}"'\s]+)*(?=\s*[;{])/g,
 		lookbehind: true,
-		greedy: true,
 		inside: baseClauseInside
 	}
 });

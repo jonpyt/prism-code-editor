@@ -26,7 +26,6 @@ atruleInside[rest] = languages.css = {
 	'url': {
 		// https://drafts.csswg.org/css-values-3/#urls
 		pattern: RegExp(`\\burl\\((?:${stringSrc}|(?:[^\\\\\n"')=]|\\\\[\\s\\S])*)\\)`, 'gi'),
-		greedy: true,
 		inside: {
 			'function': /^url/i,
 			'punctuation': /^\(|\)$/,
@@ -40,10 +39,7 @@ atruleInside[rest] = languages.css = {
 		pattern: RegExp(`(^|[{}\\s])[^\\s{}](?:[^\\s{};"']|\\s+(?![\\s{])|${stringSrc})*(?=\\s*\\{)`),
 		lookbehind: true
 	},
-	'string': {
-		pattern: string,
-		greedy: true
-	},
+	'string': string,
 	'property': {
 		pattern: /(^|[^-\w\xa0-\uffff])(?!\d)(?:(?!\s)[-\w\xa0-\uffff])+(?=\s*:)/i,
 		lookbehind: true

@@ -4,7 +4,7 @@ import { boolean, clikeString } from '../utils/patterns.js';
 languages.cil = {
 	'comment': /\/\/.*/,
 
-	'string': clikeString(),
+	'string': clikeString,
 
 	'directive': {
 		pattern: /(^|\W)\.[a-z]+(?!\S)/,

@@ -2,14 +2,10 @@ import { languages } from '../core.js';
 import { clikeComment } from '../utils/patterns.js';
 
 languages.g4 = languages.antlr4 = {
-	'comment': clikeComment(),
-	'string': {
-		pattern: /'(?:\\.|[^\\\n'])*'/g,
-		greedy: true
-	},
+	'comment': clikeComment,
+	'string': /'(?:\\.|[^\\\n'])*'/g,
 	'character-class': {
 		pattern: /\[(?:\\.|[^\\\]\n])*\]/g,
-		greedy: true,
 		alias: 'regex',
 		inside: {
 			'range': {
@@ -23,7 +19,6 @@ languages.g4 = languages.antlr4 = {
 	},
 	'action': {
 		pattern: /\{(?:[^{}]|\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\})*\}/g,
-		greedy: true,
 		inside: {
 			'content': /(?!^)[\s\S]+(?=.)/,
 			'punctuation': /./

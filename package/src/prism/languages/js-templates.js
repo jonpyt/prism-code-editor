@@ -23,7 +23,6 @@ var interpolationPattern = templateString.inside.interpolation.pattern;
 var createTemplate = (language, tag) => ({
 	pattern: RegExp('(\\b(?:' + tag + ')\\s*)' + templateLiteralPattern, 'g'),
 	lookbehind: true,
-	greedy: true,
 	inside: {
 		'template-punctuation': {
 			pattern: /^`|`$/,

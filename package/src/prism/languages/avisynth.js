@@ -7,8 +7,7 @@ var allinternals = 'is(?:bool|clip|float|int|string)|defined|(?:(?:internal)?fun
 
 languages.avs = languages.avisynth = {
 	'comment': {
-		pattern: /#.*|\/\*[\s\S]*?(?:\*\/|$)|\[\*(?:[^\[*]|\[(?!\*)|\*(?!\])|\[\*(?:[^\[*]|\[(?!\*)|\*(?!\]))*\*\])*\*\]/g,
-		greedy: true
+		pattern: /#.*|\/\*[\s\S]*?(?:\*\/|$)|\[\*(?:[^\[*]|\[(?!\*)|\*(?!\])|\[\*(?:[^\[*]|\[(?!\*)|\*(?!\]))*\*\])*\*\]/g
 	},
 	// Handle before strings because optional arguments are surrounded by double quotes
 	'argument': {
@@ -32,15 +31,11 @@ languages.avs = languages.avisynth = {
 	},
 
 	'string': [
-		{
-			// triple double-quoted
-			pattern: /"""[\s\S]*?"""/g,
-			greedy: true,
-		},
+		// triple double-quoted
+		/"""[\s\S]*?"""/g,
 		{
 			// single double-quoted
 			pattern: /"(?:\\[\s\S]|[^\\\n"])*"/g,
-			greedy: true,
 			inside: {
 				'constant': {
 					// These *are* case-sensitive!

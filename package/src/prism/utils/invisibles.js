@@ -74,11 +74,11 @@ var tokenizeInvisibles = (tokens) => {
 		var match, i = 0;
 		while (match = pattern.exec(code)) {
 			if (match.index > pos) result[i++] = code.slice(pos, pos = match.index);
-			result[i++] = new Token(match[0] == " " ? "space" : "tab", match[0], match[0]);
+			result[i++] = new Token(match[0] == " " ? "space" : "tab", match[0], " ");
 			pos++;
 		}
 
-		if (code[pos]) result.push(code.slice(pos));
+		if (code[pos]) result[i] = code.slice(pos);
 		return result;
 	});
 };

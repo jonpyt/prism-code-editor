@@ -39,7 +39,6 @@ var expression = {
 	// Allow for 3 levels of depth
 	pattern: /(^|[^^])\((?:[^()]|\((?:[^()]|\([^)]*\))*\))*\)/g,
 	lookbehind: true,
-	greedy: true,
 	inside: {
 		'string': {
 			pattern: /(^|[^^])(["'])(?:(?!\2)[^^]|\^[\s\S])*\2/,

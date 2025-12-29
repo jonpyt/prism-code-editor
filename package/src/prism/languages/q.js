@@ -2,31 +2,19 @@ import { languages } from '../core.js';
 
 languages.q = {
 	'string': /"(?:\\.|[^\\\n"])*"/,
-	'comment': [
-		// From http://code.kx.com/wiki/Reference/Slash:
-		// When / is following a space (or a right parenthesis, bracket, or brace), it is ignored with the rest of the line.
-		{
+	// From http://code.kx.com/wiki/Reference/Slash:
+	// When / is following a space (or a right parenthesis, bracket, or brace), it is ignored with the rest of the line.
 
-			pattern: /([\t )\]}])\/.*/g,
-			lookbehind: true,
-			greedy: true
-		},
-		// From http://code.kx.com/wiki/Reference/Slash:
-		// A line which has / as its first character and contains at least one other non-whitespace character is a whole-line comment and is ignored entirely.
-		// A / on a line by itself begins a multiline comment which is terminated by the next \ on a line by itself.
-		// If a / is not matched by a \, the multiline comment is unterminated and continues to end of file.
-		// The / and \ must be the first char on the line, but may be followed by any amount of whitespace.
-		{
-			pattern: /^\/[ \t]*(?:\n(?:.*\n)*?(?:\\(?=[ \t]*$)|(?![\s\S]))|\S.*)/mg,
-			greedy: true
-		},
-		// From http://code.kx.com/wiki/Reference/Slash:
-		// A \ on a line by itself with no preceding matching / will comment to end of file.
-		{
-			pattern: /^\\[ \t]*\n[\s\S]+|^#!.+/mg,
-			greedy: true
-		}
-	],
+	// A line which has / as its first character and contains at least one other non-whitespace character is a whole-line comment and is ignored entirely.
+	// A / on a line by itself begins a multiline comment which is terminated by the next \ on a line by itself.
+	// If a / is not matched by a \, the multiline comment is unterminated and continues to end of file.
+	// The / and \ must be the first char on the line, but may be followed by any amount of whitespace.
+
+	// A \ on a line by itself with no preceding matching / will comment to end of file.
+	'comment': {
+		pattern: /([\t )\]}])\/.*|^\/[ \t]*(?:\n(?:.*\n)*?(?:\\(?=[ \t]*$)|(?![\s\S]))|\S.*)|^\\[ \t]*\n[\s\S]+|^#!.+/mg,
+		lookbehind: true
+	},
 	'symbol': /`(?::\S+|[\w.]*)/,
 	'datetime': {
 		pattern: /0N[mdzuvt]|0W[dtz]|\d{4}\.\d\d(?:m|\.\d\d(?:T(?:\d\d(?::\d\d(?::\d\d(?:[.:]\d\d\d)?)?)?)?)?[dz]?)|\d\d:\d\d(?::\d\d(?:[.:]\d\d\d)?)?[uvt]?/,

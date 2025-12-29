@@ -2,17 +2,13 @@ import { languages } from '../core.js';
 import { boolean } from '../utils/patterns.js';
 
 var swift = languages.swift = {
-	'comment': {
-		// Nested comments are supported up to 2 levels
-		pattern: /\/\/.*|\/\*(?:[^/*]|\/(?!\*)|\*(?!\/)|\/\*(?:[^*]|\*(?!\/))*\*\/)*\*\//g,
-		greedy: true
-	},
+	// Nested comments are supported up to 2 levels
+	'comment': /\/\/.*|\/\*(?:[^/*]|\/(?!\*)|\*(?!\/)|\/\*(?:[^*]|\*(?!\/))*\*\/)*\*\//g,
 	'string-literal': [
 		// https://docs.swift.org/swift-book/LanguageGuide/StringsAndCharacters.html
 		{
 			pattern: /(^|[^"#])(?:"(?:\\(?:\((?:[^()]|\([^)]*\))*\)|[^(])|[^\\\n"])*"|"""(?:\\(?:\((?:[^()]|\([^)]*\))*\)|[^(])|[^\\"]|"(?!""))*""")(?!["#])/g,
 			lookbehind: true,
-			greedy: true,
 			inside: {
 				'interpolation': {
 					pattern: /(\\\()(?:[^()]|\([^()]*\))+(?=\))/,
@@ -29,7 +25,6 @@ var swift = languages.swift = {
 		{
 			pattern: /(^|[^"#])(#+)(?:"(?:\\(?:#+\((?:[^()]|\([^)]*\))*\)|[^#])|[^\\\n])*?"|"""(?:\\(?:#+\((?:[^()]|\([^)]*\))*\)|[^#])|[^\\])*?""")\2/g,
 			lookbehind: true,
-			greedy: true,
 			inside: {
 				'interpolation': {
 					pattern: /(\\#+\()(?:[^()]|\([^()]*\))+(?=\))/,

@@ -10,14 +10,12 @@ languages.tsconfig = languages.typoscript = {
 			// double-slash comments - ignored when backslashes or colon is found in front
 			// also ignored whenever directly after an equal-sign, because it would probably be an url without protocol
 			pattern: /(^|[^\\:= \t]|(?:^|[^= \t])[ \t]+)\/\/.*/g,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		},
 		{
 			// hash comments - ignored when leading quote is found for hex colors in strings
 			pattern: /(^|[^"'])#.*/g,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		}
 	],
 	'function': [

@@ -2,11 +2,10 @@ import { languages } from '../core.js';
 import { boolean, clikeComment, clikePunctuation } from '../utils/patterns.js';
 
 languages.jolie = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'string': {
 		pattern: /(^|[^\\])"(?:\\[\s\S]|[^\\"])*"/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'class-name': {
 		pattern: /((?:\b(?:as|courier|embed|in|inputPort|outputPort|service)\b|@)[ \t]*)\w+/,

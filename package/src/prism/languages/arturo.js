@@ -6,7 +6,6 @@ import { languages } from '../core.js';
  */
 var createLanguageString = (lang, pattern = lang) => ({
 	pattern: RegExp(`\\{!(?:${pattern})$[\\s\\S]*\\}`, 'mg'),
-	greedy: true,
 	inside: {
 		'string': /^.+|.$/,
 		'embedded': {
@@ -18,28 +17,18 @@ var createLanguageString = (lang, pattern = lang) => ({
 });
 
 languages.art = languages.arturo = {
-	'comment': {
-		pattern: /;.*/g,
-		greedy: true
-	},
+	'comment': /;.*/g,
 
 	'character': {
 		pattern: /`.`/g,
-		greedy: true,
 		alias: 'char'
 	},
 
 	'number': /\b\d+(?:\.\d+(?:\.\d+(?:-[\w+-]+)?)?)?\b/,
 
-	'string': {
-		pattern: /"(?:\\.|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\\n"])*"/g,
 
-	'regex': {
-		pattern: /\{\/.*?\/\}/g,
-		greedy: true
-	},
+	'regex': /\{\/.*?\/\}/g,
 
 	'html-string': createLanguageString('html'),
 	'css-string': createLanguageString('css'),
@@ -50,8 +39,7 @@ languages.art = languages.arturo = {
 
 	'multistring': {
 		pattern: /».*|\{:[\s\S]*?:\}|\{[^}]*\}|^-{6}$[\s\S]*/mg,
-		alias: 'string',
-		greedy: true
+		alias: 'string'
 	},
 
 	'label': {

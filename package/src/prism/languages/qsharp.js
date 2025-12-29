@@ -25,7 +25,6 @@ languages.qs = languages.qsharp = {
 	'comment': /\/\/.*/,
 	'interpolation-string': {
 		pattern: re(/\$"(?:\\.|<0>|[^\\"{])*"/.source, [interpolationExpr], 'g'),
-		greedy: true,
 		inside: {
 			'interpolation': {
 				pattern: re(/((?:^|[^\\])(?:\\\\)*)<0>/.source, [interpolationExpr]),
@@ -42,13 +41,10 @@ languages.qs = languages.qsharp = {
 			'string': /[\s\S]+/
 		}
 	},
-	'string': [
-		{
-			pattern: re(/(^|[^\\$])<0>/.source, [regularString], 'g'),
-			lookbehind: true,
-			greedy: true
-		}
-	],
+	'string': {
+		pattern: re(/(^|[^\\$])<0>/.source, [regularString], 'g'),
+		lookbehind: true
+	},
 	'class-name': [
 		{
 			// open Microsoft.Quantum.Canon;

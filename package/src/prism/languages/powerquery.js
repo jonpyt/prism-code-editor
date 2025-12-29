@@ -4,34 +4,10 @@ import { boolean, clikeComment } from '../utils/patterns.js';
 // https://docs.microsoft.com/en-us/powerquery-m/power-query-m-language-specification
 
 languages.mscript = languages.pq = languages.powerquery = {
-	'comment': clikeComment(),
-	'quoted-identifier': {
-		pattern: /#"(?:[^\n"]|"")*"(?!")/g,
-		greedy: true
-	},
-	'string': {
-		pattern: /(?:#!)?"(?:[^\n"]|"")*"(?!")/g,
-		greedy: true
-	},
-	'constant': [
-		/\bDay\.(?:Friday|Monday|Saturday|Sunday|Thursday|Tuesday|Wednesday)\b/,
-		/\bTraceLevel\.(?:Critical|Error|Information|Verbose|Warning)\b/,
-		/\bOccurrence\.(?:All|First|Last)\b/,
-		/\bOrder\.(?:Ascending|Descending)\b/,
-		/\bRoundingMode\.(?:AwayFromZero|Down|ToEven|TowardZero|Up)\b/,
-		/\bMissingField\.(?:Error|Ignore|UseNull)\b/,
-		/\bQuoteStyle\.(?:Csv|None)\b/,
-		/\bJoinKind\.(?:FullOuter|Inner|LeftAnti|LeftOuter|RightAnti|RightOuter)\b/,
-		/\bGroupKind\.(?:Global|Local)\b/,
-		/\bExtraValues\.(?:Error|Ignore|List)\b/,
-		/\bJoinAlgorithm\.(?:Dynamic|LeftHash|LeftIndex|PairwiseHash|RightHash|RightIndex|SortMerge)\b/,
-		/\bJoinSide\.(?:Left|Right)\b/,
-		/\bPrecision\.(?:Decimal|Double)\b/,
-		/\bRelativePosition\.From(?:End|Start)\b/,
-		/\bTextEncoding\.(?:Ascii|BigEndianUnicode|Unicode|Utf16|Utf8|Windows)\b/,
-		/\b(?:Any|Binary|Date|DateTime|DateTimeZone|Duration|Function|Int16|Int32|Int64|Int8|List|Logical|None|Number|Record|Table|Text|Time)\.Type\b/,
-		/\bnull\b/
-	],
+	'comment': clikeComment,
+	'quoted-identifier': /#"(?:[^\n"]|"")*"(?!")/g,
+	'string': /(?:#!)?"(?:[^\n"]|"")*"(?!")/g,
+	'constant': /\b(?:Day\.(?:Friday|Monday|Saturday|Sunday|Thursday|Tuesday|Wednesday)|TraceLevel\.(?:Critical|Error|Information|Verbose|Warning)|Occurrence\.(?:All|First|Last)|Order\.(?:Ascending|Descending)|RoundingMode\.(?:AwayFromZero|Down|ToEven|TowardZero|Up)|MissingField\.(?:Error|Ignore|UseNull)|QuoteStyle\.(?:Csv|None)|JoinKind\.(?:FullOuter|Inner|LeftAnti|LeftOuter|RightAnti|RightOuter)|GroupKind\.(?:Global|Local)|ExtraValues\.(?:Error|Ignore|List)|JoinAlgorithm\.(?:Dynamic|LeftHash|LeftIndex|PairwiseHash|RightHash|RightIndex|SortMerge)|JoinSide\.(?:Left|Right)|Precision\.(?:Decimal|Double)|RelativePosition\.From(?:End|Start)|TextEncoding\.(?:Ascii|BigEndianUnicode|Unicode|Utf16|Utf8|Windows)|(?:Any|Binary|Date|DateTime|DateTimeZone|Duration|Function|Int16|Int32|Int64|Int8|List|Logical|None|Number|Record|Table|Text|Time)\.Type|null)\b/,
 	'boolean': boolean,
 	'keyword': /\b(?:and|as|each|else|error|if|in|is|let|meta|not|nullable|optional|or|otherwise|section|shared|then|try|type)\b|#(?:binary|date|datetime|datetimezone|duration|infinity|nan|sections|shared|table|time)\b/,
 	'function': {

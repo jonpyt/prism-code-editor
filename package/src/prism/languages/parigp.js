@@ -2,10 +2,7 @@ import { languages } from '../core.js';
 
 languages.parigp = {
 	'comment': /\/\*[\s\S]*?\*\/|\\\\.*/,
-	'string': {
-		pattern: /"(?:\\.|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\\n"])*"/g,
 	// PARI/GP does not care about white spaces at all
 	// so let's process the keywords to build an appropriate regexp
 	// (e.g. "b *r *e *a *k", etc.)

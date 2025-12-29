@@ -2,15 +2,9 @@ import { languages } from '../core.js';
 
 languages.elm = {
 	'comment': /--.*|\{-[\s\S]*?-\}/,
-	'char': {
-		pattern: /'(?:[^\\\n']|\\(?:[abfnrtv\\']|\d+|x[a-fA-F\d]+|u\{[a-fA-F\d]+\}))'/g,
-		greedy: true
-	},
-	'string': {
-		// Multiline strings are wrapped in triple ". Quotes may appear unescaped.
-		pattern: /"""[\s\S]*?"""|"(?:\\.|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'char': /'(?:[^\\\n']|\\(?:[abfnrtv\\']|\d+|x[a-fA-F\d]+|u\{[a-fA-F\d]+\}))'/g,
+	// Multiline strings are wrapped in triple ". Quotes may appear unescaped.
+	'string': /"""[\s\S]*?"""|"(?:\\.|[^\\\n"])*"/g,
 	'import-statement': {
 		// The imported or hidden names are not included in this import
 		// statement. This is because we want to highlight those exactly like

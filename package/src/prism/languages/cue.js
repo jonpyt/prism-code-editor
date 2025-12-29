@@ -16,19 +16,16 @@ expression.inside = languages.cue = {
 	'string-literal': {
 		pattern: stringLiteral,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			// I'm using dirty hack here. We have to know the number hashes at the start of the string somehow,
 			// but we can't look back. So instead, we will use a lookahead, go to the end of the string, and
 			// capture the hashes at the end of the string.
 			'escape': {
 				pattern: /(?=[\s\S]*["'](#*)$)\\\1(?:U[a-fA-F\d]{1,8}|u[a-fA-F\d]{1,4}|x[a-fA-F\d]{1,2}|\d{2,3}|[^(])/g,
-				greedy: true,
 				alias: 'string'
 			},
 			'interpolation': {
 				pattern: /(?=[\s\S]*["'](#*)$)\\\1\([^()]*\)/g,
-				greedy: true,
 				inside: {
 					'punctuation': /^\\#*\(|\)$/,
 					'expression': expression

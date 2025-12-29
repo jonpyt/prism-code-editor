@@ -2,21 +2,16 @@ import { languages } from '../core.js';
 import { clikePunctuation } from '../utils/patterns.js';
 
 languages.psl = {
-	'comment': {
-		pattern: /#.*/g,
-		greedy: true
-	},
+	'comment': /#.*/g,
 	'string': {
 		pattern: /"(?:\\.|[^\\"])*"/g,
-		greedy: true,
 		inside: {
 			'symbol': /\\[ntrbA-Z"\\]/
 		}
 	},
 	'heredoc-string': {
 		pattern: /<<<((?!\d)\w+)\n(?:.*\n)*?\1\b/g,
-		alias: 'string',
-		greedy: true
+		alias: 'string'
 	},
 	'keyword': /\b(?:__multi|__single|case|default|do|else|elsif|exit|export|for|foreach|function|if|last|line|local|next|requires|return|switch|until|while|word)\b/,
 	'constant': /\b(?:ALARM|CHART_ADD_GRAPH|CHART_DELETE_GRAPH|CHART_DESTROY|CHART_LOAD|CHART_PRINT|EOF|OFFLINE|OK|PSL_PROF_LOG|R_CHECK_HORIZ|R_CHECK_VERT|R_CLICKER|R_COLUMN|R_FRAME|R_ICON|R_LABEL|R_LABEL_CENTER|R_LIST_MULTIPLE|R_LIST_MULTIPLE_ND|R_LIST_SINGLE|R_LIST_SINGLE_ND|R_MENU|R_POPUP|R_POPUP_SCROLLED|R_RADIO_HORIZ|R_RADIO_VERT|R_ROW|R_SCALE_HORIZ|R_SCALE_VERT|R_SEP_HORIZ|R_SEP_VERT|R_SPINNER|R_TEXT_FIELD|R_TEXT_FIELD_LABEL|R_TOGGLE|TRIM_LEADING|TRIM_LEADING_AND_TRAILING|TRIM_REDUNDANT|TRIM_TRAILING|VOID|WARN)\b/,
@@ -28,8 +23,7 @@ languages.psl = {
 	},
 	'foreach-variable': {
 		pattern: /(\bforeach\s+(?:(?:\w+\b|"(?:\\.|[^\\"])*")\s+){0,2})(?!\d)\w+(?=\s*\()/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'function': /\b[_a-z]\w*\b(?=\s*\()/i,
 	'number': /\b(?:0x[a-f\d]+|\d+(?:\.\d+)?)\b/i,

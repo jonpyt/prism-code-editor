@@ -2,13 +2,9 @@ import { languages } from '../core.js';
 
 languages.ebnf = {
 	'comment': /\(\*[\s\S]*?\*\)/,
-	'string': {
-		pattern: /"[^\n"]*"|'[^\n']*'/g,
-		greedy: true
-	},
+	'string': /"[^\n"]*"|'[^\n']*'/g,
 	'special': {
 		pattern: /\?[^\n?]*\?/g,
-		greedy: true,
 		alias: 'class-name'
 	},
 

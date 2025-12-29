@@ -13,7 +13,6 @@ var addLang = (grammar, lang) => {
 var addInlined = (tagName, lang) => ({
 	pattern: RegExp(`(<${tagName}[^>]*>)(?!</${tagName}>)(?:<!\\[CDATA\\[(?:[^\\]]|\\](?!\\]>))*\\]\\]>|(?!<!\\[CDATA\\[)[\\s\\S])+?(?=</${tagName}>)`, 'gi'),
 	lookbehind: true,
-	greedy: true,
 	inside: addLang({
 		'included-cdata': {
 			pattern: /<!\[CDATA\[[\s\S]*?\]\]>/i,
@@ -27,7 +26,6 @@ var addInlined = (tagName, lang) => ({
 var addAttribute = (attrName, lang, alias = attrName) => ({
 	pattern: RegExp(`([\\s"']${attrName}\\s*=\\s*)(?:"[^"]*"|'[^']*'|[^\\s>]+)`, 'gi'),
 	lookbehind: true,
-	greedy: true,
 	alias: alias,
 	inside: addLang({
 		'punctuation': /^["']|["']$/,

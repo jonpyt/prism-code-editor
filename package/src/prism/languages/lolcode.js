@@ -11,8 +11,7 @@ languages.lolcode = {
 				/:\[[^\]]+\]/,
 				/:[)>o":]/
 			]
-		},
-		greedy: true
+		}
 	},
 	'number': /(?:\B-)?(?:\b\d+(?:\.\d*)?|\B\.\d+)/,
 	'symbol': {

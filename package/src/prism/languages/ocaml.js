@@ -5,22 +5,9 @@ import { boolean } from '../utils/patterns.js';
 
 languages.ocaml = {
 	'comment': /\(\*[\s\S]*?\*\)/,
-	'char': {
-		pattern: /'(?:[^\\\n']|\\(?:.|[ox]?[a-f\d]{1,3}))'/gi,
-		greedy: true
-	},
-	'string': {
-		pattern: /"(?:\\[\s\S]|[^\\\n"])*"|\{([a-z_]*)\|[\s\S]*?\|\1\}/g,
-		greedy: true
-	},
-	'number': [
-		// binary and octal
-		/\b(?:0b[01][01_]*|0o[0-7][0-7_]*)\b/i,
-		// hexadecimal
-		/\b0x[a-f\d][a-f\d_]*(?:\.[a-f\d_]*)?(?:p[+-]?\d[\d_]*)?(?!\w)/i,
-		// decimal
-		/\b\d[\d_]*(?:\.[\d_]*)?(?:e[+-]?\d[\d_]*)?(?!\w)/i,
-	],
+	'char': /'(?:[^\\\n']|\\(?:.|[ox]?[a-f\d]{1,3}))'/gi,
+	'string': /"(?:\\[\s\S]|[^\\\n"])*"|\{([a-z_]*)\|[\s\S]*?\|\1\}/g,
+	'number': /\b(?:0b[01][01_]*|0o[0-7][0-7_]*|0x[a-f\d][a-f\d_]*(?:\.[a-f\d_]*)?(?:p[+-]?\d[\d_]*)?|\d[\d_]*(?:\.[\d_]*)?(?:e[+-]?\d[\d_]*)?)(?!\w)/i,
 	'directive': {
 		pattern: /\B#\w+/,
 		alias: 'property'

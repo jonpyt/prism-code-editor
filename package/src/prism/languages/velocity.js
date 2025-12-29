@@ -5,10 +5,7 @@ import './markup.js';
 
 var vel = languages.velocity = clone(languages.html);
 
-var string = {
-	pattern: /"[^"]*"|'[^']*'/g,
-	greedy: true
-};
+var string = /"[^"]*"|'[^']*'/g;
 
 var punctuation = /[()[\]{}.,:]/;
 var number = /\b\d+\b/;
@@ -32,7 +29,6 @@ insertBefore(vel, 'comment', {
 	'unparsed': {
 		pattern: /(^|[^\\])#\[\[[\s\S]*?\]\]#/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'punctuation': /^#\[\[|\]\]#$/
 		}
@@ -41,13 +37,11 @@ insertBefore(vel, 'comment', {
 		{
 			pattern: /(^|[^\\])#\*[\s\S]*?\*#/g,
 			lookbehind: true,
-			greedy: true,
 			alias: 'comment'
 		},
 		{
 			pattern: /(^|[^\\])##.*/g,
 			lookbehind: true,
-			greedy: true,
 			alias: 'comment'
 		}
 	],

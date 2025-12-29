@@ -10,13 +10,9 @@ var guid = {
 };
 
 languages['solution-file'] = {
-	'comment': {
-		pattern: /#.*/g,
-		greedy: true
-	},
+	'comment': /#.*/g,
 	'string': {
 		pattern: /"[^\n"]*"|'[^\n']*'/g,
-		greedy: true,
 		inside: {
 			'guid': guid
 		}
@@ -29,7 +25,6 @@ languages['solution-file'] = {
 		// EndFoo
 		pattern: /^([ \t]*)(?:([A-Z]\w*)\b(?=.*\n(?:\1[ \t].*\n)*\1End\2(?=[ \t]*$))|End[A-Z]\w*(?=[ \t]*$))/mg,
 		lookbehind: true,
-		greedy: true,
 		alias: 'keyword'
 	},
 	'property': {

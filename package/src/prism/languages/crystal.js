@@ -48,8 +48,5 @@ insertBefore(crystal, 'string-literal', {
 			}
 		}
 	},
-	'char': {
-		pattern: /'(?:[^\\\n]{1,2}|\\(?:.|u(?:[a-fA-F\d]{1,4}|\{[a-fA-F\d]{1,6}\})))'/g,
-		greedy: true
-	}
+	'char': /'(?:[^\\\n]{1,2}|\\(?:.|u(?:[a-fA-F\d]{1,4}|\{[a-fA-F\d]{1,6}\})))'/g
 });

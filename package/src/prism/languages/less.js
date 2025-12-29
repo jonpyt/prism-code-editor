@@ -13,7 +13,7 @@ import './css.js';
 
 insertBefore(
 	languages.less = extend('css', {
-		'comment': clikeComment(),
+		'comment': clikeComment,
 		'atrule': {
 			pattern: /@[\w-](?:\((?:[^(){}]|\([^(){}]*\))*\)|[^(){};\s]|\s+(?!\s))*?(?=\s*\{)/,
 			inside: {

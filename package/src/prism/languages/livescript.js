@@ -4,7 +4,6 @@ languages.livescript = {
 	'comment': /#.*|\/\*[\s\S]*?\*\//,
 	'interpolated-string': {
 		pattern: /"""(?:\\[\s\S]|[^\\])*?"""|"(?:\\[\s\S]|[^\\])*?"/g,
-		greedy: true,
 		inside: {
 			'variable': {
 				pattern: /(^|[^\\])#[a-z_](?:-?[a-z]|[\d_])*/m,
@@ -25,24 +24,17 @@ languages.livescript = {
 		}
 	},
 	'string': [
-		{
-			pattern: /'''(?:\\[\s\S]|[^\\])*?'''|'(?:\\[\s\S]|[^\\])*?'|<\[[\s\S]*?\]>/g,
-			greedy: true
-		},
+		/'''(?:\\[\s\S]|[^\\])*?'''|'(?:\\[\s\S]|[^\\])*?'|<\[[\s\S]*?\]>/g,
 		/\\[^\s,;\])}]+/
 	],
 	'regex': [
 		{
 			pattern: /\/\/(?:\[[^\n\]]*\]|\\.|(?!\/\/)[^\\[])+\/\/[gimyu]{0,5}/g,
-			greedy: true,
 			inside: {
 				'comment': /#.*/,
 			}
 		},
-		{
-			pattern: /\/(?:\[[^\n\]]*\]|\\.|[^\\\n/[])+\/[gimyu]{0,5}/g,
-			greedy: true
-		}
+		/\/(?:\[[^\n\]]*\]|\\.|[^\\\n/[])+\/[gimyu]{0,5}/g
 	],
 	'keyword': {
 		pattern: /(^|(?!-).)\b(?:break|case|catch|class|const|continue|default|do|else|extends|fallthrough|finally|for ever|for|function|if|implements|it|let|loop|new|null|otherwise|own|return|super|switch|that|[tw]hen|this|throw|try|unless|until|var|void|while|yield)(?!-)\b/m,

@@ -1,10 +1,7 @@
 import { languages } from '../core.js';
 
 languages.mermaid = {
-	'comment': {
-		pattern: /%%.*/g,
-		greedy: true
-	},
+	'comment': /%%.*/g,
 
 	'style': {
 		pattern: /^([ \t]*(?:classDef|linkStyle|style)[ \t]+[$\w-]+[ \t]+)\w.*[^\s;]/m,
@@ -19,7 +16,6 @@ languages.mermaid = {
 	'inter-arrow-label': {
 		pattern: /([^<>ox.=-])(?:-[-.]|==)(?![<>ox.=-])[ \t]*(?:"[^\n"]*"|[^\s".=-](?:[^\n.=-]*[^\s.=-])?)[ \t]*(?:\.+->?|--+[->]|==+[=>])(?![<>ox.=-])/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'arrow': {
 				pattern: /(?:\.+->?|--+[->]|==+[=>])$/,
@@ -73,7 +69,6 @@ languages.mermaid = {
 	'label': {
 		pattern: /(^|[^|<])\|(?:[^\n"|]|"[^\n"]*")+\|/g,
 		lookbehind: true,
-		greedy: true,
 		alias: 'property'
 	},
 
@@ -81,10 +76,7 @@ languages.mermaid = {
 		pattern: /(?:[(\[{]+|\b>)(?:[^\n"()[\]{}]|"[^\n"]*")+(?:[)\]}]+|>)/,
 		alias: 'string'
 	},
-	'string': {
-		pattern: /"[^\n"]*"/g,
-		greedy: true
-	},
+	'string': /"[^\n"]*"/g,
 
 	'annotation': {
 		pattern: /<<(?:abstract|choice|enumeration|fork|interface|join|service)>>|\[\[(?:choice|fork|join)\]\]/i,
@@ -95,13 +87,11 @@ languages.mermaid = {
 		// This language has both case-sensitive and case-insensitive keywords
 		{
 			pattern: /(^[ \t]*)(?:action|callback|class|classDef|classDiagram|click|direction|erDiagram|flowchart|gantt|gitGraph|graph|journey|link|linkStyle|pie|requirementDiagram|sequenceDiagram|stateDiagram|stateDiagram-v2|style|subgraph)(?![$\w-])/mg,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		},
 		{
 			pattern: /(^[ \t]*)(?:activate|alt|and|as|autonumber|deactivate|else|end(?:[ \t]+note)?|loop|opt|par|participant|rect|state|note[ \t]+(?:over|(?:left|right)[ \t]+of))(?![$\w-])/img,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		}
 	],
 

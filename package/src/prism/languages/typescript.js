@@ -4,8 +4,7 @@ import './javascript.js';
 
 var className = {
 	pattern: /(\b(?:class|extends|implements|instanceof|interface|new|type)\s+)(?!keyof\b)(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+(?:\s*<(?:[^<>]|<(?:[^<>]|<[^<>]*>)*>)*>)?/g,
-	lookbehind: true,
-	greedy: true
+	lookbehind: true
 };
 var ts = languages.ts = languages.typescript = extend('js', {
 	'class-name': className
@@ -43,7 +42,6 @@ insertBefore(ts, 'function', {
 	'generic-function': {
 		// e.g. foo<T extends "bar" | "baz">( ...
 		pattern: /#?(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+\s*<(?:[^<>=]|=[^<]|=?<(?:[^<>]|<[^<>]*>)*>)*>(?=\s*\()/g,
-		greedy: true,
 		inside: {
 			'generic': {
 				pattern: /<[\s\S]+/, // everything after the first <

@@ -2,23 +2,15 @@ import { languages } from '../core.js';
 import { boolean } from '../utils/patterns.js';
 
 languages.sclang = languages.supercollider = {
-	'comment': {
-		pattern: /\/\/.*|\/\*(?:[^*/]|\*(?!\/)|\/(?!\*)|\/\*(?:[^*]|\*(?!\/))*\*\/)*\*\//g,
-		greedy: true
-	},
+	'comment': /\/\/.*|\/\*(?:[^*/]|\*(?!\/)|\/(?!\*)|\/\*(?:[^*]|\*(?!\/))*\*\/)*\*\//g,
 	'string': {
 		pattern: /(^|[^\\])"(?:\\[\s\S]|[^\\"])*"/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
-	'char': {
-		pattern: /\$(?:\\.|[^\\\n])/g,
-		greedy: true
-	},
+	'char': /\$(?:\\.|[^\\\n])/g,
 	'symbol': {
 		pattern: /(^|[^\\])'(?:\\[\s\S]|[^\\'])*'|\\\w+/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 
 	'keyword': /\b(?:_|arg|classvar|const|nil|var|while)\b/,

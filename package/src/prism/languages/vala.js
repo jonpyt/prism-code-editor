@@ -1,16 +1,18 @@
 import { languages, rest } from '../core.js';
 import { boolean, clikeComment, clikePunctuation, clikeString } from '../utils/patterns.js';
 
+var dotPunctuation = {
+	punctuation: /\./
+};
+
 languages.vala = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'raw-string': {
 		pattern: /"""[\s\S]*?"""/g,
-		greedy: true,
 		alias: 'string'
 	},
 	'template-string': {
 		pattern: /@"[^"]*"/g,
-		greedy: true,
 		inside: {
 			'interpolation': {
 				pattern: /\$(?:\([^)]*\)|[a-zA-Z]\w*)/,
@@ -25,44 +27,31 @@ languages.vala = {
 			'string': /[\s\S]+/
 		}
 	},
-	'string': clikeString(),
+	'string': clikeString,
 	// Classes copied from prism-csharp
 	'class-name': [
 		{
 			// (Foo bar, Bar baz)
-			pattern: /\b[A-Z]\w*(?:\.\w+)*\b(?=(?:\?\s+|\*?\s+\*?)\w)/,
-			inside: {
-				punctuation: /\./
-			}
-		},
-		{
 			// [Foo]
-			pattern: /(\[)[A-Z]\w*(?:\.\w+)*\b/,
+			pattern: /\b[A-Z]\w*(?:\.\w+)*\b(?=(?:\?\s+|\*?\s+\*?)\w)|(\[)[A-Z]\w*(?:\.\w+)*\b/,
 			lookbehind: true,
-			inside: {
-				punctuation: /\./
-			}
+			inside: dotPunctuation
 		},
 		{
 			// class Foo : Bar
 			pattern: /(\b(?:class|interface)\s+[A-Z]\w*(?:\.\w+)*\s*:\s*)[A-Z]\w*(?:\.\w+)*\b/,
 			lookbehind: true,
-			inside: {
-				punctuation: /\./
-			}
+			inside: dotPunctuation
 		},
 		{
 			// class Foo
 			pattern: /((?:\b(?:class|enum|interface|new|struct)\s+)|(?:catch\s+\())[A-Z]\w*(?:\.\w+)*\b/,
 			lookbehind: true,
-			inside: {
-				punctuation: /\./
-			}
+			inside: dotPunctuation
 		}
 	],
 	'regex': {
 		pattern: /\/(?:\[(?:\\.|[^\\\n\]])*\]|\\.|[^\\\n/[])+\/[imsx]{0,4}(?=\s*(?:$|[\n,.;})\]]))/g,
-		greedy: true,
 		inside: {
 			'regex-flags': /\w+$/,
 			'regex-delimiter': /^\/|\/$/,

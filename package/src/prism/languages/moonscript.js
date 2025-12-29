@@ -8,13 +8,9 @@ var moonscript = {
 moonscript.inside = languages.moon = languages.moonscript = {
 	'comment': /--.*/,
 	'string': [
-		{
-			pattern: /'[^']*'|\[(=*)\[[\s\S]*?\]\1\]/g,
-			greedy: true
-		},
+		/'[^']*'|\[(=*)\[[\s\S]*?\]\1\]/g,
 		{
 			pattern: /"[^"]*"/g,
-			greedy: true,
 			inside: {
 				'interpolation': {
 					pattern: /#\{[^{}]*\}/,
@@ -29,14 +25,11 @@ moonscript.inside = languages.moon = languages.moonscript = {
 			}
 		}
 	],
-	'class-name': [
-		{
-			pattern: /(\b(?:class|extends)[ \t]+)\w+/,
-			lookbehind: true
-		},
-		// class-like names start with a capital letter
-		/\b[A-Z]\w*/
-	],
+	// class-like names start with a capital letter
+	'class-name': {
+		pattern: /(\b(?:class|extends)[ \t]+)\w+|\b[A-Z]\w*/,
+		lookbehind: true
+	},
 	'keyword': /\b(?:class|continue|do|else|elseif|export|extends|for|from|if|import|in|local|nil|return|self|super|switch|[tw]hen|unless|using|while|with)\b/,
 	'variable': /@@?\w*/,
 	'property': {

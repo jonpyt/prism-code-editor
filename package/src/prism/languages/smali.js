@@ -5,10 +5,7 @@ import { languages } from '../core.js';
 
 languages.smali = {
 	'comment': /#.*/,
-	'string': {
-		pattern: /"(?:\\.|[^\\\n"])*"|'(?:[^\\\n']|\\(?:.|u[a-fA-F\d]{4}))'/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\\n"])*"|'(?:[^\\\n']|\\(?:.|u[a-fA-F\d]{4}))'/g,
 
 	'class-name': {
 		pattern: /(^|[^L])L(?:(?:\w+|`[^\n`]*`)\/)*(?:[$\w]+|`[^\n`]*`)(?=\s*;)/,

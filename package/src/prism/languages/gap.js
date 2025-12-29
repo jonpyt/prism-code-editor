@@ -12,21 +12,16 @@ var gap = {
 gap.inside = languages.gap = {
 	'shell': {
 		pattern: /^gap>[\s\S]*?(?=^gap>|$(?![\s\S]))/mg,
-		greedy: true,
 		inside: {
 			'gap': gap,
 			'punctuation': /^gap>/
 		}
 	},
 
-	'comment': {
-		pattern: /#.*/g,
-		greedy: true
-	},
+	'comment': /#.*/g,
 	'string': {
 		pattern: /(^|[^\\"'])(?:'(?:\\.|[^\\\n']|){1,10}'|"(?:\\.|[^\\\n"])*"(?!")|"""[\s\S]*?""")/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'continuation': {
 				pattern: /^>/m,

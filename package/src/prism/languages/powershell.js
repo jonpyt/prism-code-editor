@@ -18,7 +18,6 @@ stringFunction.inside = languages.powershell = {
 	'string': [
 		{
 			pattern: /"(?:`[\s\S]|[^`"])*"/g,
-			greedy: true,
 			// Variable interpolation inside strings, and nested expressions
 			inside: {
 				'function': stringFunction,
@@ -26,10 +25,7 @@ stringFunction.inside = languages.powershell = {
 				'variable': variable,
 			}
 		},
-		{
-			pattern: /'(?:[^']|'')*'/g,
-			greedy: true
-		}
+		/'(?:[^']|'')*'/g
 	],
 	// Matches name spaces as well as casts, attribute decorators. Force starting with letter to avoid matching array indices
 	// Supports two levels of nested brackets (e.g. `[OutputType([System.Collections.Generic.List[int]])]`)

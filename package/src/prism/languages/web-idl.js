@@ -7,11 +7,8 @@ var type = `(?:\\b(?:unsigned\\s+)?long\\s+long(?![\\w-])|\\b(?:unrestricted|uns
 var typeInside = {};
 
 var webIdl = languages['webidl'] = languages['web-idl'] = {
-	'comment': clikeComment(),
-	'string': {
-		pattern: /"[^"]*"/g,
-		greedy: true
-	},
+	'comment': clikeComment,
+	'string': /"[^"]*"/g,
 
 	'namespace': {
 		pattern: RegExp(/(\bnamespace\s+)/.source + id),
@@ -24,40 +21,16 @@ var webIdl = languages['webidl'] = languages['web-idl'] = {
 			inside: typeInside
 		},
 		{
-			pattern: RegExp(/(\b(?:attribute|const|deleter|[gs]etter|optional)\s+)/.source + type),
+			pattern: RegExp(`(\\b(?:(?:attribute|const|deleter|[gs]etter|optional)\\s|callback\\s+${id}\\s*=|typedef\\b)\\s*)${type}`),
 			lookbehind: true,
 			inside: typeInside
 		},
 		{
-			// callback return type
-			pattern: RegExp(`(\\bcallback\\s+${id}\\s*=\\s*)${type}`),
-			lookbehind: true,
-			inside: typeInside
-		},
-		{
-			// typedef
-			pattern: RegExp(/(\btypedef\b\s*)/.source + type),
-			lookbehind: true,
-			inside: typeInside
-		},
-
-		{
-			pattern: RegExp(/(\b(?:callback|dictionary|enum|interface(?:\s+mixin)?)\s+)(?!(?:interface|mixin)\b)/.source + id),
+			pattern: RegExp(/(\b(?:callback|dictionary|enum|interface(?:\s+mixin)?)\s+(?!(?:interface|mixin)\b)|:\s*|\b(?:implements|includes)\s+)/.source + id),
 			lookbehind: true,
 		},
-		{
-			// inheritance
-			pattern: RegExp('(:\\s*)' + id),
-			lookbehind: true,
-		},
-
 		// includes and implements
 		RegExp(id + '(?=\\s+(?:implements|includes)\\b)'),
-		{
-			pattern: RegExp('(\\b(?:implements|includes)\\s+)' + id),
-			lookbehind: true,
-		},
-
 		{
 			// function return type, parameter types, and dictionary members
 			pattern: RegExp(`${type}(?=\\s*(?:\\.{3}\\s*)?${id}\\s*[(),;=])`),

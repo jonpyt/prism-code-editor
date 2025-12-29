@@ -6,7 +6,6 @@ import { xmlComment, entity } from '../utils/xml-shared.js';
 
 var expression = {
 	pattern: RegExp(braces, 'g'),
-	greedy: true,
 	alias: 'language-tsx',
 	inside: 'tsx'
 };
@@ -19,7 +18,6 @@ var astro = languages.astro = {
 	'comment': xmlComment,
 	'front-matter-block': {
 		pattern: /^---(?!.)[\s\S]*?\n---/g,
-		greedy: true,
 		inside: {
 			'punctuation': /^---|---$/,
 			'language-typescript': {

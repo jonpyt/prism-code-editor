@@ -6,26 +6,18 @@ import { re } from '../utils/shared.js';
 var insertKey = pattern => re(pattern, [`(?:[\\w-]+|'[^\n']*'|"(?:\\\\.|[^\\\\"\n])*")`], 'mg');
 
 languages.toml = {
-	'comment': {
-		pattern: /#.*/g,
-		greedy: true
-	},
+	'comment': /#.*/g,
 	'table': {
 		pattern: insertKey(/(^[ \t]*\[\s*(?:\[\s*)?)<0>(?:\s*\.\s*<0>)*(?=\s*\])/.source),
 		lookbehind: true,
-		greedy: true,
 		alias: 'class-name'
 	},
 	'key': {
 		pattern: insertKey(/(^[ \t]*|[{,]\s*)<0>(?:\s*\.\s*<0>)*(?=\s*=)/.source),
 		lookbehind: true,
-		greedy: true,
 		alias: 'property'
 	},
-	'string': {
-		pattern: /"""(?:\\[\s\S]|[^\\])*?"""|'''[\s\S]*?'''|'[^\n']*'|"(?:\\.|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'string': /"""(?:\\[\s\S]|[^\\])*?"""|'''[\s\S]*?'''|'[^\n']*'|"(?:\\.|[^\\\n"])*"/g,
 	'date': {
 		// Offset Date-Time, Local Date-Time, Local Date, Local Time
 		pattern: /\b(?:\d{4}-\d\d-\d\d(?:[t\s]\d\d:\d\d:\d\d(?:\.\d+)?(?:z|[+-]\d\d:\d\d)?)?|\d\d:\d\d:\d\d(?:\.\d+)?)\b/i,

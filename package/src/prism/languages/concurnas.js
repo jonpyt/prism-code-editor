@@ -7,10 +7,9 @@ var interpolation = {
 };
 
 interpolation.inside = languages.conc = languages.concurnas = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'regex-literal': {
 		pattern: /\br(["'])(?:\\.|(?!\1)[^\\\n])*\1/g,
-		greedy: true,
 		inside: {
 			'interpolation': interpolation,
 			'regex': /[\s\S]+/
@@ -18,7 +17,6 @@ interpolation.inside = languages.conc = languages.concurnas = {
 	},
 	'string-literal': {
 		pattern: /(?:\B|\bs)(["'])(?:\\.|(?!\1)[^\\\n])*\1/g,
-		greedy: true,
 		inside: {
 			'interpolation': interpolation,
 			'string': /[\s\S]+/
@@ -26,7 +24,6 @@ interpolation.inside = languages.conc = languages.concurnas = {
 	},
 	'langext': {
 		pattern: /\b\w+\s*\|\|[\s\S]+?\|\|/g,
-		greedy: true,
 		inside: {
 			'class-name': /^\w+/,
 			'string': {

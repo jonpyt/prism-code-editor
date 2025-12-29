@@ -1,13 +1,9 @@
 import { languages } from '../core.js';
 
 languages['arm-asm'] = languages.armasm = {
-	'comment': {
-		pattern: /;.*/g,
-		greedy: true
-	},
+	'comment': /;.*/g,
 	'string': {
 		pattern: /"(?:[^\n"]|"")*"/g,
-		greedy: true,
 		inside: {
 			'variable': {
 				pattern: /((?:^|[^$])(?:\$\$)*)\$\w+/,
@@ -15,13 +11,9 @@ languages['arm-asm'] = languages.armasm = {
 			}
 		}
 	},
-	'char': {
-		pattern: /'(?:[^\n']{0,4}|'')'/g,
-		greedy: true
-	},
+	'char': /'(?:[^\n']{0,4}|'')'/g,
 	'version-symbol': {
 		pattern: /\|[\w@]+\|/g,
-		greedy: true,
 		alias: 'property'
 	},
 

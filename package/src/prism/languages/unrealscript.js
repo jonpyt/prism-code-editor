@@ -2,18 +2,16 @@ import { languages } from '../core.js';
 import { boolean, clikeComment, clikeNumber, clikePunctuation, clikeString } from '../utils/patterns.js';
 
 languages.uc = languages.uscript = languages.unrealscript = {
-	'comment': clikeComment(),
-	'string': clikeString(),
+	'comment': clikeComment,
+	'string': clikeString,
 	'category': {
 		pattern: /(\b(?:(?:autoexpand|hide|show)categories|var)\s*\()[^()]+(?=\))/g,
 		lookbehind: true,
-		greedy: true,
 		alias: 'property'
 	},
 	'metadata': {
 		pattern: /(\w\s*)<\s*\w+\s*=[^<>|=\n]+(?:\|\s*\w+\s*=[^<>|=\n]+)*>/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'property': /\b\w+(?=\s*=)/,
 			'operator': /=/,

@@ -18,17 +18,13 @@ var class0 = {
 		[replace(/(?:'[\w']*|<0>|\((?:[^()]|\([^)]*\))*\)|\{(?:[^{}]|\{[^}]*\})*\})(?:\s+<0>)*/.source, [longId]), longId],
 		'gi'
 	),
-	lookbehind: true,
-	greedy: true
+	lookbehind: true
 };
 
 class0.inside = languages.smlnj = languages.sml = {
 	// allow one level of nesting
 	'comment': /\(\*(?:[^*(]|\*(?!\))|\((?!\*)|\(\*(?:[^*(]|\*(?!\))|\((?!\*))*\*\))*\*\)/,
-	'string': {
-		pattern: /#?"(?:\\.|[^\\"])*"/g,
-		greedy: true
-	},
+	'string': /#?"(?:\\.|[^\\"])*"/g,
 
 	'class-name': [
 		class0,

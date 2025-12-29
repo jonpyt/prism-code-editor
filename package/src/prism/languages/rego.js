@@ -7,13 +7,11 @@ languages.rego = {
 	'comment': /#.*/,
 	'property': {
 		pattern: /(^|[^\\.])(?:"(?:\\.|[^\\\n"])*"|`[^`]*`|\b[a-z_]\w*\b)(?=\s*:(?!=))/gi,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'string': {
 		pattern: /(^|[^\\])"(?:\\.|[^\\\n"])*"|`[^`]*`/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 
 	'keyword': /\b(?:as|default|else|import|not|null|package|set(?=\s*\()|some|with)\b/,

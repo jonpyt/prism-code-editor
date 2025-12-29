@@ -12,8 +12,7 @@ var sass = languages.sass = extend('css', {
 	// Sass comments don't need to be closed, only indented
 	'comment': {
 		pattern: /^([ \t]*)\/[/*].*(?:$\s*?\n\1[ \t]+\S.*)*/mg,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	}
 });
 
@@ -22,7 +21,6 @@ insertBefore(sass, 'atrule', {
 	'atrule-line': {
 		// Includes support for = and + shortcuts
 		pattern: /^(?:[ \t]*)[@+=].+/mg,
-		greedy: true,
 		inside: {
 			'atrule': /(?:@[\w-]+|[+=])/
 		}
@@ -34,7 +32,6 @@ insertBefore(sass, 'property', {
 	// We want to consume the whole line
 	'variable-line': {
 		pattern: /^[ \t]*\$.+/mg,
-		greedy: true,
 		inside: {
 			'punctuation': /:/,
 			'variable': variable,
@@ -44,7 +41,6 @@ insertBefore(sass, 'property', {
 	// We want to consume the whole line
 	'property-line': {
 		pattern: /^[ \t]*(?:[^:\s]+ *:.*|:[^:\s].*)/mg,
-		greedy: true,
 		inside: {
 			'property': [
 				/[^:\s]+(?=\s*:)/,
@@ -68,7 +64,6 @@ delete sass.important;
 insertBefore(sass, 'punctuation', {
 	'selector': {
 		pattern: /^([ \t]*)\S(?:,[^\n,]+|[^\n,]*)(?:,[^\n,]+)*(?:,\n\1[ \t]+\S(?:,[^\n,]+|[^\n,]*)(?:,[^\n,]+)*)*/mg,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	}
 });

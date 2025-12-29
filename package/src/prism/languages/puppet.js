@@ -50,7 +50,6 @@ interpolation[0].inside[rest] = languages.puppet = {
 		{
 			pattern: /(@\(([^\n"/):]+)(?:\/[nrts$uL]*)?\).*\n)(?:.*\n)*?[ \t]*(?:\|[ \t]*)?(?:-[ \t]*)?\2/g,
 			lookbehind: true,
-			greedy: true,
 			alias: 'string',
 			inside: {
 				// Matches the end tag
@@ -68,14 +67,12 @@ interpolation[0].inside[rest] = languages.puppet = {
 	],
 	'multiline-comment': {
 		pattern: /\/\*[\s\S]*?\*\//g,
-		greedy: true,
 		alias: 'comment'
 	},
 	'regex': {
 		// Must be prefixed with the keyword "node" or a non-word char
 		pattern: /(\bnode\s+|[~=([{,]\s*|[=+]>\s*|^\s*)\/(?:\\[\s\S]|[^\\/])+\/(?:[imx]+\b|\B)/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			// Extended regexes must have the x flag. They can contain single-line comments.
 			'extended-regex': {
@@ -86,14 +83,10 @@ interpolation[0].inside[rest] = languages.puppet = {
 			}
 		}
 	},
-	'comment': {
-		pattern: /#.*/g,
-		greedy: true,
-	},
+	'comment': /#.*/g,
 	'string': {
 		// Allow for one nested level of double quotes inside interpolation
 		pattern: /(["'])(?:\$\{(?:[^}"']|(["'])(?:\\[\s\S]|(?!\2)[^\\])*\2)+\}|\$(?!\{)|\\[\s\S]|(?!\1)[^\\$])*\1/g,
-		greedy: true,
 		inside: {
 			'double-quoted': {
 				pattern: /^"[\s\S]*"$/,

@@ -39,7 +39,6 @@ languages.yml = languages.yaml = {
 			[properties, '(?:' + plainKey + '|' + string + ')'], 'g'
 		),
 		lookbehind: true,
-		greedy: true,
 		alias: 'atrule'
 	},
 	'directive': {
@@ -64,8 +63,7 @@ languages.yml = languages.yaml = {
 	},
 	'string': {
 		pattern: createValuePattern(string, 'mg'),
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'number': {
 		pattern: createValuePattern(/[+-]?(?:0x[a-f\d]+|0o[0-7]+|(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?|\.inf|\.nan)/.source, 'im'),

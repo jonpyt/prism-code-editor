@@ -2,11 +2,8 @@ import { languages } from '../core.js';
 import { clikeComment } from '../utils/patterns.js';
 
 languages.verilog = {
-	'comment': clikeComment(),
-	'string': {
-		pattern: /"(?:\\[\s\S]|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'comment': clikeComment,
+	'string': /"(?:\\[\s\S]|[^\\\n"])*"/g,
 	'kernel-function': {
 		// support for any kernel function (ex: $display())
 		pattern: /\B\$\w+/,

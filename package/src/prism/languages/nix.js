@@ -11,7 +11,6 @@ interpolation.inside = languages.nix = {
 	'comment': /\/\*[\s\S]*?\*\/|#.*/,
 	'string': {
 		pattern: /"(?:\\[\s\S]|[^\\"])*"|''(?:(?!'')[\s\S]|''(?:'|\\|\$\{))*''/g,
-		greedy: true,
 		inside: {
 			'interpolation': interpolation
 		}

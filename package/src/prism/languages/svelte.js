@@ -7,8 +7,7 @@ import { entity, xmlComment } from '../utils/xml-shared.js';
 var currentLang;
 
 var expression = {
-	pattern: RegExp(braces, 'g'),
-	greedy: true
+	pattern: RegExp(braces, 'g')
 };
 
 var tag = astroTag(expression);
@@ -36,7 +35,6 @@ languages.svelte = {
 	}),
 	'block': {
 		pattern: re(/\{[#@:/]\w*(?:\s(?:[^{}]|<0>)*)?\}/.source, [braces], 'g'),
-		greedy: true,
 		inside: blockInside
 	},
 	'tag': tag,

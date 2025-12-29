@@ -9,8 +9,7 @@ var currentLang;
 
 var expression = {
 	pattern: /(\{\{)[\s\S]+?(?=\}\})/g,
-	lookbehind: true,
-	greedy: true
+	lookbehind: true
 };
 
 var attrLang = {
@@ -25,14 +24,12 @@ tagInside['attr-value'].unshift(
 	{
 		pattern: /([\s"'](?::|@|v-)[^\s/=>]+\s*=\s*)(?:"[^"]*"|'[^']*'|[^\s>]+)/g,
 		lookbehind: true,
-		greedy: true,
 		alias: 'script',
 		inside: attrInside
 	},
 	{
 		pattern: /([\s"']style\s*=\s*)(?:"[^"]*"|'[^']*'|[^\s>]+)/g,
 		lookbehind: true,
-		greedy: true,
 		alias: 'style',
 		inside: {
 			'punctuation': /^["']|["']$/,

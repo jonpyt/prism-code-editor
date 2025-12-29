@@ -3,22 +3,16 @@ import { languages } from '../core.js';
 languages.gawk = languages.awk = {
 	'hashbang': {
 		pattern: /^#!.*/g,
-		greedy: true,
 		alias: 'comment'
 	},
-	'comment': {
-		pattern: /#.*/g,
-		greedy: true
-	},
+	'comment': /#.*/g,
 	'string': {
 		pattern: /(^|[^\\])"(?:\\.|[^\\\n"])*"/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'regex': {
 		pattern: /((?:^|[^\w\s)])\s*)\/(?:\\.|[^\\\n/])*\//g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 
 	'variable': /\$\w+/,

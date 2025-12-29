@@ -1,22 +1,13 @@
 import { languages } from '../core.js';
 import { clikePunctuation } from '../utils/patterns.js';
 
-var char = {
-	// https://en.cppreference.com/w/c/language/character_constant
-	pattern: /'(?:\\[\s\S]|[^\\\n']){0,32}'/g,
-	greedy: true
-};
+// https://en.cppreference.com/w/c/language/character_constant
+var char = /'(?:\\[\s\S]|[^\\\n']){0,32}'/g;
 
-var comment = {
-	pattern: /\/\/(?:[^\\\n]|\\\n?)*|\/\*[\s\S]*?(?:\*\/|$)/g,
-	greedy: true
-};
+var comment = /\/\/(?:[^\\\n]|\\\n?)*|\/\*[\s\S]*?(?:\*\/|$)/g;
 
-var string = {
-	// https://en.cppreference.com/w/c/language/string_literal
-	pattern: /"(?:\\[\s\S]|[^\\\n"])*"/g,
-	greedy: true
-};
+// https://en.cppreference.com/w/c/language/string_literal
+var string = /"(?:\\[\s\S]|[^\\\n"])*"/g;
 
 var macroExpression = {
 	pattern: /\S[\s\S]*/
@@ -30,7 +21,6 @@ macroExpression.inside = languages.c = {
 		// spaces after the # character compile fine with gcc
 		pattern: /(^[ \t]*)#\s*[a-z](?:[^\\\n/]|\/(?!\*)|\/\*(?:[^*]|\*(?!\/))*\*\/|\\[\s\S])*/img,
 		lookbehind: true,
-		greedy: true,
 		alias: 'property',
 		inside: {
 			'string': [

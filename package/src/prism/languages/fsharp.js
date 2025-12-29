@@ -2,13 +2,9 @@ import { languages } from '../core.js';
 import { boolean, clikePunctuation } from '../utils/patterns.js';
 
 languages.fsharp = {
-	'comment': {
-		pattern: /\/\/.*|\(\*(?!\))[\s\S]*?\*\)/g,
-		greedy: true
-	},
+	'comment': /\/\/.*|\(\*(?!\))[\s\S]*?\*\)/g,
 	'annotation': {
 		pattern: /\[<.+?>\]/g,
-		greedy: true,
 		inside: {
 			'punctuation': /^\[<|>\]$/,
 			'class-name': {
@@ -21,14 +17,8 @@ languages.fsharp = {
 			}
 		}
 	},
-	'char': {
-		pattern: /'(?:[^\\']|\\(?:.|\d{3}|x[a-fA-F\d]{2}|u[a-fA-F\d]{4}|U[a-fA-F\d]{8}))'B?/g,
-		greedy: true
-	},
-	'string': {
-		pattern: /(?:"""[\s\S]*?"""|@"(?:""|[^"])*"|"(?:\\[\s\S]|[^\\"])*")B?/g,
-		greedy: true
-	},
+	'char': /'(?:[^\\']|\\(?:.|\d{3}|x[a-fA-F\d]{2}|u[a-fA-F\d]{4}|U[a-fA-F\d]{8}))'B?/g,
+	'string': /(?:"""[\s\S]*?"""|@"(?:""|[^"])*"|"(?:\\[\s\S]|[^\\"])*")B?/g,
 	'class-name': {
 		pattern: /(\b(?:exception|inherit|interface|new|of|type)\s+|\w\s*:\s*|\s:\??>\s*)[.\w]+\b(?:\s*(?:->|\*)\s*[.\w]+\b)*(?!\s*[:.])/,
 		lookbehind: true,

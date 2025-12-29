@@ -5,8 +5,7 @@ languages.keepalived = {
 	'comment': /[#!].*/,
 	'string': {
 		pattern: /(^|[^\\])(["'])(?:\\[\s\S]|(?!\2)[^\\\n])*\2/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 
 	// support IPv4, IPv6, subnet mask

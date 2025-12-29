@@ -16,7 +16,6 @@ inside.inside = languages.ly = languages.lilypond = {
 	'embedded-scheme': {
 		pattern: re(/(^|[=\s])#(?:"(?:\\.|[^\\"])*"|[^\s()"]*(?:[^\s()]|<0>))/.source, [schemeExpression], 'mg'),
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'scheme': {
 				pattern: /(?!^)[\s\S]+/,
@@ -24,7 +23,6 @@ inside.inside = languages.ly = languages.lilypond = {
 				inside: {
 					'embedded-lilypond': {
 						pattern: /#\{[\s\S]*?#\}/g,
-						greedy: true,
 						inside: {
 							'punctuation': /^#\{|#\}$/,
 							'lilypond': inside
@@ -36,10 +34,7 @@ inside.inside = languages.ly = languages.lilypond = {
 			'punctuation': /#/
 		}
 	},
-	'string': {
-		pattern: /"(?:\\.|[^\\"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\"])*"/g,
 	'class-name': {
 		pattern: /(\\new\s+)[\w-]+/,
 		lookbehind: true

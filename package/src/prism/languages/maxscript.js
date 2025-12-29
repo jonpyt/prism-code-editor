@@ -4,18 +4,13 @@ import { boolean } from '../utils/patterns.js';
 var keywords = /\b(?:about|and|animate|as|at|attributes|by|case|catch|collect|continue|coordsys|do|else|exit|fn|f?or|from|function|global|if|in|local|macroscript|mapped|max|not|off?|on|parameters|persistent|plugin|rcmenu|return|rollout|set|struct|[tw]hen|throw|to|tool|try|undo|utility|where|while|with)\b/i;
 
 languages.maxscript = {
-	'comment': {
-		pattern: /\/\*[\s\S]*?(?:\*\/|$)|--.*/g,
-		greedy: true
-	},
+	'comment': /\/\*[\s\S]*?(?:\*\/|$)|--.*/g,
 	'string': {
 		pattern: /(^|[^\\"@])(?:"(?:\\[\s\S]|[^\\"])*"|@"[^"]*")/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'path': {
 		pattern: /\$(?:[\w/\\.*?]|'[^']*')*/g,
-		greedy: true,
 		alias: 'string'
 	},
 
@@ -24,7 +19,6 @@ languages.maxscript = {
 			keywords.source
 		})[a-z_]\\w*\\b(?=[ \t]*(?:(?!${keywords.source})[a-z_]|\\d|-\\.?\\d|[({"'$@#?]))`, 'img'),
 		lookbehind: true,
-		greedy: true,
 		alias: 'function'
 	},
 

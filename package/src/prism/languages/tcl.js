@@ -2,10 +2,7 @@ import { languages } from '../core.js';
 
 languages.tcl = {
 	'comment': /#.*/,
-	'string': {
-		pattern: /"(?:\\[\s\S]|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:\\[\s\S]|[^\\\n"])*"/g,
 	'variable': [
 		{
 			pattern: /(\$)(?:(?:::)?(?:[a-zA-Z\d]+::)*\w+|\{[^}]+\})/,

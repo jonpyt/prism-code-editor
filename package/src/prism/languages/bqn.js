@@ -3,21 +3,15 @@ import { languages } from '../core.js';
 languages.bqn = {
 	'shebang': {
 		pattern: /^#![ \t]*\/.*/g,
-		alias: 'important',
-		greedy: true
+		alias: 'important'
 	},
-	'comment': {
-		pattern: /#.*/g,
-		greedy: true
-	},
+	'comment': /#.*/g,
 	'string-literal': {
 		pattern: /"(?:[^"]|"")*"/g,
-		greedy: true,
 		alias: 'string'
 	},
 	'character-literal': {
 		pattern: /'(?:[\s\S]|[\ud800-\udbff][\udc00-\udfff])'/g,
-		greedy: true,
 		alias: 'char'
 	},
 	'function': /•[\w¯.∞π]+[\w¯.∞π]*/,

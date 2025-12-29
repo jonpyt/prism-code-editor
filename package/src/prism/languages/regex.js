@@ -31,7 +31,6 @@ languages.regex = {
 		inside: {
 			'char-class-punctuation': {
 				pattern: /^.|.$/g,
-				greedy: true,
 				alias: 'punctuation'
 			},
 			'char-class-negation': {

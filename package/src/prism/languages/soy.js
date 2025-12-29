@@ -4,18 +4,15 @@ import { embeddedIn } from '../utils/templating.js';
 import './markup.js';
 
 var numberPattern = /\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b|\b0x[A-F\d]+\b/;
-var string = clikeString();
 
 languages.soy = {
 	'ignore-literal': {
 		pattern: /(\{literal\})(?!\{\/literal\})[\s\S]+?(?=\{\/literal\})/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'soy': {
 		pattern: /\{\{.+?\}\}|\{.+?\}|(^|\s)\/\/.*|\/\*[\s\S]*?\*\//g,
 		lookbehind: true,
-		greedy: true,
 		alias: 'language-soy',
 		inside: {
 			'comment': {
@@ -47,12 +44,12 @@ languages.soy = {
 			'variable': {
 				pattern: /\$(?!\d)\w+(?:\??(?:\.\w+|\[[^\]]+\]))*/,
 				inside: {
-					'string': string,
+					'string': clikeString,
 					'number': numberPattern,
 					'punctuation': /[[\].?]/
 				}
 			},
-			'string': string,
+			'string': clikeString,
 			'function': {
 				pattern: /\w+(?=\()|(\|[^\S\n]*)\w+/,
 				lookbehind: true

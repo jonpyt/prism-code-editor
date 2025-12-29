@@ -9,13 +9,9 @@ languages.vba = languages.vb = languages['visual-basic'] = {
 	},
 	'directive': {
 		pattern: /#(?:const|else|elseif|end|externalchecksum|externalsource|if|region)(?:\b_[ \t]*\n|.)+/gi,
-		alias: 'property',
-		greedy: true
+		alias: 'property'
 	},
-	'string': {
-		pattern: /\$?["“”](?:["“”]{2}|[^"“”])*["“”]c?/gi,
-		greedy: true
-	},
+	'string': /\$?["“”](?:["“”]{2}|[^"“”])*["“”]c?/gi,
 	'date': {
 		pattern: /#[ \t]*(?:\d+([/-])\d+\1\d+(?:[ \t]+(?:\d+[ \t]*(?:am|pm)|\d+:\d+(?::\d+)?(?:[ \t]*(?:am|pm))?))?|\d+[ \t]*(?:am|pm)|\d+:\d+(?::\d+)?(?:[ \t]*(?:am|pm))?)[ \t]*#/i,
 		alias: 'number'

@@ -14,18 +14,15 @@ expression.inside = languages.stata = {
 	'comment': [
 		{
 			pattern: /(^[ \t]*)\*.*/mg,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		},
 		{
 			pattern: /(^|\s)\/\/.*|\/\*[\s\S]*?\*\//g,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		}
 	],
 	'string-literal': {
 		pattern: /"[^\n"]*"|[‘`']".*?"[’`']/g,
-		greedy: true,
 		inside: {
 			'interpolation': {
 				pattern: /\$\{[^{}]*\}|[‘`']\w[^’`'\n]*[’`']/,
@@ -41,21 +38,18 @@ expression.inside = languages.stata = {
 	'mata': {
 		pattern: /(^[ \t]*mata[ \t]*:)[\s\S]+?(?=^end\b)/mg,
 		lookbehind: true,
-		greedy: true,
 		alias: 'language-mata',
 		inside: languages.mata
 	},
 	'java': {
 		pattern: /(^[ \t]*java[ \t]*:)[\s\S]+?(?=^end\b)/mg,
 		lookbehind: true,
-		greedy: true,
 		alias: 'language-java',
 		inside: languages.java
 	},
 	'python': {
 		pattern: /(^[ \t]*python[ \t]*:)[\s\S]+?(?=^end\b)/mg,
 		lookbehind: true,
-		greedy: true,
 		alias: 'language-python',
 		inside: languages.py
 	},
@@ -64,7 +58,6 @@ expression.inside = languages.stata = {
 	'command': {
 		pattern: /(^[ \t]*(?:\.[ \t]+)?(?:(?:bayes|bootstrap|by|bysort|capture|collect|fmm|frame|jackknife|m?fp|mi|nestreg|noisily|permute|quietly|rolling|simulate|statsby|stepwise|svy|version|xi)\b[^\n:]*:[ \t]*|(?:capture|noisily|quietly|version)[ \t]+)?)[a-zA-Z]\w*/mg,
 		lookbehind: true,
-		greedy: true,
 		alias: 'keyword'
 	},
 	'variable': /\$\w+|[‘`']\w[^’`'\n]*[’`']/,

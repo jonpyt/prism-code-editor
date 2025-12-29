@@ -3,14 +3,10 @@ import { xmlComment, entity, tag } from '../utils/xml-shared.js';
 
 languages.rss = languages.atom = languages.ssml = languages.xml = {
 	'comment': xmlComment,
-	'prolog': {
-		pattern: /<\?[\s\S]+?\?>/g,
-		greedy: true
-	},
+	'prolog': /<\?[\s\S]+?\?>/g,
 	'doctype': {
 		// https://www.w3.org/TR/xml/#NT-doctypedecl
 		pattern: /<!DOCTYPE(?:[^>"'[\]]|"[^"]*"|'[^']*')+(?:\[(?:[^<"'\]]|"[^"]*"|'[^']*'|<(?!!--)|<!--(?:[^-]|-(?!->))*-->)*\]\s*)?>/gi,
-		greedy: true,
 		inside: {
 			'internal-subset': {
 				pattern: /(\[)[\s\S]+(?=\]\s*>$)/,
@@ -23,10 +19,7 @@ languages.rss = languages.atom = languages.ssml = languages.xml = {
 			'name': /\S+/
 		}
 	},
-	'cdata': {
-		pattern: /<!\[CDATA\[[\s\S]*?\]\]>/gi,
-		greedy: true
-	},
+	'cdata': /<!\[CDATA\[[\s\S]*?\]\]>/gi,
 	'tag': tag,
 	'entity': entity,
 	'markup-bracket': {

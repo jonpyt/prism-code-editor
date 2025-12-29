@@ -13,13 +13,9 @@ var inside = {
 };
 
 inside[rest] = languages.py = languages.python = {
-	'comment': {
-		pattern: /#.*/g,
-		greedy: true
-	},
+	'comment': /#.*/g,
 	'string-interpolation': {
 		pattern: /(?:fr?|rf)(?:("""|''')[\s\S]*?\1|(["'])(?:\\[\s\S]|(?!\2)[^\\\n])*\2)/gi,
-		greedy: true,
 		inside: {
 			'interpolation': {
 				// "{" <expression> <optional "!s", "!r", or "!a"> <optional ":" format specifier> "}"
@@ -32,13 +28,9 @@ inside[rest] = languages.py = languages.python = {
 	},
 	'triple-quoted-string': {
 		pattern: /(?:br?|rb?|u)?("""|''')[\s\S]*?\1/gi,
-		greedy: true,
 		alias: 'string'
 	},
-	'string': {
-		pattern: /(?:br?|rb?|u)?(["'])(?:\\[\s\S]|(?!\1)[^\\\n])*\1/gi,
-		greedy: true
-	},
+	'string': /(?:br?|rb?|u)?(["'])(?:\\[\s\S]|(?!\1)[^\\\n])*\1/gi,
 	'function': {
 		pattern: /((?:^|\s)def[ \t]+)(?!\d)\w+(?=\s*\()/,
 		lookbehind: true

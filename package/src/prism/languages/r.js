@@ -2,10 +2,7 @@ import { languages } from '../core.js';
 
 languages.r = {
 	'comment': /#.*/,
-	'string': {
-		pattern: /(["'])(?:\\.|(?!\1)[^\\\n])*\1/g,
-		greedy: true
-	},
+	'string': /(["'])(?:\\.|(?!\1)[^\\\n])*\1/g,
 	'percent-operator': {
 		// Includes user-defined operators
 		// and %%, %*%, %/%, %in%, %o%, %x%

@@ -4,8 +4,7 @@ languages.neon = {
 	'comment': /#.*/,
 	'string': {
 		pattern: /(^|[[{(=,:\s])(?:('''|""")\n(?:(?:[^\n]|\n(?![ \t]*\2))*\n)?[ \t]*\2|'[^\n']*'|"(?:\\.|[^\\\n"])*")/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'datetime': {
 		pattern: /(^|[[{(=,:\s])\d{4}-\d\d?-\d\d?(?:(?:[Tt]| +)\d\d?:\d\d:\d\d(?:\.\d*)? *(?:Z|[+-]\d\d?(?::?\d\d)?)?)?(?![^\s\]}),])/,

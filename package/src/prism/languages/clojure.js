@@ -3,10 +3,7 @@ import { languages } from '../core.js';
 // Copied from https://github.com/jeluard/prism-clojure
 languages.clojure = {
 	'comment': /;.*/,
-	'string': {
-		pattern: /"(?:\\.|[^\\"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\"])*"/g,
 	'char': /\\\w+/,
 	'symbol': {
 		pattern: /(^|[\s()[\]{},])::?[\w*+!?'<>=/.-]+/,

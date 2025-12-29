@@ -10,10 +10,7 @@ var charClass = ['\\w\u0400-\u0484\u0487-\u052f\u1d2b\u1d78\u2de0-\u2dff\ua640-\
 //
 languages.oscript = languages.bsl = {
 	'comment': /\/\/.*/,
-	'string': {
-		pattern: /"(?:[^"]|"")*"(?!")|'(?:\\.|[^\n\\'])*'/g,
-		greedy: true
-	},
+	'string': /"(?:[^"]|"")*"(?!")|'(?:\\.|[^\n\\'])*'/g,
 	'keyword': {
 		pattern: re(/(^|[^<0>])(?:пока|для|новый|прервать|попытка|исключение|вызватьисключение|иначе|конецпопытки|неопределено|функция|перем|возврат|конецфункции|если|иначеесли|процедура|конецпроцедуры|тогда|знач|экспорт|конецесли|из|каждого|истина|ложь|по|цикл|конеццикла|выполнить)(?![<0>])|\b(?:break|do|each|else|elseif|enddo|endfunction|endif|endprocedure|endtry|except|execute|export|false|true|for|function|if|in|new|null|procedure|raise|return|then|to|try|undefined|val|var|while)\b/.source, charClass, 'i'),
 		lookbehind: true
@@ -40,7 +37,6 @@ languages.oscript = languages.bsl = {
 	'directive': {
 		pattern: /^([ \t]*)[&#].*/gm,
 		lookbehind: true,
-		greedy: true,
 		alias: 'important'
 	}
 };

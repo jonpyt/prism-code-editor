@@ -19,27 +19,22 @@ var interpolation = {
 };
 
 expression.inside = languages.groovy = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'shebang': {
 		pattern: /#!.+/g,
-		alias: 'comment',
-		greedy: true
+		alias: 'comment'
 	},
 	'interpolation-string': {
 		// TODO: Slash strings (e.g. /foo/) can contain line breaks but this will cause a lot of trouble with
 		// simple division (see JS regex), so find a fix maybe?
 		pattern: /"""(?:\\[\s\S]|[^\\])*?"""|(["/])(?:\\.|(?!\1)[^\\\n])*\1|\$\/(?:[^/$]|\$(?:[/$]|(?![/$]))|\/(?!\$))*\/\$/g,
-		greedy: true,
 		inside: {
 			'interpolation': interpolation,
 			'string': /[\s\S]+/
 		}
 	},
-	'string': {
-		// https://groovy-lang.org/syntax.html#_dollar_slashy_string
-		pattern: /'''(?:\\[\s\S]|[^\\])*?'''|'(?:\\.|[^\\\n'])*'/g,
-		greedy: true
-	},
+	// https://groovy-lang.org/syntax.html#_dollar_slashy_string
+	'string': /'''(?:\\[\s\S]|[^\\])*?'''|'(?:\\.|[^\\\n'])*'/g,
 	'class-name': clikeClass(),
 	'keyword': /\b(?:abstract|as|assert|boolean|break|byte|case|catch|char|class|const|continue|def|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int?|interface|long|native|new|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throws?|trait|transient|try|void|volatile|while)\b/,
 	'boolean': boolean,

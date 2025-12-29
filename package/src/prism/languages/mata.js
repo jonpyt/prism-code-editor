@@ -7,10 +7,7 @@ var type = /\bvoid\b|<org>|\b(?:complex|numeric|pointer(?:\s*\([^()]*\))?|real|s
 
 languages.mata = {
 	'comment': /\/\/.*|\/\*(?:[^*/]|\*(?!\/)|\/(?!\*)|\/\*(?:[^*]|\*(?!\/))*\*\/)*\*\//,
-	'string': {
-		pattern: /"[^\n"]*"|[‘`']".*?"[’`']/g,
-		greedy: true
-	},
+	'string': /"[^\n"]*"|[‘`']".*?"[’`']/g,
 
 	'class-name': {
 		pattern: /(\b(?:class|extends|struct)\s+)\w+(?=\s*(?:\{|\bextends\b))/,

@@ -2,10 +2,7 @@ import { languages } from '../core.js';
 
 languages.gcode = {
 	'comment': /;.*|\B\(.*?\)\B/,
-	'string': {
-		pattern: /"(?:""|[^"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:""|[^"])*"/g,
 	'keyword': /\b[GM]\d+(?:\.\d+)?\b/,
 	'property': /\b[A-Z]/,
 	'checksum': {

@@ -39,21 +39,18 @@ languages.zig = {
 		{
 			// "string" and c"string"
 			pattern: /(^|[^\\@])c?"(?:\\.|[^\\\n"])*"/g,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		},
 		{
 			// multiline strings and c-strings
 			pattern: /(\n)([ \t]+c?\\\\).*(?:\n\2.*)*/g,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		}
 	],
 	'char': {
 		// characters 'a', '\n', '\xFF', '\u{10FFFF}'
 		pattern: /(^|[^\\])'(?:[^\\\n']|[\ud800-\udfff]{2}|\\(?:.|x[a-fA-F\d]{2}|u\{[a-fA-F\d]{1,6}\}))'/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'builtin': /\B@(?!\d)\w+(?=\s*\()/,
 	'label': {

@@ -5,12 +5,10 @@ var stringPattern = /'[{}:=,](?:[^']|'')*'(?!')/g;
 
 var escape = {
 	pattern: /''/g,
-	greedy: true,
 	alias: 'operator'
 };
 var string = {
 	pattern: stringPattern,
-	greedy: true,
 	inside: {
 		'escape': escape
 	}
@@ -50,7 +48,6 @@ var nestedMessage = {
 choiceStyleInside[rest] = message.inside = languages['icu-message-format'] = {
 	'argument': {
 		pattern: RegExp(argumentSource, 'g'),
-		greedy: true,
 		inside: {
 			'content': {
 				pattern: /(?!^)[\s\S]+(?=.)/,

@@ -203,11 +203,9 @@ export interface GrammarToken {
 	 */
 	lookbehind?: boolean
 	/**
-	 * Whether the token is greedy.
-	 *
-	 * @default false
+	 * No longer specifies whether the token is greedy. Set the global regex flag on the pattern instead.
 	 */
-	greedy?: boolean
+	greedy?: never
 	/**
 	 * An optional alias. Multiple aliases are separated by spaces.
 	 */

@@ -2,15 +2,11 @@ import { languages } from '../core.js';
 import { clikeComment, clikePunctuation } from '../utils/patterns.js';
 
 languages.go = {
-	'comment': clikeComment(),
-	'char': {
-		pattern: /'(?:\\.|[^\\\n']){0,10}'/g,
-		greedy: true
-	},
+	'comment': clikeComment,
+	'char': /'(?:\\.|[^\\\n']){0,10}'/g,
 	'string': {
 		pattern: /(^|[^\\])"(?:\\.|[^\\\n"])*"|`[^`]*`/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'keyword': /\b(?:break|case|chan|const|continue|default|defer|else|fallthrough|for|func|go(?:to)?|if|import|interface|map|package|range|return|select|struct|switch|type|var)\b/,
 	'boolean': /\b(?:_|false|true|iota|nil)\b/,

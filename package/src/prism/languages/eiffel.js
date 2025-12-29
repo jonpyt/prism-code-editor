@@ -2,10 +2,7 @@ import { languages } from '../core.js';
 
 languages.eiffel = {
 	'comment': /--.*/,
-	'string': {
-		pattern: /"([^[]*)\[[\s\S]*?\]\1"|"([^{]*)\{[\s\S]*?\}\2"|"(?:%(?:(?!\n)\s)*\n\s*%|%\S|[^%"\n])*"/g,
-		greedy: true
-	},
+	'string': /"([^[]*)\[[\s\S]*?\]\1"|"([^{]*)\{[\s\S]*?\}\2"|"(?:%(?:(?!\n)\s)*\n\s*%|%\S|[^%"\n])*"/g,
 	// normal char | special char | char code
 	'char': /'(?:%.|[^%'\n])+'/,
 	'keyword': /\b(?:across|agent|alias|all|[ae]nd|as|assign|attached|attribute|check|class|convert|create|current|debug|deferred|detachable|do|else|elseif|ensure|expanded|export|external|feature|from|frozen|if|implies|inherit|inspect|invariant|like|local|loop|note?|obsolete|old|once|precursor|redefine|rename|require|rescue|result|retry|select|separate|some|[tw]hen|undefine|until|variant|void|x?or)\b/i,

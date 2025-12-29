@@ -21,8 +21,7 @@ describe('Greedy matching', () => {
 				'comment': [
 					/\/\/.*/,
 					{
-						pattern: /\/\*[\s\S]*?(?:\*\/|$)/g,
-						greedy: true
+						pattern: /\/\*[\s\S]*?(?:\*\/|$)/g
 					}
 				]
 			},
@@ -41,8 +40,7 @@ describe('Greedy matching', () => {
 				'b': {
 					// This pattern has 2 top-level alternatives:  foo  and  (^|[^\\])"[^"]*"
 					pattern: /foo|(^|[^\\])"[^"]*"/g,
-					lookbehind: true,
-					greedy: true
+					lookbehind: true
 				}
 			},
 			code: 'foo "bar" \'baz\'',
@@ -62,11 +60,9 @@ describe('Greedy matching', () => {
 				},
 				'b': {
 					pattern: /"[^"\r\n]*"/g,
-					greedy: true,
 				},
 				'c': {
 					pattern: /<[^>\r\n]*>/g,
-					greedy: true,
 				}
 			},
 			code: `<'> '' ''\n<"> "" ""`,
@@ -90,8 +86,7 @@ describe('Greedy matching', () => {
 			grammar: {
 				'a': /a/,
 				'b': {
-					pattern: /^b/g,
-					greedy: true
+					pattern: /^b/g
 				}
 			},
 			code: 'bab',
@@ -108,8 +103,7 @@ describe('Greedy matching', () => {
 		testTokens({
 			grammar: {
 				'oh-no': {
-					pattern: /$/g,
-					greedy: true
+					pattern: /$/g
 				}
 			},
 			code: 'foo',

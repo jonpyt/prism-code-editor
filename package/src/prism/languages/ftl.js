@@ -19,14 +19,10 @@ var interpolationInside = {
 var ftl = interpolationInside[rest] = {
 	'comment': /<#--[\s\S]*?-->/,
 	'string': [
-		{
-			// raw string
-			pattern: /\br(["'])(?:\\.|(?!\1)[^\\])*\1/g,
-			greedy: true
-		},
+		// raw string
+		/\br(["'])(?:\\.|(?!\1)[^\\])*\1/g,
 		{
 			pattern: re(/(["'])(?:\\.|(?!\1|\$\{)[^\\]|\$\{(?:(?!\})<0>)*\})*\1/.source, FTL_EXPR, 'g'),
-			greedy: true,
 			inside: {
 				'interpolation': {
 					pattern: re(/((?:^|[^\\])(?:\\\\)*)\$\{(?:(?!\})<0>)*\}/.source, FTL_EXPR),
@@ -52,12 +48,10 @@ var ftl = interpolationInside[rest] = {
 languages.ftl = {
 	'ftl-comment': {
 		pattern: /<#--[\s\S]*?-->/g,
-		greedy: true,
 		alias: 'comment'
 	},
 	'ftl-directive': {
 		pattern: re(/<\/?[#@][a-zA-Z]<0>*?>/.source, FTL_EXPR, 'gi'),
-		greedy: true,
 		inside: {
 			'punctuation': /^<\/?|\/?>$/,
 			'directive': {
@@ -73,7 +67,6 @@ languages.ftl = {
 	},
 	'ftl-interpolation': {
 		pattern: re(/\$\{<0>*?\}/.source, FTL_EXPR, 'gi'),
-		greedy: true,
 		inside: {
 			'punctuation': /^\$\{|\}$/,
 			'ftl': {

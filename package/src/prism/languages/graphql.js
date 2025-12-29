@@ -5,7 +5,6 @@ languages.graphql = {
 	'comment': /#.*/,
 	'description': {
 		pattern: /(?:"""(?:[^"]|"(?!""))*"""|"(?:\\.|[^\\\n"])*")(?=\s*[a-z_])/gi,
-		greedy: true,
 		alias: 'string',
 		inside: {
 			'language-markdown': {
@@ -15,10 +14,7 @@ languages.graphql = {
 			}
 		}
 	},
-	'string': {
-		pattern: /"""[\s\S]*?"""|"(?:\\.|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'string': /"""[\s\S]*?"""|"(?:\\.|[^\\\n"])*"/g,
 	'number': /(?:\B-|\b)\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
 	'boolean': boolean,
 	'variable': /\$[a-z_]\w*/i,
@@ -26,10 +22,7 @@ languages.graphql = {
 		pattern: /@[a-z_]\w*/i,
 		alias: 'function'
 	},
-	'attr-name': {
-		pattern: /\b[a-z_]\w*(?=\s*(?:\((?:[^()"]|"(?:\\.|[^\\\n"])*")*\))?:)/gi,
-		greedy: true
-	},
+	'attr-name': /\b[a-z_]\w*(?=\s*(?:\((?:[^()"]|"(?:\\.|[^\\\n"])*")*\))?:)/gi,
 	'atom-input': {
 		pattern: /\b[A-Z]\w*Input\b/,
 		alias: 'class-name'

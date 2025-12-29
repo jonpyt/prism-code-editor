@@ -3,20 +3,17 @@ import { languages } from '../core.js';
 languages.uorazor = {
 	'comment-hash': {
 		pattern: /#.*/g,
-		alias: 'comment',
-		greedy: true
+		alias: 'comment'
 	},
 	'comment-slash': {
 		pattern: /\/\/.*/g,
-		alias: 'comment',
-		greedy: true
+		alias: 'comment'
 	},
 	'string': {
 		pattern: /(["'])(?:\\.|(?!\1)[^\\\n])*\1/g,
 		inside: {
 			'punctuation': /^["']|["']$/
-		},
-		greedy: true
+		}
 	},
 	'source-layers': {
 		pattern: /\b(?:arms|backpack|blue|bracelet|cancel|clear|cloak|criminal|earrings|enemy|facialhair|friend|friendly|gloves|gray|grey|ground|hair|head|innerlegs|innertorso|innocent|lefthand|middletorso|murderer|neck|nonfriendly|onehandedsecondary|outerlegs|outertorso|pants|red|righthand|ring|self|shirt|shoes|talisman|waist)\b/i,

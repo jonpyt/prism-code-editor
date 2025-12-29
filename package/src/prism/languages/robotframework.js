@@ -3,8 +3,7 @@ import { re } from '../utils/shared.js';
 
 var comment = {
 	pattern: /(^[ \t]*|  |\t)#.*/mg,
-	lookbehind: true,
-	greedy: true
+	lookbehind: true
 };
 
 var variable = {

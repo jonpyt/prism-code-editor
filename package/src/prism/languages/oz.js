@@ -1,17 +1,10 @@
 import { languages } from '../core.js';
 
 languages.oz = {
-	'comment': {
-		pattern: /\/\*[\s\S]*?\*\/|%.*/g,
-		greedy: true
-	},
-	'string': {
-		pattern: /"(?:\\[\s\S]|[^\\"])*"/g,
-		greedy: true
-	},
+	'comment': /\/\*[\s\S]*?\*\/|%.*/g,
+	'string': /"(?:\\[\s\S]|[^\\"])*"/g,
 	'atom': {
 		pattern: /'(?:\\[\s\S]|[^\\'])*'/g,
-		greedy: true,
 		alias: 'builtin'
 	},
 	'keyword': /\$|\[\]|\b(?:_|at|attr|case|catch|choice|class|cond|declare|define|dis|else(?:case|if)?|end|export|fail|false|true|feat|finally|from|fun|functor|if|import|in|local|lock|meth|nil|not|of|or|prepare|pro[cp]|raise|require|self|skip|then|thread|try|unit)\b/,

@@ -4,10 +4,7 @@ import { clikePunctuation } from '../utils/patterns.js';
 languages.rpy = languages.renpy = {
 	'comment': /#.+/,
 
-	'string': {
-		pattern: /("""|''')[\s\S]+?\1|(["'])(?:\\.|(?!\2)[^\\])*\2|(?:^#?(?:(?:[a-fA-F\d]){3}|[a-fA-F\d]{6})$)/mg,
-		greedy: true
-	},
+	'string': /("""|''')[\s\S]+?\1|(["'])(?:\\.|(?!\2)[^\\])*\2|(?:^#?(?:(?:[a-fA-F\d]){3}|[a-fA-F\d]{6})$)/mg,
 
 	'function': /\b[a-z_]\w*(?=\()/i,
 

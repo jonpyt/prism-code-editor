@@ -2,11 +2,10 @@ import { languages } from '../core.js';
 import { boolean, clikeComment, clikePunctuation } from '../utils/patterns.js';
 
 languages.chaiscript = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'string-interpolation': {
 		pattern: /(^|[^\\])"(?:\\[\s\S]|[^\\$"]|\$(?!\{)|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\})*"/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'interpolation': {
 				pattern: /((?:^|[^\\])(?:\\\\)*)\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}/,
@@ -28,8 +27,7 @@ languages.chaiscript = {
 	},
 	'string': {
 		pattern: /(^|[^\\])'(?:\\[\s\S]|[^\\'])*'/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'class-name': [
 		{
@@ -47,10 +45,7 @@ languages.chaiscript = {
 	'boolean': boolean,
 	'function': /\b\w+(?=\()/,
 	'number': [
-		{
-			pattern: /(?:\b0b[01']+|\b0x(?:[a-f\d']+(?:\.[a-f\d']*)?|\.[a-f\d']+)(?:p[+-]?[\d']+)?|(?:\b[\d']+(?:\.[\d']*)?|\B\.[\d']+)(?:e[+-]?[\d']+)?)[ful]{0,4}/gi,
-			greedy: true
-		},
+		/(?:\b0b[01']+|\b0x(?:[a-f\d']+(?:\.[a-f\d']*)?|\.[a-f\d']+)(?:p[+-]?[\d']+)?|(?:\b[\d']+(?:\.[\d']*)?|\B\.[\d']+)(?:e[+-]?[\d']+)?)[ful]{0,4}/gi,
 		/\b(?:Infinity|NaN)\b/
 	],
 	'parameter-type': {

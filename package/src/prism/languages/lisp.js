@@ -41,7 +41,6 @@ var language = {
 	'comment': /;.*/,
 	'string': {
 		pattern: /"(?:\\.|[^\\"])*"/g,
-		greedy: true,
 		inside: {
 			argument: /[-A-Z]+(?=[.,\s])/,
 			symbol: RegExp('`' + symbol + "'")
@@ -104,7 +103,6 @@ var language = {
 	'defun': {
 		pattern: RegExp(`${par}(?:cl-)?(?:defmacro|defun\\*?)\\s+${symbol}\\s+\\(${nestedPar}*\\)`, 'g'),
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'keyword': /^(?:cl-)?def\S+/,
 			// See below, this property needs to be defined later so that it can
@@ -120,7 +118,6 @@ var language = {
 	'lambda': {
 		pattern: RegExp(par + 'lambda\\s+\\(\\s*(?:&?' + symbol + '(?:\\s+&?' + symbol + ')*\\s*)?\\)', 'g'),
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'keyword': /^lambda/,
 			// See below, this property needs to be defined later so that it can

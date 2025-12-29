@@ -9,7 +9,6 @@ import { re } from './shared.js';
  */
 var addInlined = (tagName, tagInside, getLang) => ({
 	pattern: RegExp(`<${tagName}(?:\\s[^>]*)?>[\\s\\S]*?</${tagName}\\s*>`, 'g'),
-	greedy: true,
 	inside: {
 		'code-block': {
 			pattern: /(>)[\s\S]+(?=<)/,
@@ -33,7 +32,6 @@ var astroTag = expression => ({
 	pattern: re(
 		/<\/?(?:(?!\d)[^\s%=<>/]+(?:\s(?:\s*[^\s{=<>/]+(?:\s*=\s*(?!\s)(?:"[^"]*"|'[^']*'|[^\s{=<>/"']+(?=[\s/>])|<0>)?|(?=[\s/>]))|\s*<0>)*)?\s*\/?)?>/.source, [braces], 'g'
 	),
-	greedy: true,
 	inside: {
 		'punctuation': /^<\/?|\/?>$/,
 		'tag': {

@@ -2,10 +2,9 @@ import { languages } from '../core.js';
 import { boolean, clikeComment, clikeNumber, clikePunctuation } from '../utils/patterns.js';
 
 languages.haxe = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'string-interpolation': {
 		pattern: /'(?:\\[\s\S]|[^\\'])*'/g,
-		greedy: true,
 		inside: {
 			'interpolation': {
 				pattern: /(^|[^\\])\$(?:\w+|\{[^{}]+\})/,
@@ -26,12 +25,10 @@ languages.haxe = {
 	},
 	'string': {
 		// Strings can be multi-line
-		pattern: /"(?:\\[\s\S]|[^\\"])*"/g,
-		greedy: true
+		pattern: /"(?:\\[\s\S]|[^\\"])*"/g
 	},
 	'regex': {
 		pattern: /~\/(?:\\.|[^\\\n/])+\/[a-z]*/g,
-		greedy: true,
 		inside: {
 			'regex-flags': /\w+$/,
 			'regex-delimiter': /^~\/|\/$/,
@@ -65,10 +62,7 @@ languages.haxe = {
 	// The final look-ahead prevents highlighting of keywords if expressions such as "haxe.macro.Expr"
 	'keyword': /\bthis\b|\b(?:abstract|as|break|cas[et]|catch|class|continue|default|do|dynamic|else|enum|extends|extern|final|for|from|function|if|implements|import|in|inline|interface|macro|new|null|operator|overload|override|package|private|public|return|static|super|switch|throw|to|try|typedef|untyped|using|var|while)(?!\.)\b/,
 	'boolean': boolean,
-	'function': {
-		pattern: /\b[a-z_]\w*(?=\s*(?:<[^<>]*>\s*)?\()/gi,
-		greedy: true
-	},
+	'function': /\b[a-z_]\w*(?=\s*(?:<[^<>]*>\s*)?\()/gi,
 	'number': clikeNumber,
 	'operator': /--|\+\+|&&|\|\||->|=>|(?:<<?|>{1,3}|[%&|^!=/*+-])=?|[?:~]|\.{3}/,
 	'punctuation': clikePunctuation

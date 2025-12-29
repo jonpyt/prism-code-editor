@@ -10,8 +10,7 @@ languages.autohotkey = {
 		},
 		{
 			pattern: /((?:^|\n)[ \t]*)\/\*[\s\S]*?(?:\n[ \t]*\*\/|$)/g,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		}
 	],
 	'tag': {

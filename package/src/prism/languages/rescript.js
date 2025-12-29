@@ -2,14 +2,10 @@ import { languages, rest } from '../core.js';
 import { boolean, clikeComment } from '../utils/patterns.js';
 
 languages.res = languages.rescript = {
-	'comment': clikeComment(),
-	'char': {
-		pattern: /'(?:[^\\\n]|\\(?:.|\w+))'/g,
-		greedy: true
-	},
+	'comment': clikeComment,
+	'char': /'(?:[^\\\n]|\\(?:.|\w+))'/g,
 	'template-string': {
 		pattern: /`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
-		greedy: true,
 		inside: {
 			'template-punctuation': {
 				pattern: /^`|`$/,
@@ -29,10 +25,7 @@ languages.res = languages.rescript = {
 			'string': /[\s\S]+/
 		}
 	},
-	'string': {
-		pattern: /"(?:\\[\s\S]|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:\\[\s\S]|[^\\\n"])*"/g,
 	'class-name': /\b[A-Z]\w*|@[a-z.]*|#[a-zA-Z]\w*|#\d/,
 	'function': {
 		pattern: /[a-zA-Z]\w*(?=\()|(\.)[a-z]\w*/,

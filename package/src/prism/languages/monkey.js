@@ -1,18 +1,11 @@
 import { languages } from '../core.js';
 
 languages.monkey = {
-	'comment': {
-		pattern: /^#rem\s[\s\S]*?^#end|'.+/img,
-		greedy: true
-	},
-	'string': {
-		pattern: /"[^\n"]*"/g,
-		greedy: true,
-	},
+	'comment': /^#rem\s[\s\S]*?^#end|'.+/img,
+	'string': /"[^\n"]*"/g,
 	'preprocessor': {
 		pattern: /(^[ \t]*)#.+/mg,
 		lookbehind: true,
-		greedy: true,
 		alias: 'property'
 	},
 

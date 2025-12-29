@@ -11,17 +11,14 @@ slightly changed to pass all tests
 // PureBasic support, steal stuff from ansi-c
 languages.pbfasm = languages.purebasic = {
 	'comment': /;.*/,
-	'string': clikeString(),
+	'string': clikeString,
 	'tag': /#\w+\$?/,
 	'asm': {
 		pattern: /(^[ \t]*)!.*/m,
 		lookbehind: true,
 		alias: 'tag',
 		inside: {
-			'string': {
-				pattern: /(["'`])(?:\\.|(?!\1)[^\\\n])*\1/g,
-				greedy: true
-			},
+			'string': /(["'`])(?:\\.|(?!\1)[^\\\n])*\1/g,
 			// Anonymous label references, i.e.: jmp @b
 			'label-reference-anonymous': {
 				pattern: /(!\s*j[a-z]+\s+)@[fb]/i,

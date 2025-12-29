@@ -19,24 +19,19 @@ var interpolation = {
 };
 
 expression.inside = languages.gradle = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'shebang': {
 		pattern: /#!.+/g,
 		alias: 'comment',
-		greedy: true,
 	},
 	'interpolation-string': {
 		pattern: /"""(?:\\[\s\S]|[^\\])*?"""|(["/])(?:\\.|(?!\1)[^\\\n])*\1|\$\/(?:[^/$]|\$(?:[/$]|(?![/$]))|\/(?!\$))*\/\$/g,
-		greedy: true,
 		inside: {
 			'interpolation': interpolation,
 			'string': /[\s\S]+/,
 		},
 	},
-	'string': {
-		pattern: /'''(?:\\[\s\S]|[^\\])*?'''|'(?:\\.|[^\\\n'])*'/g,
-		greedy: true,
-	},
+	'string': /'''(?:\\[\s\S]|[^\\])*?'''|'(?:\\.|[^\\\n'])*'/g,
 	'class-name': clikeClass(),
 	'keyword':
 		/\b(?:apply|def|dependencies|else|if|implementation|import|plugins?|project|repositories|repository|sourceSets|tasks|val)\b/,

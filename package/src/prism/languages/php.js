@@ -3,6 +3,9 @@ import { clikePunctuation } from '../utils/patterns.js';
 import { embeddedIn } from '../utils/templating.js';
 import './markup.js';
 
+var backslashPunctuation = {
+	'punctuation': /\\/
+};
 var comment = /\/\*[\s\S]*?\*\/|\/\/.*|#(?!\[).*/;
 var constant = [
 	{
@@ -11,13 +14,11 @@ var constant = [
 	},
 	{
 		pattern: /(::\s*)\b[a-z_]\w*\b(?!\s*\()/gi,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	{
 		pattern: /(\b(?:case|const)\s+)\b[a-z_]\w*(?=\s*[;=])/gi,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	/\b(?:null)\b/i,
 	/\b[A-Z_][A-Z\d_]*\b(?!\s*\()/,
@@ -32,7 +33,6 @@ var string = [
 	{
 		pattern: /<<<'([^']+)'\n(?:.*\n)*?\1;/g,
 		alias: 'nowdoc-string',
-		greedy: true,
 		inside: {
 			'delimiter': {
 				pattern: /^<<<'[^']+'|[a-z_]\w*;$/i,
@@ -45,7 +45,6 @@ var string = [
 	},
 	{
 		pattern: /<<<(?:"([^"]+)"\n(?:.*\n)*?\1;|([a-z_]\w*)\n(?:.*\n)*?\2;)/gi,
-		greedy: true,
 		alias: 'heredoc-string',
 		inside: {
 			'delimiter': {
@@ -61,16 +60,13 @@ var string = [
 	{
 		pattern: /`(?:\\[\s\S]|[^\\`])*`/g,
 		alias: 'backtick-quoted-string',
-		greedy: true,
 	},
 	{
 		pattern: /'(?:\\[\s\S]|[^\\'])*'/g,
-		greedy: true,
 		alias: 'single-quoted-string',
 	},
 	{
 		pattern: /"(?:\\[\s\S]|[^\\"])*"/g,
-		greedy: true,
 		alias: 'double-quoted-string',
 		inside: {
 			'interpolation': stringInterpolation
@@ -85,7 +81,6 @@ var php = stringInterpolation.inside = {
 	},
 	'doc-comment': {
 		pattern: /\/\*\*(?!\/)[\s\S]*?\*\//g,
-		greedy: true,
 		alias: 'comment',
 		inside: 'phpdoc'
 	},
@@ -93,7 +88,6 @@ var php = stringInterpolation.inside = {
 	'string': string,
 	'attribute': {
 		pattern: /#\[(?:[^"'\/#]|\/(?![*/])|\/\/.*$|#(?!\[).*$|\/\*(?:[^*]|\*(?!\/))*\*\/|"(?:\\[\s\S]|[^\\"])*"|'(?:\\[\s\S]|[^\\'])*')+\](?=\s*[a-z$#])/img,
-		greedy: true,
 		inside: {
 			'attribute-content': {
 				pattern: /^(..)[\s\S]+(?=.)/,
@@ -106,17 +100,13 @@ var php = stringInterpolation.inside = {
 						{
 							pattern: /([^:]|^)\b[a-z_]\w*(?!\\)\b/gi,
 							lookbehind: true,
-							greedy: true,
 							alias: 'class-name'
 						},
 						{
 							pattern: /([^:]|^)(?:\\?\b[a-z_]\w*)+/gi,
 							lookbehind: true,
-							greedy: true,
 							alias: 'class-name class-name-fully-qualified',
-							inside: {
-								'punctuation': /\\/
-							}
+							inside: backslashPunctuation
 						}
 					],
 					'constant': constant,
@@ -135,9 +125,7 @@ var php = stringInterpolation.inside = {
 	'package': {
 		pattern: /(namespace\s+|use\s+(?:function\s+)?)(?:\\?\b[a-z_]\w*)+\b(?!\\)/i,
 		lookbehind: true,
-		inside: {
-			'punctuation': /\\/
-		}
+		inside: backslashPunctuation
 	},
 	'class-name-definition': {
 		pattern: /(\b(?:class|enum|interface|trait)\s+)\b[a-z_]\w*(?!\\)\b/i,
@@ -153,44 +141,33 @@ var php = stringInterpolation.inside = {
 		{
 			pattern: /(\(\s*)\b(?:array|bool|boolean|float|int|integer|object|string)\b(?=\s*\))/gi,
 			lookbehind: true,
-			greedy: true,
 			alias: 'type-casting'
 		},
 		{
 			pattern: /([(,?]\s*)\b(?:array(?!\s*\()|bool|callable|(?:false|null)(?=\s*\|)|float|int|iterable|mixed|object|self|static|string)\b(?=\s*\$)/gi,
 			lookbehind: true,
-			greedy: true,
 			alias: 'type-hint'
 		},
 		{
 			pattern: /(\)\s*:\s*(?:\?\s*)?)\b(?:array(?!\s*\()|bool|callable|(?:false|null)(?=\s*\|)|float|int|iterable|mixed|never|object|self|static|string|void)\b/gi,
 			lookbehind: true,
-			greedy: true,
 			alias: 'return-type'
 		},
 		{
-			pattern: /\b(?:array(?!\s*\()|bool|float|int|iterable|mixed|object|string|void)\b/gi,
-			alias: 'type-declaration',
-			greedy: true
-		},
-		{
-			pattern: /(\|\s*)(?:false|null)\b|\b(?:false|null)(?=\s*\|)/gi,
+			pattern: /\b(?:array(?!\s*\()|bool|float|int|iterable|mixed|object|string|void)\b|(\|\s*)(?:false|null)\b|\b(?:false|null)(?=\s*\|)/gi,
 			lookbehind: true,
-			greedy: true,
 			alias: 'type-declaration'
 		},
 		{
 			pattern: /\b(?:parent|self|static)(?=\s*::)/gi,
-			greedy: true,
 			alias: 'static-context'
 		},
 		{
 			// yield from
-			pattern: /(\byield\s+)from\b/gi,
+			// `class` is always a keyword unlike other keywords
+			pattern: /(\byield\s+)from\b|\bclass\b/gi,
 			lookbehind: true
 		},
-		// `class` is always a keyword unlike other keywords
-		/\bclass\b/i,
 		{
 			// https://www.php.net/manual/en/reserved.keywords.php
 			//
@@ -207,108 +184,70 @@ var php = stringInterpolation.inside = {
 	'class-name': [
 		{
 			pattern: /(\b(?:extends|implements|instanceof|new(?!\s+self|\s+static))\s+|\bcatch\s*\()\b[a-z_]\w*(?!\\)\b/gi,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		},
 		{
-			pattern: /(\|\s*)\b[a-z_]\w*(?!\\)\b/gi,
-			lookbehind: true,
-			greedy: true
+			pattern: /(\|\s*)\b[a-z_]\w*(?!\\)\b|\b[a-z_]\w*(?!\\)\b(?=\s*\|)/gi,
+			lookbehind: true
 		},
 		{
-			pattern: /\b[a-z_]\w*(?!\\)\b(?=\s*\|)/gi,
-			greedy: true
-		},
-		{
-			pattern: /(\|\s*)(?:\\?\b[a-z_]\w*)+\b/gi,
+			pattern: /(\|\s*)(?:\\?\b[a-z_]\w*)+\b|(?:\\?\b[a-z_]\w*)+\b(?=\s*\|)/gi,
 			lookbehind: true,
-			greedy: true,
 			alias: 'class-name-fully-qualified',
-			inside: {
-				'punctuation': /\\/
-			}
-		},
-		{
-			pattern: /(?:\\?\b[a-z_]\w*)+\b(?=\s*\|)/gi,
-			greedy: true,
-			alias: 'class-name-fully-qualified',
-			inside: {
-				'punctuation': /\\/
-			}
+			inside: backslashPunctuation
 		},
 		{
 			pattern: /(\b(?:extends|implements|instanceof|new(?!\s+self\b|\s+static\b))\s+|\bcatch\s*\()(?:\\?\b[a-z_]\w*)+\b(?!\\)/gi,
 			lookbehind: true,
-			greedy: true,
 			alias: 'class-name-fully-qualified',
-			inside: {
-				'punctuation': /\\/
-			}
+			inside: backslashPunctuation
 		},
 		{
 			pattern: /\b[a-z_]\w*(?=\s*\$)/gi,
-			greedy: true,
 			alias: 'type-declaration',
 		},
 		{
 			pattern: /(?:\\?\b[a-z_]\w*)+(?=\s*\$)/gi,
-			greedy: true,
 			alias: 'class-name-fully-qualified type-declaration',
-			inside: {
-				'punctuation': /\\/
-			}
+			inside: backslashPunctuation
 		},
 		{
 			pattern: /\b[a-z_]\w*(?=\s*::)/gi,
-			greedy: true,
 			alias: 'static-context'
 		},
 		{
 			pattern: /(?:\\?\b[a-z_]\w*)+(?=\s*::)/gi,
-			greedy: true,
 			alias: 'class-name-fully-qualified static-context',
-			inside: {
-				'punctuation': /\\/
-			}
+			inside: backslashPunctuation
 		},
 		{
 			pattern: /([(,?]\s*)[a-z_]\w*(?=\s*\$)/gi,
 			lookbehind: true,
-			greedy: true,
 			alias: 'type-hint',
 		},
 		{
 			pattern: /([(,?]\s*)(?:\\?\b[a-z_]\w*)+(?=\s*\$)/gi,
 			lookbehind: true,
-			greedy: true,
 			alias: 'class-name-fully-qualified type-hint',
-			inside: {
-				'punctuation': /\\/
-			}
+			inside: backslashPunctuation
 		},
 		{
 			pattern: /(\)\s*:\s*(?:\?\s*)?)\b[a-z_]\w*(?!\\)\b/gi,
 			alias: 'return-type',
 			lookbehind: true,
-			greedy: true,
 		},
 		{
 			pattern: /(\)\s*:\s*(?:\?\s*)?)(?:\\?\b[a-z_]\w*)+\b(?!\\)/gi,
 			lookbehind: true,
-			greedy: true,
 			alias: 'class-name-fully-qualified return-type',
-			inside: {
-				'punctuation': /\\/
-			}
+			inside: backslashPunctuation
 		}
 	],
 	'constant': constant,
 	'function': {
 		pattern: /(^|[^\\\w])\\?[a-z_](?:[\w\\]*\w)?(?=\s*\()/i,
 		lookbehind: true,
-		inside: {
-			'punctuation': /\\/
-		}
+		inside: backslashPunctuation
 	},
 	'property': {
 		pattern: /(->\s*)\w+/,

@@ -6,19 +6,16 @@ var js = {};
 languages.js = languages.javascript = Object.assign(js, {
 	'doc-comment': {
 		pattern: /\/\*\*(?!\/)[\s\S]*?(?:\*\/|$)/g,
-		greedy: true,
 		alias: 'comment',
 		inside: 'jsdoc'
 	},
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'hashbang': {
 		pattern: /^#!.*/g,
-		greedy: true,
 		alias: 'comment'
 	},
 	'template-string': {
 		pattern: /`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})*\}|(?!\$\{)[^\\`])*`/g,
-		greedy: true,
 		inside: {
 			'template-punctuation': {
 				pattern: /^`|`$/,
@@ -41,14 +38,12 @@ languages.js = languages.javascript = Object.assign(js, {
 	'string-property': {
 		pattern: /((?:^|[,{])[ \t]*)(["'])(?:\\[\s\S]|(?!\2)[^\\\n])*\2(?=\s*:)/mg,
 		lookbehind: true,
-		greedy: true,
 		alias: 'property'
 	},
-	'string': clikeString(),
+	'string': clikeString,
 	'regex': {
 		pattern: /((?:^|[^$\w\xa0-\uffff"'`.)\]\s]|\b(?:return|yield))\s*)\/(?:(?:\[(?:\\.|[^\\\n\]])*\]|\\.|[^\\\n/[])+\/[dgimyus]{0,7}|(?:\[(?:\\.|[^\\\n[\]]|\[(?:\\.|[^\\\n[\]]|\[(?:\\.|[^\\\n[\]])*\])*\])*\]|\\.|[^\\\n/[])+\/[dgimyus]{0,7}v[dgimyus]{0,7})(?=(?:\s|\/\*(?:[^*]|\*(?!\/))*\*\/)*(?!\/\*|[^()[\]{}.,:;?`\n%&|^!=<>/*+-]))/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'regex-flags': /\w+$/,
 			'regex-delimiter': /^\/|\/$/,

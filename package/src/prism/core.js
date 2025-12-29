@@ -120,7 +120,7 @@ var matchGrammar = (text, grammar, startNode, startPos, rematch) => {
 			var pattern = patternObj.pattern || patternObj;
 			var inside = resolve(patternObj.inside);
 			var lookbehind = patternObj.lookbehind;
-			var greedy = patternObj.greedy && pattern.global;
+			var greedy = pattern.global;
 			var alias = patternObj.alias;
 
 			for ( // iterate the token list and keep track of the current token/string position

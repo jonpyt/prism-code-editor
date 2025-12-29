@@ -1,10 +1,10 @@
 import { languages } from '../core.js';
+import { clikeComment } from '../utils/patterns.js';
 
 languages.nevod = {
-	'comment': /\/\/.*|\/\*[\s\S]*?(?:\*\/|$)/,
+	'comment': clikeComment,
 	'string': {
 		pattern: /(?:"(?:""|[^"])*"(?!")|'(?:''|[^'])*'(?!'))!?\*?/g,
-		greedy: true,
 		inside: {
 			'string-attrs': /!$|!?\*$/,
 		},

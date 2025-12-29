@@ -2,19 +2,14 @@ import { languages } from '../core.js';
 import { boolean, clikePunctuation } from '../utils/patterns.js';
 
 languages.squirrel = {
-	'comment': {
-		pattern: /\/\*[\s\S]*?(?:\*\/|$)|\/\/.*|#.*/g,
-		greedy: true
-	},
+	'comment': /\/\*[\s\S]*?(?:\*\/|$)|\/\/.*|#.*/g,
 	'char': {
 		pattern: /(^|[^\\"'])'(?:[^\\']|\\(?:[xuU][a-fA-F\d]{0,8}|[\s\S]))'/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'string': {
 		pattern: /(^|[^\\"'@])(?:@"(?:[^"]|"")*"(?!")|"(?:\\.|[^\\\n"])*")/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 
 	'class-name': {

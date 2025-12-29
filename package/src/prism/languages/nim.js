@@ -1,24 +1,14 @@
 import { languages } from '../core.js';
 
 languages.nim = {
-	'comment': {
-		pattern: /#.*/g,
-		greedy: true
-	},
-	'string': {
-		// Double-quoted strings can be prefixed by an identifier (Generalized raw string literals)
-		pattern: /(?:\b(?!\d)(?:\w|\\x[89a-fA-F][a-fA-F\d])+)?(?:"""[\s\S]*?"""(?!")|"(?:\\[\s\S]|""|[^\\"])*")/g,
-		greedy: true
-	},
-	'char': {
-		// Character literals are handled specifically to prevent issues with numeric type suffixes
-		pattern: /'(?:\\(?:\d+|x[a-fA-F\d]{0,2}|.)|[^'])'/g,
-		greedy: true
-	},
+	'comment': /#.*/g,
+	// Double-quoted strings can be prefixed by an identifier (Generalized raw string literals)
+	'string': /(?:\b(?!\d)(?:\w|\\x[89a-fA-F][a-fA-F\d])+)?(?:"""[\s\S]*?"""(?!")|"(?:\\[\s\S]|""|[^\\"])*")/g,
+	// Character literals are handled specifically to prevent issues with numeric type suffixes
+	'char': /'(?:\\(?:\d+|x[a-fA-F\d]{0,2}|.)|[^'])'/g,
 
 	'function': {
 		pattern: /(?:(?!\d)(?:\w|\\x[89a-fA-F][a-fA-F\d])+|`[^\n`]+`)\*?(?:\[[^\]]+\])?(?=\s*\()/g,
-		greedy: true,
 		inside: {
 			'operator': /\*$/
 		}
@@ -26,7 +16,6 @@ languages.nim = {
 	// We don't want to highlight operators (and anything really) inside backticks
 	'identifier': {
 		pattern: /`[^\n`]+`/g,
-		greedy: true,
 		inside: {
 			'punctuation': /`/
 		}

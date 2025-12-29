@@ -19,7 +19,6 @@ var factor = languages.factor = {
 		// ![[ comment ]] , ![===[ comment]===]
 		pattern: /(^|\s)(?:! .*|!$|\/\*\s[\s\S]*?\*\/(?!\S)|!\[(={0,6})\[\s[\s\S]*?\]\2\](?!\S))/g,
 		lookbehind: true,
-		greedy: true,
 		inside: comment_inside
 	},
 	'number': {
@@ -65,7 +64,6 @@ var factor = languages.factor = {
 	'custom-string': {
 		pattern: /(^|\s)[A-Z\d-]+"\s(?:\\\S|[^\\"])*"/g,
 		lookbehind: true,
-		greedy: true,
 		alias: 'string',
 		inside: {
 			'number': /\\\S|%\w|\//
@@ -77,7 +75,6 @@ var factor = languages.factor = {
 			// STRING: name \n content \n ; -> CONSTANT: name "content" (symbol)
 			pattern: /(^|\s)STRING:\s+\S+\n.*\n\s*;(?!\S)/g,
 			lookbehind: true,
-			greedy: true,
 			alias: 'string',
 			inside: {
 				'number': string_inside.number,
@@ -93,7 +90,6 @@ var factor = languages.factor = {
 			// HEREDOC: marker \n content \n marker ; -> "content" (immediate)
 			pattern: /(^|\s)HEREDOC:\s+\S+\n.*\n\s*\S+(?!\S)/g,
 			lookbehind: true,
-			greedy: true,
 			alias: 'string',
 			inside: string_inside
 		},
@@ -101,7 +97,6 @@ var factor = languages.factor = {
 			// [[ string ]], [==[ string]==]
 			pattern: /(^|\s)\[(={0,6})\[\s[\s\S]*?\]\2\](?!\S)/g,
 			lookbehind: true,
-			greedy: true,
 			alias: 'string',
 			inside: string_inside
 		}
@@ -228,7 +223,6 @@ var factor = languages.factor = {
 	'colon-syntax': {
 		pattern: /(^|\s)(?:[A-Z\d-]+#?)?::?\s+(?:;\S+|(?!;)\S+)(?!\S)/g,
 		lookbehind: true,
-		greedy: true,
 		alias: 'function'
 	},
 
@@ -295,7 +289,6 @@ var factor = languages.factor = {
 	*/
 	'string': {
 		pattern: /"(?:\\\S|[^\\"])*"/g,
-		greedy: true,
 		inside: string_inside
 	}
 };

@@ -2,10 +2,7 @@ import { languages } from '../core.js';
 
 languages.hoon = {
 	'comment': /::.*/,
-	'string': {
-		pattern: /"(?:\\.|[^\\"])*"|'(?:\\.|[^\\'])*'/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\"])*"|'(?:\\.|[^\\'])*'/g,
 	'constant': /%(?:\.[ny]|[\w-]+)/,
 	'class-name': /@(?:[a-z\d-]*[a-z\d])?|\*/i,
 	'function': /(?:\+[+-]  )?(?:[a-z](?:[a-z\d-]*[a-z\d])?)/,

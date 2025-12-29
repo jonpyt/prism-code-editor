@@ -1,5 +1,6 @@
 import { languages } from '../core.js';
 import { clone, insertBefore } from '../utils/language.js';
+import { clikeString } from '../utils/patterns.js';
 import './javascript.js';
 
 var operators = [
@@ -65,23 +66,19 @@ var mongodb = languages.mongodb = clone(languages.js);
 insertBefore(mongodb, 'string', {
 	'property': {
 		pattern: /(?:(["'])(?:\\[\s\S]|(?!\1)[^\\\n])*\1|(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+)(?=\s*:)/g,
-		greedy: true,
 		inside: {
 			'keyword': RegExp(`^(["'])?` + operatorsSource + '(?:\\1)?$')
 		}
 	}
 });
 
-mongodb.string.inside = {
-	url: {
+mongodb.string = {
+	pattern: clikeString,
+	inside: {
 		// url pattern
-		pattern: /https?:\/\/[\w@:%.~#=+-]{1,256}\.[a-z\d()]{1,6}\b[()?&/\w@:%.~#=+-]*/gi,
-		greedy: true
-	},
-	entity: {
+		url: /https?:\/\/[\w@:%.~#=+-]{1,256}\.[a-z\d()]{1,6}\b[()?&/\w@:%.~#=+-]*/gi,
 		// ipv4
-		pattern: /\b(?:(?:[01]?\d\d?|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d\d?|2[0-4]\d|25[0-5])\b/g,
-		greedy: true
+		entity: /\b(?:(?:[01]?\d\d?|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d\d?|2[0-4]\d|25[0-5])\b/g
 	}
 };
 

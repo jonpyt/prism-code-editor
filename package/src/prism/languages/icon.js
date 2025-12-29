@@ -3,10 +3,7 @@ import { clikePunctuation } from '../utils/patterns.js';
 
 languages.icon = {
 	'comment': /#.*/,
-	'string': {
-		pattern: /(["'])(?:\\.|(?!\1)[^\\\n_]|_(?!\1)[\s\S])*\1/g,
-		greedy: true
-	},
+	'string': /(["'])(?:\\.|(?!\1)[^\\\n_]|_(?!\1)[\s\S])*\1/g,
 	'number': /\b(?:\d+r[a-z\d]+|\d+(?:\.\d+)?(?:e[+-]?\d+)?)\b|\.\d+\b/i,
 	'builtin-keyword': {
 		pattern: /&(?:allocated|ascii|clock|collections|cset|current|date|dateline|digits|dump|e|error(?:number|text|value)?|errout|fail|features|file|host|input|[lu]case|letters|level|line|main|null|output|phi|pi|pos|progname|random|regions|source|storage|subject|time|trace|version)\b/,

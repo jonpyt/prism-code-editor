@@ -20,18 +20,9 @@ languages.scheme = {
 	//   #| comment #| nested |# still comment |#
 	// (only 1 level of nesting is supported)
 	'comment': /;.*|#;\s*(?:\((?:[^()]|\([^)]*\))*\)|\[(?:[^[\]]|\[[^\]]*\])*\])|#\|(?:[^#|]|#(?!\|)|\|(?!#)|#\|(?:[^#|]|#(?!\|)|\|(?!#))*\|#)*\|#/,
-	'string': {
-		pattern: /"(?:\\.|[^\\"])*"/g,
-		greedy: true
-	},
-	'symbol': {
-		pattern: /'[^()[\]#'\s]+/g,
-		greedy: true
-	},
-	'char': {
-		pattern: /#\\(?:[ux][a-fA-F\d]+\b|[-a-zA-Z]+\b|[\ud800-\udbff][\udc00-\udfff]|\S)/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\"])*"/g,
+	'symbol': /'[^()[\]#'\s]+/g,
+	'char': /#\\(?:[ux][a-fA-F\d]+\b|[-a-zA-Z]+\b|[\ud800-\udbff][\udc00-\udfff]|\S)/g,
 	'lambda-parameter': [
 		// https://www.cs.cmu.edu/Groups/AI/html/r4rs/r4rs_6.html#SEC30
 		{
@@ -109,8 +100,7 @@ languages.scheme = {
 	},
 	'identifier': {
 		pattern: /(^|[()[\]\s])\|(?:\\.|[^\\|])*\|(?![^()[\]\s])/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'punctuation': /[()[\]']/
 };

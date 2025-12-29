@@ -4,15 +4,13 @@ import { boolean, clikeComment } from '../utils/patterns.js';
 languages.magma = {
 	'output': {
 		pattern: /^(>.*\n)(?!>)(?:.+|\n(?!>).*)(?:\n(?!>).*)*/mg,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'string': {
 		pattern: /(^|[^\\"])"(?:\\.|[^\\\n"])*"/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 
 	// http://magma.maths.usyd.edu.au/magma/handbook/text/82

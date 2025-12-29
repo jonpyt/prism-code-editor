@@ -5,7 +5,6 @@ languages.px = languages.pcaxis = {
 	'keyword': {
 		pattern: /((?:^|;)\s*)[-A-Z\d]+(?:\s*\[[-\w]+\])?(?:\s*\("[^"]*"(?:,\s*"[^"]*")*\))?(?=\s*=)/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'keyword': /^[-A-Z\d]+/,
 			'language': {
@@ -32,7 +31,6 @@ languages.px = languages.pcaxis = {
 	'operator': /=/,
 	'tlist': {
 		pattern: /TLIST\s*\(\s*\w+(?:(?:\s*,\s*"[^"]*")+|\s*,\s*"[^"]*"-"[^"]*")?\s*\)/g,
-		greedy: true,
 		inside: {
 			'function': /^TLIST/,
 			'property': {

@@ -2,25 +2,17 @@ import { languages } from '../core.js';
 import { boolean } from '../utils/patterns.js';
 
 languages.trig = languages.turtle = {
-	'comment': {
-		pattern: /#.*/g,
-		greedy: true
-	},
+	'comment': /#.*/g,
 	'multiline-string': {
 		pattern: /"""(?:\\.|[^\\])*?"""|'''(?:\\.|[^\\])*?'''/g,
-		greedy: true,
 		alias: 'string',
 		inside: {
 			'comment': /#.*/
 		}
 	},
-	'string': {
-		pattern: /"(?:\\.|[^\\\n"])*"|'(?:\\.|[^\\\n'])*'/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\\n"])*"|'(?:\\.|[^\\\n'])*'/g,
 	'url': {
 		pattern: /<(?:[^\0- <>"{}|^`\\]|\\(?:u[a-fA-F\d]{4}|U[a-fA-F\d]{8}))*>/g,
-		greedy: true,
 		inside: {
 			'punctuation': /<|>/
 		}

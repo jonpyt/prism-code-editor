@@ -9,29 +9,21 @@ languages.odin = {
 	 * @author Michael Schmidt
 	 * @author edukisto
 	 */
-	'comment': {
-		pattern: /\/\/.*|#!.*|\/\*(?:[^/*]|\/(?!\*)|\*(?!\/)|\/\*(?:\*(?!\/)|[^*])*(?:\*\/|$))*(?:\*\/|$)/g,
-		greedy: true
-	},
+	'comment': /\/\/.*|#!.*|\/\*(?:[^/*]|\/(?!\*)|\*(?!\/)|\/\*(?:\*(?!\/)|[^*])*(?:\*\/|$))*(?:\*\/|$)/g,
 	/**
 	 * Should be found before strings because of '"'"- and '`'`-like sequences.
 	 */
 	'char': {
 		pattern: /'(?:\\(?:.|[0Uux][a-fA-F\d]{1,6})|[^\n'\\])'/g,
-		greedy: true,
 		inside: {
 			'symbol': escapes
 		}
 	},
 
 	'string': [
-		{
-			pattern: /`[^`]*`/g,
-			greedy: true
-		},
+		/`[^`]*`/g,
 		{
 			pattern: /"(?:\\.|[^\\\n"])*"/g,
-			greedy: true,
 			inside: {
 				'symbol': escapes
 			}

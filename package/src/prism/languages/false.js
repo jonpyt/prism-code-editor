@@ -7,10 +7,7 @@ import { languages } from '../core.js';
  */
 languages['false'] = {
 	'comment': /\{[^}]*\}/,
-	'string': {
-		pattern: /"[^"]*"/g,
-		greedy: true
-	},
+	'string': /"[^"]*"/g,
 	'character-code': {
 		pattern: /'[\s\S]/,
 		alias: 'number'

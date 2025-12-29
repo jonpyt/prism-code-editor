@@ -203,18 +203,8 @@ function testPatterns(langs) {
 				const groupContent = lookbehindGroup.raw.substr(1, lookbehindGroup.raw.length - 2);
 				const replacement = lookbehindGroup.alternatives.length === 1 ? groupContent : `(?:${groupContent})`;
 				reportError(`${tokenPath}: The lookbehind group ${lookbehindGroup.raw} does not consume characters.\n\n`
-					+ `Therefor it is not necessary to use a lookbehind group.\n`
+					+ `Therefore it is not necessary to use a lookbehind group.\n`
 					+ `To fix this, replace the lookbehind group with ${replacement} and remove the 'lookbehind' property.`);
-			}
-		});
-	});
-
-	it('- should not have greedy tokens without the global flag', async () => {
-		await forEachPattern(({ tokenPath, pattern, parent }) => {
-			if (parent.greedy && !pattern.global) {
-				assert.fail(`${tokenPath}: The pattern is set to 'greedy: true', but does not have the global flag.\n`
-					+ 'Greedy matching does not work without the global flag.\n'
-					+ 'Consider adding the global flag or removing the greedy property.');
 			}
 		});
 	});

@@ -7,11 +7,10 @@ var jsExpr = nested(/(?:[^\\()[\]{}"'/]|"(?:\\.|[^\\\n"])*"|'(?:\\.|[^\\\n'])*'|
 
 
 languages.qml = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'javascript-function': {
 		pattern: re(/((?:^|;)[ \t]*)function\s+(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+\s*\(<0>*\)\s*\{<0>*\}/.source, [jsExpr], 'mg'),
 		lookbehind: true,
-		greedy: true,
 		alias: 'language-javascript',
 		inside: languages.js
 	},
@@ -36,14 +35,10 @@ languages.qml = {
 	'javascript-expression': {
 		pattern: re(/(:[ \t]*)(?![\s;}[])(?:(?!$|[;}])<0>)+/.source, [jsExpr], 'mg'),
 		lookbehind: true,
-		greedy: true,
 		alias: 'language-javascript',
 		inside: languages.js
 	},
-	'string': {
-		pattern: /"(?:\\.|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\\n"])*"/g,
 	'keyword': /\b(?:as|import|on)\b/,
 	'punctuation': /[[\]{},:;]/
 };

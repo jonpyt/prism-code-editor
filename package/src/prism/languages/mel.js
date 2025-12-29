@@ -6,10 +6,9 @@ var statement = {
 }
 
 statement.inside = languages.mel = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'code': {
 		pattern: /`(?:\\.|[^\\`])*`/g,
-		greedy: true,
 		alias: 'italic',
 		inside: {
 			'delimiter': {
@@ -19,10 +18,7 @@ statement.inside = languages.mel = {
 			'statement': statement
 		}
 	},
-	'string': {
-		pattern: /"(?:\\.|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\\n"])*"/g,
 	'variable': /\$\w+/,
 	'number': /\b0x[a-fA-F\d]+\b|\b\d+(?:\.\d*)?|\B\.\d+/,
 	'flag': {
@@ -32,8 +28,7 @@ statement.inside = languages.mel = {
 	'keyword': /\b(?:break|case|continue|default|do|else|float|for|global|if|int?|matrix|proc|return|string|switch|vector|while)\b/,
 	'function': {
 		pattern: /((?:^|[{;])[ \t]*)[a-z_]\w*\b(?!\s*(?:\.(?!\.)|[[{=]))|\b[a-z_]\w*(?=[ \t]*\()/img,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 
 	'tensor-punctuation': {

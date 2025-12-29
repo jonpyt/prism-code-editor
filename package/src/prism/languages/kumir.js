@@ -7,15 +7,9 @@ var nonId = ['\\s\0-\x1f"-/:-?[-^`{-~'];
 languages.kum = languages.kumir = {
 	'comment': /\|.*/,
 
-	'prolog': {
-		pattern: /#.*/g,
-		greedy: true
-	},
+	'prolog': /#.*/g,
 
-	'string': {
-		pattern: /"[^\n"]*"|'[^\n']*'/g,
-		greedy: true
-	},
+	'string': /"[^\n"]*"|'[^\n']*'/g,
 
 	'boolean': {
 		pattern: re(/(^|[<0>])(?:да|нет)(?![^<0>])/.source, nonId),

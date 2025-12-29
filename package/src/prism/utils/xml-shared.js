@@ -6,14 +6,10 @@ var entity = [
 	/&#x?[a-f\d]{1,8};/i
 ];
 
-var xmlComment = {
-	pattern: /<!--(?:(?!<!--)[\s\S])*?-->/g,
-	greedy: true
-};
+var xmlComment = /<!--(?:(?!<!--)[\s\S])*?-->/g;
 
 var tag = {
 	pattern: /<\/?(?!\d)[^\s/=>$<%]+(?:\s(?:\s*[^\s/=>]+(?:\s*=\s*(?!\s)(?:"[^"]*"|'[^']*'|[^\s"'=>]+(?=[\s>]))?|(?=[\s/>])))+)?\s*\/?>/g,
-	greedy: true,
 	inside: {
 		'punctuation': /^<\/?|\/?>$/,
 		'tag': {
@@ -25,7 +21,6 @@ var tag = {
 		'attr-value': [{
 			pattern: /(=\s*)(?:"[^"]*"|'[^']*'|[^\s>]+)/g,
 			lookbehind: true,
-			greedy: true,
 			inside: {
 				'punctuation': /^["']|["']$/,
 				entity

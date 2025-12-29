@@ -1,9 +1,6 @@
 import { languages } from '../core.js';
 
-var comment = {
-	pattern: /^[;#].*/mg,
-	greedy: true
-};
+var comment = /^[;#].*/mg;
 
 var quotesSource = /"(?:\\[\s\S]|[^\\\n"])*"(?!\S)/.source;
 
@@ -12,7 +9,6 @@ languages.systemd = {
 
 	'section': {
 		pattern: /^\[[^\n[\]]*\](?=[ \t]*$)/mg,
-		greedy: true,
 		inside: {
 			'punctuation': /^\[|\]$/,
 			'section-name': {
@@ -24,7 +20,6 @@ languages.systemd = {
 
 	'key': {
 		pattern: /^[^\s=]+(?=[ \t]*=)/mg,
-		greedy: true,
 		alias: 'attr-name'
 	},
 	'value': {
@@ -37,21 +32,16 @@ languages.systemd = {
 			`(=[ \t]*(?!\\s))(?:[^\\\\\\s]|[ \t]+(?:(?![ \t"])|${quotesSource})|\\\\\n+(?:[#;].*\n+)*(?![#;]))+`, 'g'
 		),
 		lookbehind: true,
-		greedy: true,
 		alias: 'attr-value',
 		inside: {
 			'comment': comment,
 			'quoted': {
 				pattern: RegExp('(^|\\s)' + quotesSource, 'g'),
 				lookbehind: true,
-				greedy: true,
 			},
 			'punctuation': /\\$/m,
 
-			'boolean': {
-				pattern: /^(?:false|true|no|off|on|yes)$/g,
-				greedy: true
-			}
+			'boolean': /^(?:false|true|no|off|on|yes)$/g
 		}
 	},
 	'punctuation': /=/

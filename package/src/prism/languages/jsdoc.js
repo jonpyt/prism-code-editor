@@ -1,5 +1,6 @@
 import { languages } from '../core.js';
 import { extend, insertBefore } from '../utils/language.js';
+import { boolean, clikeString } from '../utils/patterns.js';
 import { re } from '../utils/shared.js';
 import './javascript.js';
 import './javadoclike.js';
@@ -54,9 +55,9 @@ insertBefore(
 				pattern: RegExp('(@[a-z]+\\s+)' + type),
 				lookbehind: true,
 				inside: {
-					'string': javascript.string,
+					'string': clikeString,
 					'number': javascript.number,
-					'boolean': javascript.boolean,
+					'boolean': boolean,
 					'keyword': languages.ts.keyword,
 					'operator': /=>|\.{3}|[&|?:*]/,
 					'punctuation': /[()[\]{}.,;<>=]/

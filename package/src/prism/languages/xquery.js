@@ -6,13 +6,9 @@ import './markup.js';
 var xquery = languages.xquery = extend('xml', {
 	'xquery-comment': {
 		pattern: /\(:[\s\S]*?:\)/g,
-		greedy: true,
 		alias: 'comment'
 	},
-	'string': {
-		pattern: /"(?:""|[^"])*"|'(?:''|[^'])*'/g,
-		greedy: true
-	},
+	'string': /"(?:""|[^"])*"|'(?:''|[^'])*'/g,
 	'extension': {
 		pattern: /\(#.+?#\)/,
 		alias: 'symbol'

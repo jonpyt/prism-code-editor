@@ -28,10 +28,7 @@ var comment = {
 	lookbehind: true
 };
 
-var string = {
-	pattern: RegExp(stringPattern, 'g'),
-	greedy: true
-};
+var string = RegExp(stringPattern, 'g');
 
 var punctuation = /[$%@()[\]{}.,;\\]/;
 

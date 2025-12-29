@@ -3,7 +3,7 @@ import { clikeString } from '../utils/patterns.js';
 
 languages.makefile = {
 	'comment': /#(?:\\[\s\S]|[^\\\n])*/,
-	'string': clikeString(),
+	'string': clikeString,
 
 	'builtin-target': {
 		pattern: /\.[A-Z][^:#=\s]+(?=\s*:(?!=))/,

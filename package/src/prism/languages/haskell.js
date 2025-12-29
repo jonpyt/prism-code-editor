@@ -10,10 +10,7 @@ languages.hs = languages.haskell = {
 		pattern: /'(?:[^\\']|\\(?:[abfnrtv\\"'&]|\^[A-Z@[\]^_]|ACK|[BD]EL|BS|CAN|CR|DC[1-4]|DLE|EM|ENQ|EOT|ESC|ET[BX]|FF|FS|GS|HT|LF|NAK|NUL|RS|SI|SOH?|SP|STX|SUB|SYN|US|VT|\d+|o[0-7]+|x[a-fA-F\d]+))'/,
 		alias: 'string'
 	},
-	'string': {
-		pattern: /"(?:[^\\"]|\\(?:\S|\s+\\))*"/g,
-		greedy: true
-	},
+	'string': /"(?:[^\\"]|\\(?:\S|\s+\\))*"/g,
 	'keyword': /\b(?:case|class|data|deriving|do|else|if|in|infix[lr]|instance|let|module|newtype|of|primitive|then|type|where)\b/,
 	'import-statement': {
 		// The imported or hidden names are not included in this import
@@ -31,11 +28,8 @@ languages.hs = languages.haskell = {
 	// decimal integers and floating point numbers | octal integers | hexadecimal integers
 	'number': /\b(?:\d+(?:\.\d+)?(?:e[+-]?\d+)?|0o[0-7]+|0x[a-f\d]+)\b/i,
 	'operator': [
-		{
-			// infix operator
-			pattern: /`(?:[A-Z][\w']*\.)*[_a-z][\w']*`/g,
-			greedy: true
-		},
+		// infix operator
+		/`(?:[A-Z][\w']*\.)*[_a-z][\w']*`/g,
 		{
 			// function composition
 			pattern: /(\s)\.(?!\S)/,

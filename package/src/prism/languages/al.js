@@ -4,11 +4,8 @@ import { clikeComment, clikePunctuation } from '../utils/patterns.js';
 // based on https://github.com/microsoft/AL/blob/master/grammar/alsyntax.tmlanguage
 
 languages.al = {
-	'comment': clikeComment(),
-	'string': {
-		pattern: /'(?:''|[^\n'])*'(?!')|"(?:""|[^\n"])*"(?!")/g,
-		greedy: true
-	},
+	'comment': clikeComment,
+	'string': /'(?:''|[^\n'])*'(?!')|"(?:""|[^\n"])*"(?!")/g,
 	'function': {
 		pattern: /(\b(?:event|procedure|trigger)\s+|(?:^|[^.])\.\s*)[a-z_]\w*(?=\s*\()/i,
 		lookbehind: true

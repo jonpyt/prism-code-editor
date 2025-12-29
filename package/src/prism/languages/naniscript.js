@@ -20,7 +20,6 @@ var params = {
 		{
 			pattern: /([ \t])\S+/g,
 			lookbehind: true,
-			greedy: true,
 			alias: 'operator',
 		},
 		{
@@ -83,7 +82,6 @@ languages.nani = languages.naniscript = {
 			'command-name': /^@\w+/,
 			'expression': {
 				pattern: expressionDef,
-				greedy: true,
 				alias: 'selector'
 			},
 			'command-params': {
@@ -102,12 +100,10 @@ languages.nani = languages.naniscript = {
 			'escaped-char': /\\[[\]{}"]/,
 			'expression': {
 				pattern: expressionDef,
-				greedy: true,
 				alias: 'selector'
 			},
 			'inline-command': {
 				pattern: /\[[ \t]*\w[^\n[\]]*\]/g,
-				greedy: true,
 				alias: 'function',
 				inside: {
 					'start-stop-char': /[[\]]/,

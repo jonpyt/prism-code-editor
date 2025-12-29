@@ -4,10 +4,7 @@ import { boolean } from '../utils/patterns.js';
 languages.metafont = {
 	// Syntax of METAFONT with the added (public) elements of PlainMETAFONT. Except for internal quantities they are expected to be rarely redefined. Freely inspired by the syntax of Christophe Grandsire for the Crimson Editor.
 	'comment': /%.*/,
-	'string': {
-		pattern: /"[^\n"]*"/g,
-		greedy: true
-	},
+	'string': /"[^\n"]*"/g,
 	'number': /\d*\.?\d+/,
 	'boolean': boolean,
 	'punctuation': [

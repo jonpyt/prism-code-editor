@@ -11,7 +11,7 @@ languages.bro = {
 		}
 	},
 
-	'string': clikeString(),
+	'string': clikeString,
 
 	'boolean': /\b[TF]\b/,
 

@@ -6,7 +6,7 @@ var interpolationContent = {
 	lookbehind: true,
 };
 
-var percentExpression = /(?:([^a-zA-Z\d\s{(\[<=])(?:\\[\s\S]|(?!\1)[^\\])*\1|\((?:\\[\s\S]|[^\\()]|\((?:\\[\s\S]|[^\\()])*\))*\)|\{(?:\\[\s\S]|[^\\{}]|\{(?:\\[\s\S]|[^\\{}])*\})*\}|\[(?:\\[\s\S]|[^\\[\]]|\[(?:\\[\s\S]|[^\\[\]])*\])*\]|<(?:\\[\s\S]|[^\\<>]|<(?:\\[\s\S]|[^\\<>])*>)*>)/.source;
+var percentExpression = /(?:([^a-zA-Z\d\s{([<=])(?:\\[\s\S]|(?!\1)[^\\])*\1|\((?:\\[\s\S]|[^\\()]|\((?:\\[\s\S]|[^\\()])*\))*\)|\{(?:\\[\s\S]|[^\\{}]|\{(?:\\[\s\S]|[^\\{}])*\})*\}|\[(?:\\[\s\S]|[^\\[\]]|\[(?:\\[\s\S]|[^\\[\]])*\])*\]|<(?:\\[\s\S]|[^\\<>]|<(?:\\[\s\S]|[^\\<>])*>)*>)/.source;
 
 var symbolName = /(?:"(?:\\.|[^\\\n"])*"|(?:\b(?!\d)\w+|[^\s\0-\x7f]+)[?!]?|\$.)/.source;
 
@@ -23,22 +23,10 @@ var interpolation = {
 }
 
 interpolationContent.inside = languages.rb = languages.ruby = {
-	'comment': {
-		pattern: /#.*|^=begin\s[\s\S]*?^=end/mg,
-		greedy: true
-	},
+	'comment': /#.*|^=begin\s[\s\S]*?^=end/mg,
 	'string-literal': [
 		{
-			pattern: RegExp(/%[qQiIwWs]?/.source + percentExpression, 'g'),
-			greedy: true,
-			inside: {
-				'interpolation': interpolation,
-				'string': /[\s\S]+/
-			}
-		},
-		{
-			pattern: /(["'])(?:#\{[^}]+\}|#(?!\{)|\\[\s\S]|(?!\1)[^\\#\n])*\1/g,
-			greedy: true,
+			pattern: RegExp(/%[qQiIwWs]?/.source + percentExpression + '|' + /(["'])(?:#\{[^}]+\}|#(?!\{)|\\[\s\S]|(?!\2)[^\\#\n])*\2/.source, 'g'),
 			inside: {
 				'interpolation': interpolation,
 				'string': /[\s\S]+/
@@ -47,7 +35,6 @@ interpolationContent.inside = languages.rb = languages.ruby = {
 		{
 			pattern: /<<[-~]?([a-z_]\w*)\n(?:.*\n)*?[ \t]*\1/gi,
 			alias: 'heredoc-string',
-			greedy: true,
 			inside: {
 				'delimiter': {
 					pattern: /^<<[-~]?[a-z_]\w*|\b[a-z_]\w*$/i,
@@ -63,7 +50,6 @@ interpolationContent.inside = languages.rb = languages.ruby = {
 		{
 			pattern: /<<[-~]?'([a-z_]\w*)'\n(?:.*\n)*?[ \t]*\1/gi,
 			alias: 'heredoc-string',
-			greedy: true,
 			inside: {
 				'delimiter': {
 					pattern: /^<<[-~]?'[a-z_]\w*'|\b[a-z_]\w*$/i,
@@ -76,30 +62,16 @@ interpolationContent.inside = languages.rb = languages.ruby = {
 			}
 		}
 	],
-	'command-literal': [
-		{
-			pattern: RegExp(/%x/.source + percentExpression, 'g'),
-			greedy: true,
-			inside: {
-				'interpolation': interpolation,
-				'command': {
-					pattern: /[\s\S]+/,
-					alias: 'string'
-				}
-			}
-		},
-		{
-			pattern: /`(?:#\{[^}]+\}|#(?!\{)|\\[\s\S]|[^\\`#\n])*`/g,
-			greedy: true,
-			inside: {
-				'interpolation': interpolation,
-				'command': {
-					pattern: /[\s\S]+/,
-					alias: 'string'
-				}
+	'command-literal': {
+		pattern: RegExp(/%x/.source + percentExpression + '|' + /`(?:#\{[^}]+\}|#(?!\{)|\\[\s\S]|[^\\`#\n])*`/.source, 'g'),
+		inside: {
+			'interpolation': interpolation,
+			'command': {
+				pattern: /[\s\S]+/,
+				alias: 'string'
 			}
 		}
-	],
+	},
 	'class-name': {
 		pattern: /(\b(?:class|module)\s+|\bcatch\s+\()[\w.\\]+|\b[A-Z_]\w*(?=\s*\.\s*new\b)/,
 		lookbehind: true,
@@ -107,36 +79,26 @@ interpolationContent.inside = languages.rb = languages.ruby = {
 			'punctuation': /[\\.]/
 		}
 	},
-	'regex-literal': [
-		{
-			pattern: RegExp(`%r${percentExpression}[egimnosux]{0,6}`, 'g'),
-			greedy: true,
-			inside: {
-				'interpolation': interpolation,
-				'regex': /[\s\S]+/
-			}
-		},
-		{
-			pattern: /(^|[^/])\/(?!\/)(?:\[[^\n\]]+\]|\\.|[^\\\n/[])+\/[egimnosux]{0,6}(?=\s*(?:$|[\n,.;})#]))/g,
-			lookbehind: true,
-			greedy: true,
-			inside: {
-				'interpolation': interpolation,
-				'regex': /[\s\S]+/
-			}
+	'regex-literal': {
+		pattern: RegExp(
+			/(^|[^/])\/(?!\/)(?:\[[^\n\]]+\]|\\.|[^\\\n/[])+\/[egimnosux]{0,6}(?=\s*(?:$|[\n,.;})#]))/.source + '|' +
+			`%r${percentExpression.replace(/\\1/g, "\\2")}[egimnosux]{0,6}`, 'g'
+		),
+		lookbehind: true,
+		inside: {
+			'interpolation': interpolation,
+			'regex': /[\s\S]+/
 		}
-	],
+	},
 	'variable': /[@$]+(?!\d)\w+(?:[?!]|\b)/,
 	'symbol': [
 		{
 			pattern: RegExp(/(^|[^:]):/.source + symbolName, 'g'),
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		},
 		{
 			pattern: RegExp(/([\n{(,][ \t]*)/.source + symbolName + /(?=:(?!:))/.source, 'g'),
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		},
 	],
 	'method-definition': {

@@ -2,24 +2,14 @@ import { languages } from '../core.js';
 import { boolean } from '../utils/patterns.js';
 
 languages.rip = {
-	'comment': {
-		pattern: /#.*/g,
-		greedy: true
-	},
+	'comment': /#.*/g,
 
-	'char': {
-		pattern: /\B`[^\s"'`#/\\<>()[\]{}.,:;]\b/g,
-		greedy: true
-	},
-	'string': {
-		pattern: /(["'])(?:\\.|(?!\1)[^\\\n])*\1/g,
-		greedy: true
-	},
+	'char': /\B`[^\s"'`#/\\<>()[\]{}.,:;]\b/g,
+	'string': /(["'])(?:\\.|(?!\1)[^\\\n])*\1/g,
 
 	'regex': {
 		pattern: /(^|[^/])\/(?!\/)(?:\[[^\n\]]*\]|\\.|[^\\\n/[])+\/(?=\s*(?:$|[\n.,;})]))/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 
 	'keyword': /(?:=>|->)|\b(?:case|catch|class|else|exit|finally|if|raise|return|switch|try)\b/,

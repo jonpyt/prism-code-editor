@@ -2,53 +2,32 @@ import { languages } from '../core.js';
 
 var brackets = /(?:\((?:\\[\s\S]|[^\\()])*\)|\{(?:\\[\s\S]|[^\\{}])*\}|\[(?:\\[\s\S]|[^\\[\]])*\]|<(?:\\[\s\S]|[^\\<>])*>)/.source;
 
-var a = '(?![a-zA-Z\\d])\\s*(?:([^\\sa-zA-Z\\d{([<])(?:\\\\[\\s\\S]|(?!\\1)[^\\\\])*\\1|([a-zA-Z\\d])(?:\\\\[\\s\\S]|(?!\\2)[^\\\\])*\\2';
+var a = `(?![a-zA-Z\\d])\\s*(?:([^\\sa-zA-Z\\d{([<])(?:\\\\[\\s\\S]|(?!\\1)[^\\\\])*\\1|([a-zA-Z\\d])(?:\\\\[\\s\\S]|(?!\\2)[^\\\\])*\\2|${brackets})`;
 
 languages.perl = {
 	'comment': [
 		{
 			// POD
 			pattern: /(^\s*)=\w[\s\S]*?=cut.*/mg,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		},
 		{
 			pattern: /(^|[^\\$])#.*/g,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		}
 	],
 	// TODO Could be nice to handle Heredoc too.
-	'string': {
-		pattern: RegExp(
-			`\\bq[qwx]?${a}|${brackets})|("|\`)(?:\\\\[\\s\\S]|(?!\\3)[^\\\\])*\\3|'(?:\\\\.|[^\\\\\n'])*'`, 'g'
-		),
-		greedy: true
-	},
+	'string': RegExp(
+		`\\bq[qwx]?${a}|("|\`)(?:\\\\[\\s\\S]|(?!\\3)[^\\\\])*\\3|'(?:\\\\.|[^\\\\\n'])*'`, 'g'
+	),
+	// The lookbehinds prevent -s from breaking
 	'regex': [
+		RegExp(`\\b(?:m|qr)${a}[msixpodualngc]*`, 'g'),
 		{
 			pattern: RegExp(
-				`\\b(?:m|qr)${a}|${brackets})[msixpodualngc]*`, 'g'
+				`(^|[^-])\\b(?:s|tr|y)(?![a-zA-Z\\d])\\s*(?:([^\\sa-zA-Z\\d{([<])(?:\\\\[\\s\\S]|(?!\\2)[^\\\\])*\\2(?:\\\\[\\s\\S]|(?!\\2)[^\\\\])*\\2|([a-zA-Z\\d])(?:\\\\[\\s\\S]|(?!\\3)[^\\\\])*\\3(?:\\\\[\\s\\S]|(?!\\3)[^\\\\])*\\3|${brackets}\\s*${brackets})[msixpodualngcer]*|/(?:\\\\.|[^\\\\\n/])*/[msixpodualngc]*(?=\\s*(?:$|[\n,.;})&|*~<>!?^+-]|(?:and|cmp|eq|[gl][et]|ne|not|x|x?or)\\b))`, 'g'
 			),
-			greedy: true
-		},
-
-		// The lookbehinds prevent -s from breaking
-		{
-			pattern: RegExp(
-				`(^|[^-])\\b(?:s|tr|y)(?![a-zA-Z\\d])\\s*(?:([^\\sa-zA-Z\\d{([<])(?:\\\\[\\s\\S]|(?!\\2)[^\\\\])*\\2(?:\\\\[\\s\\S]|(?!\\2)[^\\\\])*\\2|([a-zA-Z\\d])(?:\\\\[\\s\\S]|(?!\\3)[^\\\\])*\\3(?:\\\\[\\s\\S]|(?!\\3)[^\\\\])*\\3|${brackets}\\s*${brackets})[msixpodualngcer]*`, 'g'
-			),
-			lookbehind: true,
-			greedy: true
-		},
-
-		// /.../
-		// The look-ahead tries to prevent two divisions on
-		// the same line from being highlighted as regex.
-		// This does not support multi-line regex.
-		{
-			pattern: /\/(?:\\.|[^\\\n/])*\/[msixpodualngc]*(?=\s*(?:$|[\n,.;})&|*~<>!?^+-]|(?:and|cmp|eq|[gl][et]|ne|not|x|x?or)\b))/g,
-			greedy: true
+			lookbehind: true
 		}
 	],
 

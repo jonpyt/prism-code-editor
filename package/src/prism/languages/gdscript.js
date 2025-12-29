@@ -3,10 +3,7 @@ import { boolean, clikePunctuation } from '../utils/patterns.js';
 
 languages.gdscript = {
 	'comment': /#.*/,
-	'string': {
-		pattern: /@?(?:(["'])(?:\\[\s\S]|(?!\1)[^\\\n])*\1(?!"|')|"""(?:\\[\s\S]|[^\\])*?""")/g,
-		greedy: true
-	},
+	'string': /@?(?:(["'])(?:\\[\s\S]|(?!\1)[^\\\n])*\1(?!"|')|"""(?:\\[\s\S]|[^\\])*?""")/g,
 	'class-name': {
 		// class_name Foo, extends Bar, class InnerClass
 		// export(int) var baz, export(int, 0) var i

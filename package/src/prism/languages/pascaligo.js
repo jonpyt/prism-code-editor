@@ -26,10 +26,7 @@ var className = [
 
 var pascaligo = languages.pascaligo = {
 	'comment': /\(\*[\s\S]+?\*\)|\/\/.*/,
-	'string': {
-		pattern: /(["'`])(?:\\[\s\S]|(?!\1)[^\\])*\1|\^[a-z]/gi,
-		greedy: true
-	},
+	'string': /(["'`])(?:\\[\s\S]|(?!\1)[^\\])*\1|\^[a-z]/gi,
 	'class-name': className,
 	'keyword': {
 		pattern: /(^|[^&])\b(?:begin|block|case|const|else|end|fail|for|from|function|if|is|nil|of|remove|return|skip|then|type|var|while|with)\b/i,

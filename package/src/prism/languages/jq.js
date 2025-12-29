@@ -22,13 +22,11 @@ content.inside = languages.jq = {
 	'property': {
 		pattern: RegExp(string + /(?=\s*:(?!:))/.source, 'g'),
 		lookbehind: true,
-		greedy: true,
 		inside: stringInterpolation
 	},
 	'string': {
 		pattern: RegExp(string, 'g'),
 		lookbehind: true,
-		greedy: true,
 		inside: stringInterpolation
 	},
 

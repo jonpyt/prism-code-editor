@@ -3,7 +3,7 @@ import { clikeString } from '../utils/patterns.js';
 
 languages.iecst = {
 	'comment': /\/\/.*|\/\*[\s\S]*?(?:\*\/|$)|\(\*[\s\S]*?(?:\*\)|$)|\{[^}]*}?/g,
-	'string': clikeString(),
+	'string': clikeString,
 	'keyword': [
 		/\b(?:end_)?(?:program|configuration|interface|function_block|function|action|transition|type|struct|(?:initial_)?step|namespace|library|channel|folder|resource|var_(?:access|config|external|global|input|in_out|output|temp)|var|method|property)\b/i,
 		/\b(?:AT|BY|(?:END_)?(?:CASE|FOR|IF|REPEAT|WHILE)|CONSTANT|CONTINUE|DO|ELSE|ELSIF|EXIT|EXTENDS|FROM|[GS]ET|GOTO|IMPLEMENTS|JMP|NON_RETAIN|OF|PRIVATE|PROTECTED|PUBLIC|RETAIN|RETURN|TASK|THEN|TO|UNTIL|USING|WITH|__CATCH|__ENDTRY|__FINALLY|__TRY)\b/

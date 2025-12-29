@@ -5,10 +5,7 @@ import './turtle.js';
 insertBefore(
 	languages.rq = languages.sparql = extend('turtle', {
 		'boolean': /\b(?:false|true)\b/i,
-		'variable': {
-			pattern: /[?$]\w+/g,
-			greedy: true
-		},
+		'variable': /[?$]\w+/g,
 	}),
 	'punctuation', {
 		'keyword': [

@@ -12,7 +12,6 @@ expression.inside = languages.gni = languages.gn = {
 	'string-literal': {
 		pattern: /(^|[^\\"])"(?:\\.|[^\\\n"])*"/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'interpolation': {
 				pattern: /((?:^|[^\\])(?:\\\\)*)\$(?:\{[\s\S]*?\}|(?!\d)\w+|0x[a-fA-F\d]{2})/,

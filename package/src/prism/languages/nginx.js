@@ -5,18 +5,15 @@ var variable = /\$(?:\w[a-z\d]*(?:_[^\0-\x1f\s"'\\()$]*)?|\{[^\\\s}"']+\})/i;
 languages.nginx = {
 	'comment': {
 		pattern: /(^|[\s{};])#.*/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'directive': {
 		pattern: /(^|\s)\w(?:\\.|[^\\\s"'{};]|"(?:\\.|[^\\"])*"|'(?:\\.|[^\\'])*'|\s+(?:#.*(?!.)|(?![#\s])))*?(?=\s*[;{])/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'string': {
 				pattern: /((?:^|[^\\])(?:\\\\)*)(?:"(?:\\.|[^\\"])*"|'(?:\\.|[^\\'])*')/g,
 				lookbehind: true,
-				greedy: true,
 				inside: {
 					'escape': {
 						pattern: /\\["'\\nrt]/,
@@ -27,13 +24,9 @@ languages.nginx = {
 			},
 			'comment': {
 				pattern: /(\s)#.*/g,
-				lookbehind: true,
-				greedy: true
+				lookbehind: true
 			},
-			'keyword': {
-				pattern: /^\S+/g,
-				greedy: true
-			},
+			'keyword': /^\S+/g,
 
 			// other patterns
 

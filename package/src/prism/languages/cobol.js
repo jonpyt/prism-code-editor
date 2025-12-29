@@ -3,18 +3,13 @@ import { languages } from '../core.js';
 languages.cobol = {
 	'comment': {
 		pattern: /\*>.*|(^[ \t]*)\*.*/mg,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
-	'string': {
-		pattern: /[xzgn]?(?:"(?:[^\n"]|"")*"(?!")|'(?:[^\n']|'')*'(?!'))/ig,
-		greedy: true
-	},
+	'string': /[xzgn]?(?:"(?:[^\n"]|"")*"(?!")|'(?:[^\n']|'')*'(?!'))/gi,
 
 	'level': {
 		pattern: /(^[ \t]*)\d+\b/mg,
 		lookbehind: true,
-		greedy: true,
 		alias: 'number'
 	},
 

@@ -2,18 +2,9 @@ import { languages } from '../core.js';
 import { boolean } from '../utils/patterns.js';
 
 languages.smalltalk = {
-	'comment': {
-		pattern: /"(?:""|[^"])*"/g,
-		greedy: true
-	},
-	'char': {
-		pattern: /\$./g,
-		greedy: true
-	},
-	'string': {
-		pattern: /'(?:''|[^'])*'/g,
-		greedy: true
-	},
+	'comment': /"(?:""|[^"])*"/g,
+	'char': /\$./g,
+	'string': /'(?:''|[^'])*'/g,
 	'symbol': /#[a-z\d]+|#(?:-|([+/\\*~<>=@%|&?!])\1?)|#(?=\()/i,
 	'block-arguments': {
 		pattern: /(\[\s*):[^\[|]*\|/,

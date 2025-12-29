@@ -37,13 +37,9 @@ inlineLanguages.forEach(lang => {
 Object.assign(pure, {
 	'inline-lang': {
 		pattern: /%<[\s\S]+?%>/g,
-		greedy: true,
 		inside: inside('c')
 	},
-	'string': {
-		pattern: /"(?:\\.|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\\n"])*"/g,
 	'number': {
 		// The look-behind prevents wrong highlighting of the .. operator
 		pattern: /(\.\.)?(?:\b(?:inf|nan)\b|\b0x[a-f\d]+|(?:\b(?:0b)?\d+(?:\.\d+)?|\B\.\d+)(?:e[+-]?\d+)?l?)/i,

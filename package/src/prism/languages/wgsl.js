@@ -2,7 +2,7 @@ import { languages } from '../core.js';
 import { boolean, clikeComment } from '../utils/patterns.js';
 
 languages.wgsl = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'builtin-attribute': {
 		pattern: /(@)builtin\(.*?\)/,
 		lookbehind: true,

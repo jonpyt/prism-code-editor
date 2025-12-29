@@ -26,7 +26,6 @@ insertBefore(markdown, 'prolog', {
 	'front-matter-block': {
 		pattern: /(^(?:\s*\n)?)---(?!.)[\s\S]*?\n---(?!.)/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'punctuation': /^---|---$/,
 			'front-matter': {
@@ -86,7 +85,6 @@ insertBefore(markdown, 'prolog', {
 			// code block
 			// ```
 			pattern: /^(```+)[^`][\s\S]*?^\1`*$/mg,
-			greedy: true,
 			inside: {
 				'punctuation': /^`+|`+$/,
 				'code-language': /^.+/,
@@ -177,7 +175,6 @@ insertBefore(markdown, 'prolog', {
 		// allow one nested instance of italic text using the same delimiter
 		pattern: createInline(/\b__(?:(?!_)<0>|_(?:(?!_)<0>)+_)+__\b|\*\*(?:(?!\*)<0>|\*(?:(?!\*)<0>)+\*)+\*\*/.source),
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'content': {
 				pattern: /(^..)[\s\S]+(?=..)/,
@@ -194,7 +191,6 @@ insertBefore(markdown, 'prolog', {
 		// allow one nested instance of bold text using the same delimiter
 		pattern: createInline(/\b_(?:(?!_)<0>|__(?:(?!_)<0>)+__)+_\b|\*(?:(?!\*)<0>|\*\*(?:(?!\*)<0>)+\*\*)+\*/.source),
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'content': {
 				pattern: /(?!^)[\s\S]+(?=.)/,
@@ -209,7 +205,6 @@ insertBefore(markdown, 'prolog', {
 		// eslint-disable-next-line regexp/strict
 		pattern: createInline(/(~~?)(?:(?!~)<0>)+\2/.source),
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'punctuation': /^~~?|~~?$/,
 			'content': {
@@ -223,7 +218,6 @@ insertBefore(markdown, 'prolog', {
 		// ``code``
 		pattern: /(^|[^\\`])(`+)[^\n`](?:|.*?[^\n`])\2(?!`)/g,
 		lookbehind: true,
-		greedy: true,
 		alias: 'code keyword'
 	},
 	'url': {
@@ -232,7 +226,6 @@ insertBefore(markdown, 'prolog', {
 		// [example] [id]
 		pattern: createInline(/!?\[(?:(?!\])<0>)+\](?:\([^\s)]+(?:[ \t]+"(?:\\.|[^\\"])*")?\)|[ \t]?\[(?:(?!\])<0>)+\])/.source),
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'operator': /^!/,
 			'content': {

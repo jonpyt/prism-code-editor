@@ -4,10 +4,7 @@ var opCodes = 'ad[cd]|adiw|andi?|asr|bclr|bld|br[bchtv][cs]|break|breq|br[gin]e|
 
 languages.asmatmel = {
 	'comment': /;.*/,
-	'string': {
-		pattern: /(["'`])(?:\\.|(?!\1)[^\\\n])*\1/g,
-		greedy: true
-	},
+	'string': /(["'`])(?:\\.|(?!\1)[^\\\n])*\1/g,
 
 	'constant': /\b(?:PORT[A-Z]|DDR[A-Z]|(?:DD|P)[A-Z](?:\d|[0-2]\d|3[01]))\b/,
 

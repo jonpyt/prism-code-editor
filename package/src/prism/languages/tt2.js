@@ -11,13 +11,9 @@ languages.tt2 = {
 		inside: {
 			'comment': /#.*|\[%#[\s\S]*?%\]/,
 			'string': [
-				{
-					pattern: /'[^\\']*(?:\\[\s\S][^\\']*)*'/g,
-					greedy: true,
-				},
+				/'[^\\']*(?:\\[\s\S][^\\']*)*'/g,
 				{
 					pattern: /"[^\\"]*(?:\\[\s\S][^\\"]*)*"/g,
-					greedy: true,
 					inside: {
 						'variable': /\$(?:[a-z]\w*(?:\.(?:\d+|\$?[a-z]\w*))*)/i
 					}

@@ -2,10 +2,7 @@ import { languages } from '../core.js';
 
 languages.pcode = languages.peoplecode = {
 	'comment': /\/\*[\s\S]*?\*\/|\bREM[^;]*;|<\*(?:[^<*]|\*(?!>)|<(?!\*)|<\*(?:(?!\*>)[\s\S])*\*>)*\*>|\/\+[\s\S]*?\+\//,
-	'string': {
-		pattern: /'(?:''|[^\n'])*'(?!')|"(?:""|[^\n"])*"(?!")/g,
-		greedy: true
-	},
+	'string': /'(?:''|[^\n'])*'(?!')|"(?:""|[^\n"])*"(?!")/g,
 	'variable': /%\w+/,
 	'function-definition': {
 		pattern: /((?:^|[^\w-])(?:function|method)\s+)\w+/i,

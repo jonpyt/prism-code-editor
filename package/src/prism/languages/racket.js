@@ -14,7 +14,6 @@ insertBefore(
 	'string', {
 		'lang': {
 			pattern: /^#lang.+/mg,
-			greedy: true,
 			alias: 'keyword'
 		}
 	}

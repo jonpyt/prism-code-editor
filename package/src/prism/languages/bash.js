@@ -26,7 +26,6 @@ var insideString = {
 		// [0]: Arithmetic Environment
 		{
 			pattern: /\$?\(\([\s\S]*?\)\)/g,
-			greedy: true,
 			inside: {
 				// If there is a $ sign at the beginning highlight $(( and )) as variable
 				'variable': [
@@ -46,13 +45,11 @@ var insideString = {
 		// [1]: Command Substitution
 		{
 			pattern: /\$\((?:[^()]|\([^)]*\))*\)|`[^`]+`/g,
-			greedy: true,
 			inside: variableInside
 		},
 		// [2]: Brace expansion
 		{
 			pattern: /\$\{[^}]*\}/g,
-			greedy: true,
 			inside: {
 				'operator': /:[?=+-]?|[!/]|##?|%%?|\^\^?|,,?/,
 				'punctuation': /[[\]]/,
@@ -126,7 +123,6 @@ var bash = commandAfterHeredoc.inside = languages.sh = languages.shell = languag
 		{
 			pattern: /((?:^|[^<])<<-?\s*)(\w+)\s[\s\S]*?\n\2/g,
 			lookbehind: true,
-			greedy: true,
 			inside: insideString
 		},
 		// Here-document with quotes around the tag
@@ -134,7 +130,6 @@ var bash = commandAfterHeredoc.inside = languages.sh = languages.shell = languag
 		{
 			pattern: /((?:^|[^<])<<-?\s*)(["'])(\w+)\2\s[\s\S]*?\n\3/g,
 			lookbehind: true,
-			greedy: true,
 			inside: {
 				'bash': commandAfterHeredoc
 			}
@@ -144,19 +139,16 @@ var bash = commandAfterHeredoc.inside = languages.sh = languages.shell = languag
 			// https://www.gnu.org/software/bash/manual/html_node/Double-Quotes.html
 			pattern: /(^|[^\\](?:\\\\)*)"(?:\\[\s\S]|\$\([^)]+\)|\$(?!\()|`[^`]+`|[^\\"`$])*"/g,
 			lookbehind: true,
-			greedy: true,
 			inside: insideString
 		},
 		{
 			// https://www.gnu.org/software/bash/manual/html_node/Single-Quotes.html
 			pattern: /(^|[^\\$])'[^']*'/g,
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		},
 		{
 			// https://www.gnu.org/software/bash/manual/html_node/ANSI_002dC-Quoting.html
 			pattern: /\$'(?:\\[\s\S]|[^\\'])*'/g,
-			greedy: true,
 			inside: {
 				'entity': insideString.entity
 			}

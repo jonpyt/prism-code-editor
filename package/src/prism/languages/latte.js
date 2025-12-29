@@ -8,7 +8,6 @@ var markupLatte = clone(languages.html);
 insertBefore(markupLatte.tag.inside, 'attr-value', {
 	'n-attr': {
 		pattern: /n:[\w-]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'=>]+))?/g,
-		greedy: true,
 		inside: {
 			'attr-value': {
 				pattern: /(=\s*)[\s\S]+/,

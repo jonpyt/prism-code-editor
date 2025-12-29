@@ -2,22 +2,14 @@ import { languages } from '../core.js';
 
 languages.sql = {
 	'comment': /\/\*[\s\S]*?\*\/|(?:--|\/\/|#).*/,
-	'variable': [
-		{
-			pattern: /@(["'`])(?:\\[\s\S]|(?!\1)[^\\])+\1/g,
-			greedy: true
-		},
-		/@[\w.$]+/
-	],
+	'variable': /@(["'`])(?:\\[\s\S]|(?!\1)[^\\])+\1|@[\w.$]+/g,
 	'string': {
 		pattern: /(^|[^\\@])(["'])(?:\\[\s\S]|(?!\2)[^\\]|\2\2)*\2/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'identifier': {
 		pattern: /(^|[^\\@])`(?:\\[\s\S]|[^\\`]|``)*`/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'punctuation': /^`|`$/
 		}

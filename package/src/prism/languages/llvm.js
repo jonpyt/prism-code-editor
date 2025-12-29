@@ -3,10 +3,7 @@ import { boolean } from '../utils/patterns.js';
 
 languages.llvm = {
 	'comment': /;.*/,
-	'string': {
-		pattern: /"[^"]*"/g,
-		greedy: true,
-	},
+	'string': /"[^"]*"/g,
 	'boolean': boolean,
 	'variable': /[%@!#](?:(?!\d)(?:[-\w$.]|\\[a-f\d]{2})+|\d+)/i,
 	'label': /(?!\d)(?:[-\w$.]|\\[a-f\d]{2})+:/i,

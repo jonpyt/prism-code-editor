@@ -4,7 +4,6 @@ languages.agda = {
 	'comment': /\{-[\s\S]*?(?:-\}|$)|--.*/,
 	'string': {
 		pattern: /"(?:\\[\s\S]|[^\\\n"])*"/g,
-		greedy: true,
 	},
 	'punctuation': /[(){}⦃⦄.;@]/,
 	'class-name': {

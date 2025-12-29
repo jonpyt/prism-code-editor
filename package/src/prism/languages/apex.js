@@ -15,12 +15,11 @@ var classNameInside = {
 };
 
 languages.apex = {
-	'comment': clikeComment(),
-	'string': clikeString(),
+	'comment': clikeComment,
+	'string': clikeString,
 	'sql': {
 		pattern: /((?:[=,({:]|\breturn)\s*)\[[^[\]]*\]/gi,
 		lookbehind: true,
-		greedy: true,
 		alias: 'language-sql',
 		inside: 'sql'
 	},

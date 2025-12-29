@@ -6,7 +6,6 @@ languages.abnf = {
 	'comment': /;.*/,
 	'string': {
 		pattern: /(?:%[is])?"[^\n"]*"/g,
-		greedy: true,
 		inside: {
 			'punctuation': /^%./
 		}

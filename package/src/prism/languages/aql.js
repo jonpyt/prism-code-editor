@@ -2,20 +2,13 @@ import { languages } from '../core.js';
 import { clikeComment } from '../utils/patterns.js';
 
 languages.aql = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'property': {
 		pattern: /([{,]\s*)(?:(?!\d)\w+|(["'´`])(?:\\.|(?!\2)[^\\\n])*\2)(?=\s*:)/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
-	'string': {
-		pattern: /(["'])(?:\\.|(?!\1)[^\\\n])*\1/g,
-		greedy: true
-	},
-	'identifier': {
-		pattern: /([´`])(?:\\.|(?!\1)[^\\\n])*\1/g,
-		greedy: true
-	},
+	'string': /(["'])(?:\\.|(?!\1)[^\\\n])*\1/g,
+	'identifier': /([´`])(?:\\.|(?!\1)[^\\\n])*\1/g,
 	'variable': /@@?\w+/,
 	'keyword': [
 		{

@@ -27,14 +27,11 @@ describe('Pattern test coverage', () => {
 			const tokenPath = BFSPathToPrismTokenPath(path);
 
 			if (key && isRegExp(value)) {
-				const regex = makeGlobal(value);
-				object[key] = regex;
-
-				const patternKey = String(regex);
+				const patternKey = String(value);
 				let data = patterns.get(patternKey);
 				if (!data) {
 					data = {
-						pattern: regex,
+						pattern: value,
 						language: path[1].key ?? '',
 						from: new Set(),
 						matches: []
@@ -44,8 +41,8 @@ describe('Pattern test coverage', () => {
 				data.from.add(tokenPath);
 				const { matches } = data;
 
-				regex.exec = (string) => {
-					const match = RegExp.prototype.exec.call(regex, string);
+				value.exec = (string) => {
+					const match = RegExp.prototype.exec.call(value, string);
 					if (match) {
 						matches.push(match);
 					}
@@ -235,15 +232,3 @@ describe('Pattern test coverage', () => {
 		return lines.join('\n    ');
 	}
 });
-
-/**
- * @param {RegExp} regex
- * @returns {RegExp}
- */
-function makeGlobal(regex) {
-	if (regex.global) {
-		return regex;
-	} else {
-		return RegExp(regex.source, regex.flags + 'g');
-	}
-}

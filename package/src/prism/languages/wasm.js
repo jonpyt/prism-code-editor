@@ -2,10 +2,7 @@ import { languages } from '../core.js';
 
 languages.wasm = {
 	'comment': /\(;[\s\S]*?;\)|;;.*/,
-	'string': {
-		pattern: /"(?:\\[\s\S]|[^\\"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:\\[\s\S]|[^\\"])*"/g,
 	'keyword': [
 		{
 			pattern: /\b(?:align|offset)=/,

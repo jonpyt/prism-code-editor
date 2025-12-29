@@ -2,8 +2,8 @@ import { languages } from '../core.js';
 import { boolean, clikeComment, clikeNumber, clikePunctuation, clikeString } from '../utils/patterns.js';
 
 languages.sol = languages.solidity = {
-	'comment': clikeComment(),
-	'string': clikeString(),
+	'comment': clikeComment,
+	'string': clikeString,
 	'class-name': {
 		pattern: /(\b(?:contract|enum|interface|library|new|struct|using)\s+)(?!\d)[$\w]+/,
 		lookbehind: true

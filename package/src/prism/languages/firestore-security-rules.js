@@ -3,11 +3,10 @@ import { boolean, clikeNumber, clikePunctuation, clikeString } from '../utils/pa
 
 languages['firestore-security-rules'] = {
 	'comment': /\/\/.*/,
-	'string': clikeString(),
+	'string': clikeString,
 	'path': {
 		pattern: /(^|[\s(),])(?:\/(?:[\w\xa0-\uffff]+|\{[\w\xa0-\uffff]+(?:=\*\*)?\}|\$\([\w\xa0-\uffff.]+\)))+/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'variable': {
 				pattern: /\{[\w\xa0-\uffff]+(?:=\*\*)?\}|\$\([\w\xa0-\uffff.]+\)/,

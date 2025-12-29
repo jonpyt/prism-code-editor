@@ -4,7 +4,7 @@ import { boolean, clikeComment } from '../utils/patterns.js';
 import './css.js';
 
 var scss = languages.scss = extend('css', {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'atrule': {
 		pattern: /@[\w-](?:\([^()]+\)|[^()\s]|\s+(?!\s))*?(?=\s+[{;])/,
 		inside: {

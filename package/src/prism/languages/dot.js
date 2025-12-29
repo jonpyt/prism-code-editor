@@ -13,27 +13,21 @@ var IDInside = {
 };
 
 languages.gv = languages.dot = {
-	'comment': {
-		pattern: /\/\/.*|\/\*[\s\S]*?\*\/|^#.*/mg,
-		greedy: true
-	},
+	'comment': /\/\/.*|\/\*[\s\S]*?\*\/|^#.*/mg,
 	'graph-name': {
 		pattern: re(/(\b(?:digraph|graph|subgraph)[ \t\n]+)<0>/.source, [ID], 'gi'),
 		lookbehind: true,
-		greedy: true,
 		alias: 'class-name',
 		inside: IDInside
 	},
 	'attr-value': {
 		pattern: re(/(=[ \t\n]*)<0>/.source, [ID], 'g'),
 		lookbehind: true,
-		greedy: true,
 		inside: IDInside
 	},
 	'attr-name': {
 		pattern: re(/([\[;, \t\n])<0>(?=[ \t\n]*=)/.source, [ID], 'g'),
 		lookbehind: true,
-		greedy: true,
 		inside: IDInside
 	},
 	'keyword': /\b(?:digraph|edge|graph|node|strict|subgraph)\b/i,
@@ -45,7 +39,6 @@ languages.gv = languages.dot = {
 	'node': {
 		pattern: re(/(^|[^\\\w\x80-\uffff.-])<0>/.source, [ID], 'g'),
 		lookbehind: true,
-		greedy: true,
 		inside: IDInside
 	},
 	'operator': /[=:]|-[->]/,

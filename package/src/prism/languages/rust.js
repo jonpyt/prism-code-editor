@@ -3,10 +3,7 @@ import { boolean } from '../utils/patterns.js';
 import { nested } from '../utils/shared.js';
 
 var multilineComment = nested(/\/\*(?:[^*/]|\*(?!\/)|\/(?!\*)|<self>)*\*\//.source, 2);
-var string = {
-	pattern: /b?"(?:\\[\s\S]|[^\\"])*"|b?r(#*)"(?:[^"]|"(?!\1))*"\1/g,
-	greedy: true
-};
+var string = /b?"(?:\\[\s\S]|[^\\"])*"|b?r(#*)"(?:[^"]|"(?!\1))*"\1/g;
 var paramsInside = {
 	'closure-punctuation': {
 		pattern: /^\||\|$/,
@@ -15,18 +12,11 @@ var paramsInside = {
 };
 
 paramsInside[rest] = languages.rust = {
-	'comment': {
-		pattern: RegExp("//.*|" + multilineComment, 'g'),
-		greedy: true
-	},
+	'comment': RegExp("//.*|" + multilineComment, 'g'),
 	'string': string,
-	'char': {
-		pattern: /b?'(?:\\(?:x[0-7][a-fA-F\d]|u\{(?:[a-fA-F\d]_*){1,6}\}|.)|[^\\\n\t'])'/g,
-		greedy: true
-	},
+	'char': /b?'(?:\\(?:x[0-7][a-fA-F\d]|u\{(?:[a-fA-F\d]_*){1,6}\}|.)|[^\\\n\t'])'/g,
 	'attribute': {
 		pattern: /#!?\[(?:[^[\]"]|"(?:\\[\s\S]|[^\\"])*")*\]/g,
-		greedy: true,
 		alias: 'attr-name',
 		inside: {
 			'string': string
@@ -37,7 +27,6 @@ paramsInside[rest] = languages.rust = {
 	'closure-params': {
 		pattern: /([=(,:]\s*|\bmove\s*)\|[^|]*\||\|[^|]*\|(?=\s*(?:\{|->))/g,
 		lookbehind: true,
-		greedy: true,
 		inside: paramsInside
 	},
 

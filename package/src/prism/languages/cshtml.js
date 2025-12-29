@@ -57,7 +57,6 @@ var cs = {
 var inlineValue = {
 	pattern: RegExp(/(^|[^@])/.source + inlineCs, 'g'),
 	lookbehind: true,
-	greedy: true,
 	alias: 'variable',
 	inside: {
 		'keyword': /^@/,
@@ -73,7 +72,6 @@ attrValue.pattern = RegExp(/(=\s*)/.source + tagAttrValue, 'g');
 insertBefore(csharpWithHtml, 'string', {
 	'html': {
 		pattern: RegExp(tagRegion, 'g'),
-		greedy: true,
 		inside: cshtml
 	}
 });
@@ -83,7 +81,6 @@ insertBefore(attrValue.inside, 'punctuation', { 'value': inlineValue });
 insertBefore(cshtml, 'prolog', {
 	'razor-comment': {
 		pattern: /@\*[\s\S]*?\*@/g,
-		greedy: true,
 		alias: 'comment'
 	},
 
@@ -96,7 +93,6 @@ insertBefore(cshtml, 'prolog', {
 			}|if\\s*${round}\\s*${curly}(?:\\s*else(?:\\s+if\\s*${round})?\\s*${curly})*|helper\\s+\\w+\\s*${round}\\s*${curly})`, 'g'
 		),
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'keyword': /^@\w*/,
 			'csharp': cs
@@ -106,7 +102,6 @@ insertBefore(cshtml, 'prolog', {
 	'directive': {
 		pattern: /^([ \t]*)@(?:addTagHelper|attribute|implements|inherits|inject|layout|model|namespace|page|preservewhitespace|removeTagHelper|section|tagHelperPrefix|using)(?=\s).*/mg,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'keyword': /^@\w+/,
 			'csharp': cs

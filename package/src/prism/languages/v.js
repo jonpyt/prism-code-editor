@@ -11,7 +11,7 @@ var generic = {
 };
 
 interpolationExpr.inside = languages.v = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'char': {
 		pattern: /`(?:\\`|\\?[^`]{1,2})`/, // using {1,2} instead of `u` flag for compatibility
 		alias: 'rune'
@@ -19,7 +19,6 @@ interpolationExpr.inside = languages.v = {
 	'string': {
 		pattern: /r?(["'])(?:\\[\s\S]|(?!\1)[^\\\n])*\1/g,
 		alias: 'quoted-string',
-		greedy: true,
 		inside: {
 			'interpolation': {
 				pattern: /((?:^|[^\\])(?:\\\\)*)\$(?:\{[^{}]*\}|\w+(?:\.\w+(?:\([^\(\)]*\))?|\[[^[\]]+\])*)/,

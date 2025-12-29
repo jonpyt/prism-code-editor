@@ -4,7 +4,6 @@ languages.cmake = {
 	'comment': /#\[(=*)\[[\s\S]*?\]\1\]|#.*/,
 	'string': {
 		pattern: /"(?:\\.|[^\\"])*"/g,
-		greedy: true,
 		inside: {
 			'interpolation': {
 				pattern: /\$\{(?:[^{}$]|\$\{[^{}$]*\})*\}/,

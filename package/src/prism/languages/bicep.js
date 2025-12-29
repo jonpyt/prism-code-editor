@@ -3,33 +3,21 @@ import { boolean, clikeComment, clikePunctuation } from '../utils/patterns.js';
 
 // based loosely upon: https://github.com/Azure/bicep/blob/main/src/textmate/bicep.tmlanguage
 languages.bicep = {
-	'comment': clikeComment(),
-	'property': [
-		{
-			pattern: /(\n[ \t]*)[a-z_]\w*(?=[ \t]*:)/i,
-			lookbehind: true
-		},
-		{
-			pattern: /(\n[ \t]*)'(?:\\.|\$(?!\{)|[^\\\n'$])*'(?=[ \t]*:)/g,
-			lookbehind: true,
-			greedy: true
-		}
-	],
+	'comment': clikeComment,
+	'property': {
+		pattern: /(\n[ \t]*)(?:[a-z_]\w*(?=[ \t]*:)|'(?:\\.|\$(?!\{)|[^\\\n'$])*'(?=[ \t]*:))/gi,
+		lookbehind: true
+	},
 	'string': [
-		{
-			pattern: /'''[^'][\s\S]*?'''/g,
-			greedy: true
-		},
+		/'''[^'][\s\S]*?'''/g,
 		{
 			pattern: /(^|[^\\'])'(?:\\.|\$(?!\{)|[^\\\n'$])*'/g,
 			lookbehind: true,
-			greedy: true,
 		}
 	],
 	'interpolated-string': {
 		pattern: /(^|[^\\'])'(?:\\.|\$(?:(?!\{)|\{[^{}\n]*\})|[^\\\n'$])*'/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'interpolation': {
 				pattern: /\$\{[^{}\n]*\}/,

@@ -10,16 +10,13 @@ languages.tap = {
 	'bailout': /bail out!.*/i,
 	'version': /tap version \d+/i,
 	'plan': /\b\d+\.\.\d+(?: +#.*)?/,
-	'subtest': {
-		pattern: /# Subtest(?:: .*)?/g,
-		greedy: true
-	},
+	'subtest': /# Subtest(?:: .*)?/g,
 	'punctuation': /[{}]/,
 	'directive': /#.*/,
 	'yamlish': {
 		pattern: /(^[ \t]*)---[\s\S]*?\n[ \t]*\.{3}$/m,
 		lookbehind: true,
-		inside: languages.yaml,
-		alias: 'language-yaml'
+		alias: 'language-yaml',
+		inside: languages.yaml
 	}
 };

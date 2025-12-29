@@ -1,17 +1,10 @@
 import { languages } from '../core.js';
 
 languages.keyman = {
-	'comment': {
-		pattern: /\bc .*/gi,
-		greedy: true
-	},
-	'string': {
-		pattern: /"[^\n"]*"|'[^\n']*'/g,
-		greedy: true
-	},
+	'comment': /\bc .*/gi,
+	'string': /"[^\n"]*"|'[^\n']*'/g,
 	'virtual-key': {
 		pattern: /\[\s*(?:(?:[lr]?alt|[lr]?ctrl|n?caps|shift)\s+)*(?:[tku]_[\w?]+|[a-e]\d\d?|"[^\n"]*"|'[^\n']*')\s*\]/gi,
-		greedy: true,
 		alias: 'function' // alias for styles
 	},
 

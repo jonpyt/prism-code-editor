@@ -14,15 +14,11 @@ var coffee = languages.coffee = languages.coffeescript = extend('js', {
 	'string': [
 
 		// Strings are multiline
-		{
-			pattern: /'(?:\\[\s\S]|[^\\'])*'/g,
-			greedy: true
-		},
+		/'(?:\\[\s\S]|[^\\'])*'/g,
 
 		{
 			// Strings are multiline
 			pattern: /"(?:\\[\s\S]|[^\\"])*"/g,
-			greedy: true,
 			inside: {
 				'interpolation': interpolation
 			}
@@ -72,12 +68,10 @@ insertBefore(coffee, 'string', {
 	'multiline-string': [
 		{
 			pattern: /'''[\s\S]*?'''/g,
-			greedy: true,
 			alias: 'string'
 		},
 		{
 			pattern: /"""[\s\S]*?"""/g,
-			greedy: true,
 			alias: 'string',
 			inside: {
 				'interpolation': interpolation

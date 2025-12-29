@@ -4,7 +4,6 @@ languages.hcl = {
 	'comment': /(?:\/\/|#).*|\/\*[\s\S]*?(?:\*\/|$)/,
 	'heredoc': {
 		pattern: /<<-?(\w+\b)[\s\S]*?^[ \t]*\1/mg,
-		greedy: true,
 		alias: 'string'
 	},
 	'keyword': [
@@ -36,7 +35,6 @@ languages.hcl = {
 	],
 	'string': {
 		pattern: /"(?:\\[\s\S]|[^\\"$]|\$(?:(?=")|\$+(?!\$)|[^"${])|\$\{(?:[^{}"]|"(?:\\[\s\S]|[^\\"])*")*\})*"/g,
-		greedy: true,
 		inside: {
 			'interpolation': {
 				pattern: /(^|[^$])\$\{(?:[^{}"]|"(?:\\[\s\S]|[^\\"])*")*\}/,
@@ -49,10 +47,7 @@ languages.hcl = {
 					},
 					'keyword': /\b(?:count|data|local|module|path|self|terraform|var)\b/i,
 					'function': /\w+(?=\()/,
-					'string': {
-						pattern: /"(?:\\[\s\S]|[^\\"])*"/g,
-						greedy: true,
-					},
+					'string': /"(?:\\[\s\S]|[^\\"])*"/g,
 					'number': /\b0x[a-f\d]+\b|\b\d+(?:\.\d*)?(?:e[+-]?\d+)?/i,
 					'punctuation': /[?!=$#%&'()[\]{}.,:;*+/<>@\\^`|~]/,
 				}

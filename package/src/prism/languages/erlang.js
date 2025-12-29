@@ -3,10 +3,7 @@ import { boolean } from '../utils/patterns.js';
 
 languages.erlang = {
 	'comment': /%.+/,
-	'string': {
-		pattern: /"(?:\\.|[^\\\n"])*"/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\\n"])*"/g,
 	'quoted-function': {
 		pattern: /'(?:\\.|[^\\\n'])+'(?=\()/,
 		alias: 'function'

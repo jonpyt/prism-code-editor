@@ -12,26 +12,20 @@ var string = /"(?:\\[\s\S]|[^\\\n"])*"|'(?:\\[\s\S]|[^\\\n'])*'/g;
 var stringSrc = string.source;
 var option = replace(/--[\w-]+=(?:<0>|(?!["'])(?:\\.|[^\\\s])+)/.source, [stringSrc]);
 
-var stringRule = {
-	pattern: string,
-	greedy: true
-};
+var stringRule = string;
 var commentRule = {
 	pattern: /(^[ \t]*)#.*/mg,
-	lookbehind: true,
-	greedy: true
+	lookbehind: true
 };
 
 languages.dockerfile = languages.docker = {
 	'instruction': {
 		pattern: /(^[ \t]*)(?:add|arg|cmd|copy|entrypoint|env|expose|from|healthcheck|label|maintainer|onbuild|run|shell|stopsignal|user|volume|workdir)(?=\s)(?:\\.|[^\\\n])*(?:\\$(?:\s|#.*$)*(?![\s#])(?:\\.|[^\\\n])*)*/img,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'options': {
 				pattern: re(/(^(?:onbuild<0>)?\w+<0>)<1>(?:<0><1>)*/.source, [space, option], 'gi'),
 				lookbehind: true,
-				greedy: true,
 				inside: {
 					'property': {
 						pattern: /(^|\s)--[\w-]+/,
@@ -52,25 +46,19 @@ languages.dockerfile = languages.docker = {
 				{
 					// https://docs.docker.com/engine/reference/builder/#healthcheck
 					pattern: re(/(^(?:onbuild<0>)?healthcheck<0>(?:<1><0>)*)(?:cmd|none)\b/.source, [space, option], 'gi'),
-					lookbehind: true,
-					greedy: true
+					lookbehind: true
 				},
 				{
 					// https://docs.docker.com/engine/reference/builder/#from
 					pattern: re(/(^(?:onbuild<0>)?from<0>(?:<1><0>)*(?!--)[^\\ \t]+<0>)as/.source, [space, option], 'gi'),
-					lookbehind: true,
-					greedy: true
+					lookbehind: true
 				},
 				{
 					// https://docs.docker.com/engine/reference/builder/#onbuild
 					pattern: re(/(^onbuild<0>)\w+/.source, [space], 'gi'),
-					lookbehind: true,
-					greedy: true
+					lookbehind: true
 				},
-				{
-					pattern: /^\w+/g,
-					greedy: true
-				}
+				/^\w+/g
 			],
 			'comment': commentRule,
 			'string': stringRule,

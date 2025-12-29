@@ -2,15 +2,9 @@ import { languages } from '../core.js';
 import { boolean, clikeComment, clikeNumber, clikePunctuation } from '../utils/patterns.js';
 
 languages.reason = {
-	'comment': clikeComment(),
-	'string': {
-		pattern: /"(?:\\[\s\S]|[^\\\n"])*"/g,
-		greedy: true
-	},
-	'char': {
-		pattern: /'(?:\\x[a-f\d]{2}|\\o[0-3][0-7][0-7]|\\\d{3}|\\.|[^\\\n'])'/g,
-		greedy: true
-	},
+	'comment': clikeComment,
+	'string': /"(?:\\[\s\S]|[^\\\n"])*"/g,
+	'char': /'(?:\\x[a-f\d]{2}|\\o[0-3][0-7][0-7]|\\\d{3}|\\.|[^\\\n'])'/g,
 	// Negative look-ahead prevents from matching things like String.capitalize
 	'constructor': /\b[A-Z]\w*\b(?!\s*\.)/,
 	'label': {

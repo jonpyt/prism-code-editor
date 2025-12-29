@@ -5,7 +5,7 @@ import { clikeComment, clikePunctuation } from '../utils/patterns.js';
 
 languages.qasm = languages.openqasm = {
 	'string': /"[^\n\t"]*"|'[^\n\t']*'/,
-	'comment': clikeComment(),
+	'comment': clikeComment,
 
 	'keyword': /\b(?:CX|OPENQASM|U|barrier|boxas|boxto|break|const|continue|ctrl|def|defcal|defcalgrammar|delay|else|end|for|gate|gphase|if|include|inv?|kernel|lengthof|let|measure|pow|reset|return|rotary|stretchinf|while)\b|#pragma\b/,
 	'class-name': /\b(?:angle|bit|bool|[cq]reg|fixed|float|length|qubit|stretch|u?int)\b/,

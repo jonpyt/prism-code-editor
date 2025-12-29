@@ -6,18 +6,14 @@ import { boolean, clikePunctuation } from '../utils/patterns.js';
 languages.wren = {
 	// Multiline comments in Wren can have nested multiline comments
 	// Comments: // and /* */
-	'comment': {
-		// support 3 levels of nesting
-		// regex: \/\*(?:[^*/]|\*(?!\/)|\/(?!\*)|<self>)*\*\/
-		pattern: /\/\/.*|\/\*(?:[^*/]|\*(?!\/)|\/(?!\*)|\/\*(?:[^*/]|\*(?!\/)|\/(?!\*)|\/\*(?:[^*/]|\*(?!\/)|\/(?!\*))*\*\/)*\*\/)*\*\//g,
-		greedy: true
-	},
+	// support 3 levels of nesting
+	// regex: \/\*(?:[^*/]|\*(?!\/)|\/(?!\*)|<self>)*\*\/
+	'comment': /\/\/.*|\/\*(?:[^*/]|\*(?!\/)|\/(?!\*)|\/\*(?:[^*/]|\*(?!\/)|\/(?!\*)|\/\*(?:[^*/]|\*(?!\/)|\/(?!\*))*\*\/)*\*\/)*\*\//g,
 
 	// Triple quoted strings are multiline but cannot have interpolation (raw strings)
 	// Based on prism-python.js
 	'triple-quoted-string': {
 		pattern: /"""[\s\S]*?"""/g,
-		greedy: true,
 		alias: 'string'
 	},
 
@@ -25,7 +21,6 @@ languages.wren = {
 		// A single quote string is multiline and can have interpolation (similar to JS backticks ``)
 		pattern: /(^|[^\\"])"(?:\\[\s\S]|[^\\"%]|%(?!\()|%\((?:[^()]|\((?:[^()]|\([^)]*\))*\))*\))*"/g,
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'interpolation': {
 				// "%(interpolation)"
@@ -50,7 +45,6 @@ languages.wren = {
 	// #!/usr/bin/env wren on the first line
 	'hashbang': {
 		pattern: /^#!\/.+/g,
-		greedy: true,
 		alias: 'comment'
 	},
 
@@ -62,17 +56,14 @@ languages.wren = {
 		pattern: /#!?[ \t　]*\w+/,
 		alias: 'keyword'
 	},
-	'class-name': [
-		{
-			// class definition
-			// class Meta {}
-			pattern: /(\bclass\s+)\w+/,
-			lookbehind: true
-		},
+	'class-name': {
+		// class definition
+		// class Meta {}
 		// A class must always start with an uppercase.
 		// File.read
-		/\b[A-Z][a-z\d_]*\b/,
-	],
+		pattern: /(\bclass\s+)\w+|\b[A-Z][a-z\d_]*\b/,
+		lookbehind: true
+	},
 
 	// A constant can be a variable, class, property or method. Just named in all uppercase letters
 	'constant': /\b[A-Z][A-Z\d_]*\b/,

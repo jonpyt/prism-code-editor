@@ -34,7 +34,6 @@ for (var name in PREFIXES) {
 		inside: {
 			'prefix': {
 				pattern: RegExp('^[' + PREFIXES[name] + ']', 'mg'),
-				greedy: true,
 				alias: prefix
 			}
 		}

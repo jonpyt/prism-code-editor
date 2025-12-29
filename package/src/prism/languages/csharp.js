@@ -82,35 +82,28 @@ var createInterpolationInside = (interpolation, interpolationRound) => ({
 });
 
 languages.dotnet = languages.cs = languages.csharp = {
-	'comment': clikeComment(),
+	'comment': clikeComment,
 	'interpolation-string': [
 		{
 			pattern: re(/(^|[^\\])(?:\$@|@\$)"(?:""|\\[\s\S]|\{\{|<0>|[^\\{"])*"/.source, [mInterpolation], 'g'),
 			lookbehind: true,
-			greedy: true,
 			inside: createInterpolationInside(mInterpolation, mInterpolationRound),
 		},
 		{
 			pattern: re(/(^|[^\\@])\$"(?:\\.|\{\{|<0>|[^\\"{])*"/.source, [sInterpolation], 'g'),
 			lookbehind: true,
-			greedy: true,
 			inside: createInterpolationInside(sInterpolation, sInterpolationRound),
 		}
 	],
-	'char': {
-		pattern: RegExp(character, 'g'),
-		greedy: true
-	},
+	'char': RegExp(character, 'g'),
 	'string': [
 		{
 			pattern: re(/(^|[^\\$])<0>/.source, [verbatimString], 'g'),
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		},
 		{
 			pattern: re(/(^|[^\\@$])<0>/.source, [regularString], 'g'),
-			lookbehind: true,
-			greedy: true
+			lookbehind: true
 		}
 	],
 	'namespace': {
@@ -175,13 +168,11 @@ languages.dotnet = languages.cs = languages.csharp = {
 			'record-arguments': {
 				pattern: re(/(^(?!new\s*\()<0>\s*)<1>/.source, [genericName, nestedRound], 'g'),
 				lookbehind: true,
-				greedy: true,
 				inside: 'cs'
 			},
 			'keyword': keywords,
 			'class-name': {
 				pattern: RegExp(typeExpression, 'g'),
-				greedy: true,
 				inside: typeInside
 			},
 			'punctuation': /[(),]/
@@ -205,7 +196,6 @@ languages.dotnet = languages.cs = languages.csharp = {
 		// [Foo], [Foo(1), Bar(2, Prop = "foo")], [return: Foo(1), Bar(2)], [assembly: Foo(Bar)]
 		pattern: re(/((?:^|[^\s\w>)?])\s*\[\s*)(?:<0>\s*:\s*)?<1>(?:\s*,\s*<1>)*(?=\s*\])/.source, [attrTarget, attr], 'g'),
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'target': {
 				pattern: re(/^<0>(?=\s*:)/.source, [attrTarget]),

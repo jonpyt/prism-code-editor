@@ -11,7 +11,6 @@ css.selector.inside = css['atrule'].inside['selector-function-argument'].inside 
 	'id': /#[-\w]+/,
 	'attribute': {
 		pattern: /\[(?:[^[\]"']|(["'])(?:\\[\s\S]|(?!\1)[^\\\n])*\1)*\]/g,
-		greedy: true,
 		inside: {
 			'punctuation': /^\[|\]$/,
 			'case-sensitivity': {

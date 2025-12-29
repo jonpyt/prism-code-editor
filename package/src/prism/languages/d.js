@@ -3,21 +3,14 @@ import { clikeClass } from '../utils/clike-class.js';
 import { boolean, clikePunctuation } from '../utils/patterns.js';
 
 languages.d = {
-	'comment': {
-		pattern: /^\s*#!.+|(?:\/\+(?:\/\+(?:[^+]|\+(?!\/))*\+\/|(?!\/\+)[\s\S])*?\+\/|\/\/.*|\/\*[\s\S]*?\*\/)/g,
-		greedy: true
-	},
+	'comment': /^\s*#!.+|(?:\/\+(?:\/\+(?:[^+]|\+(?!\/))*\+\/|(?!\/\+)[\s\S])*?\+\/|\/\/.*|\/\*[\s\S]*?\*\/)/g,
 	// Characters
 	// 'a', '\\', '\n', '\xFF', '\377', '\uffff', '\U0010FFFF', '\quot'
 	'char': /'(?:\\(?:\W|\w+)|[^\\])'/,
 	'string': [
-		{
-			pattern: /\b[rx]"(?:\\[\s\S]|[^\\"])*"[cwd]?|\bq"(?:\[[\s\S]*?\]|\([\s\S]*?\)|<[\s\S]*?>|\{[\s\S]*?\})"|\bq"((?!\d)\w+)$[\s\S]*?^\1"|\bq"(.)[\s\S]*?\2"|(["`])(?:\\[\s\S]|(?!\3)[^\\])*\3[cwd]?/gm,
-			greedy: true
-		},
+		/\b[rx]"(?:\\[\s\S]|[^\\"])*"[cwd]?|\bq"(?:\[[\s\S]*?\]|\([\s\S]*?\)|<[\s\S]*?>|\{[\s\S]*?\})"|\bq"((?!\d)\w+)$[\s\S]*?^\1"|\bq"(.)[\s\S]*?\2"|(["`])(?:\\[\s\S]|(?!\3)[^\\])*\3[cwd]?/gm,
 		{
 			pattern: /\bq\{(?:[^{}]|\{[^}]*\})*\}/g,
-			greedy: true,
 			alias: 'token-string'
 		}
 	],

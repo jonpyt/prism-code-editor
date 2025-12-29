@@ -11,7 +11,6 @@ var inform7 = languages.inform7 = {
 	'comment': /\[[^[\]]+\]/,
 	'string': {
 		pattern: /"[^"]*"/g,
-		greedy: true,
 		inside: {
 			'substitution': {
 				pattern: /\[[^[\]]+\]/,

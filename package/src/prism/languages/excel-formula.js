@@ -3,13 +3,9 @@ import { languages } from '../core.js';
 languages['xlsx'] = languages['xls'] = languages['excel-formula'] = {
 	'comment': {
 		pattern: /(\bn\(\s*)"(?:[^"]|"")*"(?=\s*\))/gi,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
-	'string': {
-		pattern: /"(?:[^"]|"")*"(?!")/g,
-		greedy: true
-	},
+	'string': /"(?:[^"]|"")*"(?!")/g,
 	'reference': {
 		// https://www.ablebits.com/office-addins-blog/2015/12/08/excel-reference-another-sheet-workbook/
 
@@ -21,7 +17,6 @@ languages['xlsx'] = languages['xls'] = languages['excel-formula'] = {
 		// 'D:\Reports\[Sales.xlsx]Jan sales'!B2:B5
 
 		pattern: /(?:'[^']*'|(?:[^\s()[\]{}<>*?"';,$&]*\[[^^\s()[\]{}<>*?"']+\])?\w+)!/g,
-		greedy: true,
 		alias: 'string',
 		inside: {
 			'operator': /!$/,

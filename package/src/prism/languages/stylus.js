@@ -11,9 +11,6 @@ var number = {
 	lookbehind: true
 };
 
-var comment = clikeComment();
-var string = clikeString();
-
 var interpolation = {
 	pattern: /\{[^\n}:]*\}/,
 	alias: 'variable',
@@ -33,12 +30,9 @@ var func = {
 };
 
 var inside = interpolation.inside[rest] = func.inside[rest] = {
-	'comment': comment,
-	'url': {
-		pattern: /\burl\((["']?).*?\1\)/ig,
-		greedy: true
-	},
-	'string': string,
+	'comment': clikeComment,
+	'url': /\burl\((["']?).*?\1\)/gi,
+	'string': clikeString,
 	'interpolation': interpolation,
 	'func': func,
 	'important': /\B!(?:important|optional)\b/i,
@@ -121,14 +115,14 @@ languages.stylus = {
 		lookbehind: true,
 		inside: {
 			'interpolation': interpolation,
-			'comment': comment,
+			'comment': clikeComment,
 			'punctuation': /[()[\]{},]/
 		}
 	},
 
 	'func': func,
-	'string': string,
-	'comment': comment,
+	'string': clikeString,
+	'comment': clikeComment,
 	'interpolation': interpolation,
 	'punctuation': clikePunctuation
 };

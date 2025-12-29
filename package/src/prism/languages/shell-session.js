@@ -7,7 +7,6 @@ import './bash.js';
 languages['sh-session'] = languages.shellsession = languages['shell-session'] = {
 	'command': {
 		pattern: /^(?:[^\s@:$#%*!/\\]+@[^\n@:$#%*!/\\]+(?::[^\0-\x1f$#%*?"<>:;|]+)?|[/~.][^\0-\x1f$#%*?"<>@:;|]*)?[$#%](?=\s)(?:[^\\\n \t"'<$]|[ \t](?:(?!#)|#.*$)|\\[\s\S]|\$(?!')|<(?!<)|"(?:\\[\s\S]|\$\([^)]+\)|\$(?!\()|`[^`]+`|[^\\"`$])*"|'[^']*'|\$'(?:\\[\s\S]|[^\\'])*'|<<-?\s*(["']?)(\w+)\1\s[\s\S]*?\n\2)+/mg,
-		greedy: true,
 		inside: {
 			'info': {
 				// foo@bar:~/files$ exit

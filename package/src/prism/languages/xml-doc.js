@@ -20,7 +20,6 @@ var tag = languages.markup.tag;
 
 var slashDocComment = {
 	pattern: /\/\/\/.*/g,
-	greedy: true,
 	alias: 'comment',
 	inside: {
 		'tag': tag
@@ -28,7 +27,6 @@ var slashDocComment = {
 };
 var tickDocComment = {
 	pattern: /'''.*/g,
-	greedy: true,
 	alias: 'comment',
 	inside: {
 		'tag': tag

@@ -9,7 +9,6 @@ languages.trickle = languages.troy = languages.tremor = {
 			`(^|[^\\\\])(?:"""(?:\\\\[\\s\\S]|[^\\\\"#]|"(?!"")|#(?!\\{)|${interpolationPattern})*"""|"(?:\\\\[\\s\\S]|[^\\\\\n"#]|#(?!\\{)|${interpolationPattern})*")`, 'g'
 		),
 		lookbehind: true,
-		greedy: true,
 		inside: {
 			'interpolation': {
 				pattern: RegExp(interpolationPattern),
@@ -26,7 +25,6 @@ languages.trickle = languages.troy = languages.tremor = {
 	},
 	'extractor': {
 		pattern: /\b[a-z_]\w*\|(?:\\[\s\S]|[^\\\n|])*\|/gi,
-		greedy: true,
 		inside: {
 			'regex': {
 				pattern: /(^re)\|[\s\S]+/,
@@ -36,10 +34,7 @@ languages.trickle = languages.troy = languages.tremor = {
 			'value': /\|[\s\S]+/
 		}
 	},
-	'identifier': {
-		pattern: /`[^`]*`/g,
-		greedy: true
-	},
+	'identifier': /`[^`]*`/g,
 
 	'function': /\b[a-z_]\w*(?=\s*(?:::\s*<|\())\b/,
 

@@ -10,7 +10,6 @@ var smarty = expression.inside = {
 	'string': [
 		{
 			pattern: /"(?:\\.|[^\\\n"])*"/g,
-			greedy: true,
 			inside: {
 				'interpolation': {
 					pattern: /\{[^{}]*\}|`[^`]*`/,
@@ -25,19 +24,14 @@ var smarty = expression.inside = {
 				'variable': /\$\w+/
 			}
 		},
-		{
-			pattern: /'(?:\\.|[^\\\n'])*'/g,
-			greedy: true
-		},
+		/'(?:\\.|[^\\\n'])*'/g,
 	],
 	'keyword': {
 		pattern: /(^\{\/?)[a-z_]\w*\b(?!\()/gi,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'delimiter': {
 		pattern: /^\{\/?|\}$/g,
-		greedy: true,
 		alias: 'punctuation'
 	},
 	'number': /\b0x[a-fA-F\d]+|(?:\b\d+(?:\.\d*)?|\B\.\d+)(?:[Ee][+-]?\d+)?/,
@@ -70,24 +64,20 @@ var smarty = expression.inside = {
 languages.smarty = {
 	'ignore-literal': {
 		pattern: /(\{literal\})(?!\{\/literal\})[\s\S]+?(?=\{\/literal\})/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'embedded-php': {
 		pattern: /(\{php\})(?!\{\/php\})[\s\S]+?(?=\{\/php\})/g,
 		lookbehind: true,
-		greedy: true,
 		alias: 'language-php',
 		inside: 'php'
 	},
 	'smarty-comment': {
 		pattern: /\{\*[\s\S]*?\*\}/g,
-		greedy: true,
 		alias: 'comment'
 	},
 	'smarty': {
 		pattern: RegExp('<>|<>|<>)*})*})*}'.replace(/<>/g, `{(?:[^{}"']|"(?:\\\\.|[^\\\\\n"])*"|'(?:\\\\.|[^\\\\\n'])*'`), 'g'),
-		greedy: true,
 		alias: 'language-smarty',
 		inside: smarty
 	},

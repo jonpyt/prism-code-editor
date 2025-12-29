@@ -3,10 +3,7 @@ import { clikePunctuation } from '../utils/patterns.js';
 
 languages.kusto = {
 	'comment': /\/\/.*/,
-	'string': {
-		pattern: /```[\s\S]*?```|[hH]?(?:"(?:\\.|[^\\\n"])*"|'(?:\\.|[^\\\n'])*'|@(?:"[^\n"]*"|'[^\n']*'))/g,
-		greedy: true
-	},
+	'string': /```[\s\S]*?```|[hH]?(?:"(?:\\.|[^\\\n"])*"|'(?:\\.|[^\\\n'])*'|@(?:"[^\n"]*"|'[^\n']*'))/g,
 
 	'verb': {
 		pattern: /(\|\s*)[a-z][\w-]*/i,

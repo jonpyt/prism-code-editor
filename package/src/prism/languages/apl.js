@@ -2,10 +2,7 @@ import { languages } from '../core.js';
 
 languages.apl = {
 	'comment': /(?:⍝|#[! ]).*/,
-	'string': {
-		pattern: /'(?:[^\n']|'')*'/g,
-		greedy: true
-	},
+	'string': /'(?:[^\n']|'')*'/g,
 	'number': /¯?(?:\d*\.?\b\d+(?:e[+¯]?\d+)?|¯|∞)(?:j¯?(?:(?:\d+(?:\.\d+)?|\.\d+)(?:e[+¯]?\d+)?|¯|∞))?/i,
 	'statement': /:[A-Z][a-z][a-zA-Z]*\b/,
 	'system-function': {

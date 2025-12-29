@@ -4,25 +4,17 @@ import { clikePunctuation } from '../utils/patterns.js';
 languages.cypher = {
 	// https://neo4j.com/docs/cypher-manual/current/syntax/comments/
 	'comment': /\/\/.*/,
-	'string': {
-		pattern: /"(?:\\.|[^\\\n"])*"|'(?:\\.|[^\\\n'])*'/g,
-		greedy: true
-	},
+	'string': /"(?:\\.|[^\\\n"])*"|'(?:\\.|[^\\\n'])*'/g,
 	'class-name': {
 		pattern: /(:\s*)(?:\w+|`(?:[^\\\n`])*`)(?=\s*[{):])/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
 	'relationship': {
 		pattern: /(-\[\s*(?:\w+\s*|`(?:[^\\\n`])*`\s*)?:\s*|\|\s*:\s*)(?:\w+|`(?:[^\\\n`])*`)/g,
 		lookbehind: true,
-		greedy: true,
 		alias: 'property'
 	},
-	'identifier': {
-		pattern: /`(?:[^\\\n`])*`/g,
-		greedy: true
-	},
+	'identifier': /`(?:[^\\\n`])*`/g,
 
 	'variable': /\$\w+/,
 

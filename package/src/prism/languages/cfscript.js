@@ -6,7 +6,6 @@ languages.cfc = languages.cfscript = {
 		/\/\/.*/,
 		{
 			pattern: /\/\*[\s\S]*?(?:\*\/|$)/g,
-			greedy: true,
 			inside: {
 				'annotation': {
 					pattern: /(?:^|[^.])@[\w\.]+/,
@@ -15,7 +14,7 @@ languages.cfc = languages.cfscript = {
 			}
 		},
 	],
-	'string': clikeString(),
+	'string': clikeString,
 	'function-variable': {
 		pattern: /(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+(?=\s*[=:]\s*(?:\bfunction\b|(?:\((?:[^()]|\([^)]*\))*\)|(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+)\s*=>))/,
 		alias: 'function'

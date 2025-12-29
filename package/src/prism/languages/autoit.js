@@ -12,7 +12,6 @@ languages.autoit = {
 	},
 	'string': {
 		pattern: /"(?:""|[^\n"])*"|'(?:''|[^\n'])*'/g,
-		greedy: true,
 		inside: {
 			'variable': /([%$@])\w+\1/
 		}

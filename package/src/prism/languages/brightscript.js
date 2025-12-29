@@ -3,7 +3,7 @@ import { clikePunctuation } from '../utils/patterns.js';
 
 var expression = {
 	pattern: /[\s\S]+/
-}
+};
 
 expression.inside = languages.brightscript = {
 	'comment': /(?:\brem|').*/i,
@@ -25,13 +25,9 @@ expression.inside = languages.brightscript = {
 	},
 	'property': {
 		pattern: /([\n{,][ \t]*)(?:(?!\d)\w+|"(?:[^\n"]|"")*"(?!"))(?=[ \t]*:)/g,
-		lookbehind: true,
-		greedy: true
+		lookbehind: true
 	},
-	'string': {
-		pattern: /"(?:[^\n"]|"")*"(?!")/g,
-		greedy: true
-	},
+	'string': /"(?:[^\n"]|"")*"(?!")/g,
 	'class-name': {
 		pattern: /(\bas[ \t]+)\w+/i,
 		lookbehind: true
