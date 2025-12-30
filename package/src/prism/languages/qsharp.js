@@ -30,7 +30,7 @@ languages.qs = languages.qsharp = {
 				pattern: re(/((?:^|[^\\])(?:\\\\)*)<0>/.source, [interpolationExpr]),
 				lookbehind: true,
 				inside: {
-					'punctuation': /^\{|\}$/,
+					'punctuation': /^.|\}$/g,
 					'expression': {
 						pattern: /[\s\S]+/,
 						alias: 'language-qsharp',

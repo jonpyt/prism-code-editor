@@ -11,7 +11,7 @@ languages.sql = {
 		pattern: /(^|[^\\@])`(?:\\[\s\S]|[^\\`]|``)*`/g,
 		lookbehind: true,
 		inside: {
-			'punctuation': /^`|`$/
+			'punctuation': /^`|`$/g
 		}
 	},
 	'function': /\b(?:avg|count|first|format|last|[lu]case|len|max|mi[dn]|mod|now|round|sum)(?=\s*\()/i, // Should we highlight user defined functions too?

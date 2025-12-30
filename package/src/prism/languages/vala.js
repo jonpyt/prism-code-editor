@@ -1,9 +1,5 @@
 import { languages, rest } from '../core.js';
-import { boolean, clikeComment, clikePunctuation, clikeString } from '../utils/patterns.js';
-
-var dotPunctuation = {
-	punctuation: /\./
-};
+import { boolean, clikeComment, clikePunctuation, clikeString, dotPunctuation } from '../utils/patterns.js';
 
 languages.vala = {
 	'comment': clikeComment,
@@ -18,7 +14,7 @@ languages.vala = {
 				pattern: /\$(?:\([^)]*\)|[a-zA-Z]\w*)/,
 				inside: {
 					'delimiter': {
-						pattern: /^\$\(?|\)$/,
+						pattern: /^.\(?|\)$/g,
 						alias: 'punctuation'
 					},
 					[rest]: 'vala'

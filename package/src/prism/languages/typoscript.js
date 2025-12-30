@@ -1,4 +1,5 @@
 import { languages } from '../core.js';
+import { dotPunctuation } from '../utils/patterns.js';
 
 var keywords = /\b(?:ACT|ACTIFSUB|CARRAY|CASE|CLEARGIF|COA|COA_INT|CONSTANTS|CONTENT|CUR|EDITPANEL|EFFECT|EXT|FILE|FLUIDTEMPLATE|FORM|FRAME|FRAMESET|GIFBUILDER|[GHT]MENU|GMENU_FOLDOUT|[GT]MENU_LAYERS|GP|HRULER|HTML|IENV|IFSUB|IMAGE|IMGMENU|IMGMENUITEM|IMGTEXT|IMG_RESOURCE|INCLUDE_TYPOSCRIPT|JSMENU|JSMENUITEM|LLL|LOAD_REGISTER|NO|PAGE|RECORDS|RESTORE_REGISTER|TEMPLATE|TEXT|TMENUITEM|USER|USER_INT|_GIFBUILDER|global|globalString|globalVar)\b/;
 
@@ -60,9 +61,7 @@ languages.tsconfig = languages.typoscript = {
 	},
 	'tag': {
 		pattern: /\.?[-\w\\]+\.?/,
-		inside: {
-			'punctuation': /\./,
-		}
+		inside: dotPunctuation
 	},
 	'punctuation': /[()[\]{}.,:;|]/,
 	'operator': /[<>]=?|[!=]=?=?|--?|\+\+?|&&?|\|\|?|[?*/~^%]/,

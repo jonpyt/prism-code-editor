@@ -14,7 +14,7 @@ languages.bison = Object.assign({
 				pattern: /%\{[\s\S]*?%\}|\{(?:[^{}]|\{[^}]*\})*\}/,
 				inside: {
 					'delimiter': {
-						pattern: /^%?\{|%?\}$/,
+						pattern: /^%?\{|%?\}$/g,
 						alias: 'punctuation'
 					},
 					'bison-variable': {

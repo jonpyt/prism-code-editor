@@ -16,7 +16,7 @@ languages.res = languages.rescript = {
 				lookbehind: true,
 				inside: {
 					'interpolation-punctuation': {
-						pattern: /^\$\{|\}$/,
+						pattern: /^..|\}$/g,
 						alias: 'tag'
 					},
 					[rest]: 'res'

@@ -17,10 +17,10 @@ expression.inside = languages.gni = languages.gn = {
 				pattern: /((?:^|[^\\])(?:\\\\)*)\$(?:\{[\s\S]*?\}|(?!\d)\w+|0x[a-fA-F\d]{2})/,
 				lookbehind: true,
 				inside: {
-					'number': /^\$0x[\s\S]{2}$/,
-					'variable': /^\$\w+$/,
+					'number': /^\$0.+/,
+					'variable': /^\$\w+/,
 					'interpolation-punctuation': {
-						pattern: /^\$\{|\}$/,
+						pattern: /^..|\}$/g,
 						alias: 'punctuation'
 					},
 					'expression': expression

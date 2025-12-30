@@ -10,7 +10,7 @@ languages.mustache = languages.hbs = languages.handlebars = {
 		inside: {
 			'comment': /\{\{![\s\S]*?\}\}/,
 			'delimiter': {
-				pattern: /^\{\{+|\}\}+$/,
+				pattern: /^..\{?|\}\}\}?$/g,
 				alias: 'punctuation'
 			},
 			'string': /(["'])(?:\\.|(?!\1)[^\\\n])*\1/,

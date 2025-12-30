@@ -25,7 +25,7 @@ interpolationExpr.inside = languages.v = {
 				lookbehind: true,
 				inside: {
 					'interpolation-variable': {
-						pattern: /^\$\w[\s\S]*$/,
+						pattern: /^\$\w[\s\S]*/,
 						alias: 'variable'
 					},
 					'interpolation-punctuation': {

@@ -11,7 +11,7 @@ var FTL_EXPR = [nested(/[^<()"']|\((?:<self>)*\)|<(?!#--)|<#--(?:[^-]|-(?!->))*-
 
 var interpolationInside = {
 	'interpolation-punctuation': {
-		pattern: /^\$\{|\}$/,
+		pattern: /^..|\}$/g,
 		alias: 'punctuation'
 	}
 };
@@ -68,7 +68,7 @@ languages.ftl = {
 	'ftl-interpolation': {
 		pattern: re(/\$\{<0>*?\}/.source, FTL_EXPR, 'gi'),
 		inside: {
-			'punctuation': /^\$\{|\}$/,
+			'punctuation': /^..|\}$/g,
 			'ftl': {
 				pattern: /\s*\S[\s\S]*/,
 				alias: 'language-ftl',

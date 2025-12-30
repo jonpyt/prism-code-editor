@@ -2,7 +2,7 @@ import { languages, rest } from '../core.js';
 
 var interpolationInside = {
 	'delimiter': {
-		pattern: /^#\{|\}$/,
+		pattern: /^..|\}$/g,
 		alias: 'punctuation'
 	}
 };

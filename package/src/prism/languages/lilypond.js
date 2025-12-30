@@ -24,7 +24,7 @@ inside.inside = languages.ly = languages.lilypond = {
 					'embedded-lilypond': {
 						pattern: /#\{[\s\S]*?#\}/g,
 						inside: {
-							'punctuation': /^#\{|#\}$/,
+							'punctuation': /^..|#\}$/g,
 							'lilypond': inside
 						}
 					},

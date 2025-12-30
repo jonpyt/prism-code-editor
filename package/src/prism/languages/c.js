@@ -50,7 +50,7 @@ macroExpression.inside = languages.c = {
 				lookbehind: true,
 				alias: 'keyword'
 			},
-			'directive-hash': /^#/,
+			'directive-hash': /^#/g,
 			'punctuation': /##|\\(?=\n)/,
 			'expression': macroExpression
 		}

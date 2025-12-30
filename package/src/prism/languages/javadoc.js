@@ -1,6 +1,7 @@
 import { languages } from '../core.js';
 import { clone, insertBefore } from '../utils/language.js';
 import { replace } from '../utils/shared.js';
+import { dotPunctuation } from '../utils/patterns.js';
 import './markup.js';
 import './java.js';
 import './javadoclike.js';
@@ -29,9 +30,7 @@ insertBefore(javadoc, 'keyword', {
 			},
 			'namespace': {
 				pattern: /\b(?:[a-z]\w*\s*\.\s*)+/,
-				inside: {
-					'punctuation': /\./
-				}
+				inside: dotPunctuation
 			},
 			'class-name': /\b[A-Z]\w*/,
 			'keyword': java.keyword,

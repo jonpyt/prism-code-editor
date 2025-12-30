@@ -37,7 +37,7 @@ var createTemplate = (language, tag) => ({
 					alias: 'language-javascript',
 					inside: {
 						'interpolation-punctuation': {
-							pattern: /^\$\{|\}$/,
+							pattern: /^..|\}$/g,
 							alias: 'punctuation'
 						},
 						[rest]: 'js'

@@ -45,7 +45,7 @@ var astroTag = expression => ({
 			pattern: /(=\s*)(?:"[^"]*"|'[^']*'|[^\s>{]+)/,
 			lookbehind: true,
 			inside: {
-				'punctuation': /^["']|["']$/
+				'punctuation': /^["']|["']$/g
 			}
 		},
 		'expression': expression,

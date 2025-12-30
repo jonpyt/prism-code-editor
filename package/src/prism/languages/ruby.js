@@ -2,8 +2,7 @@ import { languages } from '../core.js';
 import { boolean, clikeNumber } from '../utils/patterns.js';
 
 var interpolationContent = {
-	pattern: /^(..)[\s\S]+(?=.)/,
-	lookbehind: true,
+	pattern: /[\s\S]+/
 };
 
 var percentExpression = /(?:([^a-zA-Z\d\s{([<=])(?:\\[\s\S]|(?!\1)[^\\])*\1|\((?:\\[\s\S]|[^\\()]|\((?:\\[\s\S]|[^\\()])*\))*\)|\{(?:\\[\s\S]|[^\\{}]|\{(?:\\[\s\S]|[^\\{}])*\})*\}|\[(?:\\[\s\S]|[^\\[\]]|\[(?:\\[\s\S]|[^\\[\]])*\])*\]|<(?:\\[\s\S]|[^\\<>]|<(?:\\[\s\S]|[^\\<>])*>)*>)/.source;
@@ -14,11 +13,11 @@ var interpolation = {
 	pattern: /((?:^|[^\\])(?:\\\\)*)#\{(?:[^{}]|\{[^}]*\})*\}/,
 	lookbehind: true,
 	inside: {
-		'content': interpolationContent,
 		'delimiter': {
-			pattern: /.+/,
+			pattern: /^..|\}$/g,
 			alias: 'punctuation'
-		}
+		},
+		'content': interpolationContent
 	}
 }
 

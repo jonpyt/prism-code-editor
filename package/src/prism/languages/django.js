@@ -15,7 +15,7 @@ languages.jinja2 = languages.django = {
 				alias: 'keyword'
 			},
 			'delimiter': {
-				pattern: /^\{[{%][+-]?|[+-]?[}%]\}$/,
+				pattern: /^..[+-]?|[+-]?[}%]\}$/g,
 				alias: 'punctuation'
 			},
 			'string': /(["'])(?:\\.|(?!\1)[^\\\n])*\1/g,

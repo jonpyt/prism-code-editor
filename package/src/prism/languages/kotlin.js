@@ -3,7 +3,7 @@ import { boolean, clikeComment, clikePunctuation } from '../utils/patterns.js';
 
 var interpolationInside = {
 	'interpolation-punctuation': {
-		pattern: /^\$\{?|\}$/,
+		pattern: /^.\{?|\}$/g,
 		alias: 'punctuation'
 	},
 	'expression': {

@@ -17,7 +17,7 @@ var attrLang = {
 };
 
 var attrInside = {
-	'punctuation': /^["']|["']$/
+	'punctuation': /^["']|["']$/g
 };
 
 tagInside['attr-value'].unshift(
@@ -32,7 +32,7 @@ tagInside['attr-value'].unshift(
 		lookbehind: true,
 		alias: 'style',
 		inside: {
-			'punctuation': /^["']|["']$/,
+			'punctuation': /^["']|["']$/g,
 			'language-css': {
 				pattern: /[\s\S]+/,
 				inside: 'css'

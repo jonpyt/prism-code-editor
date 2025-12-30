@@ -1,4 +1,5 @@
 import { languages } from '../core.js';
+import { dotPunctuation } from '../utils/patterns.js';
 
 languages.jsstacktrace = {
 	'error-message': {
@@ -24,9 +25,7 @@ languages.jsstacktrace = {
 			'function': {
 				pattern: /(\bat\s+(?:new\s+)?)(?![\d>.])(?:(?!\s)[.$\w\xa0-\uffff<>])+/,
 				lookbehind: true,
-				inside: {
-					'punctuation': /\./
-				}
+				inside: dotPunctuation
 			},
 
 			'punctuation': /[()]/,

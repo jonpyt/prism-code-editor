@@ -1,4 +1,5 @@
 import { languages } from '../core.js';
+import { dotPunctuation } from '../utils/patterns.js';
 
 // Specification:
 // https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Throwable.html#printStackTrace()
@@ -103,9 +104,7 @@ languages.javastacktrace = {
 				pattern: /(\s)[a-z]\w*(?:\.[a-z]\w*)*(?=\/[\w@$.]*\/)/,
 				lookbehind: true,
 				alias: 'namespace',
-				inside: {
-					'punctuation': /\./
-				}
+				inside: dotPunctuation
 			},
 			'module': {
 				pattern: /([\s/])[a-z]\w*(?:\.[a-z]\w*)*(?:@[$\w.+-]*)?(?=\/)/,
@@ -121,9 +120,7 @@ languages.javastacktrace = {
 			},
 			'namespace': {
 				pattern: /(?:\b[a-z]\w*\.)+/,
-				inside: {
-					'punctuation': /\./
-				}
+				inside: dotPunctuation
 			},
 			'punctuation': /[()/.]/
 		}

@@ -14,7 +14,7 @@ languages.livescript = {
 				lookbehind: true,
 				inside: {
 					'interpolation-punctuation': {
-						pattern: /^#\{|\}$/,
+						pattern: /^..|\}$/g,
 						alias: 'variable'
 					},
 					[rest]: 'livescript'

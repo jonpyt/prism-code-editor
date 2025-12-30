@@ -1,5 +1,5 @@
 import { languages } from '../core.js';
-import { boolean } from '../utils/patterns.js';
+import { boolean, dotPunctuation } from '../utils/patterns.js';
 
 var moonscript = {
 	pattern: /[\s\S]+/
@@ -16,7 +16,7 @@ moonscript.inside = languages.moon = languages.moonscript = {
 					pattern: /#\{[^{}]*\}/,
 					inside: {
 						'interpolation-punctuation': {
-							pattern: /^#\{|.$/,
+							pattern: /^..|\}$/g,
 							alias: 'punctuation'
 						},
 						'moonscript': moonscript
@@ -38,9 +38,7 @@ moonscript.inside = languages.moon = languages.moonscript = {
 	},
 	'function': {
 		pattern: /\b(?:_G|_VERSION|assert|collectgarbage|coroutine\.(?:create|resume|running|status|wrap|yield)|debug\.(?:debug|[gs]etfenv|[gs]ethook|getinfo|[gs]etlocal|[gs]etmetatable|getregistry|[gs]etupvalue|traceback)|dofile|error|[gs]etfenv|[gs]etmetatable|io\.(?:close|flush|input|lines|output|p?open|read|stderr|stdin|stdout|tmpfile|type|write)|i?pairs|load|loadfile|loadstring|math\.(?:abs|acos|asin|atan2?|ceil|cosh?|deg|exp|floor|fmod|frexp|ldexp|log|log10|max|min|modf|pi|pow|rad|random|randomseed|sinh?|sqrt|tanh?)|module|next|os\.(?:clock|date|difftime|execute|exit|getenv|remove|rename|setlocale|time|tmpname)|package\.(?:cpath|loaded|loadlib|path|preload|seeall)|print|rawequal|rawget|rawset|require|select|string\.(?:byte|char|dump|find|format|g?match|g?sub|len|lower|rep|reverse|upper)|table\.(?:concat|insert|maxn|remove|sort)|tonumber|tostring|type|unpack|x?pcall)\b/,
-		inside: {
-			'punctuation': /\./
-		}
+		inside: dotPunctuation
 	},
 	'boolean': boolean,
 	'number': /(?:\B\.\d+|\b\d+\.\d+|\b\d+(?=[eE]))(?:[eE][+-]?\d+)?\b|\b(?:0x[a-fA-F\d]+|\d+)(?:U?LL)?\b/,

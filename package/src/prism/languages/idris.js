@@ -1,5 +1,6 @@
 import { languages } from '../core.js';
 import { extend, insertBefore } from '../utils/language.js';
+import { dotPunctuation } from '../utils/patterns.js';
 import './haskell.js';
 
 insertBefore(
@@ -12,9 +13,7 @@ insertBefore(
 		'import-statement': {
 			pattern: /(^\s*import\s+)(?:[A-Z][\w']*)(?:\.[A-Z][\w']*)*/m,
 			lookbehind: true,
-			inside: {
-				'punctuation': /\./
-			}
+			inside: dotPunctuation
 		}
 	}
 );

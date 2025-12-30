@@ -1,5 +1,5 @@
 import { languages } from '../core.js';
-import { boolean, clikeComment } from '../utils/patterns.js';
+import { boolean, clikeComment, dotPunctuation } from '../utils/patterns.js';
 import { nested, re, replace } from '../utils/shared.js';
 
 var keywordsToPattern = words => `\\b(?:${words})\\b`;
@@ -111,9 +111,7 @@ languages.dotnet = languages.cs = languages.csharp = {
 		// using Foo.Bar;
 		pattern: re(/(\b(?:namespace|using)\s+)<0>(?:\s*\.\s*<0>)*(?=\s*[;{])/.source, [name]),
 		lookbehind: true,
-		inside: {
-			'punctuation': /\./
-		}
+		inside: dotPunctuation
 	},
 	'type-expression': {
 		// default(Foo), typeof(Foo<Bar>), sizeof(int)
@@ -207,9 +205,7 @@ languages.dotnet = languages.cs = languages.csharp = {
 			},
 			'class-name': {
 				pattern: RegExp(identifier),
-				inside: {
-					'punctuation': /\./
-				}
+				inside: dotPunctuation
 			},
 			'punctuation': /[,:]/
 		}

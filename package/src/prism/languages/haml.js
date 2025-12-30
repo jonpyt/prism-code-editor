@@ -113,7 +113,7 @@ Object.assign(haml, {
 		pattern: /#\{[^}]+\}/,
 		inside: {
 			'delimiter': {
-				pattern: /^#\{|\}$/,
+				pattern: /^..|\}$/g,
 				alias: 'punctuation'
 			},
 			'ruby': {

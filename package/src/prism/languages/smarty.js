@@ -15,7 +15,7 @@ var smarty = expression.inside = {
 					pattern: /\{[^{}]*\}|`[^`]*`/,
 					inside: {
 						'interpolation-punctuation': {
-							pattern: /^[{`]|[`}]$/,
+							pattern: /^.|[`}]$/g,
 							alias: 'punctuation'
 						},
 						'expression': expression

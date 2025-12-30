@@ -28,7 +28,7 @@ var addAttribute = (attrName, lang, alias = attrName) => ({
 	lookbehind: true,
 	alias: alias,
 	inside: addLang({
-		'punctuation': /^["']|["']$/,
+		'punctuation': /^["']|["']$/g,
 	}, lang)
 });
 

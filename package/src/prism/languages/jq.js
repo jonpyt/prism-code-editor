@@ -11,7 +11,7 @@ var stringInterpolation = {
 		pattern: RegExp(/((?:^|[^\\])(?:\\\\)*)/.source + interpolation),
 		lookbehind: true,
 		inside: {
-			'punctuation': /^\\\(|\)$/,
+			'punctuation': /^..|\)$/g,
 			'content': content
 		}
 	}

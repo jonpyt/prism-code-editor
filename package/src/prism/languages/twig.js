@@ -14,14 +14,14 @@ languages.twig = {
 				alias: 'keyword'
 			},
 			'delimiter': {
-				pattern: /^\{[{%]-?|-?[%}]\}$/,
+				pattern: /^..-?|-?[%}]\}$/g,
 				alias: 'punctuation'
 			},
 		
 			'string': {
 				pattern: /(["'])(?:\\.|(?!\1)[^\\\n])*\1/,
 				inside: {
-					'punctuation': /^["']|["']$/
+					'punctuation': /^.|["']$/g
 				}
 			},
 			'keyword': /\b(?:even|if|odd)\b/,

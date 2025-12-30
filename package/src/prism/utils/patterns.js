@@ -8,4 +8,8 @@ var clikePunctuation = /[()[\]{}.,:;]/;
 
 var boolean = /\b(?:false|true)\b/;
 
-export { clikeComment, clikeString, clikeNumber, clikePunctuation, boolean }
+var dotPunctuation = {
+	'punctuation': /\./
+};
+
+export { clikeComment, clikeString, clikeNumber, clikePunctuation, boolean, dotPunctuation }

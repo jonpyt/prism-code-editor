@@ -6,6 +6,7 @@ import {
 	clikeNumber,
 	clikePunctuation,
 	boolean,
+	dotPunctuation,
 } from "../../utils/patterns.js"
 import { embeddedIn } from "../../utils/templating.js"
 import { createT4 } from "../../utils/t4-templating.js"
@@ -49,6 +50,7 @@ const imports = {
 	xmlComment,
 	addInlined,
 	astroTag,
+	dotPunctuation,
 }
 
 const args = Object.keys(imports)

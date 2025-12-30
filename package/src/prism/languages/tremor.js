@@ -13,7 +13,7 @@ languages.trickle = languages.troy = languages.tremor = {
 			'interpolation': {
 				pattern: RegExp(interpolationPattern),
 				inside: {
-					'punctuation': /^#\{|\}$/,
+					'punctuation': /^..|\}$/g,
 					'expression': {
 						pattern: /[\s\S]+/,
 						inside: 'tremor'

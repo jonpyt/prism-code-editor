@@ -1,5 +1,5 @@
 import { languages } from '../core.js';
-import { clikePunctuation } from '../utils/patterns.js';
+import { clikePunctuation, dotPunctuation } from '../utils/patterns.js';
 
 languages.hs = languages.haskell = {
 	'comment': {
@@ -47,15 +47,11 @@ languages.hs = languages.haskell = {
 	// In Haskell, nearly everything is a variable, do not highlight these.
 	'hvariable': {
 		pattern: /\b(?:[A-Z][\w']*\.)*[_a-z][\w']*/,
-		inside: {
-			'punctuation': /\./
-		}
+		inside: dotPunctuation
 	},
 	'constant': {
 		pattern: /\b(?:[A-Z][\w']*\.)*[A-Z][\w']*/,
-		inside: {
-			'punctuation': /\./
-		}
+		inside: dotPunctuation
 	},
 	'punctuation': clikePunctuation
 };

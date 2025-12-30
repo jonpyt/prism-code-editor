@@ -20,7 +20,7 @@ insertBefore(crystal, 'string-literal', {
 		pattern: /@\[.*?\]/,
 		inside: {
 			'delimiter': {
-				pattern: /^@\[|\]$/,
+				pattern: /^..|\]$/g,
 				alias: 'punctuation'
 			},
 			'attribute': {
@@ -37,15 +37,14 @@ insertBefore(crystal, 'string-literal', {
 	'expansion': {
 		pattern: /\{(?:\{.*?\}|%.*?%)\}/,
 		inside: {
+			'delimiter': {
+				pattern: /^..|..$/g,
+				alias: 'operator'
+			},
 			'content': {
-				pattern: /^(..).+(?=..)/,
-				lookbehind: true,
+				pattern: /.+/,
 				inside: crystal
 			},
-			'delimiter': {
-				pattern: /../,
-				alias: 'operator'
-			}
 		}
 	},
 	'char': /'(?:[^\\\n]{1,2}|\\(?:.|u(?:[a-fA-F\d]{1,4}|\{[a-fA-F\d]{1,6}\})))'/g

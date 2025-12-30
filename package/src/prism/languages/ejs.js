@@ -9,7 +9,7 @@ languages.eta = languages.ejs = {
 		inside: {
 			'comment': /^<%#[\s\S]+/,
 			'delimiter': {
-				pattern: /^<%[-_=]?|[-_]?%>$/,
+				pattern: /^..[-_=]?|[-_]?%>$/g,
 				alias: 'punctuation'
 			},
 			'language-javascript': {

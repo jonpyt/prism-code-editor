@@ -6,7 +6,7 @@ languages.fsharp = {
 	'annotation': {
 		pattern: /\[<.+?>\]/g,
 		inside: {
-			'punctuation': /^\[<|>\]$/,
+			'punctuation': /^..|>\]$/g,
 			'class-name': {
 				pattern: /^\w+$|(^|;\s*)[A-Z]\w*(?=\()/,
 				lookbehind: true

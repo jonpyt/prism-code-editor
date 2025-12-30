@@ -1,5 +1,6 @@
 import { languages } from '../core.js';
 import { extend, insertBefore } from '../utils/language.js';
+import { dotPunctuation } from '../utils/patterns.js';
 import './clike.js';
 
 var builtinTypes = /\b(?:bool|bytes|double|s?fixed(?:32|64)|float|[su]?int(?:32|64)|string)\b/;
@@ -32,9 +33,7 @@ insertBefore(
 		'positional-class-name': {
 			pattern: /(?:\b|\B\.)[a-z_]\w*(?:\.[a-z_]\w*)*(?=\s+[a-z_]\w*\s*[=;])/i,
 			alias: 'class-name',
-			inside: {
-				'punctuation': /\./
-			}
+			inside: dotPunctuation
 		},
 		'annotation': {
 			pattern: /(\[\s*)[a-z_]\w*(?=\s*=)/i,

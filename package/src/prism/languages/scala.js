@@ -29,7 +29,7 @@ insertBefore(scala, 'triple-quoted-string', {
 			'interpolation': {
 				pattern: /\$(?:\w+|\{(?:[^{}]|\{[^}]*\})*\})/g,
 				inside: {
-					'punctuation': /^\$\{?|\}$/,
+					'punctuation': /^.\{?|\}$/g,
 					'expression': {
 						pattern: /[\s\S]+/,
 						inside: scala

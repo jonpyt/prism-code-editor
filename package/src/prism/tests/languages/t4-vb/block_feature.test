@@ -25,22 +25,19 @@ The number <#= i #> is even.
 				["keyword", "template"],
 				["attr-name", "debug"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"false",
 					["punctuation", "\""]
 				]],
 				["attr-name", "hostspecific"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"false",
 					["punctuation", "\""]
 				]],
 				["attr-name", "language"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"VB",
 					["punctuation", "\""]
 				]]

@@ -10,7 +10,7 @@ var variable = {
 	pattern: /((?:^|[^\\])(?:\\\\)*)[$@&%]\{(?:[^{}\n]|\{[^{}\n]*\})*\}/,
 	lookbehind: true,
 	inside: {
-		'punctuation': /^[$@&%]\{|\}$/
+		'punctuation': /^..|\}$/g
 	}
 };
 

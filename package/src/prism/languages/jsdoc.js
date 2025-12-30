@@ -1,6 +1,6 @@
 import { languages } from '../core.js';
 import { extend, insertBefore } from '../utils/language.js';
-import { boolean, clikeString } from '../utils/patterns.js';
+import { boolean, clikeString, dotPunctuation } from '../utils/patterns.js';
 import { re } from '../utils/shared.js';
 import './javascript.js';
 import './javadoclike.js';
@@ -17,9 +17,7 @@ insertBefore(
 			// @param {string} foo - foo bar
 			pattern: RegExp(parameterPrefix + /(?:(?!\s)[$\w\xa0-\uffff.])+(?!\S)/.source),
 			lookbehind: true,
-			inside: {
-				'punctuation': /\./
-			}
+			inside: dotPunctuation
 		}
 	}),
 	'keyword', {
@@ -37,9 +35,7 @@ insertBefore(
 				'punctuation': /[=[\]]/,
 				'parameter': {
 					pattern: /[\s\S]+/,
-					inside: {
-						'punctuation': /\./
-					}
+					inside: dotPunctuation
 				}
 			}
 		},
@@ -47,9 +43,7 @@ insertBefore(
 			{
 				pattern: re(/(@(?:augments|class|extends|interface|memberof!?|template|this|typedef)\s+(?:<0>\s+)?)[A-Z]\w*(?:\.[A-Z]\w*)*/.source, [type]),
 				lookbehind: true,
-				inside: {
-					'punctuation': /\./
-				}
+				inside: dotPunctuation
 			},
 			{
 				pattern: RegExp('(@[a-z]+\\s+)' + type),

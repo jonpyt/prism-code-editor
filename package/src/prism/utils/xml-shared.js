@@ -22,7 +22,7 @@ var tag = {
 			pattern: /(=\s*)(?:"[^"]*"|'[^']*'|[^\s>]+)/g,
 			lookbehind: true,
 			inside: {
-				'punctuation': /^["']|["']$/,
+				'punctuation': /^["']|["']$/g,
 				entity
 			}
 		}],

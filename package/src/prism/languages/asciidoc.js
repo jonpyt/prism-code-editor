@@ -7,7 +7,7 @@ var attributes = {
 		'quoted': {
 			pattern: /([$`])(?:\\.|(?!\1)[^\\])*\1/,
 			inside: {
-				'punctuation': /^[$`]|[$`]$/
+				'punctuation': /^.|[$`]$/g
 			}
 		},
 		'interpreted': {

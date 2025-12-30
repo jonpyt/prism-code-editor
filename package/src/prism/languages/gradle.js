@@ -11,7 +11,7 @@ var interpolation = {
 	lookbehind: true,
 	inside: {
 		'interpolation-punctuation': {
-			pattern: /^\$\{?|\}$/,
+			pattern: /^.\{?|\}$/g,
 			alias: 'punctuation',
 		},
 		'expression': expression,

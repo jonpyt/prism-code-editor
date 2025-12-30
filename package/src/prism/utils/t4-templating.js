@@ -22,7 +22,7 @@ var createT4 = insideLang => ({
 				'attr-value': {
 					pattern: /=(?:(["'])(?:\\[\s\S]|(?!\1)[^\\])*\1|[^\s"'=>]+)/,
 					inside: {
-						'punctuation': /^[="']|["']$/
+						'punctuation': /^=["']?|["']$/g
 					}
 				},
 				'keyword': /\b\w+(?=\s)/,

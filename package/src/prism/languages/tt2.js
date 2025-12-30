@@ -6,10 +6,10 @@ import './markup.js';
 
 languages.tt2 = {
 	'tt2': {
-		pattern: /\[%[\s\S]+?%\]/,
+		pattern: /\[%[\s\S]*?%\]/,
 		alias: 'language-tt2',
 		inside: {
-			'comment': /#.*|\[%#[\s\S]*?%\]/,
+			'comment': /#.*|^..#[\s\S]+/g,
 			'string': [
 				/'[^\\']*(?:\\[\s\S][^\\']*)*'/g,
 				{
@@ -21,7 +21,7 @@ languages.tt2 = {
 			],
 			'class-name': clikeClass(),
 			'delimiter': {
-				pattern: /^[[%]%-?|-?%\]$/,
+				pattern: /^..-?|-?%\]$/g,
 				alias: 'punctuation'
 			},
 			'keyword': /\b(?:BLOCK|CALL|CASE|CATCH|CLEAR|DEBUG|DEFAULT|ELSE|ELSIF|END|FILTER|FINAL|FOREACH|[GS]ET|IF|IN|INCLUDE|INSERT|LAST|MACRO|META|NEXT|PERL|PROCESS|RAWPERL|RETURN|STOP|SWITCH|TAGS|THROW|TRY|UNLESS|USE|WHILE|WRAPPER)\b/,

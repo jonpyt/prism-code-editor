@@ -1,5 +1,5 @@
 import { languages } from '../core.js';
-import { boolean, clikeComment, clikePunctuation } from '../utils/patterns.js';
+import { boolean, clikeComment, clikePunctuation, dotPunctuation } from '../utils/patterns.js';
 
 var keywords = /\b(?:abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|exports|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|module|native|new|non-sealed|null|opens?|package|permits|private|protected|provides|public|record(?!\s*[()[\]{}%~.,:;?%&|^=<>/*+-])|requires|return|sealed|short|static|strictfp|super|switch|synchronized|this|throws?|to|transient|transitive|try|uses|var|void|volatile|while|with|yield)\b/;
 
@@ -8,9 +8,7 @@ var classNamePrefix = /(?:[a-z]\w*\s*\.\s*)*(?:[A-Z]\w*\s*\.\s*)*/.source;
 
 var namespace = {
 	pattern: /^[a-z]\w*(?:\s*\.\s*[a-z]\w*)*(?:\s*\.)?/,
-	inside: {
-		'punctuation': /\./
-	}
+	inside: dotPunctuation
 };
 
 var classInside = {
@@ -85,9 +83,7 @@ languages.java = {
 			`(\\b(?:exports|import(?:\\s+static)?|module|opens?|package|provides|requires|to|transitive|uses|with)\\s+)(?!${keywords.source})[a-z]\\w*(?:\\.[a-z]\\w*)*\\.?`
 		),
 		lookbehind: true,
-		inside: {
-			'punctuation': /\./,
-		}
+		inside: dotPunctuation
 	},
 	'class-name': [
 		className,

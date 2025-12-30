@@ -8,7 +8,7 @@ languages.erb = {
 		pattern: /<%=?(?:[^\n]|\n(?!=begin)|\n=begin\s(?:[^\n]|\n(?!=end))*\n=end)+?%>/,
 		inside: {
 			'delimiter': {
-				pattern: /^<%=?|%>$/,
+				pattern: /^..=?|%>$/g,
 				alias: 'punctuation'
 			},
 			'ruby': {

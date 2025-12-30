@@ -47,7 +47,7 @@ languages.rest = {
 			lookbehind: true,
 			alias: 'string',
 			inside: {
-				'punctuation': /^\[|\]$/
+				'punctuation': /^.|\]$/g
 			}
 		},
 		{
@@ -55,7 +55,7 @@ languages.rest = {
 			lookbehind: true,
 			alias: 'string',
 			inside: {
-				'punctuation': /^_|:$/
+				'punctuation': /^_+|:$/
 			}
 		}
 	],

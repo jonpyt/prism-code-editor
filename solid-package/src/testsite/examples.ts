@@ -8430,7 +8430,6 @@ var entity = [
 
 var tag = {
 	pattern: /<\\/?(?!\\d)[^\\s/=>$<%]+(?:\\s(?:\\s*[^\\s/=>]+(?:\\s*=\\s*(?!\\s)(?:"[^"]*"|'[^']*'|[^\\s"'=>]+(?=[\\s>]))?|(?=[\\s/>])))+)?\\s*\\/?>/g,
-	greedy: true,
 	inside: {
 		'punctuation': /^<\\/?|\\/?>$/,
 		'tag': {
@@ -8442,9 +8441,8 @@ var tag = {
 		'attr-value': {
 			pattern: /(=\\s*)(?:"[^"]*"|'[^']*'|[^\\s"'=>]+)/g,
 			lookbehind: true,
-			greedy: true,
 			inside: {
-				'punctuation': /^["']|["']$/,
+				'punctuation': /^["']|["']$/g,
 				entity
 			}
 		},

@@ -78,8 +78,7 @@
 
 	["punctuation", ".."],
 	["link-target", [
-		["punctuation", "_"],
-		["punctuation", "_"],
+		["punctuation", "__"],
 		["punctuation", ":"]
 	]],
 	" Anonymous"

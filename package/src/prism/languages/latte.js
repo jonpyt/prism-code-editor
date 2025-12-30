@@ -13,7 +13,7 @@ insertBefore(markupLatte.tag.inside, 'attr-value', {
 				pattern: /(=\s*)[\s\S]+/,
 				lookbehind: true,
 				inside: {
-					'punctuation': /^["']|["']$/,
+					'punctuation': /^["']|["']$/g,
 					'php': {
 						pattern: /\S(?:[\s\S]*\S)?/,
 						inside: 'php'
@@ -42,7 +42,7 @@ languages.latte = {
 				alias: 'important'
 			},
 			'delimiter': {
-				pattern: /^\{\/?|\}$/,
+				pattern: /^\{\/?|\}$/g,
 				alias: 'punctuation'
 			},
 			'php': {

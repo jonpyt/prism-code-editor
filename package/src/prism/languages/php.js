@@ -76,7 +76,7 @@ var string = [
 
 var php = stringInterpolation.inside = {
 	'delimiter': {
-		pattern: /\?>$|^<\?(?:php(?=\s)|=)?/i,
+		pattern: /^<\?(?:php(?=\s)|=)?|\?>$/gi,
 		alias: 'important'
 	},
 	'doc-comment': {

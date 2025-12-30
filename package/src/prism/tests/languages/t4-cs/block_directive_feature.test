@@ -16,22 +16,19 @@
 				["keyword", "template"],
 				["attr-name", "debug"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"false",
 					["punctuation", "\""]
 				]],
 				["attr-name", "hostspecific"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"false",
 					["punctuation", "\""]
 				]],
 				["attr-name", "language"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"C#",
 					["punctuation", "\""]
 				]]
@@ -46,8 +43,7 @@
 				["keyword", "assembly"],
 				["attr-name", "name"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"System",
 					["punctuation", "\""]
 				]]
@@ -62,8 +58,7 @@
 				["keyword", "assembly"],
 				["attr-name", "name"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"System.Core",
 					["punctuation", "\""]
 				]]
@@ -78,8 +73,7 @@
 				["keyword", "import"],
 				["attr-name", "namespace"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"System.Linq",
 					["punctuation", "\""]
 				]]
@@ -94,8 +88,7 @@
 				["keyword", "output"],
 				["attr-name", "extension"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					".cs",
 					["punctuation", "\""]
 				]]
@@ -110,8 +103,7 @@
 				["keyword", "include"],
 				["attr-name", "file"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"Foo.t4",
 					["punctuation", "\""]
 				]]
@@ -126,15 +118,13 @@
 				["keyword", "CleanupBehavior"],
 				["attr-name", "processor"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"T4VSHost",
 					["punctuation", "\""]
 				]],
 				["attr-name", "CleanupAfterProcessingtemplate"],
 				["attr-value", [
-					["punctuation", "="],
-					["punctuation", "\""],
+					["punctuation", "=\""],
 					"true",
 					["punctuation", "\""]
 				]]

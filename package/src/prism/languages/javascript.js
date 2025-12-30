@@ -1,5 +1,5 @@
 import { languages, rest } from '../core.js';
-import { boolean, clikeComment, clikeString } from '../utils/patterns.js';
+import { boolean, clikeComment, clikeString, dotPunctuation } from '../utils/patterns.js';
 
 var js = {};
 
@@ -26,7 +26,7 @@ languages.js = languages.javascript = Object.assign(js, {
 				lookbehind: true,
 				inside: {
 					'interpolation-punctuation': {
-						pattern: /^\$\{|\}$/,
+						pattern: /^..|\}$/g,
 						alias: 'punctuation'
 					},
 					[rest]: js
@@ -58,9 +58,7 @@ languages.js = languages.javascript = Object.assign(js, {
 		{
 			pattern: /(\b(?:class|extends|implements|instanceof|interface|new)\s+)(?!\d)(?:(?!\s)[$\w\xa0-\uffff.])+/,
 			lookbehind: true,
-			inside: {
-				'punctuation': /\./
-			}
+			inside: dotPunctuation
 		},
 		{
 			pattern: /(^|[^$\w\xa0-\uffff]|\s)(?![a-z\d])(?:(?!\s)[$\w\xa0-\uffff])+(?=\.(?:constructor|prototype)\b)/,

@@ -18,9 +18,7 @@ languages.url = languages.uri = {
 	'query': {
 		pattern: /\?[\w.~!$&'()*,;=%:@/?+-]*/,
 		inside: {
-			'query-delimiter': {
-				pattern: /^\?/g
-			},
+			'query-delimiter': /^\?/g,
 			'pair-delimiter': /[&;]/,
 			'pair': {
 				pattern: /^[^=][\s\S]*/,

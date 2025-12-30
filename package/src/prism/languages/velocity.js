@@ -30,7 +30,7 @@ insertBefore(vel, 'comment', {
 		pattern: /(^|[^\\])#\[\[[\s\S]*?\]\]#/g,
 		lookbehind: true,
 		inside: {
-			'punctuation': /^#\[\[|\]\]#$/
+			'punctuation': /^...|\]\]#$/g
 		}
 	},
 	'velocity-comment': [

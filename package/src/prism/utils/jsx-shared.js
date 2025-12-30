@@ -98,7 +98,7 @@ var addJsxTag = (grammar, name) => {
 					pattern: re(/(=<0>*)(?:"[^"]*"|'[^']*')/.source, [space]),
 					lookbehind: true,
 					inside: {
-						'punctuation': /^["']|["']$/
+						'punctuation': /^["']|["']$/g
 					}
 				},
 				'expression': {

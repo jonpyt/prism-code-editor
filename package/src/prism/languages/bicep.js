@@ -22,7 +22,7 @@ languages.bicep = {
 			'interpolation': {
 				pattern: /\$\{[^{}\n]*\}/,
 				inside: {
-					'punctuation': /^\$\{|\}$/,
+					'punctuation': /^..|\}$/g,
 					'expression': {
 						pattern: /[\s\S]+/,
 						inside: 'bicep'

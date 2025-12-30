@@ -1,5 +1,5 @@
 import { languages } from '../core.js';
-import { boolean, clikePunctuation } from '../utils/patterns.js';
+import { boolean, clikePunctuation, dotPunctuation } from '../utils/patterns.js';
 
 languages.squirrel = {
 	'comment': /\/\*[\s\S]*?(?:\*\/|$)|\/\/.*|#.*/g,
@@ -15,9 +15,7 @@ languages.squirrel = {
 	'class-name': {
 		pattern: /(\b(?:class|enum|extends|instanceof)\s+)\w+(?:\.\w+)*/,
 		lookbehind: true,
-		inside: {
-			'punctuation': /\./
-		}
+		inside: dotPunctuation
 	},
 	'keyword': /\b(?:__FILE__|__LINE__|base|break|case|catch|class|clone|const|constructor|continue|default|delete|else|enum|extends|for|foreach|function|if|in|instanceof|local|null|resume|return|static|switch|this|throw|try|typeof|while|yield)\b/,
 	'boolean': boolean,

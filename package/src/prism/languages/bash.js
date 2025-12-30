@@ -13,7 +13,7 @@ var commandAfterHeredoc = {
 };
 
 var variableInside = {
-	'variable': /^\$\(|^`|\)$|`$/
+	'variable': /^\$\(|^`|[`)]$/g
 };
 
 var insideString = {
@@ -33,7 +33,7 @@ var insideString = {
 						pattern: /(^\$[\s\S]+)../,
 						lookbehind: true
 					},
-					/^\$\(\(/
+					/^\$../g
 				],
 				'number': /\b0x[a-fA-F\d]+\b|(?:\b\d+(?:\.\d*)?|\B\.\d+)(?:[Ee]-?\d+)?/,
 				// Operators according to https://www.gnu.org/software/bash/manual/bashref.html#Shell-Arithmetic

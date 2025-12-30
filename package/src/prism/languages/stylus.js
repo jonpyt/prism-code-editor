@@ -16,7 +16,7 @@ var interpolation = {
 	alias: 'variable',
 	inside: {
 		'delimiter': {
-			pattern: /^\{|\}$/,
+			pattern: /^\{|\}$/g,
 			alias: 'punctuation'
 		}
 	}

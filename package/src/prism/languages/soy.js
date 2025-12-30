@@ -1,5 +1,5 @@
 import { languages, tokenize } from '../core.js';
-import { boolean, clikeString } from '../utils/patterns.js';
+import { boolean, clikeString, dotPunctuation } from '../utils/patterns.js';
 import { embeddedIn } from '../utils/templating.js';
 import './markup.js';
 
@@ -23,9 +23,7 @@ languages.soy = {
 				pattern: /(\{+\/?\s*(?:alias|call|delcall|delpackage|deltemplate|namespace|template)\s+)\.?[\w.]+/,
 				lookbehind: true,
 				alias: 'string',
-				inside: {
-					'punctuation': /\./
-				}
+				inside: dotPunctuation
 			},
 			'parameter': {
 				pattern: /(\{+\/?\s*@?param\??\s+)\.?[\w.]+/,
@@ -37,7 +35,7 @@ languages.soy = {
 				lookbehind: true
 			},
 			'delimiter': {
-				pattern: /^\{+\/?|\/?\}+$/,
+				pattern: /^\{+\/?|\/?\}+$/g,
 				alias: 'punctuation'
 			},
 			'property': /\w+(?==)/,
