@@ -13,7 +13,6 @@ const useShowInvisibles = (editor: PrismEditor) => {
 	const searchAPI = useEditorSearch(editor, "pce-invisibles")
 
 	useLayoutEffect(() => {
-		let prev: string
 		const matches = searchAPI.matches
 		const container = searchAPI.container
 		const nodes = container.children
@@ -22,12 +21,10 @@ const useShowInvisibles = (editor: PrismEditor) => {
 			const value = editor.value
 			const [start, end] = editor.getSelection()
 
-			if (prev != (prev = value)) {
-				searchAPI.search(" |\t", true, false, true, [start, end])
-				for (let i = 0, l = matches.length; i < l; i++) {
-					if ((value[matches[i][0]] == "\t") == !tabs[i]) {
-						nodes[i].className = (tabs[i] = !tabs[i]) ? "pce-tab" : ""
-					}
+			searchAPI.search(" |\t", true, false, true, [start, end])
+			for (let i = 0, l = matches.length; i < l; i++) {
+				if ((value[matches[i][0]] == "\t") == !tabs[i]) {
+					nodes[i].className = (tabs[i] = !tabs[i]) ? "pce-tab" : ""
 				}
 			}
 		}

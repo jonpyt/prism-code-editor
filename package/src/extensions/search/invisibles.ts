@@ -10,7 +10,6 @@ import { createSearchAPI } from "./search.js"
  */
 const showInvisibles = (): BasicExtension => {
 	return editor => {
-		let prev: string
 		const searchAPI = createSearchAPI(editor)
 		const matches = searchAPI.matches
 		const container = searchAPI.container
@@ -20,12 +19,10 @@ const showInvisibles = (): BasicExtension => {
 			const value = editor.value
 			const [start, end] = editor.getSelection()
 
-			if (prev != (prev = value)) {
-				searchAPI.search(" |\t", true, false, true, [start, end])
-				for (let i = 0, l = matches.length; i < l; i++) {
-					if ((value[matches[i][0]] == "\t") == !tabs[i]) {
-						nodes[i].className = (tabs[i] = !tabs[i]) ? "pce-tab" : ""
-					}
+			searchAPI.search(" |\t", true, false, true, [start, end])
+			for (let i = 0, l = matches.length; i < l; i++) {
+				if ((value[matches[i][0]] == "\t") == !tabs[i]) {
+					nodes[i].className = (tabs[i] = !tabs[i]) ? "pce-tab" : ""
 				}
 			}
 		}
