@@ -1,0 +1,29 @@
+---
+import "prism-code-editor/cursor.css"
+---
+
+<div class="cursor-options not-content">
+	<label>
+		<input type="checkbox" /> Animate position
+	</label>
+	<label>
+		<input type="checkbox" /> Smooth blinking animation
+	</label>
+	<label>
+		<input type="checkbox" /> Hide when selecting text
+	</label>
+</div>
+
+<script>
+	import("./index")
+</script>
+
+<style is:global>
+	.cursor-options {
+		display: grid;
+	}
+	.document-pos {
+		display: flex;
+		justify-content: space-between;
+	}
+</style>

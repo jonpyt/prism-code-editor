@@ -112,6 +112,7 @@ export default defineConfig({
 						{ label: "Language Specific Behavior", slug: "guides/language-specific-behavior" },
 						{ label: "Styling", slug: "guides/styling" },
 						{ label: "Extensions", slug: "guides/extensions" },
+						{ label: "Custom Cursor", slug: "guides/custom-cursor" },
 						{ label: "Searching", slug: "guides/searching" },
 						{ label: "Autocomplete", slug: "guides/autocomplete" },
 						{ label: "Code Folding", slug: "guides/code-folding" },

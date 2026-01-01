@@ -1,0 +1,81 @@
+---
+title: Custom Cursor
+description: Learn how to add a custom cursor and display cursor position.
+---
+
+import MountEditors from "../../../components/languages/ts+css.astro"
+import CursorDemo from "../../../components/CursorDemo/index.astro"
+import "../../../css/editor-theme.css"
+import { Aside } from "@astrojs/starlight/components"
+
+<MountEditors />
+
+By default, the editor uses the textarea's native cursor. This is often sufficient, but the [`cursorPosition(){:js}`](/api-reference/cursor/f-cursorposition/) extension and `selectionChange` events make it trivial to use a custom element to replace the cursor. This is what the [`customCursor(){:js}`](/api-reference/cursor/f-customcursor/) extension does.
+
+All editors on this page have `customCursor(){:js}` added, so try it below:
+
+```ts editor
+import {
+	cursorPosition,
+	customCursor,
+	type CursorConfig
+} from "prism-code-editor/cursor"
+// Required by the customCursor extension
+import "prism-code-editor/cursor.css"
+
+editor.addExtensions(cursorPosition(), customCursor())
+```
+
+<Aside>
+	Due to a known issue, it's not recommended to use `customCursor(){:js}` with `wordWrap` enabled.
+</Aside>
+
+## Customizing the cursor
+
+To customize the appearance of the cursor, use the `--pce-cursor{:css}` CSS variable to change the cursor's color and the `.pce-cursor{:selector}` selector to apply styles directly. Below are some examples of what can be changed using CSS.
+
+```css editor
+/* Higher specificity to override default styles */
+.pce-cursor.pce-cursor {
+	/* Changing the cursor's width */
+	width: 2px;
+	/* Animating the position */
+	transition: top 0.1s ease-out, left 0.1s ease-out;
+	/* Changing the blinking animation duration */
+	animation-duration: 1.06s;
+	/* Making the blinking animation smooth */
+	animation-timing-function: linear;
+}
+
+/* Hiding the cursor when text is selected */
+.pce-has-selection .pce-cursor {
+	display: none;
+}
+```
+
+Below you can toggle some of the styles shown above for all editors on this page:
+
+<CursorDemo />
+
+## Displaying document position
+
+Other useful functionality in an editor is displaying the cursor's line and column in the document. To make this easier, this library exports a [`getDocumentPosition(){:js}`](/api-reference/utils/f-getdocumentposition/) utility. The resulting document position is displayed below the following editor.
+
+```ts editor
+import { getDocumentPosition } from "prism-code-editor/utils"
+
+const positionText = document.querySelector(".document-pos")
+const selectedText = document.querySelector(".selected-chars")
+
+editor.on("selectionChange", () => {
+	const [line, column, selected] = getDocumentPosition(editor)
+
+	positionText.textContent = `Ln ${line}, Col ${column}`
+	selectedText.textContent = `${selected} selected`
+})
+```
+
+<p class="document-pos">
+	<span>Ln 1, Col 1</span>
+	<span>0 selected</span>
+</p>
