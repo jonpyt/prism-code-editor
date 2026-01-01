@@ -40,7 +40,7 @@ var withoutTokenizer = (text, grammar) => {
 
 	while (array[i++] = startNode[0], startNode = startNode[1]);
 	return array;
-}
+};
 
 /**
  * @param {string} string
@@ -49,7 +49,7 @@ var withoutTokenizer = (text, grammar) => {
  */
 var escapeHtml = (string, pattern, replacement) => {
 	return string.replace(/&/g, '&amp;').replace(pattern, replacement);
-}
+};
 
 var closingTag = '</span>';
 var openingTags = '';
@@ -57,10 +57,10 @@ var closingTags = '';
 
 /** @param {(string | Token)[]} tokens */
 var highlightTokens = tokens => {
-	var str = '', l = tokens.length, i = 0;
-	while (i < l) str += stringify(tokens[i++]);
+	var str = '', token, i = 0;
+	while (token = tokens[i++]) str += stringify(token);
 	return str;
-}
+};
 
 /**
  * @param {string | Token | (string | Token)[]} token
@@ -91,7 +91,7 @@ var stringify = token => {
 		return token.replace(/\n/g, closingTags + '\n' + openingTags);
 	}
 	return token;
-}
+};
 
 /**
  * @param {string} text
@@ -110,12 +110,11 @@ var highlightText = (text, ref) => highlightTokens(tokenizeText(text, resolve(re
  */
 var matchGrammar = (text, grammar, startNode, startPos, rematch) => {
 	for (var token in grammar) {
-		if (grammar[token]) for (var j = 0, p = grammar[token], patterns = Array.isArray(p) ? p : [p]; j < patterns.length; ++j) {
+		if (grammar[token]) for (var j = 0, p = grammar[token], patternObj, patterns = Array.isArray(p) ? p : [p]; patternObj = patterns[j]; j++) {
 			if (rematch && rematch[0] == token && rematch[1] == j) {
 				return;
 			}
 
-			var patternObj = patterns[j];
 			/** @type {RegExp} */
 			var pattern = patternObj.pattern || patternObj;
 			var inside = resolve(patternObj.inside);
@@ -130,7 +129,7 @@ var matchGrammar = (text, grammar, startNode, startPos, rematch) => {
 			) {
 				var str = currentNode[0];
 				var removeCount = 0;
-				var match, lookbehindLength;
+				var match;
 
 				if (str instanceof Token) {
 					continue;
@@ -147,19 +146,19 @@ var matchGrammar = (text, grammar, startNode, startPos, rematch) => {
 					continue;
 				}
 
-				if (lookbehind && match[1]) {
-					// change the match to remove the text matched by the Prism lookbehind group
-					lookbehindLength = match[1].length;
-					match.index += lookbehindLength;
-					match[0] = match[0].slice(lookbehindLength);
-				}
+				// change the match to remove the text matched by the Prism lookbehind group
+				var lookbehindLength = lookbehind && match[1] ? match[1].length : 0;
+				var from = match.index + lookbehindLength;
+				var matchStr = match[0].slice(lookbehindLength);
+				var to = from + matchStr.length;
+				var k, p;
 
 				if (greedy) {
 					// find the node that contains the match
 					for (
-						var from = match.index, to = from + match[0].length, l;
-						from >= pos + (l = currentNode[0].length);
-						currentNode = currentNode[1], pos += l
+						;
+						p = pos + currentNode[0].length, from >= p;
+						currentNode = currentNode[1], pos = p
 					);
 
 					// the current node is a Token, then the match starts inside another Token, which is invalid
@@ -169,20 +168,18 @@ var matchGrammar = (text, grammar, startNode, startPos, rematch) => {
 
 					// find the last node which is affected by this match
 					for (
-						var k = currentNode, p = pos;
+						k = currentNode, p = pos;
 						(p += k[0].length) < to;
 						k = k[1], removeCount++
 					);
 
 					// replace with the new match
 					str = text.slice(pos, p);
-					match.index -= pos;
+					from -= pos;
+					to -= pos;
 				}
 
-				// eslint-disable-next-line no-redeclare
-				var from = match.index;
-				var matchStr = match[0];
-				var after = str.slice(from + matchStr.length);
+				var after = str.slice(to);
 				var reach = pos + str.length;
 				var newToken = new Token(token, inside ? tokenizeText(matchStr, inside) : matchStr, matchStr, alias);
 				var next = currentNode, i = 0;
@@ -213,7 +210,7 @@ var matchGrammar = (text, grammar, startNode, startPos, rematch) => {
 			}
 		}
 	}
-}
+};
 
 /**
  * Creates a new token.
@@ -242,4 +239,4 @@ export {
 	escapeHtml,
 	highlightTokens,
 	highlightText
-}
+};
