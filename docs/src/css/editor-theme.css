@@ -375,12 +375,22 @@ div.code-block {
 }
 
 .ins {
-	background: #1e571566;
+	background: #18b30024;
 	box-shadow: inset 2px 0 0 #487f3bd0;
 }
 
-[data-theme="light"] .ins {
-	background: #8ec77d66;
+.del {
+	background: #ff11002e;
+	box-shadow: inset 2px 0 0 #b4554bd0;
+}
+
+.highlight {
+	background: #80808035;
+	box-shadow: inset 2px 0 0 #808080bb;
+}
+
+.del + .ins {
+	counter-increment: line -1;
 }
 
 .pce-line::before {
