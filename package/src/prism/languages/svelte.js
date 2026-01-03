@@ -28,10 +28,10 @@ tagInside['attr-value'].inside['expression'] = expression;
 languages.svelte = {
 	'comment': xmlComment,
 	'script': addInlined('script', tagInside, code => {
-		return /^[^>]+?[\s"'}]lang\s*=\s*(["'])ts\1/.test(code) ? 'ts' : 'js';
+		return /^[^>]+?[\s"'}]lang\s*=\s*(["']?)ts\b\1/.test(code) ? 'ts' : 'js';
 	}),
 	'style': addInlined('style', tagInside, code => {
-		return /^[^>]+?[\s"'}]lang\s*=\s*(["'])(less|s[ac]ss|stylus)\1/.exec(code)?.[2] || 'css';
+		return /^[^>]+?[\s"'}]lang\s*=\s*(["']?)(less|s[ac]ss|stylus)\b\1/.exec(code)?.[2] || 'css';
 	}),
 	'block': {
 		pattern: re(/\{[#@:/]\w*(?:\s(?:[^{}]|<0>)*)?\}/.source, [braces], 'g'),

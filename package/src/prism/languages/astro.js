@@ -30,7 +30,7 @@ var astro = languages.astro = {
 		return /^[^>]+?[\s"'}]is:inline\b/.test(code) ? 'javascript' : 'typescript';
 	}),
 	'style': addInlined('style', tagInside, code => {
-		return /^[^>]+?[\s"'}]lang\s*=\s*(["'])(less|s[ac]ss|stylus)\1/.exec(code)?.[2] || 'css';
+		return /^[^>]+?[\s"'}]lang\s*=\s*(["']?)(less|s[ac]ss|stylus)\b\1/.exec(code)?.[2] || 'css';
 	}),
 	'expression': expression,
 	'tag': tag,

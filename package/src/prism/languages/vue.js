@@ -50,17 +50,17 @@ tagInside['tag'].inside['class-name'] = /^[A-Z]\w*(?:\.[A-Z]\w*)*$/;
 languages.vue = {
 	'comment': xmlComment,
 	'script': addInlined('script', tagInside, code => {
-		return /^[^>]+?[\s"']lang\s*=\s*(["'])([jt]sx?)\1/.exec(code)?.[2] || 'js';
+		return /^[^>]+?[\s"']lang\s*=\s*(["']?)([jt]sx?)\b\1/.exec(code)?.[2] || 'js';
 	}),
 	'style': addInlined('style', tagInside, code => {
-		return /^[^>]+?[\s"']lang\s*=\s*(["'])(less|s[ac]ss|stylus)\1/.exec(code)?.[2] || "css";
+		return /^[^>]+?[\s"']lang\s*=\s*(["']?)(less|s[ac]ss|stylus)\b\1/.exec(code)?.[2] || 'css';
 	}),
 	'expression': expression,
 	'tag': vueTag,
 	'entity': entity,
 	'punctuation': /\{\{|\}\}|[()[\]{}]/,
 	[tokenize](code, grammar) {
-		var lang = /<script\s(?:[^>]*?[\s"'])?lang\s*=\s*(["'])([jt]s)x?\1/.exec(code)?.[2] || 'js';
+		var lang = /<script\s(?:[^>]*?[\s"'])?lang\s*=\s*(["']?)([jt]s)x?\b\1/.exec(code)?.[2] || 'js';
 
 		if (lang != currentLang) {
 			expression.alias = 'language-' + lang;
