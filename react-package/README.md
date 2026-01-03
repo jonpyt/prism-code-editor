@@ -23,11 +23,13 @@ This is a rewrite of [Prism code editor](https://github.com/jonpyt/prism-code-ed
     - [DOM Elements](#dom-elements)
   - [Methods](#methods)
   - [Extensions property](#extensions-property)
+  - [Editor helpers](#editor-helpers)
 - [Languages](#languages)
 - [Styling](#styling)
 - [Themes](#themes)
   - [Theme switcher](#theme-switcher)
 - [Code blocks](#code-blocks)
+  - [Code block extensions](#code-block-extensions)
   - [Code block props](#code-block-props)
 - [Performance](#performance)
 - [Contributing](#contributing)
@@ -74,7 +76,7 @@ import "prism-react-editor/invisibles.css"
 
 function MyEditor() {
   return <Editor language="jsx" value="const foo = 'bar'">
-    {editor => <BasicSetup editor={editor} />}
+    <BasicSetup />
   </Editor>
 }
 ```
@@ -97,7 +99,7 @@ function MyEditor() {
 | `onUpdate`          | `(value: string, editor: PrismEditor) => void`                                        | Function called after the editor updates.                                                                                                       |
 | `onSelectionChange` | `(selection: InputSelection, value: string, editor: PrismEditor) => void`             | Function called when the editor's selection changes.                                                                                            |
 | `onTokenize`        | `(tokens: TokenStream, language: string, value: string, editor: PrismEditor) => void` | Function called before the tokens are stringified to HTML.                                                                                      |
-| `children`          | `(editor: PrismEditor) => React.ReactNode`                                            | Callback used to render extensions.                                                                                                             |
+| `children`          | `React.ReactNode`                                                                     | Extensions and overlays for the editor.                                                                                                         |
 
 ## Pitfall
 
@@ -111,6 +113,20 @@ function MyEditor() {
   return (
     <Editor language="jsx" value={value} onUpdate={setValue} />
   )
+}
+```
+
+If you need access to the editor's value in your component, use a ref instead:
+
+```tsx
+function MyEditor() {
+  const editorRef = useRef<PrismEditor>()
+
+  useEffect(() => {
+    console.log(editorRef.current?.value)
+  })
+
+  return <Editor ref={editorRef} />
 }
 ```
 
@@ -151,8 +167,10 @@ import { useCursorPosition } from "prism-react-editor/cursor"
 import { useDefaultCommands, useEditHistory } from "prism-react-editor/commands"
 import { useCopyButton } from "prism-react-editor/copy-button"
 import { useOverscroll } from "prism-react-editor/overscroll"
+import { usePrismEditor } from "prism-react-editor/extensions"
 
-function MyExtensions({ editor }: { editor: PrismEditor }) {
+function MyExtensions() {
+  const [editor] = usePrismEditor()
   useBracketMatcher(editor)
   useHighlightBracketPairs(editor)
   useOverscroll(editor)
@@ -166,44 +184,40 @@ function MyExtensions({ editor }: { editor: PrismEditor }) {
   useCopyButton(editor)
   useCursorPosition(editor)
 
-  return <IndentGuides editor={editor} />
+  return <IndentGuides />
 }
 
 function MyEditor() {
   return (
     <Editor language="jsx" value="const foo = 'bar'">
-      {editor => <MyExtensions editor={editor} />}
+      <MyExtensions />
     </Editor>
   )
 }
 ```
 
-**Note:** The extensions will rerender whenever the editor component's props change. The editor object does not change reference between rerenders, so if you memoize the extensions component with `React.memo`, the extensions won't rerender causing potential issues. If you're using the React Compiler, you might need to add the `"use no memo"` directive to your extensions component so the compiler doesn't memoize it.
-
-Lazy loading extensions is also possible for code splitting. It's not recommended to lazy load `useBracketMatcher` and you might want `IndentGuides` to be present on first render. All other extensions will work perfectly fine while lazy loaded.
+Lazy loading extensions is also possible for code splitting. It's not recommended to lazy load `useBracketMatcher` and you might want `IndentGuides` to be present on first render. All other extensions will work perfectly fine when lazy loaded.
 
 ```jsx
 import { lazy, Suspense } from "react"
+import { usePrismEditor } from "prism-react-editor/extensions"
 
 const LazyExtensions = lazy(() => import("./extensions"))
 
-function MyExtensions({ editor }: { editor: PrismEditor }) {
+function MyExtensions() {
+  const [editor] = usePrismEditor()
   useBracketMatcher(editor)
 
-  return <IndentGuides editor={editor} />
+  return <IndentGuides />
 }
 
 function MyEditor() {
   return (
     <Editor language="jsx" value="const foo = 'bar'">
-      {editor => (
-        <>
-          <MyExtensions editor={editor} />
-          <Suspense>
-            <LazyExtensions editor={editor} />
-          </Suspense>
-        </>
-      )}
+      <MyExtensions />
+      <Suspense>
+        <LazyExtensions />
+      </Suspense>
     </Editor>
   )
 }
@@ -214,12 +228,14 @@ function MyEditor() {
 
 If you need to do anything more than adding an `onUpdate` or `onSelectionChange` prop, you should consider creating your own extension.
 
-```tsx
+```jsx
 import { useLayoutEffect, useEffect } from "react"
-import { PrismEditor, Editor } from "prism-react-editor"
+import { Editor } from "prism-react-editor"
 import { BasicSetup } from "prism-react-editor/setups"
+import { usePrismEditor } from "prism-react-editor/extensions"
 
-function MyExtension({ editor }: { editor: PrismEditor }) {
+function MyExtension() {
+  const [editor] = usePrismEditor()
   // Layout effects will run before the editor has mounted
   useLayoutEffect(() => {
     return editor.on("selectionChange", selection => {
@@ -237,7 +253,7 @@ function MyExtension({ editor }: { editor: PrismEditor }) {
   return (
     <>
       <div>My overlay</div>
-      <BasicSetup editor={editor} />
+      <BasicSetup />
     </>
   )
 }
@@ -245,7 +261,7 @@ function MyExtension({ editor }: { editor: PrismEditor }) {
 function MyEditor() {
   return (
     <Editor language="jsx" value="const foo = 'bar'">
-      {editor => <MyExtension editor={editor} />}
+      <MyExtension />
     </Editor>
   )
 }
@@ -253,7 +269,18 @@ function MyEditor() {
 
 ## Editor API
 
-The editor object you can access with the `children` property has many useful properties and methods.
+To access the editor inside an extension, use the `usePrismEditor()` hook:
+
+```tsx
+import { usePrismEditor } from "prism-react-editor/extensions"
+
+function MyExtension() {
+  const [editor, props] = usePrismEditor()
+  // ...
+}
+```
+
+**Note**: `editor` is a `ref` value, so its reference is stable. However, `props` do become stale, but `editor.props` can be used to always get the latest props.
 
 ### Properties
 
@@ -290,6 +317,25 @@ Multiple extensions have an entry on `editor.extensions` allowing you to interac
 - `history: EditHistory`: Allows you to clear the history or navigate it.
 - `folding: ReadOnlyCodeFolding`: Allows access to the full unfolded code and to toggle folded ranges.
 - `autoComplete: AutoComplete`: Allows inserting snippets and starting completion queries programmatically.
+
+### Editor helpers
+
+Using things like `editor.value` or `editor.getSelection()` to render an extension won't cause the extension to rerender when these values change. Instead, use the helpers that store the value or selection in state and subscribe to updates.
+
+```jsx
+import {
+  usePrismEditor,
+  useEditorValue,
+  useEditorSelection
+} from "prism-react-editor/extensions"
+
+function MyExtension() {
+  const [editor, props] = usePrismEditor()
+  const value = useEditorValue(editor)
+  const selection = useEditorSelection(editor)
+  // ...
+}
+```
 
 ## Utilities
 
@@ -330,6 +376,7 @@ This library does not inject any styles onto the webpage, instead you must impor
 - `prism-react-editor/search.css`: styles for the `useSearchWidget()` extension.
 - `prism-react-editor/rtl-layout.css`: adds support for the `rtl` prop.
 - `prism-react-editor/invisibles.css`: styles for the `useShowInvisibles()` extension.
+- `prism-react-editor/cursor.css`: styles for the `useCustomCursor()` extension.
 - `prism-react-editor/autocomplete.css`: styles for the `useAutoComplete()` extension.
 - `prism-react-editor/autocomplete-icons.css`: default icons for the autocompletion tooltip.
 - `prism-react-editor/code-block.css`: additional styles required for [code blocks](#code-blocks).
@@ -393,30 +440,35 @@ import "prism-react-editor/layout.css"
 import "prism-react-editor/code-block.css"
 import "prism-react-editor/themes/github-dark.css"
 
-// External to minimize rerenders
+// Very important for performance to keep this function stable
 const onTokenize = rainbowBrackets()
 
 function MyCodeBlock({ lang, code }: { lang: string, code: string }) {
-  return <CodeBlock
-    language={lang}
-    code={code}
-    onTokenize={onTokenize}
-  >
-    {(codeBlock, props) => (
-      <>
-        <HoverDescriptions
-          callback={(types, language, text, element) => {
-            if (types.includes("string")) return ["This is a string token."]
-          }}
-          codeBlock={codeBlock}
-          props={props}
-        />
-        <CopyButton codeBlock={codeBlock} props={props} />
-        <HighlightTagPairsOnHover codeBlock={codeBlock} props={props} />
-        <HighlightBracketPairsOnHover codeBlock={codeBlock} props={props} />
-      </>
-    )}
-  </CodeBlock>
+  return (
+    <CodeBlock language={lang} code={code} onTokenize={onTokenize}>
+      <HoverDescriptions
+        callback={(types, language, text, element) => {
+          if (types.includes("string")) return ["This is a string token."]
+        }}
+      />
+      <CopyButton />
+      <HighlightTagPairsOnHover />
+      <HighlightBracketPairsOnHover />
+    </CodeBlock>
+  )
+}
+```
+
+### Code block extensions
+
+Just like with editors, you can also pass extensions to code blocks that modify them. To access the code block and its props from an extension, use the `usePrismCodeBlock()` hook:
+
+```jsx
+import { usePrismCodeBlock } from "prism-react-editor/code-blocks"
+
+function MyCodeBlockExtension() {
+  const [codeBlock, props] = usePrismCodeBlock()
+  // ...
 }
 ```
 
