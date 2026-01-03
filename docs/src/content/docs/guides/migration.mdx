@@ -1,0 +1,154 @@
+---
+title: Migration
+description: Learn how to migrate to newer versions of Prism code editor.
+next:
+  link: /markdown-plugins/getting-started
+  label: Markdown plugins
+---
+
+import MountCodeBlocks from "../../../components/CodeBlockMount.astro"
+import "../../../css/editor-theme.css"
+import { Aside } from "@astrojs/starlight/components"
+
+<MountCodeBlocks />
+
+## From v4.0
+
+Prism code editor v5.0 focused on cleaning up some APIs for advanced usage and normalizing CSS variable names. For anyone using setups, v5.0 will be a drop-in replacement. For advanced users, the migration should be trivial when following this migration guide.
+
+### CSS variables
+
+Many CSS variable names were changed in v5.0. To migrate, perform a controlled search and replace on your project. Follow the table below from top to bottom.
+
+
+| Old variable name              | New variable name            |
+| ------------------------------ | ---------------------------- |
+| `--editor__line-number`        | `--pce-line-number`          |
+| `--editor__bg-highlight`       | `--pce-bg-highlight`         |
+| `--editor__border-highlight`   | `--pce-border-highlight`     |
+| `--editor__bg-selection-match` | `--pce-selection-match`      |
+| `--editor__bg-scrollbar`       | `--pce-scrollbar`            |
+| `--editor__bg-fold`            | `--pce-bg-fold`              |
+| `--editor__bg`                 | `--pce-bg`                   |
+| `--bg-guide-indent`            | `--pce-guide-indent`         |
+| `--widget__bg-input`           | `--pce-widget-bg-input`      |
+| `--widget__bg-active`          | `--pce-widget-bg-active`     |
+| `--widget__bg-hover`           | `--pce-widget-bg-hover`      |
+| `--widget__bg-error`           | `--pce-widget-bg-error`      |
+| `--widget__bg`                 | `--pce-widget-bg`            |
+| `--widget__border`             | `--pce-widget-border`        |
+| `--widget__color-active`       | `--pce-widget-color-active`  |
+| `--widget__color-options`      | `--pce-widget-color-options` |
+| `--widget__color`              | `--pce-widget-color`         |
+| `--widget__focus-ring`         | `--pce-widget-focus`         |
+| `--widget__error-ring`         | `--pce-widget-error`         |
+| `--search__bg-find`            | `--pce-search-match`         |
+
+### Line numbers
+
+Line numbers now use CSS counters for better performance. Anyone relying on the `data-line` attributes will need to migrate. If migrating to CSS counters isn't possible, add the following `update` handler and CSS:
+
+```js editor="false"
+editor.on("update", () => {
+  const lines = editor.lines
+  for (let i = 1; i < lines.length; i++) {
+    lines[i].setAttribute("data-line", `${i}`)
+  }
+})
+```
+
+```css editor="false"
+div.show-line-numbers .pce-line::before {
+  content: attr(data-line);
+}
+```
+
+### `showInvisibles`
+
+The [`showInvisibles(){:js}`](/api-reference/search/f-showinvisibles/) extension has had its `alwaysShow` parameter removed. This means it can no longer be used to highlight all invisibles by passing `true`. For this, use [`tokenizeInvisibles(){:js}`](https://prism-code-editor.netlify.app/api-reference/prism/utils/f-tokenizeinvisibles/) instead.
+
+```js editor="false" ins={2,8} del={1,7}
+import { showInvisibles } from "prism-code-editor/search"
+import { tokenizeInvisibles } from "prism-code-editor/prism/utils"
+
+const editor = createEditor(
+  "#editor",
+  { /* ... */ },
+  showInvisibles(true),
+  editor => editor.on("tokenize", tokenizeInvisibles),
+)
+```
+
+<Aside>
+  `showInvisibles(){:js}` should still be used if you're not passing `true`.
+</Aside>
+
+### Event options
+
+The editor is now passed as an additional argument to event options instead of through `this`. This does not apply to listeners added by the `editor.on(){:js}` method.
+
+```js editor="false" ins={3} del={2}
+const options = {
+  onUpdate(value) { console.log(this.container) }
+  onUpdate(value, editor) { console.log(editor.container) }
+}
+```
+
+### Removal of `greedy` flag
+
+In v4.0, for greedy matching to be enabled for a token, both the `greedy` flag on the token and the `global` flag on the pattern needed to be present. Now, greedy matching is controlled solely by the regex `global` flag. The `greedy` property can therefore be removed from all tokens in your custom grammars.
+
+<Aside type="caution">
+  If any non-greedy tokens had the `global` flag on the pattern, they will now become greedy. In this case, remove the `global` flag from the pattern.
+</Aside>
+
+## From react-pce v2.0
+
+React-pce v3.0 has many of the same breaking changes as Prism code editor v5.0. The following changes also apply to the React version:
+
+- Changes to CSS variables
+- Migration to CSS counters for line numbers
+- Removal of the `alwaysShow` parameter to `useShowInvisibles(){:js}`
+- Removal of the `greedy` token flag
+
+### Extension API
+
+React-pce v3.0 changed how editors and code blocks are passed to extensions. Now context is used, so they longer needs to be explicitly passed to extensions.
+
+```jsx editor="false" ins={3,8} del={2,7}
+<Editor language="jsx" value="foo">
+  {editor => <BasicSetup editor={editor} />}
+  <BasicSetup />
+</Editor>
+
+<CodeBlock language="jsx" value="foo">
+  {(codeBlock, props) => <CopyButton codeBlock={codeBlock} props={props} />}
+  <CopyButton />
+</CodeBlock>
+```
+
+To access the editor or codeBlock inside an extension, use the `usePrismEditor(){:js}` or  `usePrismCodeBlock(){:js}` hooks:
+
+```jsx editor="false"
+import { usePrismEditor } from "prism-react-editor/extensions"
+import { usePrismCodeBlock } from "prism-react-editor/code-blocks"
+
+function MyExtension() {
+  const [editor, props] = usePrismEditor()
+  // ...
+}
+
+function MyCodeBlockExtension() {
+  const [codeBlock, props] = usePrismCodeBlock()
+  // ...
+}
+```
+
+## From solid-pce v2.0
+
+The following breaking changes also apply to the Solid rewrite.
+
+- Changes to CSS variables
+- Migration to CSS counters for line numbers
+- Removal of the `alwaysShow` parameter to `showInvisibles(){:js}`
+- Removal of `greedy` token flag

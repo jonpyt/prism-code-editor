@@ -119,6 +119,7 @@ export default defineConfig({
 						{ label: "Tooltips", slug: "guides/tooltips" },
 						{ label: "Server-side Rendering", slug: "guides/server-side-rendering" },
 						{ label: "Code Blocks", slug: "guides/code-blocks" },
+						{ label: "Migration", slug: "guides/migration" },
 					],
 				},
 				{
