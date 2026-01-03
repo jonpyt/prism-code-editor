@@ -79,7 +79,13 @@ The helpers from Prism such as [`extend(){:js}`](/api-reference/prism/utils/v-ex
 
 There are multiple incompatibilities with PrismJS you should be aware of if you're want to create your own grammars.
 
-PrismJS automatically adds the global regex flag to the pattern of greedy tokens. This has been removed, so if you're using your own Prism grammars, you might need to add the `g` flag to the greedy tokens.
+### Removal of `greedy` flag
+
+In PrismJS, greedy matching is controlled by a `greedy` flag on the token. Here, it's instead controlled by the `g` flag on the pattern. When copying Prism grammars, be sure to remove the `greedy` flags and instead add the `g` flag to the regex.
+
+### Multiple aliases
+
+Lists of aliases are not supported. To add multiple aliases to a token, separate them with spaces in a single string instead. For example convert `["foo", "bar"]{:js}` to `"foo bar"{:js}`.
 
 ### Symbol properties
 
