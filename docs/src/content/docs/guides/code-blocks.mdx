@@ -1,9 +1,6 @@
 ---
 title: Code Blocks
 description: Learn how to render static code blocks on the server.
-next:
-  link: /markdown-plugins/getting-started
-  label: Markdown plugins
 ---
 
 import CodeBlock from "../../../components/CodeBlockExample.astro"
@@ -57,7 +54,7 @@ When indentation preservation is enabled, wrapped lines get the same indentation
 </p>
 ```
 
-<Aside type="note">
+<Aside>
 	When enabled, tabs are replaced with spaces due to Chrome not rendering tabs properly.
 </Aside>
 
@@ -139,7 +136,7 @@ The second parameter to `addCopyButton(){:js}` can be used to customize the copi
 
 ```js editor="false"
 const codeBlocks = forEachCodeBlock(document, codeBlock => {
-	addCopyButton(codeBlock, omitLines(".deleted"))
+	addCopyButton(codeBlock, omitLines(".del"))
 })
 ```
 
@@ -225,7 +222,7 @@ pre.prism-code-editor:hover .token.string {
 }
 ```
 
-<Aside type="note">
+<Aside>
 	You shouldn't add a margin to `.pce-hover-tooltip{:selector}`. Append a container that gets the margin instead.
 </Aside>
 

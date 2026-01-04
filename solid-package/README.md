@@ -318,11 +318,12 @@ This library does not inject any styles onto the webpage, instead you must impor
 
 - `solid-prism-editor/layout.css`: layout for the editor.
 - `solid-prism-editor/scrollbar.css`: custom scrollbar to desktop Chrome and Safari you can color with `--pce-scrollbar`.
-- `solid-prism-editor/copy-button.css`: styles for the `useCopybutton()` extension.
-- `solid-prism-editor/search.css`: styles for the `useSearchWidget()` extension.
+- `solid-prism-editor/copy-button.css`: styles for the `copybutton()` extension.
+- `solid-prism-editor/search.css`: styles for the `searchWidget()` extension.
 - `solid-prism-editor/rtl-layout.css`: adds support for the `rtl` prop.
-- `solid-prism-editor/invisibles.css`: styles for the `useShowInvisibles()` extension.
-- `solid-prism-editor/autocomplete.css`: styles for the `useAutoComplete()` extension.
+- `solid-prism-editor/invisibles.css`: styles for the `showInvisibles()` extension.
+- `solid-prism-editor/cursor.css`: styles for the `customCursor()` extension.
+- `solid-prism-editor/autocomplete.css`: styles for the `autoComplete()` extension.
 - `solid-prism-editor/autocomplete-icons.css`: default icons for the autocompletion tooltip.
 - `solid-prism-editor/code-block.css`: additional styles required for [code blocks](#code-blocks).
 

@@ -286,17 +286,17 @@ languageMap.whatever = {
 	getComments(editor, position) {
 		// Method called when a user executes a comment toggling command
 		// Useful if a language uses different comment tokens in different contexts
-		// Currently used by JSX so {/* */} is used to toggle comments in JSX contexts
+		// Used by JSX so {/* */} is used to toggle comments in JSX contexts
 	},
 	autoIndent: [
 		// Whether to indent
-		([start], value) => /[([{][^\n)\]}]*$/.test(code.slice(0, start)),
+		([start], value) => /[([{][^\n)\]}]*$/.test(value.slice(0, start)),
 		// Whether to add an extra line
-		([start, end], value) => /\[]|\(\)|{}/.test(code[start - 1] + code[end])
+		([start, end], value) => /\[]|\(\)|{}/.test(value[start - 1] + value[end])
 	],
 	autoCloseTags([start, end, direction], value) {
 		// Function called when the user types ">", intended to auto close tags.
-		// If a string is returned, it will get inserted behind the cursor.
+		// If a string is returned, it will get inserted after the cursor.
 	}
 }
 ```

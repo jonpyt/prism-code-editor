@@ -24,7 +24,7 @@ This library overlays syntax highlighted code over a `<textarea>`. Libraries lik
 - It uses a trimmed Prism's core less than ⅓ the size that no longer relies on global variables.
 - It re-exports Prism's languages that now automatically import their required dependencies and embedded languages are resolved at runtime.
 - It splits the highlighted code into lines. This makes it easy to add line numbers, highlight a line and only update changed lines in the DOM for efficient updates.
-- The core is light as a feather with a wide array of [extensions](#extensions) you can choose from and [multiple events](#events) to listen to.
+- The core is light as a feather with a wide array of extensions you can choose from and multiple events to listen to.
 
 ## Key features
 
@@ -46,7 +46,6 @@ This library overlays syntax highlighted code over a `<textarea>`. Libraries lik
 ## Installation
 
     npm i prism-code-editor
-
 
 If you're not using NPM and a bundler in your project, then you might be interested in this [bundle builder](https://stackblitz.com/edit/pce-bundle-builder) where you can create a customized, minified bundle to use directly.
 
@@ -107,7 +106,9 @@ This library does not support any Prism plugins since Prism hooks have been remo
 
 Some grammars have had small changes, most notably markup tags' grammar. Prism themes will work to style the tokens, but there can be some slight differences.
 
-PrismJS automatically adds the global regex flag to the pattern of greedy tokens. This has been removed, so if you're using your own Prism grammars, you might need to add the global flag to the greedy tokens. 
+In PrismJS, greedy matching is controlled by a `greedy` flag on the token. Here, it's instead controlled by the `g` flag on the pattern. When copying Prism grammars, be sure to remove the `greedy` flags and instead add the `g` flag to the regex.
+
+Lists of aliases are not supported. To add multiple aliases to a token, separate them with spaces in a single string instead. For example convert `["foo", "bar"]` to `"foo bar"`.
 
 ## Credits
 

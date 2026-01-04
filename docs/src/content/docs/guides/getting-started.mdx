@@ -58,17 +58,17 @@ const editor = basicEditor(
 )
 ```
 
-<Aside type="note">
+<Aside>
 	You might want to add `display: grid{:css}` to your container element.
 </Aside>
 
 ## Configuration
 
-The second argument (type [`EditorOptions{:js}`](/api-reference/index/types/editoroptions)) to the setups allows some basic configuration of the created editor. Below is a list of the allowed properties.
+The second argument (type [`EditorOptions{:js}`](/api-reference/index/types/editoroptions)) to the setups allows some basic configuration of the created editor. Options can be altered after creation with the [`editor.setOptions(){:js}`](/api-reference/index/i-prismeditor/#setoptions) method. Below is a list of the allowed properties.
 
 - `language`: Language used for syntax highlighting. If the language doesn't have a registered Prism grammar, syntax highlighting will be disabled. Defaults to `text`.
 - `tabSize`: Tab size used for indentation. Defaults to `2`.
-- `insertSpaces`: Whether the editor should insert spaces for indentation. Defaults to `true`. Requires the `defaultCommands(){:js}` extension to work.
+- `insertSpaces`: Whether the editor should insert spaces for indentation. Defaults to `true`.
 - `lineNumbers`: Whether line numbers should be shown. Defaults to `true`.
 - `readOnly`: Whether the editor should be read only. Defaults to `false`.
 - `wordWrap`: Whether the editor should have word wrap. Defaults to `false`.
