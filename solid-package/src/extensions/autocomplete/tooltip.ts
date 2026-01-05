@@ -9,13 +9,13 @@ import {
 	prevSelection,
 	setSelection,
 } from "../../utils"
-import { Cursor, cursorPosition } from "../cursor"
+import { cursorPosition } from "../cursor"
 import { AutoCompleteConfig, Completion, CompletionContext, CompletionDefinition } from "./types"
 import { searchTemplate } from "../search/search"
 import { updateMatched } from "./utils"
 import { template } from "solid-js/web"
 import { getStyleValue } from "../../utils/other"
-import { createEffect, createRenderEffect, on, onCleanup, untrack } from "solid-js"
+import { createRenderEffect, on, onCleanup } from "solid-js"
 import { TokenStream } from "../../prism"
 import { addTextareaListener, updateNode } from "../../utils/local"
 
@@ -69,7 +69,6 @@ const autoComplete =
 		let pos: number
 		let offset: number
 		let rowHeight: number
-		let cursor: Cursor | undefined
 		let stops: null | number[]
 		let activeStop: number
 		let currentSelection: InputSelection
@@ -185,14 +184,20 @@ const autoComplete =
 				updateStops()
 				currentSelection = getSelection()
 				tabStopsContainer.style.display = ""
+				scrollTabStop()
+			} else {
+				editor.extensions.cursor?.scrollIntoView()
 			}
-			cursor!.scrollIntoView()
+		}
+
+		const scrollTabStop = () => {
+			tabStopsContainer.children[activeStop / 2].scrollIntoView({ block: "nearest" })
 		}
 
 		const moveActiveStop = (offset: number) => {
 			activeStop += offset
 			setSelection(editor, stops![activeStop], stops![activeStop + 1])
-			tabStopsContainer.children[activeStop / 2].scrollIntoView({ block: "nearest" })
+			scrollTabStop()
 		}
 
 		const clearStops = () => {
@@ -212,7 +217,8 @@ const autoComplete =
 			const [start, end, dir] = getSelection()
 			const language = getLanguage(editor, (pos = dir < "f" ? start : end))
 			const definition = map[language]
-			if (definition && (explicit || start == end) && !props.readOnly) {
+			const cursor = editor.extensions.cursor
+			if (cursor && definition && (explicit || start == end) && !props.readOnly) {
 				const value = editor.value
 				const lineBefore = getLineBefore(value, pos)
 				const before = value.slice(0, pos)
@@ -257,7 +263,7 @@ const autoComplete =
 
 					if (!isOpen) {
 						const { clientHeight, clientWidth } = editor.container
-						const pos = cursor!.getPosition()
+						const pos = cursor.getPosition()
 						const max = Math.max(pos.bottom, pos.top)
 						tooltip.style.width = `min(25em, ${clientWidth}px - var(--padding-left) - 1em)`
 						tooltip.style.maxHeight = `min(17em, ${max}px + .25em, ${clientHeight}px - 2em)`
@@ -339,7 +345,7 @@ const autoComplete =
 					let newActive: number
 
 					if (key == " " && code == 2) {
-						if (cursor) startQuery(true)
+						startQuery(true)
 						preventDefault(e)
 					} else if (isOpen) {
 						if (!code) {
@@ -450,23 +456,16 @@ const autoComplete =
 					currentSelection = selection
 				}
 				shouldOpen = isTyping
-			}),
-		)
-
-		createEffect(() => {
-			const selection = editor.selection()
-			cursor = editor.extensions.cursor
-			if (cursor) {
 				if (stops && (selection[0] < stops[activeStop] || selection[1] > stops[activeStop + 1])) {
 					clearStops()
 				}
 				if (shouldOpen) {
 					shouldOpen = false
-					untrack(startQuery)
+					startQuery()
 				} else hide()
 				isTyping = false
-			}
-		})
+			}),
+		)
 
 		editor.extensions.autoComplete = {
 			startQuery,

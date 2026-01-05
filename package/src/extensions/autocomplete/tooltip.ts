@@ -10,7 +10,7 @@ import {
 	prevSelection,
 	setSelection,
 } from "../../utils/index.js"
-import { Cursor, cursorPosition } from "../cursor/index.js"
+import { cursorPosition } from "../cursor/index.js"
 import {
 	AutoComplete,
 	AutoCompleteConfig,
@@ -71,7 +71,6 @@ const autoComplete = (config: AutoCompleteConfig) => {
 		let pos: number
 		let offset: number
 		let rowHeight: number
-		let cursor: Cursor | undefined
 		let stops: null | number[]
 		let activeStop: number
 		let currentSelection: InputSelection
@@ -189,14 +188,20 @@ const autoComplete = (config: AutoCompleteConfig) => {
 				prevLength = editor.value.length
 				updateStops()
 				currentSelection = getSelection()
+				scrollTabStop()
+			} else {
+				editor.extensions.cursor?.scrollIntoView()
 			}
-			cursor!.scrollIntoView()
 		})
+
+		const scrollTabStop = () => {
+			tabStopsContainer.children[activeStop / 2].scrollIntoView({ block: "nearest" })
+		}
 
 		const moveActiveStop = (offset: number) => {
 			activeStop += offset
 			setSelection(editor, stops![activeStop], stops![activeStop + 1])
-			tabStopsContainer.children[activeStop / 2].scrollIntoView({ block: "nearest" })
+			scrollTabStop()
 		}
 
 		const clearStops = () => {
@@ -216,7 +221,8 @@ const autoComplete = (config: AutoCompleteConfig) => {
 			const [start, end, dir] = getSelection()
 			const language = getLanguage(editor, (pos = dir < "f" ? start : end))
 			const definition = map[language]
-			if (definition && (explicit || start == end) && !options.readOnly) {
+			const cursor = editor.extensions.cursor
+			if (cursor && definition && (explicit || start == end) && !options.readOnly) {
 				const value = editor.value
 				const lineBefore = getLineBefore(value, pos)
 				const before = value.slice(0, pos)
@@ -261,7 +267,7 @@ const autoComplete = (config: AutoCompleteConfig) => {
 
 					if (!isOpen) {
 						const { clientHeight, clientWidth } = editor.container
-						const pos = cursor!.getPosition()
+						const pos = cursor.getPosition()
 						const max = Math.max(pos.bottom, pos.top)
 						tooltip.style.width = `min(25em, ${clientWidth}px - var(--padding-left) - 1em)`
 						tooltip.style.maxHeight = `min(17em, ${max}px + .25em, ${clientHeight}px - 2em)`
@@ -279,22 +285,6 @@ const autoComplete = (config: AutoCompleteConfig) => {
 				} else hide()
 			} else hide()
 		})
-
-		const addSelectionHandler = () => {
-			if (!cursor && (cursor = editor.extensions.cursor)) {
-				// Must be added after the cursor's selectionChange handler
-				editor.on("selectionChange", selection => {
-					if (stops && (selection[0] < stops[activeStop] || selection[1] > stops[activeStop + 1])) {
-						clearStops()
-					}
-					if (shouldOpen) {
-						shouldOpen = false
-						startQuery()
-					} else hide()
-					isTyping = false
-				})
-			}
-		}
 
 		tabStopsContainer.className = "pce-tabstops"
 		textarea.setAttribute("aria-autocomplete", "list")
@@ -319,8 +309,6 @@ const autoComplete = (config: AutoCompleteConfig) => {
 		})
 
 		editor.on("update", () => {
-			addSelectionHandler()
-
 			if (stops) {
 				let value = editor.value
 				let diff = prevLength - (prevLength = value.length)
@@ -349,6 +337,18 @@ const autoComplete = (config: AutoCompleteConfig) => {
 			}
 			shouldOpen = isTyping
 		})
+
+		editor.on("selectionChange", selection => {
+			if (stops && (selection[0] < stops[activeStop] || selection[1] > stops[activeStop + 1])) {
+				clearStops()
+			}
+			if (shouldOpen) {
+				shouldOpen = false
+				startQuery()
+			} else hide()
+			isTyping = false
+		})
+
 		addListener(textarea, "mousedown", () => {
 			if (stops) {
 				setTimeout(() => {
@@ -410,8 +410,7 @@ const autoComplete = (config: AutoCompleteConfig) => {
 				let newActive: number
 
 				if (key == " " && code == 2) {
-					addSelectionHandler()
-					if (cursor) startQuery(true)
+					startQuery(true)
 					preventDefault(e)
 				} else if (isOpen) {
 					if (!code) {

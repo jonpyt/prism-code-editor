@@ -10,7 +10,7 @@ import {
 	prevSelection,
 	setSelection,
 } from "../../utils"
-import { Cursor, useCursorPosition } from "../cursor"
+import { useCursorPosition } from "../cursor"
 import { AutoCompleteConfig, Completion, CompletionContext, CompletionDefinition } from "./types"
 import { searchTemplate } from "../search/search"
 import { updateMatched } from "./utils"
@@ -75,7 +75,6 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 		let pos: number
 		let offset: number
 		let rowHeight: number
-		let cursor: Cursor | undefined
 		let stops: null | number[]
 		let activeStop: number
 		let currentSelection: InputSelection
@@ -188,14 +187,20 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 				prevLength = editor.value.length
 				updateStops()
 				currentSelection = getSelection()
+				scrollTabStop()
+			} else {
+				editor.extensions.cursor?.scrollIntoView()
 			}
-			cursor!.scrollIntoView()
+		}
+
+		const scrollTabStop = () => {
+			tabStopsContainer.children[activeStop / 2].scrollIntoView({ block: "nearest" })
 		}
 
 		const moveActiveStop = (offset: number) => {
 			activeStop += offset
 			setSelection(editor, stops![activeStop], stops![activeStop + 1])
-			tabStopsContainer.children[activeStop / 2].scrollIntoView({ block: "nearest" })
+			scrollTabStop()
 		}
 
 		const clearStops = () => {
@@ -215,7 +220,8 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 			const [start, end, dir] = getSelection()
 			const language = getLanguage(editor, (pos = dir < "f" ? start : end))
 			const definition = map[language]
-			if (definition && (explicit || start == end) && !editor.props.readOnly) {
+			const cursor = editor.extensions.cursor
+			if (cursor && definition && (explicit || start == end) && !editor.props.readOnly) {
 				const value = editor.value
 				const lineBefore = getLineBefore(value, pos)
 				const before = value.slice(0, pos)
@@ -260,7 +266,7 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 
 					if (!isOpen) {
 						const { clientHeight, clientWidth } = editor.container!
-						const pos = cursor!.getPosition()
+						const pos = cursor.getPosition()
 						const max = Math.max(pos.bottom, pos.top)
 						tooltip.style.width = `min(25em, ${clientWidth}px - var(--padding-left) - 1em)`
 						tooltip.style.maxHeight = `min(17em, ${max}px + .25em, ${clientHeight}px - 2em)`
@@ -277,27 +283,6 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 					updateActive()
 				} else hide()
 			} else hide()
-		}
-
-		const addSelectionHandler = () => {
-			if (!cursor && (cursor = editor.extensions.cursor)) {
-				// Must be added after the cursor's selectionChange handler
-				cleanUps.push(
-					editor.on("selectionChange", selection => {
-						if (
-							stops &&
-							(selection[0] < stops[activeStop] || selection[1] > stops[activeStop + 1])
-						) {
-							clearStops()
-						}
-						if (shouldOpen) {
-							shouldOpen = false
-							startQuery()
-						} else hide()
-						isTyping = false
-					}),
-				)
-			}
 		}
 
 		const cleanUps = [
@@ -363,8 +348,7 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 					let newActive: number
 
 					if (key == " " && code == 2) {
-						addSelectionHandler()
-						if (cursor) startQuery(true)
+						startQuery(true)
 						preventDefault(e)
 					} else if (!code && isOpen) {
 						if (/^Arrow[UD]/.test(key)) {
@@ -417,8 +401,6 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 				true,
 			),
 			editor.on("update", () => {
-				addSelectionHandler()
-
 				if (stops) {
 					let value = editor.value
 					let diff = prevLength - (prevLength = value.length)
@@ -446,6 +428,16 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 					currentSelection = getSelection()
 				}
 				shouldOpen = isTyping
+			}),
+			editor.on("selectionChange", selection => {
+				if (stops && (selection[0] < stops[activeStop] || selection[1] > stops[activeStop + 1])) {
+					clearStops()
+				}
+				if (shouldOpen) {
+					shouldOpen = false
+					startQuery()
+				} else hide()
+				isTyping = false
 			}),
 			() => {
 				textarea.removeAttribute("aria-autocomplete")

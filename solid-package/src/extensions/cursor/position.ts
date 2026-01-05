@@ -1,5 +1,5 @@
 import { Extension } from "../../types"
-import { onCleanup, createComputed } from "solid-js"
+import { onCleanup } from "solid-js"
 import { getLineBefore } from "../../utils"
 import {
 	addTextareaListener,
@@ -41,25 +41,25 @@ export const cursorPosition = (): Extension => editor => {
 	const container = cursorTemplate() as HTMLDivElement
 	const [before, span] = container.childNodes as unknown as [Text, HTMLSpanElement]
 	const [cursor, after] = span.childNodes as unknown as [HTMLSpanElement, Text]
-	const scrollIntoView = () => scrollToEl(editor, cursor)
+	const scrollIntoView = () => {
+		update()
+		scrollToEl(editor, cursor)
+	}
 
 	const remove = addTextareaListener(editor, "input", e => {
 		if (/history/.test((e as InputEvent).inputType)) scrollIntoView()
 	})
 
-	createComputed(() => {
-		const selection = editor.selection()
+	const update = () => {
+		const selection = editor.getSelection()
 		const value = editor.value
 		const position = selection[selection[2] < "f" ? 0 : 1]
-		const index = editor.activeLine
-		const activeLine = editor.lines[index]
+		const activeLine = editor.lines[editor.activeLine]
 
-		if (index) {
-			updateNode(before, getLineBefore(value, position))
-			updateNode(after, value.slice(position, getLineEnd(value, position)) + "\n")
-			if (container.parentNode != activeLine) activeLine.prepend(container)
-		}
-	})
+		updateNode(before, getLineBefore(value, position))
+		updateNode(after, value.slice(position, getLineEnd(value, position)) + "\n")
+		if (container.parentNode != activeLine) activeLine.prepend(container)
+	}
 
 	onCleanup(() => {
 		delete editor.extensions.cursor
@@ -69,6 +69,9 @@ export const cursorPosition = (): Extension => editor => {
 
 	editor.extensions.cursor = {
 		scrollIntoView,
-		getPosition: () => getPosition(editor, cursor),
+		getPosition: () => {
+			update()
+			return getPosition(editor, cursor)
+		},
 	}
 }

@@ -36,7 +36,8 @@ export const useCursorPosition = (editor: PrismEditor) => {
 		const cursorContainer = cursorTemplate()
 		const [before, span] = <[Text, HTMLSpanElement]>(<unknown>cursorContainer.childNodes)
 		const [cursor, after] = <[HTMLSpanElement, Text]>(<unknown>span.childNodes)
-		const selectionChange = (selection = editor.getSelection()) => {
+		const update = () => {
+			const selection = editor.getSelection()
 			const value = editor.value
 			const activeLine = editor.lines![editor.activeLine]
 			const position = selection[selection[2] < "f" ? 0 : 1]
@@ -45,9 +46,11 @@ export const useCursorPosition = (editor: PrismEditor) => {
 			updateNode(after, value.slice(position, getLineEnd(value, position)) + "\n")
 			if (cursorContainer.parentNode != activeLine) activeLine.prepend(cursorContainer)
 		}
-		const scrollIntoView = () => scrollToEl(editor, cursor)
+		const scrollIntoView = () => {
+			update()
+			scrollToEl(editor, cursor)
+		}
 
-		const cleanup1 = editor.on("selectionChange", selectionChange)
 		const cleanup2 = addTextareaListener(editor, "input", e => {
 			if (/history/.test((<InputEvent>e).inputType)) scrollIntoView()
 		})
@@ -55,14 +58,13 @@ export const useCursorPosition = (editor: PrismEditor) => {
 		editor.extensions.cursor = {
 			scrollIntoView,
 			getPosition: () => {
-				selectionChange()
+				update()
 				return getPosition(editor, cursor)
 			},
 		}
 
 		return () => {
 			delete editor.extensions.cursor
-			cleanup1()
 			cleanup2()
 			cursor.remove()
 		}

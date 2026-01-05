@@ -44,7 +44,8 @@ export const cursorPosition = () => {
 	const cursorContainer = cursorTemplate()
 	const [before, span] = <[Text, HTMLSpanElement]>(<unknown>cursorContainer.childNodes)
 	const [cursor, after] = <[HTMLSpanElement, Text]>(<unknown>span.childNodes)
-	const selectionChange = (selection = cEditor.getSelection()) => {
+	const update = () => {
+		const selection = cEditor.getSelection()
 		const value = cEditor.value
 		const activeLine = cEditor.lines[cEditor.activeLine]
 		const position = selection[selection[2] < "f" ? 0 : 1]
@@ -53,22 +54,22 @@ export const cursorPosition = () => {
 		updateNode(after, value.slice(position, getLineEnd(value, position)) + "\n")
 		if (cursorContainer.parentNode != activeLine) activeLine.prepend(cursorContainer)
 	}
-	const scrollIntoView = () => scrollToEl(cEditor, cursor)
+	const scrollIntoView = () => {
+		update()
+		scrollToEl(cEditor, cursor)
+	}
 
 	const self: Cursor = editor => {
-		editor.on("selectionChange", selectionChange)
 		cEditor = editor
 
 		editor.extensions.cursor = self
 		addTextareaListener(editor, "input", e => {
 			if (/history/.test((<InputEvent>e).inputType)) scrollIntoView()
 		})
-
-		if (editor.activeLine) selectionChange()
 	}
 
 	self.getPosition = () => {
-		selectionChange()
+		update()
 		return getPosition(cEditor, cursor)
 	}
 
