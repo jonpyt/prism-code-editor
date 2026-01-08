@@ -114,12 +114,15 @@ const addHoverDescriptions = (
 
 /**
  * Highlights bracket pairs when hovered. Clicking on a pair keeps it highlighted.
- * Clicking anywhere inside the code block removes the highlight.
+ * Clicking anywhere inside the container removes the highlight.
  *
  * This will match all brackets under the container together. If there are multiple code
  * blocks underneath, then brackets from different code blocks might get matched together.
  *
- * @param container Code block to add bracket pair highlighting to.
+ * Note that there should not be any editors inside your container as this can cause
+ * issues.
+ *
+ * @param container Container to add bracket pair highlighting to.
  * @param pairs Which characters to match together. The opening character must be followed
  * by the corresponding closing character. Defaults to "()[]{}".
  */
@@ -159,6 +162,9 @@ const highlightBracketPairsOnHover = (
  *
  * This will match all tags under the container together. If there are multiple code
  * blocks underneath, then tags from different code blocks might get matched together.
+ *
+ * Note that there should not be any editors inside your container as this can cause
+ * issues.
  *
  * @param container Container to add tag pair highlighting to.
  */
@@ -225,7 +231,7 @@ const highlightPairsOnHover = <T>(
 ) => {
 	let cache: WeakMap<Element, Element>
 	const active: [Element[], Element[]] = [[], []]
-	const element = (container as PrismCodeBlock).wrapper || container
+	const element = container instanceof Node ? container : container.wrapper
 	const toggleHighlight = (index: 0 | 1, add?: boolean) =>
 		active[index].forEach(el => el.classList.toggle(highlightClass, !!add))
 

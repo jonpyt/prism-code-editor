@@ -27,9 +27,9 @@ export interface SearchAPI {
 	 * Unhides the search container and highlights all matches of the specified string in the editor.
 	 * @param str String to search for.
 	 * @param caseSensitive Whether or not the search is case sensetive.
-	 * @param wholeWord Whether or not matches must be surrounded by word boundries.
+	 * @param wholeWord Whether or not matches must be surrounded by word boundaries.
 	 * @param useRegExp If true, special characters won't be escaped when creating the RegExp.
-	 * @param selection Boundries to search between. If excluded, all the code is searched.
+	 * @param selection Boundaries to search between. If excluded, all the code is searched.
 	 * @param filter A function called for each match with the start and end positions of the match.
 	 * If it returns false, the match won't be included.
 	 * @param wholeWordBoundry Pattern controlling the behavior of whole word search. Best left
@@ -92,7 +92,7 @@ const useEditorSearch = (editor: PrismEditor, className?: string, zIndex?: numbe
 				let i = 0
 
 				try {
-					regex = RegExp(str, `gum${caseSensitive ? "" : "i"}`)
+					regex = RegExp(str, caseSensitive ? "gum" : "gumi")
 					while ((match = regex.exec(searchStr))) {
 						l = match[0].length
 						index = match.index + offset

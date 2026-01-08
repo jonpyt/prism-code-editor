@@ -2,7 +2,6 @@ pre.prism-code-editor {
 	tab-size: var(--tab-size);
 	-webkit-user-select: auto;
 	user-select: auto;
-	--_sp: 0;
 }
 
 code.pce-wrapper {

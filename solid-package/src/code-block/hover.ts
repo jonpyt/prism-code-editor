@@ -20,7 +20,7 @@ const createTooltip = /* @__PURE__ */ template(
 )
 
 const getLanguageAt = (token: Element) => {
-	return /language-(\S*)/.exec(token.closest("[class*=language-")!.className)![1]
+	return /language-(\S*)/.exec(token.closest("[class*=language-]")!.className)![1]
 }
 
 /**
