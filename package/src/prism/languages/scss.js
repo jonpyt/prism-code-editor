@@ -3,6 +3,8 @@ import { extend, insertBefore } from '../utils/language.js';
 import { boolean, clikeComment } from '../utils/patterns.js';
 import './css.js';
 
+var variable = /\$[-\w]+|#\{\$[-\w]+\}/;
+
 var scss = languages.scss = extend('css', {
 	'comment': clikeComment,
 	'atrule': {
@@ -30,13 +32,13 @@ var scss = languages.scss = extend('css', {
 				alias: 'important'
 			},
 			'placeholder': /%[-\w]+/,
-			'variable': /\$[-\w]+|#\{\$[-\w]+\}/
+			'variable': variable
 		}
 	},
 	'property': {
 		pattern: /(?:[-\w]|\$[-\w]|#\{\$[-\w]+\})+(?=\s*:)/,
 		inside: {
-			'variable': /\$[-\w]+|#\{\$[-\w]+\}/
+			'variable': variable
 		}
 	}
 });
@@ -53,7 +55,7 @@ insertBefore(scss, 'atrule', {
 
 insertBefore(scss, 'important', {
 	// var and interpolated vars
-	'variable': /\$[-\w]+|#\{\$[-\w]+\}/
+	'variable': variable
 });
 
 insertBefore(scss, 'function', {

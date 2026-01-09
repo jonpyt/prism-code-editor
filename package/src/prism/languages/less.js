@@ -28,11 +28,6 @@ insertBefore(
 				'variable': /@+[\w-]+/
 			}
 		},
-
-		'property': /(?:@\{[\w-]+\}|[\w-])+(?:\+_?)?(?=\s*:)/,
-		'operator': /[/*+-]/
-	}),
-	'property', {
 		'variable': [
 			// Variable declaration (the colon must be consumed!)
 			{
@@ -45,6 +40,10 @@ insertBefore(
 			// Variable usage
 			/@@?[\w-]+/
 		],
+		'property': /(?:@\{[\w-]+\}|[\w-])+(?:\+_?)?(?=\s*:)/,
+		'operator': /[/*+-]/
+	}),
+	'property', {
 		'mixin-usage': {
 			pattern: /([{;]\s*)[.#](?!\d)[\w-].*?(?=[(;])/,
 			lookbehind: true,

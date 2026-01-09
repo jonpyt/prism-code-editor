@@ -1,6 +1,6 @@
 import { languages, rest } from '../core.js';
 
-var string = /(?:"(?:\\[\s\S]|[^\\\n"])*"|'(?:\\[\s\S]|[^\\\n'])*')/g;
+var string = /"(?:\\[\s\S]|[^\\\n"])*"|'(?:\\[\s\S]|[^\\\n'])*'/g;
 var stringSrc = string.source;
 
 var atruleInside = {
@@ -30,7 +30,7 @@ atruleInside[rest] = languages.css = {
 			'function': /^url/i,
 			'punctuation': /^\(|\)$/,
 			'string': {
-				pattern: RegExp('^' + stringSrc + '$'),
+				pattern: /^["'][\s\S]+/,
 				alias: 'url'
 			}
 		}
@@ -40,8 +40,12 @@ atruleInside[rest] = languages.css = {
 		lookbehind: true
 	},
 	'string': string,
+	'variable': {
+		pattern: /(^|[^-\w\xa0-\uffff])--(?:(?!\s)[-\w\xa0-\uffff])*/,
+		lookbehind: true
+	},
 	'property': {
-		pattern: /(^|[^-\w\xa0-\uffff])(?!\d)(?:(?!\s)[-\w\xa0-\uffff])+(?=\s*:)/i,
+		pattern: /(^|[^-\w\xa0-\uffff])(?!\d)(?:(?!\s)[-\w\xa0-\uffff])+(?=\s*:)/,
 		lookbehind: true
 	},
 	'important': /!important\b/i,
