@@ -21,7 +21,7 @@ var tokenizeStrings = (tokens, tokenize) => {
 				tokenizeStrings(content, tokenize);
 			} else {
 				stream = tokenize(content);
-				if (stream[0] != content) token.content = stream;
+				if (stream[0] !== content) token.content = stream;
 			}
 			result.push(token)
 		} else {
