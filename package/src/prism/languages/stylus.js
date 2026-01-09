@@ -1,16 +1,6 @@
 import { languages, rest } from '../core.js';
 import { boolean, clikeComment, clikePunctuation, clikeString } from '../utils/patterns.js';
 
-var unit = {
-	pattern: /(\b\d+)(?:%|[a-z]+)/,
-	lookbehind: true
-};
-// 123 -123 .123 -.123 12.3 -12.3
-var number = {
-	pattern: /(^|[^\w.-])-?(?:\d+(?:\.\d+)?|\.\d+)/,
-	lookbehind: true
-};
-
 var interpolation = {
 	pattern: /\{[^\n}:]*\}/,
 	alias: 'variable',
@@ -41,25 +31,20 @@ var inside = interpolation.inside[rest] = func.inside[rest] = {
 		lookbehind: true
 	},
 	'hexcode': /#[a-f\d]{3,6}/i,
-	'color': [
-		/\b(?:(?:alice|cadet|cornflower|darksky|dodger|midnight|powder|royal|sky|steel)blue|antiquewhite|aqua|aquamarine|azure|beige|bisque|black|blanchedalmond|blueviolet|brown|burlywood|chartreuse|chocolate|coral|cornsilk|crimson|(?:dark)?(?:blue|cyan|goldenrod|gr[ae]y|green|khaki|magenta|olivegreen|orange|orchid|red|salmon|seagreen|slateblue|slategr[ae]y|turquoise|violet)|deeppink|dimgr[ae]y|firebrick|floralwhite|(?:forest|lawn|lime|pale|spring)green|fuchsia|gainsboro|ghostwhite|gold|greenyellow|honeydew|hotpink|indianred|indigo|ivory|lavender|lavenderblush|lemonchiffon|light(?:blue|coral|cyan|goldenrodyellow|gr[ae]y|green|pink|salmon|seagreen|skyblue|slategr[ae]y|steelblue|yellow)|lime|linen|maroon|medium(?:aquamarine|blue|orchid|purple|seagreen|slateblue|springgreen|turquoise|violetred)|mintcream|mistyrose|moccasin|navajowhite|navy|oldlace|olive|olivedrab|orangered|palegoldenrod|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|purple|rosybrown|saddlebrown|sandybrown|seashell|sienna|silver|snow|tan|teal|thistle|tomato|transparent|wheat|white|whitesmoke|yellow|yellowgreen)\b/i,
-		{
-			pattern: /\b(?:hsl|rgb)\(\s*\d{1,3}\s*,\s*\d{1,3}%?\s*,\s*\d{1,3}%?\s*\)\B|\b(?:hsl|rgb)a\(\s*\d{1,3}\s*,\s*\d{1,3}%?\s*,\s*\d{1,3}%?\s*,\s*(?:0|0?\.\d+|1)\s*\)\B/i,
-			inside: {
-				'unit': unit,
-				'number': number,
-				'function': /[\w-]+(?=\()/,
-				'punctuation': /[(),]/
-			}
-		}
-	],
 	'entity': /\\[a-f\d]{1,8}/i,
-	'unit': unit,
+	'unit': {
+		pattern: /(\b\d+)(?:%|[a-z]+)/,
+		lookbehind: true
+	},
 	'boolean': boolean,
 	// We want non-word chars around "-" because it is
 	// accepted in property names.
 	'operator': /~|\*\*|[?%!=<>/*+]=?|[-:]=|\.{2,3}|&&|\|\||\B-\B|\b(?:and|in|is(?: a| defined| not|nt)?|not|or)\b/,
-	'number': number,
+	// 123 -123 .123 -.123 12.3 -12.3
+	'number': {
+		pattern: /(^|[^\w.-])-?(?:\d+(?:\.\d+)?|\.\d+)/,
+		lookbehind: true
+	},
 	'punctuation': clikePunctuation
 };
 

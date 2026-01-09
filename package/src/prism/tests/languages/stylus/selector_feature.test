@@ -32,7 +32,7 @@ div    // comment
 	]],
 	["property-declaration", [
 		["property", ["color"]],
-		["color", "red"]
+		" red"
 	]],
 
 	["selector", [
@@ -41,21 +41,21 @@ div    // comment
 	]],
 	["property-declaration", [
 		["property", ["color"]],
-		["color", "red"]
+		" red"
 	]],
 
 	["selector", ["#foo"]],
 	["selector", [".bar::before"]],
 	["property-declaration", [
 		["property", ["color"]],
-		["color", "red"]
+		" red"
 	]],
 
 	["selector", ["#foo"]],
 	["selector", [".bar "]], ["punctuation", "{"],
 	["property-declaration", [
 		["property", ["color"]],
-		["color", "red"]
+		" red"
 	]],
 	["punctuation", "}"],
 
@@ -74,7 +74,7 @@ div    // comment
 	]],
 	["property-declaration", [
 		["property", ["color"]],
-		["color", "red"]
+		" red"
 	]],
 
 	["selector", [

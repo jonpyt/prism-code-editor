@@ -7,7 +7,7 @@ color: red !important
 	["property-declaration", [
 		["property", ["color"]],
 		["punctuation", ":"],
-		["color",  "red"],
+		" red ",
 		["important", "!important"]
 	]],
 	["atrule-declaration", [

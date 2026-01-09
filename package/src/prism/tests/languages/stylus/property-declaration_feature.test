@@ -29,12 +29,12 @@ comment
 	["property-declaration", [
 		["property", ["color"]],
 		["punctuation", ":"],
-		["color", "red"]
+		" red"
 	]],
 	["property-declaration", [
 		["property", ["background"]],
 		["punctuation", ":"],
-		["color", "blue"],
+		" blue",
 		["punctuation", ";"]
 	]],
 	["property-declaration", [
