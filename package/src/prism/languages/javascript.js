@@ -1,9 +1,11 @@
 import { languages, rest } from '../core.js';
 import { boolean, clikeComment, clikeString, dotPunctuation } from '../utils/patterns.js';
 
-var js = {};
+var maybeClassName = {
+	'maybe-class-name': /^[A-Z].*/
+};
 
-languages.js = languages.javascript = Object.assign(js, {
+languages.js = languages.javascript = {
 	'doc-comment': {
 		pattern: /\/\*\*(?!\/)[\s\S]*?(?:\*\/|$)/g,
 		alias: 'comment',
@@ -29,7 +31,7 @@ languages.js = languages.javascript = Object.assign(js, {
 						pattern: /^..|\}$/g,
 						alias: 'punctuation'
 					},
-					[rest]: js
+					[rest]: 'js'
 				}
 			},
 			'string': /[\s\S]+/
@@ -69,9 +71,7 @@ languages.js = languages.javascript = Object.assign(js, {
 	'function-variable': {
 		pattern: /#?(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+(?=\s*[=:]\s*(?:async\s*)?(?:\bfunction\b|(?:\((?:[^()]|\([^)]*\))*\)|(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+)\s*=>))/,
 		alias: 'function',
-		inside: {
-			'maybe-class-name': /^[A-Z].*/
-		}
+		inside: maybeClassName
 	},
 	'parameter': [
 		/(function(?:\s+(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+)?\s*\(\s*)(?!\s)(?:[^()\s]|\s+(?![\s)])|\([^()]*\))+(?=\s*\))/,
@@ -81,7 +81,7 @@ languages.js = languages.javascript = Object.assign(js, {
 	].map(pattern => ({
 		pattern,
 		lookbehind: true,
-		inside: js
+		inside: 'js'
 	})),
 	'constant': /\b[A-Z](?:[A-Z_]|\dx?)*\b/,
 	'keyword': [
@@ -104,9 +104,7 @@ languages.js = languages.javascript = Object.assign(js, {
 	// Allow for all non-ASCII characters (See http://stackoverflow.com/a/2008444)
 	'function': {
 		pattern: /#?(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+(?=\s*(?:\.\s*(?:apply|bind|call)\s*)?\()/,
-		inside: {
-			'maybe-class-name': /^[A-Z].*/
-		}
+		inside: maybeClassName
 	},
 	'number': {
 		pattern: /(^|[^$\w])(?:NaN|Infinity|0[bB][01]+(?:_[01]+)*n?|0[oO][0-7]+(?:_[0-7]+)*n?|0[xX][a-fA-F\d]+(?:_[a-fA-F\d]+)*n?|\d+(?:_\d+)*n|(?:\d+(?:_\d+)*(?:\.(?:\d+(?:_\d+)*)?)?|\.\d+(?:_\d+)*)(?:[Ee][+-]?\d+(?:_\d+)*)?)(?![$\w])/,
@@ -127,13 +125,11 @@ languages.js = languages.javascript = Object.assign(js, {
 	'property-access': {
 		pattern: /(\.\s*)#?(?!\d)(?:(?!\s)[$\w\xa0-\uffff])+/,
 		lookbehind: true,
-		inside: {
-			'maybe-class-name': /^[A-Z].*/
-		}
+		inside: maybeClassName
 	},
 	'maybe-class-name': {
 		pattern: /(^|[^$\w\xa0-\uffff])[A-Z][$\w\xa0-\uffff]+/,
 		lookbehind: true
 	},
 	'punctuation': /\?\.|[()[\]{}.,:;]/
-});
+};

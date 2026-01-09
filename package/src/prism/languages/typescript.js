@@ -28,7 +28,7 @@ var typeInside = className.inside = Object.assign({}, ts);
 delete typeInside['class-name'];
 delete typeInside['maybe-class-name'];
 
-insertBefore(ts, 'function', {
+insertBefore(ts, 'constant', {
 	'decorator': {
 		pattern: /@[$\w\xa0-\uffff]+/,
 		inside: {
