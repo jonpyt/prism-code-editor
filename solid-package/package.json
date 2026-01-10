@@ -1,6 +1,6 @@
 {
   "name": "solid-prism-editor",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "type": "module",
   "description": "Lightweight, extensible code editor component for SolidJS apps",
   "main": "./dist/index.js",
@@ -67,7 +67,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.19.17",
-    "prism-code-editor": "^4.1.0",
+    "prism-code-editor": "^5.0.0",
     "solid-devtools": "^0.34.3",
     "solid-js": "^1.9.9",
     "typescript": "^5.9.2",
