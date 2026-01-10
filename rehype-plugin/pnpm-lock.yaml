@@ -22,7 +22,7 @@ importers:
         version: 6.0.1
     devDependencies:
       prism-code-editor:
-        specifier: ^4.1.0
+        specifier: ^5.0.0
         version: link:../package
       rehype-stringify:
         specifier: ^10.0.1
