@@ -21,7 +21,7 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0(vite@6.4.1(@types/node@20.19.17))
       prism-code-editor:
-        specifier: ^4.1.0
+        specifier: ^5.0.0
         version: link:../package
       react:
         specifier: ^19.1.1

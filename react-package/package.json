@@ -1,6 +1,6 @@
 {
   "name": "prism-react-editor",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "type": "module",
   "description": "Lightweight, extensible code editor component for React apps",
   "main": "./dist/index.js",
@@ -72,7 +72,7 @@
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^4.7.0",
-    "prism-code-editor": "^4.1.0",
+    "prism-code-editor": "^5.0.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "typescript": "^5.9.2",
