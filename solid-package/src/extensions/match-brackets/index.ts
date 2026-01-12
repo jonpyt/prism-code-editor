@@ -48,7 +48,7 @@ export const matchBrackets = (rainbowBrackets = true, pairs = "()[]{}"): Extensi
 		const brackets: Bracket[] = []
 		const pairMap: number[] = []
 
-		const matchRecursive = (tokens: TokenStream, position: number, level: number) => {
+		const matchRecursive = (tokens: TokenStream, position: number) => {
 			let token: string | Token
 			let i = 0
 			for (; (token = tokens[i++]); ) {
@@ -57,7 +57,7 @@ export const matchBrackets = (rainbowBrackets = true, pairs = "()[]{}"): Extensi
 					let content = token.content
 
 					if (Array.isArray(content)) {
-						matchRecursive(content, position, sp + level)
+						matchRecursive(content, position)
 					} else if ((token.alias || token.type) == "punctuation") {
 						let bracketType = testBracket(content, pairs, length - 1)
 						let isOpening = bracketType % 2
@@ -77,7 +77,7 @@ export const matchBrackets = (rainbowBrackets = true, pairs = "()[]{}"): Extensi
 									let entry = stack[--i]
 									if (bracketType == entry[1]) {
 										pairMap[(pairMap[bracketIndex] = entry[0])] = bracketIndex
-										brackets[bracketIndex][3] = i + level
+										brackets[bracketIndex][3] = i
 										sp = i
 										i = 0
 									}
@@ -98,7 +98,7 @@ export const matchBrackets = (rainbowBrackets = true, pairs = "()[]{}"): Extensi
 
 		createComputed(() => {
 			pairMap.length = brackets.length = sp = bracketIndex = 0
-			matchRecursive(editor.tokens(), 0, 0)
+			matchRecursive(editor.tokens(), 0)
 			if (rainbowBrackets) {
 				for (let i = 0, bracket: Bracket; (bracket = brackets[i]); ) {
 					let alias = bracket[0].alias
