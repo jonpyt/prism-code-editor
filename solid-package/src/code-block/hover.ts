@@ -181,10 +181,10 @@ const highlightTagPairsOnHover = (): CodeBlockOverlay => (codeBlock, props) => {
 		stack: [Element, string][],
 		map: WeakMap<Element, Element>,
 	) => {
-		const tagName = nameEl.textContent!
-		const notSelfClosing =
-			!lastChild.textContent![1] &&
-			(voidlessLangs.has(getLanguageAt(nameEl)) || !voidTags.test(tagName))
+		const noVoidTags = voidlessLangs.has(getLanguageAt(nameEl))
+		const name = nameEl.textContent!
+		const tagName = noVoidTags ? name : name.toLowerCase()
+		const notSelfClosing = !lastChild.textContent![1] && (noVoidTags || !voidTags.test(tagName))
 		if (notSelfClosing) {
 			if (isClosing) {
 				for (let i = sp; i; ) {

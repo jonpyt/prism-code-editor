@@ -53,7 +53,8 @@ const matchTags = (): Extension => editor => {
 			if (Array.isArray(content)) {
 				if (token.type == "tag" && code[position] == "<") {
 					const openLen = content[0].length
-					const tagName = content[2] ? code.substr(position + openLen, content[1].length) : ""
+					const name = content[2] ? code.substr(position + openLen, content[1].length) : ""
+					const tagName = noVoidTags ? name : name.toLowerCase()
 					const notSelfClosing =
 						content[content.length - 1].length < 2 && (noVoidTags || !voidTags.test(tagName))
 

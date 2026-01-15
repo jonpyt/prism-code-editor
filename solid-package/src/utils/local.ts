@@ -4,7 +4,7 @@ import { isChrome } from "."
 import { PrismCodeBlock } from "../code-block"
 
 const voidlessLangs = new Set("xml,rss,atom,jsx,tsx,xquery,xeora,xeoracube,actionscript".split(","))
-const voidTags = /^(?:area|base|w?br|col|embed|hr|img|input|link|meta|source|track)$/i
+const voidTags = /^(?:area|base|w?br|col|embed|hr|img|input|link|meta|source|track)$/
 
 const scrollToEl = (editor: PrismEditor, el: HTMLElement, paddingTop = 0) => {
 	const style = editor.container.style
