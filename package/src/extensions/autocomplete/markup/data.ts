@@ -661,6 +661,7 @@ const htmlTags: TagConfig = {
 	legend: empty,
 	details: {
 		open: null,
+		name: null,
 	},
 	summary: empty,
 	dialog: {

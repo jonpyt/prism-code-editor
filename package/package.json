@@ -80,7 +80,7 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.19.29",
     "@types/yargs": "^17.0.35",
-    "@vscode/web-custom-data": "^0.6.1",
+    "@vscode/web-custom-data": "^0.6.2",
     "chai": "^5.3.3",
     "magic-string": "^0.30.21",
     "mocha": "^11.7.5",

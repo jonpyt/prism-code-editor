@@ -21,8 +21,8 @@ importers:
         specifier: ^17.0.35
         version: 17.0.35
       '@vscode/web-custom-data':
-        specifier: ^0.6.1
-        version: 0.6.1
+        specifier: ^0.6.2
+        version: 0.6.2
       chai:
         specifier: ^5.3.3
         version: 5.3.3
@@ -461,8 +461,8 @@ packages:
   '@volar/typescript@2.4.27':
     resolution: {integrity: sha512-eWaYCcl/uAPInSK2Lze6IqVWaBu/itVqR5InXcHXFyles4zO++Mglt3oxdgj75BDcv1Knr9Y93nowS8U3wqhxg==}
 
-  '@vscode/web-custom-data@0.6.1':
-    resolution: {integrity: sha512-l7IFt7wzngj8WumWEAOsZMV7OhurQvDFBbtcPq8eUiYAouk0bNcqw1NZXMsAfwt6KDnOfNXYVhp2iOE0R40qoA==}
+  '@vscode/web-custom-data@0.6.2':
+    resolution: {integrity: sha512-PIZNbMb3WkPWzXeCIe2HBkykVlX/MeASXyQ0IPcGA6HkMW5dcJyNhv+xkxjza60aCVQnsCHnZduO7D/cUgdFXw==}
 
   '@vue/compiler-core@3.5.26':
     resolution: {integrity: sha512-vXyI5GMfuoBCnv5ucIT7jhHKl55Y477yxP6fc4eUswjP8FG3FFVFd41eNDArR+Uk3QKn2Z85NavjaxLxOC19/w==}
@@ -1409,7 +1409,7 @@ snapshots:
       path-browserify: 1.0.1
       vscode-uri: 3.1.0
 
-  '@vscode/web-custom-data@0.6.1': {}
+  '@vscode/web-custom-data@0.6.2': {}
 
   '@vue/compiler-core@3.5.26':
     dependencies:
