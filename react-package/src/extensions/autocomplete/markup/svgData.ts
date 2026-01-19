@@ -1,5 +1,6 @@
 import { AttributeConfig, TagConfig } from "../types.js"
 import {
+	ariaAttributes,
 	attrValueB,
 	attrValueDecoding,
 	attrValueReferrerpolicy,
@@ -126,13 +127,17 @@ const textAttributes: AttributeConfig = {
 	direction: ["ltr", "rtl", "inherit"],
 	"dominant-baseline": [
 		"auto",
-		"text-bottom",
+		"use-script",
+		"no-change",
+		"reset-size",
 		"alphabetic",
 		"ideographic",
 		"middle",
 		"central",
 		"mathematical",
 		"hanging",
+		"text-after-edge",
+		"text-before-edge",
 		"text-top",
 	],
 	"font-family": null,
@@ -191,10 +196,13 @@ const pathAttributes: AttributeConfig = {
 }
 
 const globalSvgAttributes: AttributeConfig = {
+	...ariaAttributes,
 	...htmlEventHandlers,
+	autofocus: null,
 	class: null,
 	id: null,
 	lang: null,
+	nonce: null,
 	style: null,
 	tabindex: null,
 }
