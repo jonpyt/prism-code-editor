@@ -126,27 +126,36 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 			const upper = rowHeight * (activeIndex + 1) - tooltip.clientHeight
 
 			tooltip.scrollTop = scrollTop > lower ? lower : scrollTop < upper ? upper : scrollTop
+			updateOffset()
+			updateActive()
 		}
 
 		const updateActive = () => {
 			const newActive = rows[activeIndex - offset]
-			if (newActive != active) {
-				active?.removeAttribute("aria-selected")
-				if (newActive) {
-					textarea.setAttribute("aria-activedescendant", newActive.id)
-					newActive.setAttribute("aria-selected", true as any)
-				} else {
-					textarea.removeAttribute("aria-activedescendant")
-				}
-				active = newActive
+			active?.removeAttribute("aria-selected")
+			if (newActive) {
+				textarea.setAttribute("aria-activedescendant", newActive.id)
+				newActive.setAttribute("aria-selected", true as any)
+			} else if (active) {
+				textarea.removeAttribute("aria-activedescendant")
 			}
+			active = newActive
 		}
 
 		const move = (decrement?: boolean) => {
 			if (decrement) activeIndex = activeIndex ? activeIndex - 1 : numOptions - 1
 			else activeIndex = activeIndex + 1 < numOptions ? activeIndex + 1 : 0
 			scrollActiveIntoView()
-			updateActive()
+		}
+
+		const updateOffset = () => {
+			const newOffset = Math.min(Math.floor(tooltip.scrollTop / rowHeight), numOptions - windowSize)
+			if (newOffset == offset || newOffset < 0) return true
+
+			offset = newOffset
+			for (let i = 0; i < windowSize; ) updateRow(i++)
+
+			list.style.paddingTop = offset * rowHeight + "px"
 		}
 
 		const insertOption = (index: number) =>
@@ -379,7 +388,6 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 										: newActive
 							}
 							scrollActiveIntoView()
-							updateActive()
 							preventDefault(e)
 						}
 					} else if (stops) {
@@ -446,19 +454,7 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 			clearStops,
 			addListener2(tooltip, "scroll", () => {
 				measureRowHeight()
-				const newOffset = Math.min(
-					Math.floor(tooltip.scrollTop / rowHeight),
-					numOptions - windowSize,
-				)
-				if (newOffset == offset || newOffset < 0) return
-
-				offset = newOffset
-				for (let i = 0; i < windowSize; i) {
-					updateRow(i++)
-				}
-
-				list.style.paddingTop = offset * rowHeight + "px"
-				updateActive()
+				if (!updateOffset()) updateActive()
 			}),
 			addListener2(list, "mousedown", e => {
 				insertOption(
