@@ -8,12 +8,16 @@ import { getLineEnd, getLineStart } from "./local.ts"
  * before the call. This variable is set to 0 right before {@link insertText} returns.
  * This can therefore be used inside a `beforeinput` handler to determine if
  * {@link insertText} fired the event, and if true, get the selection before the call.
- * 
+ *
  * Intended for internal use only.
  */
 let prevSelection: InputSelection | 0
 
-/** Escapes all special regex characters with a backslash and returns the escaped string. */
+/**
+ * Escapes all regex syntax characters with a backslash and returns the escaped string.
+ *
+ * The returned string is not safe inside a character class.
+ */
 const regexEscape = (str: string) => str.replace(/[$+?|.^*()[\]{}\\]/g, "\\$&")
 
 /** Returns the string between the position and the previous \n. */

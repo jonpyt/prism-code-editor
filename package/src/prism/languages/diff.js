@@ -17,7 +17,7 @@ var diff = languages.diff = {
 var PREFIXES = {
 	'deleted-sign': '-',
 	'deleted-arrow': '<',
-	'inserted-sign': '+',
+	'inserted-sign': '\\+',
 	'inserted-arrow': '>',
 	'unchanged': ' ',
 	'diff': '!',
@@ -29,11 +29,11 @@ for (var name in PREFIXES) {
 	var prefix = name.split('-')[0];
 
 	diff[name] = {
-		pattern: RegExp('^(?:[' + PREFIXES[name] + '].*$\n?)+', 'm'),
+		pattern: RegExp('(?:^' + PREFIXES[name] + '.*\n?)+', 'm'),
 		alias: prefix != name ? prefix : name == 'diff' ? 'bold' : undefined,
 		inside: {
 			'prefix': {
-				pattern: RegExp('^[' + PREFIXES[name] + ']', 'mg'),
+				pattern: RegExp('^' + PREFIXES[name], 'mg'),
 				alias: prefix
 			}
 		}

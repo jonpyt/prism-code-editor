@@ -14,7 +14,11 @@ import { escapeHtml } from "../prism/core.js"
  */
 let prevSelection: InputSelection | 0
 
-/** Escapes all special regex characters with a backslash and returns the escaped string. */
+/**
+ * Escapes all regex syntax characters with a backslash and returns the escaped string.
+ *
+ * The returned string is not safe inside a character class.
+ */
 const regexEscape = (str: string) => str.replace(/[$+?|.^*()[\]{}\\]/g, "\\$&")
 
 /** Returns the string between the position and the previous \n. */

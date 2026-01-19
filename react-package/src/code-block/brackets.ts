@@ -7,7 +7,7 @@ let sp: number
 
 const addAlias = (token: Token, newAlias = "bracket-error") => {
 	let alias = token.alias
-	token.alias = (alias ? alias + " " : "") + newAlias
+	token.alias = alias ? alias + " " + newAlias : newAlias
 }
 
 const matchRecursive = (tokens: TokenStream, pairs: string) => {
@@ -29,9 +29,9 @@ const matchRecursive = (tokens: TokenStream, pairs: string) => {
 				if (bracketType % 2) stack[sp++] = [token, bracketType + 1]
 				else {
 					let i = sp
-					let found: boolean
+					let entry: [Token, number]
 
-					while (i) {
+					while ((entry = stack[--i])) {
 						let entry = stack[--i]
 						if (bracketType == entry[1]) {
 							let alias = "bracket-level-" + (i % 12)
@@ -42,11 +42,10 @@ const matchRecursive = (tokens: TokenStream, pairs: string) => {
 							addAlias(token, alias)
 							addAlias(entry[0], alias)
 							sp = i
-							i = 0
-							found = true
+							break
 						}
 					}
-					if (!found!) addAlias(token)
+					if (!entry) addAlias(token)
 				}
 			}
 		}

@@ -187,13 +187,12 @@ const highlightTagPairsOnHover = (): CodeBlockOverlay => (codeBlock, props) => {
 		const notSelfClosing = !lastChild.textContent![1] && (noVoidTags || !voidTags.test(tagName))
 		if (notSelfClosing) {
 			if (isClosing) {
-				for (let i = sp; i; ) {
-					let entry = stack[--i]
+				for (let i = sp, entry: [Element, string]; (entry = stack[--i]); ) {
 					if (tagName == entry[1]) {
 						map.set(nameEl, entry[0])
 						map.set(entry[0], nameEl)
 						sp = i
-						i = 0
+						break
 					}
 				}
 			} else {

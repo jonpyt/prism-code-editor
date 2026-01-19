@@ -73,13 +73,11 @@ export const matchBrackets = (rainbowBrackets = true, pairs = "()[]{}"): Extensi
 
 							if (isOpening) stack[sp++] = [bracketIndex, bracketType + 1]
 							else {
-								for (let i = sp; i; ) {
-									let entry = stack[--i]
+								for (let i = sp, entry: [number, number]; (entry = stack[--i]); ) {
 									if (bracketType == entry[1]) {
 										pairMap[(pairMap[bracketIndex] = entry[0])] = bracketIndex
-										brackets[bracketIndex][3] = i
-										sp = i
-										i = 0
+										brackets[bracketIndex][3] = sp = i
+										break
 									}
 								}
 							}
