@@ -15,6 +15,7 @@ import {
 	attrValueM,
 	attrValueO,
 	attrValuePl,
+	attrValuePopover,
 	attrValueReferrerpolicy,
 	attrValueRoles,
 	attrValueS,
@@ -32,6 +33,8 @@ import { AttributeConfig, TagConfig } from "../types.js"
 const fetchPriority = ["high", "low", "auto"]
 
 const align = ["left", "center", "right", "justify", "char"]
+
+const blocking = ["render"]
 
 const mediaAttrs = {
 	autoPlay: null,
@@ -59,13 +62,14 @@ const globalReactAttributes: AttributeConfig = {
 
 	// Standard HTML Attributes
 	accessKey: null,
+	autoCapitalize: ["off", "none", "on", "sentences", "words", "characters"],
 	autoFocus: null,
 	className: null,
 	contentEditable: attrValueCe,
 	contextMenu: null,
 	dir: attrValueD,
-	enterKeyHint: attrValueEnterkeyhint,
 	draggable: attrValueB,
+	enterKeyHint: attrValueEnterkeyhint,
 	hidden: null,
 	id: null,
 	lang: null,
@@ -94,7 +98,6 @@ const globalReactAttributes: AttributeConfig = {
 	vocab: null,
 
 	// Non-standard Attributes
-	autoCapitalize: null,
 	autoCorrect: null,
 	autoSave: null,
 	color: null,
@@ -106,8 +109,18 @@ const globalReactAttributes: AttributeConfig = {
 	results: null,
 	security: null,
 	unselectable: attrValueO,
+
+	// Popover API
+	popover: attrValuePopover,
+	popoverTargetAction: ["toggle", "show", "hide"],
+	popoverTarget: null,
+
+	// Living Standard
+	inert: null,
 	inputMode: attrValueIm,
 	is: null,
+	exportparts: null,
+	part: null,
 
 	// Clipboard Events
 	onCopy: null,
@@ -190,8 +203,6 @@ const globalReactAttributes: AttributeConfig = {
 	onProgressCapture: null,
 	onRateChange: null,
 	onRateChangeCapture: null,
-	onResize: null,
-	onResizeCapture: null,
 	onSeeked: null,
 	onSeekedCapture: null,
 	onSeeking: null,
@@ -282,6 +293,8 @@ const globalReactAttributes: AttributeConfig = {
 	// UI Events
 	onScroll: null,
 	onScrollCapture: null,
+	onScrollEnd: null,
+	onScrollEndCapture: null,
 
 	// Wheel Events
 	onWheel: null,
@@ -295,9 +308,19 @@ const globalReactAttributes: AttributeConfig = {
 	onAnimationIteration: null,
 	onAnimationIterationCapture: null,
 
+	// Toggle Events
+	onToggle: null,
+	onBeforeToggle: null,
+
 	// Transition Events
+	onTransitionCancel: null,
+	onTransitionCancelCapture: null,
 	onTransitionEnd: null,
 	onTransitionEndCapture: null,
+	onTransitionRun: null,
+	onTransitionRunCapture: null,
+	onTransitionStart: null,
+	onTransitionStartCapture: null,
 }
 
 const empty: AttributeConfig = {}
@@ -318,6 +341,7 @@ const reactTags: TagConfig = {
 	},
 	link: {
 		as: null,
+		blocking: blocking,
 		crossOrigin: attrValueXo,
 		fetchPriority: fetchPriority,
 		href: null,
@@ -330,6 +354,9 @@ const reactTags: TagConfig = {
 		sizes: null,
 		type: null,
 		charSet: null,
+
+		// React props
+		precedence: null,
 	},
 	meta: {
 		charSet: null,
@@ -339,10 +366,15 @@ const reactTags: TagConfig = {
 		name: null,
 	},
 	style: {
+		blocking: blocking,
 		media: null,
 		nonce: null,
 		scoped: null,
 		type: null,
+
+		// React props
+		href: null,
+		precedence: null,
 	},
 	body: empty,
 	article: empty,
@@ -492,6 +524,8 @@ const reactTags: TagConfig = {
 		width: null,
 		disablePictureInPicture: null,
 		disableRemotePlayback: null,
+		onResize: null,
+		onResizeCapture: null,
 		...mediaAttrs,
 	},
 	audio: mediaAttrs,
@@ -662,8 +696,7 @@ const reactTags: TagConfig = {
 		autoComplete: attrValueInputautocomplete,
 		cols: null,
 		defaultValue: null,
-		// Not supported yet
-		// dirName: null,
+		dirName: null,
 		disabled: null,
 		form: null,
 		maxLength: null,
@@ -705,19 +738,21 @@ const reactTags: TagConfig = {
 	details: {
 		name: null,
 		open: null,
-		onToggle: null,
 	},
 	summary: empty,
 	dialog: {
+		closedBy: ["any", "closerequest", "none"],
 		open: null,
 		onCancel: null,
 		onClose: null,
 	},
 	script: {
 		async: null,
+		blocking: blocking,
 		charSet: null,
 		crossOrigin: attrValueXo,
 		defer: null,
+		fetchPriority: fetchPriority,
 		integrity: null,
 		noModule: null,
 		nonce: null,
