@@ -78,8 +78,8 @@ For more advanced usage where you have full control over styling and the added e
 
 This library has rewrites for both React and SolidJS. These rewrites better integrate with their respective framework than any wrapper ever could and are recommended if you're already using React or SolidJS.
 
-- [React rewrite](https://github.com/jonpyt/prism-react-editor)
-- [SolidJS rewrite](https://github.com/jonpyt/solid-prism-editor)
+- [React rewrite](https://github.com/jonpyt/prism-code-editor/tree/main/react-package)
+- [SolidJS rewrite](https://github.com/jonpyt/prism-code-editor/tree/main/solid-package)
 
 ## Examples
 
