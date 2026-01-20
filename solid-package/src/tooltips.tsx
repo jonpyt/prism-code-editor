@@ -58,17 +58,19 @@ export const addTooltip = (
 
 	return {
 		show(above?: boolean) {
-			let cursor = editor.extensions.cursor
-			if (cursor) {
-				let { left, right, top, bottom, height } = cursor.getPosition()
+			let pos = editor.extensions.cursor?.getPosition()
+			if (pos) {
 				setOpen(true)
-				spacer.style.width = (editor.props.rtl ? right : left) + "px"
+				spacer.style.width = (editor.props.rtl ? pos.right : pos.left) + "px"
 
+				let top = pos.top
+				let bottom = pos.bottom
 				let placeAbove =
 					!above == top > bottom && (above ? top : bottom) < container.clientHeight ? !above : above
+				let offset = pos.height + (placeAbove ? bottom : top) + "px"
 
-				style[placeAbove ? "bottom" : "top"] = height + (placeAbove ? bottom : top) + "px"
-				style[placeAbove ? "top" : "bottom"] = "auto"
+				style.bottom = placeAbove ? offset : "auto"
+				style.top = placeAbove ? "auto" : offset
 			}
 		},
 		hide() {

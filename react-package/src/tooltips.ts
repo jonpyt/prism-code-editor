@@ -24,17 +24,19 @@ const show = (
 	spacerStyle: CSSStyleDeclaration,
 	above?: boolean,
 ) => {
-	let cursor = editor.extensions.cursor
-	if (cursor) {
-		let { left, right, top, bottom, height } = cursor.getPosition()
+	let pos = editor.extensions.cursor?.getPosition()
+	if (pos) {
 		container.parentNode || addOverlay(editor, container)
-		spacerStyle.width = (editor.props.rtl ? right : left) + "px"
+		spacerStyle.width = (editor.props.rtl ? pos.right : pos.left) + "px"
 
+		let top = pos.top
+		let bottom = pos.bottom
 		let placeAbove =
 			!above == top > bottom && (above ? top : bottom) < container.clientHeight ? !above : above
+		let offset = pos.height + (placeAbove ? bottom : top) + "px"
 
-		container.style[placeAbove ? "bottom" : "top"] = height + (placeAbove ? bottom : top) + "px"
-		container.style[placeAbove ? "top" : "bottom"] = "auto"
+		container.style.bottom = placeAbove ? offset : "auto"
+		container.style.top = placeAbove ? "auto" : offset
 	}
 }
 
