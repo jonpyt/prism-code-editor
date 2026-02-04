@@ -19,7 +19,7 @@ var tag = {
 			}
 		},
 		'attr-value': [{
-			pattern: /(=\s*)(?:"[^"]*"|'[^']*'|[^\s>]+)/g,
+			pattern: /(=\s*)(?:"[^"]*"|'[^']*'|[^\s"'>]+)/g,
 			lookbehind: true,
 			inside: {
 				'punctuation': /^["']|["']$/g,
