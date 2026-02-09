@@ -1,5 +1,6 @@
 import { Token, languages, tokenize, withoutTokenizer } from '../core.js';
 import { clone, insertBefore } from './language.js';
+import { clikeComment } from './patterns.js';
 import { replace, re } from './shared.js';
 
 var space = /\s|\/\/.*(?!.)|\/\*(?:[^*]|\*(?!\/))*\*\//.source;
@@ -106,7 +107,7 @@ var addJsxTag = (grammar, name) => {
 					alias: 'language-' + name,
 					inside: grammar
 				},
-				'comment': grammar['comment'],
+				'comment': clikeComment,
 				'attr-equals': /=/,
 				'attr-name': {
 					pattern: /\S+/,
