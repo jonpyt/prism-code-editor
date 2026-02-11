@@ -22,7 +22,7 @@ export interface Cursor {
 }
 
 const cursorTemplate = /* @__PURE__ */ createTemplate(
-	"<div style=position:absolute;top:0;opacity:0;padding-right:inherit> <span><span></span> ",
+	"<div style=position:absolute;top:0;opacity:0;padding-inline-end:inherit> <span><span></span> ",
 )
 /**
  * Hook making it easier to calculate the position of the cursor and scroll it into view.

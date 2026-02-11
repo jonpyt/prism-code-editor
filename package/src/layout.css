@@ -106,7 +106,7 @@ pre.pce-guides .pce-line::after,
 }
 
 .show-line-numbers .pce-line::after {
-	left: var(--padding-left);
+	inset-inline-start: var(--padding-left);
 }
 
 .active-line::after {
