@@ -47,8 +47,11 @@
 }
 
 .pce-textarea::selection {
-	background: var(--pce-selection);
 	color: #0000;
+}
+
+.pce-wrapper ::selection {
+	background: var(--pce-selection);
 }
 
 .pce-no-selection textarea:focus {

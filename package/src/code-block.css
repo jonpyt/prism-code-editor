@@ -9,11 +9,6 @@ code.pce-wrapper {
 	pointer-events: auto;
 }
 
-.pce-line::selection,
-.pce-line ::selection {
-	background: var(--pce-selection);
-}
-
 .pce-guides .pce-line::after {
 	pointer-events: none;
 	background: no-repeat var(--padding-left) / calc(var(--indent) - 1px)
