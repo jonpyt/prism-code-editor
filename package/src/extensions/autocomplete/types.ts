@@ -96,6 +96,15 @@ export interface Completion {
 	 * then the option is inserted right before the character is typed.
 	 */
 	commitChars?: string
+	/**
+	 * Optional function to render the contents of an additional tooltip documenting the
+	 * completion item.
+	 * @param item Completion item to render documentation for.
+	 * @param context Current completion context.
+	 * @param editor Current editor.
+	 * @returns List of nodes to show in the tooltip.
+	 */
+	renderDocs?(item: Completion, context: CompletionContext, editor: PrismEditor): (Node | string)[]
 }
 
 export interface CompletionResult {

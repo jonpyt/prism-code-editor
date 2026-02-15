@@ -21,10 +21,10 @@ import { useEffect, useMemo } from "react"
 let count = 0
 
 const tooltipTemplate = /* @__PURE__ */ createTemplate(
-	"<div class=pce-ac-tooltip><ul role=listbox>",
+	'<div class="pce-ac-wrapper pce-ac-top"><div class=pce-ac-tooltip><ul role=listbox></ul></div><div class=pce-ac-docs tabindex=-1><button class=pce-ac-close tabindex=-1 title=Close></button><button class=pce-ac-toggle tabindex=-1 title="Read More"></button><div class=pce-ac-content>',
 )
 const rowTemplate = /* @__PURE__ */ createTemplate(
-	"<li class=pce-ac-row role=option><div></div><div> </div><div class=pce-ac-details> ",
+	"<li class=pce-ac-row role=option><div></div><div class=pce-ac-label> </div><div class=pce-ac-details><span> ",
 )
 
 const map: Record<string, CompletionDefinition<any>> = {}
@@ -59,8 +59,8 @@ const registerCompletions = <T extends object>(
  */
 const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 	const _config = useStableRef([config])
-	const tooltip = useMemo(tooltipTemplate, [])
-	const [show, _hide] = useTooltip(editor, tooltip)
+	const wrapper = useMemo(tooltipTemplate, [])
+	const [show, _hide] = useTooltip(editor, wrapper)
 
 	_config[0] = config
 
@@ -80,12 +80,23 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 		let currentSelection: InputSelection
 		let prevLength: number
 		let isDeleteForwards: boolean
+		let tooltipPlacement: string
+		let docsOption: Completion | null
+		let docsEnabled: boolean
+		let context: CompletionContext
 
 		const windowSize = 13
+		const container = editor.container!
 		const textarea = editor.textarea!
 		const getSelection = editor.getSelection
 		const tabStopsContainer = searchTemplate()
 
+		const [tooltip, docsWrapper] = wrapper.children as any as HTMLDivElement[]
+		const [docsClose, docsToggle, docs] = docsWrapper.children as any as [
+			HTMLButtonElement,
+			HTMLButtonElement,
+			HTMLDivElement,
+		]
 		const list = tooltip.firstChild as HTMLUListElement
 		const id = (list.id = "pce-ac-" + count++)
 		const rows = list.children as HTMLCollectionOf<HTMLLIElement>
@@ -96,6 +107,7 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 				textarea.removeAttribute("aria-controls")
 				textarea.removeAttribute("aria-haspopup")
 				textarea.removeAttribute("aria-activedescendant")
+				if (docsEnabled) docsWrapper.remove()
 				isOpen = false
 			}
 		}
@@ -111,7 +123,7 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 			const icon = completion.icon || "variable"
 
 			updateMatched(labelEl, option[1], completion.label)
-			updateNode(detailsEl.firstChild as Text, completion.detail || "")
+			updateNode(detailsEl.firstChild!.firstChild as Text, completion.detail || "")
 
 			if (prevIcons[index] != icon) {
 				iconEl.className = `pce-ac-icon pce-ac-icon-${(prevIcons[index] = icon)}`
@@ -131,15 +143,25 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 		}
 
 		const updateActive = () => {
-			const newActive = rows[activeIndex - offset]
-			active?.removeAttribute("aria-selected")
-			if (newActive) {
-				textarea.setAttribute("aria-activedescendant", newActive.id)
-				newActive.setAttribute("aria-selected", true as any)
-			} else if (active) {
+			const oldActive = active
+			active = rows[activeIndex - offset]
+			oldActive?.removeAttribute("aria-selected")
+			oldActive?.removeAttribute("aria-describedby")
+			docsToggle.remove()
+			if (active) {
+				textarea.setAttribute("aria-activedescendant", active.id)
+				active.setAttribute("aria-selected", true as any)
+
+				if (currentOptions[activeIndex][4].renderDocs) {
+					active.append(docsToggle)
+					docsEnabled = !docsEnabled
+					toggleDocs()
+				} else {
+					docsWrapper.remove()
+				}
+			} else if (oldActive) {
 				textarea.removeAttribute("aria-activedescendant")
 			}
-			active = newActive
 		}
 
 		const move = (decrement?: boolean) => {
@@ -225,6 +247,48 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 			updateMatched(tabStopsContainer, sorted.flat(), editor.value)
 		}
 
+		const getDocsPosition = () => {
+			const width = container.clientWidth
+			const scroll = Math.abs(container.scrollLeft)
+			const pos = editor.extensions.cursor!.getPosition()
+			const offset = editor.props.rtl ? pos.right : pos.left
+			const fontSize = getStyleValue(container, "fontSize")
+
+			if (width >= 46 * fontSize) {
+				if (offset + 45.5 * fontSize < scroll + width) return tooltipPlacement + "-end"
+
+				if (offset - 20.5 * fontSize > scroll) return tooltipPlacement + "-start"
+			}
+
+			return tooltipPlacement
+		}
+
+		const setDocsPosition = () => {
+			wrapper.className = `pce-ac-wrapper pce-ac-${getDocsPosition()}`
+		}
+
+		const showDocs = () => {
+			const option = currentOptions[activeIndex][4]
+
+			if (option.renderDocs) {
+				if (!docsWrapper.parentNode) wrapper.append(docsWrapper)
+				if (docsOption != option) {
+					docsOption = option
+					docs.textContent = ""
+					docs.append(...option.renderDocs(option, context, editor))
+				}
+
+				active?.setAttribute("aria-describedby", id + "d")
+			}
+		}
+
+		const toggleDocs = () => {
+			if (docsEnabled) docsWrapper.remove()
+			else showDocs()
+
+			docsEnabled = !docsEnabled
+		}
+
 		const startQuery = (explicit?: boolean) => {
 			const [start, end, dir] = getSelection()
 			const language = getLanguage(editor, (pos = dir < "f" ? start : end))
@@ -234,19 +298,19 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 				const value = editor.value
 				const lineBefore = getLineBefore(value, pos)
 				const before = value.slice(0, pos)
-				const context: CompletionContext = {
+				const filter = _config[0].filter
+				context = {
 					before,
 					lineBefore,
 					language,
 					explicit: !!explicit,
 					pos,
 				}
-				const newContext = Object.assign(context, definition.context?.(context, editor))
-				const filter = _config[0].filter
+				Object.assign(context, definition.context?.(context, editor))
 
 				currentOptions = []
 				definition.sources.forEach(source => {
-					const result = source(newContext, editor)
+					const result = source(context, editor)
 					if (result) {
 						const from = result.from
 						const query = before.slice(from)
@@ -274,11 +338,12 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 					}
 
 					if (!isOpen) {
-						const { clientHeight, clientWidth } = editor.container!
+						const { clientHeight, clientWidth } = container
 						const pos = cursor.getPosition()
 						const max = Math.max(pos.bottom, pos.top)
-						tooltip.style.width = `min(25em, ${clientWidth}px - var(--padding-left) - 1em)`
-						tooltip.style.maxHeight = `min(17em, ${max}px + .25em, ${clientHeight}px - 2em)`
+						docsWrapper.style.maxWidth =
+							tooltip.style.width = `min(25em, ${clientWidth}px - var(--padding-left) - 1em)`
+						wrapper.style.maxHeight = `min(${max}px + .25em, ${clientHeight}px - 2em)`
 					}
 
 					list.style.paddingTop = ""
@@ -287,6 +352,8 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 
 					isOpen = true
 					show(_config[0].preferAbove)
+					tooltipPlacement = wrapper.parentElement!.style.top == "auto" ? "top" : "bottom"
+					setDocsPosition()
 					textarea.setAttribute("aria-controls", id)
 					textarea.setAttribute("aria-haspopup", "listbox")
 					updateActive()
@@ -344,7 +411,7 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 				true,
 			),
 			addListener2(textarea, "blur", e => {
-				if (_config[0].closeOnBlur != false && !tooltip.contains(e.relatedTarget as Element)) hide()
+				if (_config[0].closeOnBlur != false && !wrapper.contains(e.relatedTarget as Element)) hide()
 			}),
 			addListener2(
 				textarea,
@@ -357,7 +424,8 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 					let newActive: number
 
 					if (key == " " && code == 2) {
-						startQuery(true)
+						if (isOpen) toggleDocs()
+						else startQuery(true)
 						preventDefault(e)
 					} else if (!code && isOpen) {
 						if (/^Arrow[UD]/.test(key)) {
@@ -449,7 +517,12 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 			}),
 			() => {
 				textarea.removeAttribute("aria-autocomplete")
+				wrapper.append(docsWrapper)
+				docsClose.after(docsToggle)
 			},
+			addListener2(container, "scroll", () => {
+				if (isOpen) setDocsPosition()
+			}),
 			hide,
 			clearStops,
 			addListener2(tooltip, "scroll", () => {
@@ -457,24 +530,32 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 				if (!updateOffset()) updateActive()
 			}),
 			addListener2(list, "mousedown", e => {
-				insertOption(
-					[].indexOf.call(rows, (e.target as HTMLElement).closest("li") as never) + offset,
-				)
+				if (e.target != docsToggle) {
+					insertOption(
+						[].indexOf.call(rows, (e.target as HTMLElement).closest("li") as never) + offset,
+					)
+				}
 				preventDefault(e)
 			}),
-			addListener2(tooltip, "focusout", e => {
+			addListener2(wrapper, "focusout", e => {
 				if (_config[0].closeOnBlur != false && e.relatedTarget != textarea) hide()
 			}),
+			addListener2(docsClose, "click", toggleDocs),
+			addListener2(docsClose, "mousedown", preventDefault),
+			addListener2(docsToggle, "click", toggleDocs),
 		]
 
 		tabStopsContainer.className = "pce-tabstops"
 		textarea.setAttribute("aria-autocomplete", "list")
-		list.textContent = ""
 
-		for (let i = 0; i < windowSize; ) {
+		for (let i = list.childElementCount; i < windowSize; ) {
 			list.append(rowTemplate())
 			rows[i].id = id + "-" + i++
 		}
+
+		docsWrapper.id = id + "d"
+		docsToggle.remove()
+		docsWrapper.remove()
 
 		editor.extensions.autoComplete = {
 			startQuery,

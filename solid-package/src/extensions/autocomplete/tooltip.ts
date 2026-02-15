@@ -17,13 +17,15 @@ import { template } from "solid-js/web"
 import { getStyleValue } from "../../utils/other"
 import { createRenderEffect, on, onCleanup } from "solid-js"
 import { TokenStream } from "../../prism"
-import { addTextareaListener, updateNode } from "../../utils/local"
+import { addListener2, addTextareaListener, updateNode } from "../../utils/local"
 
 let count = 0
 
-const tooltipTemplate = /* @__PURE__ */ template("<div class=pce-ac-tooltip><ul role=listbox>")
+const tooltipTemplate = /* @__PURE__ */ template(
+	'<div class="pce-ac-wrapper pce-ac-top"><div class=pce-ac-tooltip><ul role=listbox></ul></div><div class=pce-ac-docs tabindex=-1><button class=pce-ac-close tabindex=-1 title=Close></button><button class=pce-ac-toggle tabindex=-1 title="Read More"></button><div class=pce-ac-content>',
+)
 const rowTemplate = /* @__PURE__ */ template(
-	"<li class=pce-ac-row role=option><div></div><div> </div><div class=pce-ac-details> ",
+	"<li class=pce-ac-row role=option><div></div><div class=pce-ac-label> </div><div class=pce-ac-details><span> ",
 )
 
 const map: Record<string, CompletionDefinition<any>> = {}
@@ -75,14 +77,25 @@ const autoComplete =
 		let prevLength: number
 		let isDeleteForwards: boolean
 		let prevTokens: TokenStream
+		let tooltipPlacement: string
+		let docsOption: Completion | null
+		let docsEnabled: boolean
+		let context: CompletionContext
 
 		const windowSize = 13
+		const container = editor.container
 		const textarea = editor.textarea
 		const props = editor.props
 		const getSelection = editor.getSelection
-		const tooltip = tooltipTemplate() as HTMLDivElement
+		const wrapper = tooltipTemplate() as HTMLDivElement
 		const tabStopsContainer = searchTemplate() as HTMLDivElement
-		const { show, hide: _hide, element } = addTooltip(editor, tooltip)
+		const { show, hide: _hide, element } = addTooltip(editor, wrapper)
+		const [tooltip, docsWrapper] = wrapper.children as any as HTMLDivElement[]
+		const [docsClose, docsToggle, docs] = docsWrapper.children as any as [
+			HTMLButtonElement,
+			HTMLButtonElement,
+			HTMLDivElement,
+		]
 		const list = tooltip.firstChild as HTMLUListElement
 		const id = (list.id = "pce-ac-" + count++)
 		const rows = list.children as HTMLCollectionOf<HTMLLIElement>
@@ -93,6 +106,7 @@ const autoComplete =
 				textarea.removeAttribute("aria-controls")
 				textarea.removeAttribute("aria-haspopup")
 				textarea.removeAttribute("aria-activedescendant")
+				if (docsEnabled) docsWrapper.remove()
 				isOpen = false
 			}
 		}
@@ -108,7 +122,7 @@ const autoComplete =
 			const icon = completion.icon || "variable"
 
 			updateMatched(labelEl, option[1], completion.label)
-			updateNode(detailsEl.firstChild as Text, completion.detail || "")
+			updateNode(detailsEl.firstChild!.firstChild as Text, completion.detail || "")
 
 			if (prevIcons[index] != icon) {
 				iconEl.className = `pce-ac-icon pce-ac-icon-${(prevIcons[index] = icon)}`
@@ -128,15 +142,25 @@ const autoComplete =
 		}
 
 		const updateActive = () => {
-			const newActive = rows[activeIndex - offset]
-			active?.removeAttribute("aria-selected")
-			if (newActive) {
-				textarea.setAttribute("aria-activedescendant", newActive.id)
-				newActive.setAttribute("aria-selected", true as any)
-			} else if (active) {
+			const oldActive = active
+			active = rows[activeIndex - offset]
+			oldActive?.removeAttribute("aria-selected")
+			oldActive?.removeAttribute("aria-describedby")
+			docsToggle.remove()
+			if (active) {
+				textarea.setAttribute("aria-activedescendant", active.id)
+				active.setAttribute("aria-selected", true as any)
+
+				if (currentOptions[activeIndex][4].renderDocs) {
+					active.append(docsToggle)
+					docsEnabled = !docsEnabled
+					toggleDocs()
+				} else {
+					docsWrapper.remove()
+				}
+			} else if (oldActive) {
 				textarea.removeAttribute("aria-activedescendant")
 			}
-			active = newActive
 		}
 
 		const move = (decrement?: boolean) => {
@@ -222,6 +246,48 @@ const autoComplete =
 			updateMatched(tabStopsContainer, sorted.flat(), editor.value)
 		}
 
+		const getDocsPosition = () => {
+			const width = container.clientWidth
+			const scroll = Math.abs(container.scrollLeft)
+			const pos = editor.extensions.cursor!.getPosition()
+			const offset = props.rtl ? pos.right : pos.left
+			const fontSize = getStyleValue(container, "fontSize")
+
+			if (width >= 46 * fontSize) {
+				if (offset + 45.5 * fontSize < scroll + width) return tooltipPlacement + "-end"
+
+				if (offset - 20.5 * fontSize > scroll) return tooltipPlacement + "-start"
+			}
+
+			return tooltipPlacement
+		}
+
+		const setDocsPosition = () => {
+			wrapper.className = `pce-ac-wrapper pce-ac-${getDocsPosition()}`
+		}
+
+		const showDocs = () => {
+			const option = currentOptions[activeIndex][4]
+
+			if (option.renderDocs) {
+				if (!docsWrapper.parentNode) wrapper.append(docsWrapper)
+				if (docsOption != option) {
+					docsOption = option
+					docs.textContent = ""
+					docs.append(...option.renderDocs(option, context, editor))
+				}
+
+				active?.setAttribute("aria-describedby", id + "d")
+			}
+		}
+
+		const toggleDocs = () => {
+			if (docsEnabled) docsWrapper.remove()
+			else showDocs()
+
+			docsEnabled = !docsEnabled
+		}
+
 		const startQuery = (explicit?: boolean) => {
 			const [start, end, dir] = getSelection()
 			const language = getLanguage(editor, (pos = dir < "f" ? start : end))
@@ -231,19 +297,19 @@ const autoComplete =
 				const value = editor.value
 				const lineBefore = getLineBefore(value, pos)
 				const before = value.slice(0, pos)
-				const context: CompletionContext = {
+				const filter = config.filter
+				context = {
 					before,
 					lineBefore,
 					language,
 					explicit: !!explicit,
 					pos,
 				}
-				const newContext = Object.assign(context, definition.context?.(context, editor))
-				const filter = config.filter
+				Object.assign(context, definition.context?.(context, editor))
 
 				currentOptions = []
 				definition.sources.forEach(source => {
-					const result = source(newContext, editor)
+					const result = source(context, editor)
 					if (result) {
 						const from = result.from
 						const query = before.slice(from)
@@ -271,11 +337,12 @@ const autoComplete =
 					}
 
 					if (!isOpen) {
-						const { clientHeight, clientWidth } = editor.container
+						const { clientHeight, clientWidth } = container
 						const pos = cursor.getPosition()
 						const max = Math.max(pos.bottom, pos.top)
-						tooltip.style.width = `min(25em, ${clientWidth}px - var(--padding-left) - 1em)`
-						tooltip.style.maxHeight = `min(17em, ${max}px + .25em, ${clientHeight}px - 2em)`
+						docsWrapper.style.maxWidth =
+							tooltip.style.width = `min(25em, ${clientWidth}px - var(--padding-left) - 1em)`
+						wrapper.style.maxHeight = `min(${max}px + .25em, ${clientHeight}px - 2em)`
 					}
 
 					list.style.paddingTop = ""
@@ -284,6 +351,8 @@ const autoComplete =
 
 					isOpen = true
 					show(config.preferAbove)
+					tooltipPlacement = wrapper.parentElement!.style.top == "auto" ? "top" : "bottom"
+					setDocsPosition()
 					textarea.setAttribute("aria-controls", id)
 					textarea.setAttribute("aria-haspopup", "listbox")
 					updateActive()
@@ -341,7 +410,7 @@ const autoComplete =
 				true,
 			),
 			addTextareaListener(editor, "blur", e => {
-				if (config.closeOnBlur != false && !tooltip.contains(e.relatedTarget as Element)) hide()
+				if (config.closeOnBlur != false && !wrapper.contains(e.relatedTarget as Element)) hide()
 			}),
 			addTextareaListener(
 				editor,
@@ -354,7 +423,8 @@ const autoComplete =
 					let newActive: number
 
 					if (key == " " && code == 2) {
-						startQuery(true)
+						if (isOpen) toggleDocs()
+						else startQuery(true)
 						preventDefault(e)
 					} else if (isOpen) {
 						if (!code) {
@@ -411,6 +481,9 @@ const autoComplete =
 			() => {
 				textarea.removeAttribute("aria-autocomplete")
 			},
+			addListener2(container, "scroll", () => {
+				if (isOpen) setDocsPosition()
+			}),
 		]
 
 		tabStopsContainer.className = "pce-tabstops"
@@ -477,13 +550,25 @@ const autoComplete =
 		})
 
 		addListener(list, "mousedown", e => {
-			insertOption([].indexOf.call(rows, (e.target as HTMLElement).closest("li") as never) + offset)
+			if (e.target != docsToggle) {
+				insertOption(
+					[].indexOf.call(rows, (e.target as HTMLElement).closest("li") as never) + offset,
+				)
+			}
 			preventDefault(e)
 		})
 
-		addListener(tooltip, "focusout", e => {
+		addListener(wrapper, "focusout", e => {
 			if (config.closeOnBlur != false && e.relatedTarget != textarea) hide()
 		})
+
+		addListener(docsClose, "click", toggleDocs)
+		addListener(docsClose, "mousedown", preventDefault)
+		addListener(docsToggle, "click", toggleDocs)
+
+		docsWrapper.id = id + "d"
+		docsToggle.remove()
+		docsWrapper.remove()
 
 		return [element, tabStopsContainer]
 	}

@@ -1,5 +1,6 @@
+import { createTemplate } from "../../core.js"
 import { PrismEditor } from "../../index.js"
-import { Token } from "../../prism/core.js"
+import { highlightText, languages, Token } from "../../prism/core.js"
 import { TokenName, TokenStream } from "../../prism/types.js"
 import { updateNode } from "../../utils/local.js"
 import { matchTemplate } from "../search/search.js"
@@ -141,6 +142,24 @@ const completionsFromRecords = (
 	}))
 }
 
+const createPre = /* @__PURE__ */ createTemplate<HTMLPreElement>("<pre>")
+
+/**
+ * @param snippet String of code to highlight.
+ * @param language Language to highlight the snippet with.
+ * @param className Additional classes to add to the `<pre>` element.
+ * @returns `<pre><code>` element with the snippet highlighted using the specified
+ * language.
+ */
+const renderSnippet = (snippet: string, language: string, className?: string) => {
+	const pre = createPre()
+
+	pre.innerHTML = `<code>${highlightText(snippet, languages[language] || {})}</code>`
+	pre.className = `language-${language}${className ? " " + className : ""}`
+
+	return pre
+}
+
 export {
 	optionsFromKeys,
 	updateMatched,
@@ -148,4 +167,5 @@ export {
 	completeFromList,
 	attrSnippet,
 	completionsFromRecords,
+	renderSnippet,
 }

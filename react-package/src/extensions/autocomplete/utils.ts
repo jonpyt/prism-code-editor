@@ -1,6 +1,6 @@
 import { PrismEditor } from "../.."
-import { Token, TokenName, TokenStream } from "../../prism"
-import { updateNode } from "../../utils/local"
+import { highlightText, languages, Token, TokenName, TokenStream } from "../../prism"
+import { createTemplate, updateNode } from "../../utils/local"
 import { matchTemplate } from "../search/search"
 import { map } from "./tooltip"
 import { Completion, CompletionContext, CompletionSource } from "./types"
@@ -140,6 +140,24 @@ const completionsFromRecords = (
 	}))
 }
 
+const createPre = /* @__PURE__ */ createTemplate<HTMLPreElement>("<pre>")
+
+/**
+ * @param snippet String of code to highlight.
+ * @param language Language to highlight the snippet with.
+ * @param className Additional classes to add to the `<pre>` element.
+ * @returns `<pre><code>` element with the snippet highlighted using the specified
+ * language.
+ */
+const renderSnippet = (snippet: string, language: string, className?: string) => {
+	const pre = createPre()
+
+	pre.innerHTML = `<code>${highlightText(snippet, languages[language] || {})}</code>`
+	pre.className = `language-${language}${className ? " " + className : ""}`
+
+	return pre
+}
+
 export {
 	optionsFromKeys,
 	updateMatched,
@@ -147,4 +165,5 @@ export {
 	completeFromList,
 	attrSnippet,
 	completionsFromRecords,
+	renderSnippet,
 }
