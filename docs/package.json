@@ -13,17 +13,20 @@
   "dependencies": {
     "@astrojs/starlight": "^0.37.0",
     "astro": "^5.16.11",
-    "prism-code-editor": "^5.0.0",
+    "prism-code-editor": "^5.0.1",
     "rehype-prism-code-editor": "^0.3.0",
     "sharp": "^0.34.4",
     "starlight-typedoc": "^0.21.3",
     "typedoc": "^0.28.14",
     "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@9.12.3+sha512.cce0f9de9c5a7c95bef944169cc5dfe8741abfb145078c0d508b868056848a87c81e626246cb60967cbd7fd29a6c062ef73ff840d96b3c86c40ac92cf4a813ee",
   "pnpm": {
     "patchedDependencies": {
       "starlight-typedoc": "patches/starlight-typedoc.patch"
+    },
+    "overrides": {
+      "prism-code-editor": "link:../package",
+      "rehype-prism-code-editor": "link:../rehype-plugin"
     }
   }
 }

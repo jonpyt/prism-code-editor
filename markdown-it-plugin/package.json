@@ -13,7 +13,7 @@
     "prism-code-editor": "^4.0.0 || ^5.0.0"
   },
   "dependencies": {
-    "markdown-it": "^14.1.0"
+    "markdown-it": "^14.1.1"
   },
   "devDependencies": {
     "@olets/markdown-it-wrapperless-fence-rule": "^1.2.1",

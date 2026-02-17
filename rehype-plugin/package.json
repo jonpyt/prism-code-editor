@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "prism-code-editor": "^5.0.0",
+    "prism-code-editor": "^5.0.1",
     "rehype-stringify": "^10.0.1",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
@@ -40,6 +40,5 @@
   "keywords": [
     "rehype",
     "prism"
-  ],
-  "packageManager": "pnpm@9.0.4+sha1.b198ac6d38244fd829253720f9daafd6a606834d"
+  ]
 }

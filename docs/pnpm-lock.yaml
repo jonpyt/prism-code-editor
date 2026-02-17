@@ -4,9 +4,13 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  prism-code-editor: link:../package
+  rehype-prism-code-editor: link:../rehype-plugin
+
 patchedDependencies:
   starlight-typedoc:
-    hash: mb2ky2rotr7aiu3js6dtik3o6q
+    hash: f152817f6b77f81da7989cb700f04e1ec2bc50675a8e163a35b49e1d383c827c
     path: patches/starlight-typedoc.patch
 
 importers:
@@ -20,17 +24,17 @@ importers:
         specifier: ^5.16.11
         version: 5.16.11(@types/node@24.10.1)(rollup@4.50.2)(typescript@5.9.3)(yaml@2.8.1)
       prism-code-editor:
-        specifier: ^5.0.0
+        specifier: link:../package
         version: link:../package
       rehype-prism-code-editor:
-        specifier: ^0.3.0
+        specifier: link:../rehype-plugin
         version: link:../rehype-plugin
       sharp:
         specifier: ^0.34.4
         version: 0.34.4
       starlight-typedoc:
         specifier: ^0.21.3
-        version: 0.21.3(patch_hash=mb2ky2rotr7aiu3js6dtik3o6q)(@astrojs/starlight@0.37.0(astro@5.16.11(@types/node@24.10.1)(rollup@4.50.2)(typescript@5.9.3)(yaml@2.8.1)))(typedoc-plugin-markdown@4.6.3(typedoc@0.28.14(typescript@5.9.3)))(typedoc@0.28.14(typescript@5.9.3))
+        version: 0.21.3(patch_hash=f152817f6b77f81da7989cb700f04e1ec2bc50675a8e163a35b49e1d383c827c)(@astrojs/starlight@0.37.0(astro@5.16.11(@types/node@24.10.1)(rollup@4.50.2)(typescript@5.9.3)(yaml@2.8.1)))(typedoc-plugin-markdown@4.6.3(typedoc@0.28.14(typescript@5.9.3)))(typedoc@0.28.14(typescript@5.9.3))
       typedoc:
         specifier: ^0.28.14
         version: 0.28.14(typescript@5.9.3)
@@ -1145,8 +1149,8 @@ packages:
     resolution: {integrity: sha512-o5vL7aDWatOTX8LzaS1WMoaoxIiLRQJuIKKe2wAw6IeULDHaqbiqiggmx+pKvZDb1Sj+pE46Sn1T7lCqfFtg1Q==}
     engines: {node: '>=16'}
 
-  markdown-it@14.1.0:
-    resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
+  markdown-it@14.1.1:
+    resolution: {integrity: sha512-BuU2qnTti9YKgK5N+IeMubp14ZUKUUw7yeJbkjtosvHiP0AZ5c8IAgEMk79D0eC8F23r4Ac/q8cAIFdm2FtyoA==}
     hasBin: true
 
   markdown-table@3.0.4:
@@ -1704,9 +1708,6 @@ packages:
 
   unist-util-find-after@5.0.0:
     resolution: {integrity: sha512-amQa0Ep2m6hE2g72AugUItjbuM8X8cGQnFoHk0pGfrFeT9GZhzN5SW8nRsiGKK7Aif4CrACPENkA6P/Lw6fHGQ==}
-
-  unist-util-is@6.0.0:
-    resolution: {integrity: sha512-2qCTHimwdxLfz+YzdGfkqNlH0tLi9xjTnHddPmJwtIG9MGsdbutfTc4P+haPD7l7Cjxf/WZj+we5qfVPvvxfYw==}
 
   unist-util-is@6.0.1:
     resolution: {integrity: sha512-LsiILbtBETkDz8I9p1dQ0uyRUWuaQzd/cuEeS1hoRSyW5E5XGmTzlwY1OrNzzakGowI9Dr/I8HVaw4hTtnxy8g==}
@@ -3210,7 +3211,7 @@ snapshots:
 
   markdown-extensions@2.0.0: {}
 
-  markdown-it@14.1.0:
+  markdown-it@14.1.1:
     dependencies:
       argparse: 2.0.1
       entities: 4.5.0
@@ -4078,7 +4079,7 @@ snapshots:
 
   space-separated-tokens@2.0.2: {}
 
-  starlight-typedoc@0.21.3(patch_hash=mb2ky2rotr7aiu3js6dtik3o6q)(@astrojs/starlight@0.37.0(astro@5.16.11(@types/node@24.10.1)(rollup@4.50.2)(typescript@5.9.3)(yaml@2.8.1)))(typedoc-plugin-markdown@4.6.3(typedoc@0.28.14(typescript@5.9.3)))(typedoc@0.28.14(typescript@5.9.3)):
+  starlight-typedoc@0.21.3(patch_hash=f152817f6b77f81da7989cb700f04e1ec2bc50675a8e163a35b49e1d383c827c)(@astrojs/starlight@0.37.0(astro@5.16.11(@types/node@24.10.1)(rollup@4.50.2)(typescript@5.9.3)(yaml@2.8.1)))(typedoc-plugin-markdown@4.6.3(typedoc@0.28.14(typescript@5.9.3)))(typedoc@0.28.14(typescript@5.9.3)):
     dependencies:
       '@astrojs/starlight': 0.37.0(astro@5.16.11(@types/node@24.10.1)(rollup@4.50.2)(typescript@5.9.3)(yaml@2.8.1))
       github-slugger: 2.0.0
@@ -4160,7 +4161,7 @@ snapshots:
     dependencies:
       '@gerrit0/mini-shiki': 3.13.1
       lunr: 2.3.9
-      markdown-it: 14.1.0
+      markdown-it: 14.1.1
       minimatch: 9.0.5
       typescript: 5.9.3
       yaml: 2.8.1
@@ -4201,10 +4202,6 @@ snapshots:
       '@types/unist': 3.0.3
       unist-util-is: 6.0.1
 
-  unist-util-is@6.0.0:
-    dependencies:
-      '@types/unist': 3.0.3
-
   unist-util-is@6.0.1:
     dependencies:
       '@types/unist': 3.0.3
@@ -4243,7 +4240,7 @@ snapshots:
   unist-util-visit@5.0.0:
     dependencies:
       '@types/unist': 3.0.3
-      unist-util-is: 6.0.0
+      unist-util-is: 6.0.1
       unist-util-visit-parents: 6.0.2
 
   unstorage@1.17.3:

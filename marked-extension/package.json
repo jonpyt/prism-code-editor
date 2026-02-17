@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "marked": "^17.0.1",
-    "prism-code-editor": "^5.0.0",
+    "prism-code-editor": "^5.0.1",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
     "vite-plugin-dts": "^4.5.4"
@@ -35,6 +35,5 @@
     "marked-extension",
     "markdown",
     "prism"
-  ],
-  "packageManager": "pnpm@9.0.4+sha1.b198ac6d38244fd829253720f9daafd6a606834d"
+  ]
 }
