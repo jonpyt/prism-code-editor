@@ -129,6 +129,8 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 				iconEl.className = `pce-ac-icon pce-ac-icon-${(prevIcons[index] = icon)}`
 				iconEl.style.color = `var(--pce-ac-icon-${icon})`
 			}
+
+			rows[index].setAttribute("aria-posinset", (index + offset) as any)
 		}
 
 		const scrollActiveIntoView = () => {
@@ -334,6 +336,7 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 					activeIndex = offset = 0
 
 					for (let i = 0, l = numOptions < windowSize ? numOptions : windowSize; i < l; ) {
+						rows[i].setAttribute("aria-setsize", numOptions as any)
 						updateRow(i++)
 					}
 
