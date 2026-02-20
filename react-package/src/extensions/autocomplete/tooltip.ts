@@ -365,24 +365,6 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 		}
 
 		const cleanUps = [
-			addListener2(textarea, "mousedown", () => {
-				if (stops) {
-					setTimeout(() => {
-						// Timeout runs before selectionChange, but after
-						// the selection changes as a result of the click
-						const [start, end] = getSelection()
-						if (stops && (start < stops[activeStop] || end > stops[activeStop + 1])) {
-							for (let i = 0, l = stops.length; i < stops.length; i += 2) {
-								if (start >= stops[i] && end <= stops[i + 1]) {
-									if (i + 3 > l) clearStops()
-									else activeStop = i
-									break
-								}
-							}
-						}
-					})
-				}
-			}),
 			addListener2(
 				textarea,
 				"beforeinput",
@@ -465,7 +447,6 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 						if (!(code & 7) && key == "Tab") {
 							if (!code) {
 								moveActiveStop(2)
-								if (activeStop + 3 > stops.length) clearStops()
 								preventDefault(e)
 							} else if (activeStop) {
 								moveActiveStop(-2)
@@ -508,9 +489,23 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 				}
 				shouldOpen = isTyping
 			}),
-			editor.on("selectionChange", selection => {
-				if (stops && (selection[0] < stops[activeStop] || selection[1] > stops[activeStop + 1])) {
-					clearStops()
+			editor.on("selectionChange", ([start, end]) => {
+				if (stops) {
+					if (start < stops[activeStop] || end > stops[activeStop + 1]) {
+						for (let i = 0; i < stops.length; i += 2) {
+							if (start >= stops[i] && end <= stops[i + 1]) {
+								activeStop = i
+								break
+							}
+						}
+					}
+					if (
+						activeStop + 3 > stops.length ||
+						start < stops[activeStop] ||
+						end > stops[activeStop + 1]
+					) {
+						clearStops()
+					}
 				}
 				if (shouldOpen) {
 					shouldOpen = false

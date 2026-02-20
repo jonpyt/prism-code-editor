@@ -364,24 +364,6 @@ const autoComplete =
 		}
 
 		const cleanUps = [
-			addTextareaListener(editor, "mousedown", () => {
-				if (stops) {
-					setTimeout(() => {
-						// Timeout runs before selectionChange, but after
-						// the selection changes as a result of the click
-						const [start, end] = getSelection()
-						if (stops && (start < stops[activeStop] || end > stops[activeStop + 1])) {
-							for (let i = 0, l = stops.length; i < stops.length; i += 2) {
-								if (start >= stops[i] && end <= stops[i + 1]) {
-									if (i + 3 > l) clearStops()
-									else activeStop = i
-									break
-								}
-							}
-						}
-					})
-				}
-			}),
 			addTextareaListener(
 				editor,
 				"beforeinput",
@@ -466,7 +448,6 @@ const autoComplete =
 						if (!(code & 7) && key == "Tab") {
 							if (!code) {
 								moveActiveStop(2)
-								if (activeStop + 3 > stops.length) clearStops()
 								preventDefault(e)
 							} else if (activeStop) {
 								moveActiveStop(-2)
@@ -531,8 +512,24 @@ const autoComplete =
 					currentSelection = selection
 				}
 				shouldOpen = isTyping
-				if (stops && (selection[0] < stops[activeStop] || selection[1] > stops[activeStop + 1])) {
-					clearStops()
+
+				let [start, end] = selection
+				if (stops) {
+					if (start < stops[activeStop] || end > stops[activeStop + 1]) {
+						for (let i = 0; i < stops.length; i += 2) {
+							if (start >= stops[i] && end <= stops[i + 1]) {
+								activeStop = i
+								break
+							}
+						}
+					}
+					if (
+						activeStop + 3 > stops.length ||
+						start < stops[activeStop] ||
+						end > stops[activeStop + 1]
+					) {
+						clearStops()
+					}
 				}
 				if (shouldOpen) {
 					shouldOpen = false
