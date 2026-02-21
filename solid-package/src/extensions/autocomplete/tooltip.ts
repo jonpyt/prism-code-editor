@@ -63,7 +63,6 @@ const autoComplete =
 	editor => {
 		let isOpen: boolean
 		let isTyping: boolean
-		let shouldOpen: boolean
 		let currentOptions: [number, number[], number, number, Completion][]
 		let numOptions: number
 		let activeIndex: number
@@ -81,6 +80,8 @@ const autoComplete =
 		let docsOption: Completion | null
 		let docsEnabled: boolean
 		let context: CompletionContext
+		let prevStart: number
+		let prevEnd: number
 
 		const windowSize = 13
 		const container = editor.container
@@ -511,7 +512,6 @@ const autoComplete =
 					isDeleteForwards = false
 					currentSelection = selection
 				}
-				shouldOpen = isTyping
 
 				let [start, end] = selection
 				if (stops) {
@@ -531,11 +531,12 @@ const autoComplete =
 						clearStops()
 					}
 				}
-				if (shouldOpen) {
-					shouldOpen = false
+				if (isTyping) {
+					isTyping = false
 					startQuery()
-				} else hide()
-				isTyping = false
+				} else if (prevStart != start || prevEnd != end) hide()
+				prevStart = start
+				prevEnd = end
 			}),
 		)
 

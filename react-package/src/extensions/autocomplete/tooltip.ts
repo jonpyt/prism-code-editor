@@ -67,7 +67,6 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 	useEffect(() => {
 		let isOpen: boolean
 		let isTyping: boolean
-		let shouldOpen: boolean
 		let currentOptions: [number, number[], number, number, Completion][]
 		let numOptions: number
 		let activeIndex: number
@@ -84,6 +83,8 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 		let docsOption: Completion | null
 		let docsEnabled: boolean
 		let context: CompletionContext
+		let prevStart: number
+		let prevEnd: number
 
 		const windowSize = 13
 		const container = editor.container!
@@ -487,7 +488,6 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 					isDeleteForwards = false
 					currentSelection = getSelection()
 				}
-				shouldOpen = isTyping
 			}),
 			editor.on("selectionChange", ([start, end]) => {
 				if (stops) {
@@ -507,11 +507,12 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 						clearStops()
 					}
 				}
-				if (shouldOpen) {
-					shouldOpen = false
+				if (isTyping) {
+					isTyping = false
 					startQuery()
-				} else hide()
-				isTyping = false
+				} else if (prevStart != start || prevEnd != end) hide()
+				prevStart = start
+				prevEnd = end
 			}),
 			() => {
 				textarea.removeAttribute("aria-autocomplete")
