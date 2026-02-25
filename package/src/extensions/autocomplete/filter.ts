@@ -1,4 +1,4 @@
-import { CompletionFilter } from "./types"
+import { CompletionFilter } from "./types.js"
 
 /**
  * Fuzzy filter that only requires that the option includes all the characters in the
@@ -26,26 +26,23 @@ const fuzzyFilter: CompletionFilter = (query: string, option: string) => {
 	let i = 0
 	let prevPos = 0
 	let j = 0
-	for (; i < queryLen; i++) {
-		const char = queryLc[i]
-		const pos = fullMatch > -1 ? i + fullMatch : optionLc.indexOf(char, prevPos)
+	for (; i < queryLen; ) {
+		const pos = fullMatch > -1 ? i + fullMatch : optionLc.indexOf(queryLc[i], prevPos)
 		const hasSkipped = pos > prevPos
 
 		if (pos < 0) return
 		if (hasSkipped) score -= 800
 		if (hasSkipped || !j) {
-			matched[j++] = pos
-			matched[j++] = pos + 1
-		} else {
-			matched[j - 1] = pos + 1
+			matched[j] = pos
+			j += 2
 		}
+		matched[j - 1] = prevPos = pos + 1
 
 		// Add a penalty if the query and option had different case
-		if ((<any>(char != query[i])) ^ (<any>(optionLc[pos] != option[pos]))) score -= 100
-		prevPos = pos + 1
+		if (query[i++] != option[pos]) score -= 100
 	}
 
-	return [score - optionLen - (queryLen < optionLen ? 100 : 0), matched]
+	return [queryLen < optionLen ? score - 100 : score, matched]
 }
 
 /**
@@ -65,7 +62,7 @@ const strictFilter: CompletionFilter = (query: string, option: string) => {
 	const score = start == query ? 0 : query.toLowerCase() == start.toLowerCase() ? -200 : null
 	if (score == null) return
 
-	return [query ? score - optionLen - (queryLen < optionLen ? 100 : 0) : 0, [0, queryLen]]
+	return [query ? (queryLen < optionLen ? score - 100 : score) : 0, [0, queryLen]]
 }
 
 export { fuzzyFilter, strictFilter }
