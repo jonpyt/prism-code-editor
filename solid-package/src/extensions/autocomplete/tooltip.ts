@@ -6,6 +6,7 @@ import {
 	getLineBefore,
 	getModifierCode,
 	insertText,
+	isMac,
 	prevSelection,
 	setSelection,
 } from "../../utils"
@@ -408,7 +409,11 @@ const autoComplete =
 					let height: number
 					let newActive: number
 
-					if (key == " " && code == 2) {
+					if (
+						(code == 2 && key == " ") ||
+						(code == (isMac ? 4 : 2) && key == "i") ||
+						(isMac && !isOpen && code == 1 && key == "Escape")
+					) {
 						if (isOpen) toggleDocs()
 						else startQuery(true)
 						preventDefault(e)
