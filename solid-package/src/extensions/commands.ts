@@ -37,18 +37,40 @@ const whitespaceEnd = (str: string) => str.search(/\S|$/)
 
 /**
  * Extension that will add automatic indentation, closing of brackets,
- * quotes and tags along with the following commands:
+ * quotes and tags along with the following commands.
  *
- * - Alt+ArrowUp/Down: Move line up/down
- * - Shift+Alt+ArrowUp/Down: Copy line up/down
- * - Ctrl+ArrowUp/Down (Not on MacOS): Scroll up/down 1 line
- * - Ctrl+Enter (Cmd+Enter on MacOS): Insert blank line
- * - Ctrl+[ (Cmd+[ on MacOS): Outdent line
- * - Ctrl+] (Cmd+] on MacOS): Indent line
- * - Shift+Ctrl+K (Shift+Cmd + K on MacOS): Delete line
- * - Ctrl+/ (Cmd+/ on MacOS): Toggle comment
- * - Shift+Alt+A: Toggle block comment
- * - Ctrl+M (Ctrl+Shift+M on MacOS): Toggle Tab capturing
+ * ## Commands (Windows/Linux)
+ *
+ * - `Alt` + `ArrowUp`: Move line up
+ * - `Alt` + `ArrowDown`: Move line down
+ * - `Ctrl` + `ArrowUp`: Scroll one line up
+ * - `Ctrl` + `ArrowDown`: Scroll one line down
+ * - `Shift` + `Alt` + `ArrowUp`: Copy line up
+ * - `Shift` + `Alt` + `ArrowDown`: Copy line down
+ * - `Ctrl` + `Enter`: Insert blank line
+ * - `Ctrl` + `]`: Indent line
+ * - `Ctrl` + `[`: Outdent line
+ * - `Tab`: Indent line (Tab capture enabled)
+ * - `Shift` + `Tab`: Outdent line (Tab capture enabled)
+ * - `Shift` + `Ctrl` + `K`: Delete line
+ * - `Ctrl` + `/`: Toggle comment
+ * - `Shift` + `Alt` + `A`: Toggle block comment
+ * - `Ctrl` + `M`: Toggle tab capturing
+ *
+ * ## Commands (Mac)
+ *
+ * - `Alt` + `ArrowUp`: Move line up
+ * - `Alt` + `ArrowDown`: Move line down
+ * - `Shift` + `Alt` + `ArrowUp`: Copy line up
+ * - `Shift` + `Alt` + `ArrowDown`: Copy line down
+ * - `Cmd` + `Enter`: Insert blank line
+ * - `Tab`: Indent line (Tab capture enabled)
+ * - `Shift` + `Tab`: Outdent line (Tab capture enabled)
+ * - `Shift` + `Cmd` + `K`: Delete line
+ * - `Cmd` + `/`: Toggle comment
+ * - `Shift` + `Alt` + `A`: Toggle block comment
+ * - `Ctrl` + `Shift` + `M`: Toggle tab capturing
+ *
  * @param selfClosePairs Pairs of self-closing brackets and quotes.
  * Must be an array of strings with 2 characters each.
  * Defaults to `['""', "''", '``', '()', '[]', '{}']`.
