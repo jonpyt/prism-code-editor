@@ -300,6 +300,35 @@ const mySnippets: Completion[] = [
 ]
 ```
 
+### Documentation
+
+To render documentation for a completion item, use the [`renderDocs`](/api-reference/autocomplete/i-completion#renderDocs) property. All nodes and strings returned will be rendered next to the list of completions. For rendering syntax highlighted snippets, the [`renderSnippet(){:js}`](/api-reference/autocomplete/f-rendersnippet) can be used.
+
+```ts editor
+import { Completion, renderSnippet } from "prism-code-editor/autocomplete"
+
+const mySnippets: Completion[] = [
+	{
+		label: "function",
+		// More properties...
+		renderDocs(item, context, editor) {
+			return [
+				"Function Statement",
+				renderSnippet(item.insert!, context.language),
+			]
+		},
+	},
+]
+```
+
+#### Styling
+
+The documentation is appended to an element you can style with the `.pce-ac-content{:selector}` selector. You should avoid changing the `font-family` on this element since this will also change the font of rendered snippets. Instead, wrap your text in paragraphs and change the font of those.
+
+<Aside type="tip">
+	To make styling easier, set [`closeOnBlur`](/api-reference/autocomplete/t-autocompleteconfig/#closeonblur) to `false{:js}` so the tooltip doesn't close when you try to inspect it.
+</Aside>
+
 ### Helpers
 
 [`findWords(){:js}`](/api-reference/autocomplete/f-findwords) can be used to find words in the editor's tokens that can be returned as completions.
