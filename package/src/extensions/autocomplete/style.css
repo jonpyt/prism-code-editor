@@ -127,6 +127,7 @@ button.pce-ac-close {
 
 .pce-ac-wrapper > div {
 	border: 1px solid var(--pce-widget-border);
+	border-radius: 0.2em;
 	background: var(--pce-widget-bg);
 	box-sizing: border-box;
 	overflow: auto;
@@ -142,7 +143,6 @@ button.pce-ac-close {
 }
 
 .pce-ac-tooltip {
-	border-radius: 0.2em;
 	white-space: pre;
 	grid-area: t;
 	height: 100%;
@@ -150,6 +150,7 @@ button.pce-ac-close {
 }
 
 .pce-ac-tooltip > ul {
+	padding: 0;
 	box-sizing: border-box;
 	overflow: hidden;
 }

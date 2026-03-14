@@ -1,5 +1,5 @@
-import { AttributeConfig, TagConfig } from "../types"
-import { ariaAttributes, attrValueB, htmlEventHandlers } from "./data"
+import { AttributeConfig, TagConfig } from "../types.js"
+import { ariaAttributes, attrValueB, htmlEventHandlers } from "./data.js"
 
 const globalMathMLAttributes: AttributeConfig = {
 	...ariaAttributes,

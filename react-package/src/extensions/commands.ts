@@ -36,40 +36,29 @@ const setIgnoreTab = (newState: boolean) => (ignoreTab = newState)
 const whitespaceEnd = (str: string) => str.search(/\S|$/)
 
 /**
- * Hook that will add automatic indentation, closing of brackets,
- * quotes and tags along with the following commands.
+ * Hook that will add automatic indentation and closing of brackets, quotes, and tags
+ * along with the following commands.
  *
- * ## Commands (Windows/Linux)
+ * ## Commands
  *
- * - `Alt` + `ArrowUp`: Move line up
- * - `Alt` + `ArrowDown`: Move line down
- * - `Ctrl` + `ArrowUp`: Scroll one line up
- * - `Ctrl` + `ArrowDown`: Scroll one line down
- * - `Shift` + `Alt` + `ArrowUp`: Copy line up
- * - `Shift` + `Alt` + `ArrowDown`: Copy line down
- * - `Ctrl` + `Enter`: Insert blank line
- * - `Ctrl` + `]`: Indent line
- * - `Ctrl` + `[`: Outdent line
- * - `Tab`: Indent line (Tab capture enabled)
- * - `Shift` + `Tab`: Outdent line (Tab capture enabled)
- * - `Shift` + `Ctrl` + `K`: Delete line
- * - `Ctrl` + `/`: Toggle comment
- * - `Shift` + `Alt` + `A`: Toggle block comment
- * - `Ctrl` + `M`: Toggle tab capturing
- *
- * ## Commands (Mac)
+ * Here, `Mod` refers to `Cmd` on Mac and `Ctrl` otherwise.
  *
  * - `Alt` + `ArrowUp`: Move line up
  * - `Alt` + `ArrowDown`: Move line down
+ * - `Ctrl` + `ArrowUp`: Scroll one line up (Windows/Linux only)
+ * - `Ctrl` + `ArrowDown`: Scroll one line down (Windows/Linux only)
  * - `Shift` + `Alt` + `ArrowUp`: Copy line up
  * - `Shift` + `Alt` + `ArrowDown`: Copy line down
- * - `Cmd` + `Enter`: Insert blank line
+ * - `Mod` + `Enter`: Insert blank line
+ * - `Mod` + `]`: Indent line
+ * - `Mod` + `[`: Outdent line
  * - `Tab`: Indent line (Tab capture enabled)
  * - `Shift` + `Tab`: Outdent line (Tab capture enabled)
- * - `Shift` + `Cmd` + `K`: Delete line
- * - `Cmd` + `/`: Toggle comment
+ * - `Shift` + `Mod` + `K`: Delete line
+ * - `Mod` + `/`: Toggle comment
  * - `Shift` + `Alt` + `A`: Toggle block comment
- * - `Ctrl` + `Shift` + `M`: Toggle tab capturing
+ * - `Ctrl` + `M`: Toggle tab capturing (Windows/Linux)
+ * - `Ctrl` + `Shift` + `M`: Toggle tab capturing (Mac)
  *
  * @param selfClosePairs Pairs of self-closing brackets and quotes.
  * Must be an array of strings with 2 characters each.

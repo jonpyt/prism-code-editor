@@ -252,7 +252,7 @@ const completeIdentifiers = (identifiers?: Iterable<string>): CompletionSource<J
  * This means you can provide completions for both the `window` and words in the document
  * without duplicated options.
  * @param scope Scope object you want to provide completions for. For example `window`.
- * @param identifiers LList of identifiers that should be completed even if they're not
+ * @param identifiers List of identifiers that should be completed even if they're not
  * found in the document.
  */
 const jsCompletion = (scope: any, identifiers?: Iterable<string>): CompletionSource<JSContext> => {

@@ -60,7 +60,7 @@ const registerCompletions = <T extends object>(
  *
  * ## Keyboard shortcuts
  *
- * Here `Mod` refers to `Cmd` on Mac and `Ctrl` otherwise.
+ * Here, `Mod` refers to `Cmd` on Mac and `Ctrl` otherwise.
  *
  * - `Ctrl` + `Space`: Trigger suggestion
  * - `Mod` + `I`: Trigger suggestion
