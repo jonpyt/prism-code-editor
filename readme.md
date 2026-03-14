@@ -15,15 +15,15 @@
 
 ## Why?
 
-There are multiple fully featured code editors for the web such as Monaco, Ace and CodeMirror. While these are awesome, they have a large footprint and are likely overkill for code examples, forms, playgrounds or anywhere you won't display large documents.
+There are multiple fully featured code editors for the web such as Monaco, Ace, and CodeMirror. While these are awesome, they have a large footprint and are likely overkill for code examples, forms, playgrounds or anywhere you won't display large documents.
 
 ## How?
 
 This library overlays syntax highlighted code over a `<textarea>`. Libraries like [CodeFlask](https://github.com/kazzkiq/CodeFlask), [react-simple-code-editor](https://github.com/react-simple-code-editor/react-simple-code-editor), and many others have been doing this for years, but this library offers some distinct advantages:
 
 - It uses a trimmed Prism's core less than ⅓ the size that no longer relies on global variables.
-- It re-exports Prism's languages that now automatically import their required dependencies and embedded languages are resolved at runtime.
-- It splits the highlighted code into lines. This makes it easy to add line numbers, highlight a line and only update changed lines in the DOM for efficient updates.
+- It re-exports Prism's languages that now automatically import their required dependencies, and embedded languages are resolved at runtime.
+- It splits the highlighted code into lines. This makes it easy to add line numbers, highlight a line, and only update changed lines in the DOM for efficient updates.
 - The core is light as a feather with a wide array of extensions you can choose from and multiple events to listen to.
 
 ## Key features
@@ -34,8 +34,8 @@ This library overlays syntax highlighted code over a `<textarea>`. Libraries lik
 - Search and replace functionality
 - Wraps selection in brackets/quotes
 - Automatic indentation
-- Automatic closing of brackets, quotes and tags
-- Indent selected lines with tab key
+- Automatic closing of brackets, quotes, and tags
+- Indent selected lines with the Tab key
 - Custom undo/redo behavior
 - Language specific autocomplete
 - Highlights the line with the cursor
@@ -51,7 +51,7 @@ If you're not using NPM and a bundler in your project, then you might be interes
 
 ## Basic usage
 
-The library includes 3 different setups you can import. These will automatically import the necessary styles and scope them with a shadow root, add various extensions and import all language specific behavior. There are also web components wrapping these setups if that's preferred.
+The library includes 3 different setups you can import. These will automatically import the necessary styles and scope them with a shadow root, add various extensions, and import all language specific behavior. There are also web components wrapping these setups if that's preferred.
 
 ```javascript
 import { minimalEditor, basicEditor, readonlyEditor } from "prism-code-editor/setups"
@@ -100,7 +100,7 @@ Once you start exceeding 1000 LOC, the editor will start slowing down on most ha
 
 ## Compatibility
 
-This has been tested to work in the latest desktop and mobile versions of both Safari, Chrome, and Firefox. It should work in slightly older browsers too, but there will be many bugs present in browsers that don't support `beforeinput` events.
+This has been tested to work in the latest desktop and mobile versions of Safari, Chrome, and Firefox. It should work in slightly older browsers too, but there will be many bugs present in browsers that don't support `beforeinput` events.
 
 This library does not support any Prism plugins since Prism hooks have been removed, but behavior like the [Highlight Keywords](https://prismjs.com/plugins/highlight-keywords/) plugin is included.
 
@@ -108,7 +108,7 @@ Some grammars have had small changes, most notably markup tags' grammar. Prism t
 
 In PrismJS, greedy matching is controlled by a `greedy` flag on the token. Here, it's instead controlled by the `g` flag on the pattern. When copying Prism grammars, be sure to remove the `greedy` flags and instead add the `g` flag to the regex.
 
-Lists of aliases are not supported. To add multiple aliases to a token, separate them with spaces in a single string instead. For example convert `["foo", "bar"]` to `"foo bar"`.
+Lists of aliases are not supported. To add multiple aliases to a token, separate them with spaces in a single string instead. For example, convert `["foo", "bar"]` to `"foo bar"`.
 
 ## Credits
 
@@ -116,7 +116,7 @@ This library is made possible thanks to [Prism](https://prismjs.com).
 
 ## Contributing
 
-Feature requests, bug reports, optimizations and potentially new themes and extensions are all welcome.
+Feature requests, bug reports, optimizations, and potentially new themes and extensions are all welcome.
 
 To test your changes during development, install dependencies:
 
