@@ -6,8 +6,8 @@ const themes = [
 	"github-dark-dimmed",
 	"github-dark",
 	"github-light",
-	"night-owl",
 	"night-owl-light",
+	"night-owl",
 	"prism-okaidia",
 	"prism-solarized-light",
 	"prism-twilight",
@@ -18,7 +18,7 @@ const themes = [
 ]
 
 let themeMod = await fs.readFile("dist/themes/index.js", "utf-8")
-const regex = RegExp(`^(${themes.join("|")})(-\\w+)\.js$`)
+const regex = RegExp(`^(${themes.join("|")})(-\\w[\\w-]+)\.js$`)
 const entries = await fs.readdir("dist", { withFileTypes: true })
 
 for (const entry of entries) {

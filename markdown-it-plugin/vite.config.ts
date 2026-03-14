@@ -1,4 +1,4 @@
- import { defineConfig } from "vite"
+import { defineConfig } from "vite"
 import dts from "vite-plugin-dts"
 
 export default defineConfig({
@@ -12,7 +12,7 @@ export default defineConfig({
 			formats: ["es"],
 		},
 		target: ["es2021", "safari14"],
-		rollupOptions: {
+		rolldownOptions: {
 			external: [
 				"markdown-it",
 				"prism-code-editor",

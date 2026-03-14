@@ -89,7 +89,7 @@ export default defineConfig({
 		sourcemap: true,
 		cssMinify: "esbuild",
 		minify: false,
-		rollupOptions: {
+		rolldownOptions: {
 			external: ["solid-js", "solid-js/web"],
 		},
 		lib: {

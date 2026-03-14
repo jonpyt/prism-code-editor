@@ -11,8 +11,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.37.0",
-    "astro": "^5.16.11",
+    "@astrojs/starlight": "^0.38.1",
+    "astro": "^6.0.4",
     "prism-code-editor": "^5.0.1",
     "rehype-prism-code-editor": "^0.3.0",
     "sharp": "^0.34.4",

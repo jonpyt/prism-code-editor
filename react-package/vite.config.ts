@@ -80,7 +80,7 @@ export default defineConfig({
 		sourcemap: true,
 		cssMinify: "esbuild",
 		minify: false,
-		rollupOptions: {
+		rolldownOptions: {
 			external: ["react", "react-dom", "react/jsx-runtime"],
 			output: {
 				banner({ fileName, isEntry }) {

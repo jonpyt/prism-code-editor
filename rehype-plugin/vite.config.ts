@@ -12,7 +12,7 @@ export default defineConfig({
 			formats: ["es"],
 		},
 		target: ["es2021", "safari14"],
-		rollupOptions: {
+		rolldownOptions: {
 			external: [
 				"unified",
 				"hast",

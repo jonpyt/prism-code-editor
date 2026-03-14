@@ -82,6 +82,7 @@
     "@types/yargs": "^17.0.35",
     "@vscode/web-custom-data": "^0.6.3",
     "chai": "^5.3.3",
+    "esbuild": "^0.27.4",
     "magic-string": "^0.30.21",
     "mocha": "^11.7.5",
     "prettier": "2.7.1",
@@ -90,7 +91,7 @@
     "regexpp": "^3.2.0",
     "scslre": "0.1.6",
     "typescript": "^5.9.3",
-    "vite": "^6.4.1",
+    "vite": "^8.0.0",
     "vite-plugin-dts": "^4.5.4",
     "yargs": "^17.7.2"
   },
@@ -110,6 +111,8 @@
   },
   "license": "MIT",
   "sideEffects": [
+    "./src/prism/languages/*",
+    "./src/languages/*",
     "*.css",
     "./dist/languages/*",
     "./dist/prism/languages/*"
