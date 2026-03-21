@@ -22,7 +22,7 @@ import { IndentGuides } from "../extensions/guides"
 import { useHighlightSelectionMatches, useShowInvisibles } from "../extensions/search"
 import { useOverscroll } from "../extensions/overscroll"
 import { useHighlightMatchingTags, useTagMatcher } from "../extensions/match-tags"
-import { useDefaultCommands, useEditHistory } from "../extensions/commands"
+import { useEditorCommands, useEditHistory, defaultKeymap } from "../extensions/commands"
 import { useCopyButton } from "../extensions/copy-button"
 import { useSearchWidget } from "../extensions/search/widget"
 import { languages } from "../prism"
@@ -75,7 +75,7 @@ const Extensions = () => {
 	useOverscroll(editor)
 	useTagMatcher(editor)
 	useHighlightMatchingTags(editor)
-	useDefaultCommands(editor)
+	useEditorCommands(editor, defaultKeymap)
 	useEditHistory(editor)
 	useSearchWidget(editor)
 	useHighlightSelectionMatches(editor)

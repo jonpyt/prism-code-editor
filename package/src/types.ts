@@ -4,7 +4,7 @@ import { Cursor } from "./extensions/cursor/index.js"
 import { SearchWidget } from "./extensions/search/widget.js"
 import { ReadOnlyCodeFolding } from "./extensions/folding/index.js"
 import { TokenStream } from "./prism/types.js"
-import { EditHistory } from "./extensions/commands.js"
+import { EditHistory } from "./extensions/commands/index.js"
 import { AutoComplete } from "./extensions/autocomplete/types.js"
 
 export type EditorOptions<T extends {} = {}> = {

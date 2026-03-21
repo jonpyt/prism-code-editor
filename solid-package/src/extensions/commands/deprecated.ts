@@ -1,6 +1,6 @@
-import { addTextareaListener, getLineStart } from "../utils/local"
-import { Extension, InputCommandCallback, InputSelection, KeyCommandCallback } from "../types"
-import { createEffect, on, onCleanup, onMount } from "solid-js"
+import { addTextareaListener, getLineStart } from "../../utils/local"
+import { Extension, InputCommandCallback, InputSelection, KeyCommandCallback } from "../../types"
+import { onCleanup } from "solid-js"
 import {
 	getLanguage,
 	getLineBefore,
@@ -8,14 +8,13 @@ import {
 	getModifierCode,
 	insertText,
 	isMac,
-	prevSelection,
 	regexEscape,
 	setSelection,
-} from "../utils"
-import { languageMap, preventDefault } from "../core"
-import { getStyleValue } from "../utils/other"
-
-let ignoreTab = false
+} from "../../utils"
+import { languageMap, preventDefault } from "../../core"
+import { getStyleValue } from "../../utils/other"
+import { ignoreTab, setIgnoreTab, whitespaceEnd } from "./commands"
+import { mod } from "./utils"
 
 const addCommand = <T extends KeyCommandCallback | InputCommandCallback>(
 	cleanups: (() => void)[],
@@ -26,14 +25,6 @@ const addCommand = <T extends KeyCommandCallback | InputCommandCallback>(
 	commands[key] = command
 	cleanups.push(() => delete commands[key])
 }
-
-const mod = isMac ? 4 : 2
-/**
- * Sets whether editors should ignore tab or use it for indentation.
- * Users can always toggle this using Ctrl+M / Ctrl+Shift+M (Mac).
- */
-const setIgnoreTab = (newState: boolean) => (ignoreTab = newState)
-const whitespaceEnd = (str: string) => str.search(/\S|$/)
 
 /**
  * Extension that will add automatic indentation and closing of brackets, quotes, and
@@ -67,12 +58,11 @@ const whitespaceEnd = (str: string) => str.search(/\S|$/)
  * automatically close based on the character before and after the cursor.
  * Defaults to ``/([^$\w'"`]["'`]|.[[({])[.,:;\])}>\s]|.[[({]`/s``.
  */
-const defaultCommands =
-	(
-		selfClosePairs = ['""', "''", "``", "()", "[]", "{}"],
-		selfCloseRegex = /([^$\w'"`]["'`]|.[[({])[.,:;\])}>\s]|.[[({]`/s,
-	): Extension =>
-	editor => {
+const defaultCommands = (
+	selfClosePairs = ['""', "''", "``", "()", "[]", "{}"],
+	selfCloseRegex = /([^$\w'"`]["'`]|.[[({])[.,:;\])}>\s]|.[[({]`/s,
+): Extension => {
+	return editor => {
 		let prevCopy: string
 		const { keyCommandMap, inputCommandMap, getSelection, props, container } = editor
 
@@ -199,7 +189,7 @@ const defaultCommands =
 		})
 
 		addCommand(cleanUps, keyCommandMap, "Tab", (e, [start, end], value) => {
-			if (ignoreTab || props.readOnly || getModifierCode(e) & 6) return
+			if (ignoreTab || props.readOnly || getModifierCode(e) & 7) return
 			const [indentChar, tabSize] = getIndent()
 			const shiftKey = e.shiftKey
 			const [lines, start1, end1] = getLines(value, start, end)
@@ -215,7 +205,7 @@ const defaultCommands =
 				if (code) selection[0] = selection[1] = getLines(value, selection[1])[2]
 				const [indentChar, tabSize] = getIndent()
 				const [start, end] = selection
-				const autoIndent = languageMap[getLanguage(editor)]?.autoIndent
+				const autoIndent = languageMap[getLanguage(editor, start)]?.autoIndent
 				const indenationCount =
 					Math.floor(whitespaceEnd(getLineBefore(value, start)) / tabSize) * tabSize
 				const extraIndent = autoIndent?.[0]?.(selection, value, editor) ? tabSize : 0
@@ -305,14 +295,13 @@ const defaultCommands =
 							const [open, close] = block
 							const text = value.slice(start, end)
 							const pos = value.slice(0, start).search(regexEscape(open) + " ?$")
-							const matches = RegExp("^ ?" + regexEscape(close)).test(value.slice(end))
 
-							if (pos + 1 && matches)
+							if (pos + 1 && RegExp("^ ?" + regexEscape(close)).test(value.slice(end)))
 								insertText(
 									editor,
 									text,
 									pos,
-									end + +(value[end] == " ") + close.length,
+									end + <any>(value[end] == " ") + close.length,
 									pos,
 									pos + end - start,
 								)
@@ -335,31 +324,31 @@ const defaultCommands =
 							const regex2 = RegExp(escaped + " ?")
 							const allWhiteSpace = !/\S/.test(value.slice(start1, end1))
 							const newLines = lines.map(
-								lines.every(line => regex.test(line)) && !allWhiteSpace
+								!allWhiteSpace && lines.every(line => regex.test(line))
 									? str => str.replace(regex2, "")
 									: str =>
-											allWhiteSpace || /\S/.test(str) ? str.replace(/^\s*/, `$&${line} `) : str,
+											allWhiteSpace || /\S/.test(str) ? str.replace(/(?!\s)/, line + " ") : str,
 							)
 							insertLines(lines, newLines, start1, end1, start, end)
 							scroll()
 							preventDefault(e)
 						} else if (block) {
 							const [open, close] = block
-							const insertionPoint = whitespaceEnd(lines[0])
+							const first = lines[0]
+							const insertionPoint = whitespaceEnd(first)
 							const hasComment =
-								lines[0].startsWith(open, insertionPoint) && lines[last].endsWith(close)
-							const newLines = lines.slice()
+								first.startsWith(open, insertionPoint) && lines[last].endsWith(close)
 
-							newLines[0] = lines[0].replace(
-								hasComment ? RegExp(regexEscape(open) + " ?") : /(?=\S)|$/,
+							lines[0] = first.replace(
+								hasComment ? RegExp(regexEscape(open) + " ?") : /(?!\s)/,
 								hasComment ? "" : open + " ",
 							)
-							let diff = newLines[0].length - lines[0].length
-							newLines[last] = hasComment
-								? newLines[last].replace(RegExp(`( ?${regexEscape(close)})?$`), "")
-								: newLines[last] + " " + close
+							let diff = lines[0].length - first.length
+							lines[last] = hasComment
+								? lines[last].replace(RegExp(` ?${regexEscape(close)}$`), "")
+								: lines[last] + " " + close
 
-							let newText = newLines.join("\n")
+							let newText = lines.join("\n")
 							let firstInsersion = insertionPoint + start1
 							let newStart = firstInsersion > start ? start : Math.max(start + diff, firstInsersion)
 							let newEnd =
@@ -413,143 +402,6 @@ const defaultCommands =
 			cleanUps.forEach(cleanUp => cleanUp())
 		})
 	}
-
-export interface EditHistory {
-	/** Clears the history stack. */
-	clear(): void
-	/**
-	 * Sets the active entry relative to the current entry.
-	 *
-	 * @param offset The position you want to move to relative to the current entry.
-	 *
-	 * `EditHistory.go(-1)` would be equivalent to an undo while `EditHistory.go(1)` would
-	 * be equivalent to a redo.
-	 *
-	 * If there's no entry at the specified position, the call does nothing.
-	 */
-	go(offset: number): void
-	/**
-	 * Returns whether or not there exists a history entry at the specified offset relative
-	 * to the current entry.
-	 *
-	 * This method can be used to determine whether a call to {@link EditHistory.go} with the
-	 * same offset will succeed or do nothing.
-	 */
-	has(offset: number): boolean
 }
 
-/**
- * History extension that overrides the undo/redo behavior of the browser.
- *
- * Without this extension, the browser's native undo/redo is used, which can be sufficient
- * in some cases.
- *
- * Once added to an editor, this extension can be accessed from `editor.extensions.history`.
- *
- * @param historyLimit The maximum size of the history stack. Defaults to 999.
- */
-const editHistory =
-	(historyLimit = 999): Extension =>
-	editor => {
-		let sp = 0
-		let allowMerge: boolean
-		let isTyping = false
-		let prevInputType: string
-		let prevData: string | null
-		let isMerge: boolean
-		let prevTime: number
-
-		const extensions = editor.extensions
-		const getSelection = editor.getSelection
-		const textarea = editor.textarea
-		const stack: [string, InputSelection, InputSelection][] = []
-		const update = (index: number) => {
-			if (index >= historyLimit) {
-				index--
-				stack.shift()
-			}
-			stack.splice((sp = index), historyLimit, [editor.value, getSelection(), getSelection()])
-		}
-		const setEditorState = (index: number) => {
-			if (stack[index]) {
-				textarea.value = stack[index][0]
-				textarea.setSelectionRange(...stack[index][index < sp ? 2 : 1])
-				editor.update()
-				extensions.cursor?.scrollIntoView()
-				sp = index
-				allowMerge = false
-			}
-		}
-
-		const clear = () => {
-			update(0)
-			allowMerge = false
-		}
-
-		const cleanUps = [
-			addTextareaListener(editor, "beforeinput", e => {
-				let data = e.data
-				let inputType = e.inputType
-				let time = e.timeStamp
-
-				if (/history/.test(inputType)) {
-					setEditorState(sp + (inputType[7] == "U" ? -1 : 1))
-					preventDefault(e)
-				} else if (
-					!(isMerge =
-						allowMerge &&
-						(prevInputType == inputType ||
-							(time - prevTime < 99 && inputType.slice(-4) == "Drop")) &&
-						!prevSelection &&
-						(data != " " || prevData == data))
-				) {
-					stack[sp][2] = prevSelection || getSelection()
-				}
-				isTyping = true
-				prevData = data
-				prevTime = time
-				prevInputType = inputType
-			}),
-			addTextareaListener(editor, "input", () => update(sp + <any>!isMerge)),
-			addTextareaListener(editor, "keydown", e => {
-				if (!editor.props.readOnly) {
-					const code = getModifierCode(e)
-					const keyCode = e.keyCode
-					const isUndo = code == mod && keyCode == 90
-					const isRedo =
-						(code == mod + 8 && keyCode == 90) || (!isMac && code == mod && keyCode == 89)
-					if (isUndo) {
-						setEditorState(sp - 1)
-						preventDefault(e)
-					} else if (isRedo) {
-						setEditorState(sp + 1)
-						preventDefault(e)
-					}
-				}
-			}),
-		]
-
-		createEffect(
-			on(editor.selection, () => {
-				allowMerge = isTyping
-				isTyping = false
-			}),
-		)
-
-		extensions.history = {
-			clear,
-			has: offset => sp + offset in stack,
-			go(offset) {
-				setEditorState(sp + offset)
-			},
-		}
-
-		createEffect(on(() => editor.props.value, clear))
-
-		onCleanup(() => {
-			cleanUps.forEach(cleanUp => cleanUp())
-			delete extensions.history
-		})
-	}
-
-export { editHistory, defaultCommands, setIgnoreTab, ignoreTab }
+export { defaultCommands, addCommand }

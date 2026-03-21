@@ -43,7 +43,7 @@
     "./ssr": "./dist/ssr/index.js",
     "./client": "./dist/client/index.js",
     "./code-blocks": "./dist/client/code-block.js",
-    "./commands": "./dist/extensions/commands.js",
+    "./commands": "./dist/extensions/commands/index.js",
     "./cursor": "./dist/extensions/cursor/index.js",
     "./code-folding": "./dist/extensions/folding/index.js",
     "./search": "./dist/extensions/search/index.js",

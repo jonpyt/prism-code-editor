@@ -8,7 +8,7 @@ import {
 	getPosition,
 	updateNode,
 } from "../../utils/local.js"
-import { defaultCommands } from "../commands.js"
+import { defaultCommands } from "../commands/index.js"
 
 /** Postion of the cursor relative to the editor's overlays. */
 export type CursorPosition = {

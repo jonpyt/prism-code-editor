@@ -1,5 +1,5 @@
 import { createEditor, EditorOptions, PrismEditor } from ".."
-import { defaultCommands, editHistory } from "../extensions/commands"
+import { defaultKeymap, editHistory, editorCommands } from "../extensions/commands"
 import { copyButton } from "../extensions/copyButton"
 import "../prism/languages/js-templates"
 import "../prism/languages/jsdoc"
@@ -78,7 +78,7 @@ const runBtn = <HTMLButtonElement>document.getElementById("run"),
 			copyButton(),
 			highlightSelectionMatches(),
 			searchWidget(),
-			defaultCommands(),
+			editorCommands(defaultKeymap),
 			editHistory(),
 			showInvisibles(),
 			customCursor(),

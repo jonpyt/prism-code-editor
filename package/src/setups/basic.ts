@@ -3,7 +3,7 @@ import { matchBrackets } from "../extensions/matchBrackets/index.js"
 import { highlightBracketPairs } from "../extensions/matchBrackets/highlight.js"
 import { indentGuides } from "../extensions/guides.js"
 import { cursorPosition } from "../extensions/cursor/index.js"
-import { defaultCommands, editHistory } from "../extensions/commands.js"
+import { defaultCommands, editHistory } from "../extensions/commands/index.js"
 import { EditorExtension } from "../index.js"
 import {
 	searchWidget,

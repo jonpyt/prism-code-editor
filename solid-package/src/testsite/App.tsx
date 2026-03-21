@@ -32,7 +32,7 @@ import { highlightSelectionMatches, showInvisibles } from "../extensions/search"
 import core from "../core?raw"
 import { highlightMatchingTags, matchTags } from "../extensions/match-tags"
 import { cursorPosition, customCursor } from "../extensions/cursor"
-import { defaultCommands, editHistory } from "../extensions/commands"
+import { defaultKeymap, editHistory, editorCommands } from "../extensions/commands"
 import {
 	blockCommentFolding,
 	bracketFolding,
@@ -124,7 +124,7 @@ const App: Component = () => {
 		matchTags(),
 		highlightMatchingTags(),
 		cursorPosition(),
-		defaultCommands(),
+		editorCommands(defaultKeymap),
 		editHistory(),
 		tooltip,
 		copyButton(),

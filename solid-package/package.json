@@ -39,7 +39,7 @@
     "./autocomplete/svelte": "./dist/extensions/autocomplete/svelte/index.js",
     "./autocomplete/vue": "./dist/extensions/autocomplete/vue/index.js",
     "./code-blocks": "./dist/code-block/index.js",
-    "./commands": "./dist/extensions/commands.js",
+    "./commands": "./dist/extensions/commands/index.js",
     "./cursor": "./dist/extensions/cursor/index.js",
     "./code-folding": "./dist/extensions/folding/index.js",
     "./overscroll": "./dist/extensions/overscroll.js",

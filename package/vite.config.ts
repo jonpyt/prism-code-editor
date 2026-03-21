@@ -6,7 +6,7 @@ import fs from "node:fs/promises"
 const entries: Record<string, string> = {
 	index: "src/index.ts",
 	"extensions/guides": "src/extensions/guides.ts",
-	"extensions/commands": "src/extensions/commands.ts",
+	"extensions/commands/index": "src/extensions/commands/index.ts",
 	"extensions/cursor/index": "src/extensions/cursor/index.ts",
 	"setups/index": "src/setups/index.ts",
 	webComponent: "src/webComponent.ts",

@@ -1,6 +1,6 @@
 import { EditorOptions, createEditor } from "../index.js"
 import { doc, getElement } from "../core.js"
-import { defaultCommands, editHistory } from "../extensions/commands.js"
+import { defaultCommands, editHistory } from "../extensions/commands/index.js"
 import { copyButton } from "../extensions/copyButton/index.js"
 import { readOnlyCodeFolding } from "../extensions/folding/index.js"
 import { indentGuides } from "../extensions/guides.js"
