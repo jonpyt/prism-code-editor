@@ -6,7 +6,7 @@ import { HotkeyMap, EditorHotkey } from "./types.js"
 
 /**
  * Normalizes modifier keys to a bitmask that's used by {@link getKeysFromEvent}.
- * Modifier keys are case insensitive.
+ * All keys are case insensitive.
  *
  * Rules:
  * - `alt` → `1`
@@ -16,7 +16,7 @@ import { HotkeyMap, EditorHotkey } from "./types.js"
  * - `mod` → `4` on Mac, `2` otherwise
  *
  * @param key Key to normalize.
- *
+ * @returns Normalized and lowercase key.
  * @example
  * normalizeKey("a") // "0+a"
  * normalizeKey("+") // "0++"
@@ -26,10 +26,10 @@ import { HotkeyMap, EditorHotkey } from "./types.js"
  */
 const normalizeKey = (key: string) => {
 	let code = 0
-	let parts = key.split("+")
+	let parts = key.toLowerCase().split("+")
 	let last = parts.pop() || "+"
 	for (const part of parts) {
-		code |= +part || modifierMap[part.toLowerCase()] || 0
+		code |= +part || modifierMap[part] || 0
 	}
 	return code + "+" + last
 }
@@ -43,7 +43,6 @@ const getKeysFromEvent = (e: KeyboardEvent) => {
 		// Alphanumeric
 		for (let i = 48; i < 91; i++) {
 			keyCodeMap[i] = String.fromCharCode(i > 64 ? i + 32 : i)
-			if (i > 64) keyCodeMapShift[i] = String.fromCharCode(i)
 		}
 
 		// Numpad
@@ -59,11 +58,11 @@ const getKeysFromEvent = (e: KeyboardEvent) => {
 	const hasShift = code > 7
 
 	const useKeyCode = (isMac && code == 12) || key == "Dead" || key == "Unidentified"
-	const keyName = (useKeyCode && ((hasShift && keyShift) || keyBase)) || key
+	const keyName = (useKeyCode && ((hasShift && keyShift) || keyBase)) || key.toLowerCase()
 
 	const isNotChar = /\w\w| /.test(keyName.slice(0, 2))
 	const noShift = code & 7
-	const commands = new Set<string>()
+	const commands = new Set([`${isNotChar || /\p{L}/u.test(keyName) ? code : noShift}+${keyName}`])
 
 	if (!isNotChar) {
 		if (noShift && !(isMac && noShift == 1) && keyBase) {
@@ -73,8 +72,6 @@ const getKeysFromEvent = (e: KeyboardEvent) => {
 			}
 		} else if (hasShift) commands.add(code + "+" + keyName)
 	}
-
-	commands.add((isNotChar ? code : noShift) + "+" + keyName)
 
 	return commands
 }
