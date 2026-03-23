@@ -13,8 +13,12 @@ import {
 import { addTextareaListener, getLineEnd, getLineStart, getStyleValue } from "../../utils/local.js"
 import { mod } from "./utils.js"
 import { ignoreTab, setIgnoreTab, whitespaceEnd } from "./commands.js"
+import { editorCommands } from "./index.js"
 
 /**
+ * @deprecated Consider using {@link editorCommands} instead. Will be removed in next
+ * major release.
+ *
  * Extension that will add automatic indentation and closing of brackets, quotes, and
  * tags along with the commands presented later.
  *

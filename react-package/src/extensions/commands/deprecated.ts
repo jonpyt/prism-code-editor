@@ -15,6 +15,7 @@ import { addTextareaListener, getLineEnd, getLineStart } from "../../utils/local
 import { getStyleValue } from "../../utils/other"
 import { mod } from "./utils"
 import { ignoreTab, setIgnoreTab, whitespaceEnd } from "./commands"
+import { useEditorCommands } from "."
 
 const addCommand = <T extends KeyCommandCallback | InputCommandCallback>(
 	cleanups: (() => void)[],
@@ -27,6 +28,9 @@ const addCommand = <T extends KeyCommandCallback | InputCommandCallback>(
 }
 
 /**
+ * @deprecated Consider using {@link useEditorCommands} instead. Will be removed in next
+ * major release.
+ * 
  * Hook that will add automatic indentation and closing of brackets, quotes, and tags
  * along with the following commands.
  *

@@ -2,7 +2,7 @@ import type { TokenStream } from "./prism/index"
 import type { JSX } from "solid-js"
 import type { BracketMatcher } from "./extensions/match-brackets"
 import type { Cursor } from "./extensions/cursor"
-import type { EditHistory } from "./extensions/commands"
+import { addEditorHotkey, type EditHistory } from "./extensions/commands"
 import type { TagMatcher } from "./extensions/match-tags"
 import type { SearchWidget } from "./extensions/search/widget"
 import type { ReadOnlyCodeFolding } from "./extensions/folding"
@@ -52,6 +52,7 @@ export type EditorProps = {
 /**
  * Function called when a certain key is pressed.
  * If true is returned, `e.preventDefault()` and `e.stopImmediatePropagation()` is called automatically.
+ * @deprecated
  */
 export type KeyCommandCallback = (
 	e: KeyboardEvent,
@@ -88,7 +89,10 @@ export type PrismEditor = {
 	readonly props: EditorProps
 	/** Record mapping an input to a function called when that input is typed. */
 	readonly inputCommandMap: Record<string, InputCommandCallback | null | undefined>
-	/** Record mapping KeyboardEvent.key to a function called when that key is pressed. */
+	/**
+	 * Record mapping KeyboardEvent.key to a function called when that key is pressed.
+	 * @deprecated Consider using {@link addEditorHotkey} instead.
+	 */
 	readonly keyCommandMap: Record<string, KeyCommandCallback | null | undefined>
 	/** Object storing some of the extensions added to the editor. */
 	readonly extensions: {
@@ -121,7 +125,7 @@ export type Language = {
 	/** Comment tokens used by the language. */
 	comments?: CommentTokens
 	/**
-	 * Method called when a user executes a comment toggling command.
+	 * Method called when a comment toggling command is executed.
 	 * @param editor The editor the user is interacting with.
 	 * @param position Where in the code the comment is being toggled.
 	 * @param value Current code in the editor.
@@ -139,7 +143,7 @@ export type Language = {
 	]
 	/**
 	 * Function called when the user types `>`. Intended to auto close tags.
-	 * @returns string which will get inserted behind the cursor.
+	 * @returns String which will get inserted behind the cursor.
 	 */
 	autoCloseTags?(selection: InputSelection, value: string, editor: PrismEditor): string | undefined
 }
