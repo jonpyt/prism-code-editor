@@ -261,7 +261,15 @@ const useEditHistory = (editor: PrismEditor, historyLimit = 999) => {
 }
 
 export { useEditorCommands, useEditHistory }
-export { normalizeKey, getKeysFromEvent, addEditorHotkey, runHotkeys } from "./utils.js"
+export {
+	normalizeKey,
+	getKeysFromEvent,
+	addEditorHotkey,
+	addHotkey,
+	addEditorHotkeySequence,
+	addHotkeySequence,
+	runHotkeys,
+} from "./utils.js"
 export {
 	indentSelectedLines,
 	insertTab,

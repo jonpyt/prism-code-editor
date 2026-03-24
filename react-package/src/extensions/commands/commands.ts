@@ -347,7 +347,7 @@ const defaultKeymap: Record<string, EditorHotkey> = {
 	"Mod+[": editor => indentSelectedLines(editor, true),
 	"8+Mod+k": deleteSelectedLines,
 	"Mod+/": editor => toggleComment(editor),
-	"1+A": editor => toggleComment(editor, true),
+	"9+a": editor => toggleComment(editor, true),
 	[isMac ? "10+m" : "2+m"]: () => ((ignoreTab = !ignoreTab), true),
 	...(isMac
 		? {}

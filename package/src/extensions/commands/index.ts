@@ -241,7 +241,15 @@ const editHistory = (historyLimit = 999) => {
 }
 
 export { editorCommands, editHistory }
-export { normalizeKey, getKeysFromEvent, addEditorHotkey, runHotkeys } from "./utils.js"
+export {
+	normalizeKey,
+	getKeysFromEvent,
+	addEditorHotkey,
+	addHotkey,
+	addEditorHotkeySequence,
+	addHotkeySequence,
+	runHotkeys,
+} from "./utils.js"
 export {
 	indentSelectedLines,
 	insertTab,

@@ -2,7 +2,7 @@ import { PrismEditor } from "../../index.js"
 import { preventDefault } from "../../core.js"
 import { getModifierCode, isMac } from "../../utils/index.js"
 import { addTextareaListener } from "../../utils/local.js"
-import { HotkeyMap, EditorHotkey } from "./types.js"
+import { HotkeyMap, EditorHotkey, HotkeySequenceOptions, Hotkey } from "./types.js"
 
 /**
  * Normalizes modifier keys to a bitmask that's used by {@link getKeysFromEvent}.
@@ -76,36 +76,53 @@ const getKeysFromEvent = (e: KeyboardEvent) => {
 	return commands
 }
 
-const editorMap = new WeakMap<PrismEditor, HotkeyMap<EditorHotkey>>()
+const editorMap = new WeakMap<PrismEditor, HotkeyMap<PrismEditor>>()
 
 /**
  * Utility that runs all commands whose key matches the keyboard event until a command
- * returns a truthy value, signaling the event was handled.
+ * returns a truthy value. In that case `preventDefault` and `stopImmediatePropagation`
+ * are called.
  *
  * @param e Keyboard event to run commands for.
- * @param commandMap Record mapping keys to a list of commands for that key.
- * @param args Arguments to pass to the commands.
+ * @param map Record mapping keys to a list of commands for that key.
+ * @param data Argument to pass to the commands.
  * @returns `true` if a command returned a truthy value.
  *
  * @example
  * addEventListener("keydown", e => {
- *   if (runHotkeys(e, commandMap, ...args)) e.preventDefault()
+ *   const handled = !!runHotkeys(e, map, data)
  * })
  */
-const runHotkeys = <T extends (...args: any) => any>(
-	e: KeyboardEvent,
-	hotkeys: HotkeyMap<T>,
-	...args: Parameters<T>
-) => {
-	const seen = new Set<T>()
+const runHotkeys = <T>(e: KeyboardEvent, map: HotkeyMap<T>, data: T) => {
+	const seen = new Set<Hotkey<T>>()
+	const runAny = () => map.any?.forEach(cmd => cmd(data, e, "any"))
+
 	for (const key of getKeysFromEvent(e)) {
-		for (const cmd of hotkeys[key] || []) {
+		for (const cmd of map[key] || []) {
 			if (!seen.has(cmd)) {
-				if (cmd(...args)) return true
+				if (cmd(data, e, key)) {
+					preventDefault(e)
+					runAny()
+					return true
+				}
 				seen.add(cmd)
 			}
 		}
 	}
+	runAny()
+}
+
+const getMap = <T extends {}>(editor: PrismEditor<T>) => {
+	let map = editorMap.get(editor) as HotkeyMap<PrismEditor<T>>
+
+	if (!map) {
+		editorMap.set(editor, (map = {}))
+		addTextareaListener(editor, "keydown", e => {
+			runHotkeys(e, map, editor)
+		})
+	}
+
+	return map
 }
 
 /**
@@ -125,16 +142,27 @@ const addEditorHotkey = <T extends {}>(
 	command: EditorHotkey<T>,
 	highPrecedence?: boolean,
 ) => {
-	let map = editorMap.get(editor) as HotkeyMap<EditorHotkey<T>>
+	return addHotkey(getMap(editor), key, command, highPrecedence)
+}
 
-	if (!map) {
-		editorMap.set(editor, (map = {}))
-		addTextareaListener(editor, "keydown", e => {
-			if (runHotkeys(e, map!, editor, e)) preventDefault(e)
-		})
-	}
-
-	let list = (map![normalizeKey(key)] ||= [])
+/**
+ * Registers a command for the specified key to the map.
+ *
+ * @param map Map to add the command to.
+ * @param key Key the command will run for.
+ * @param command Command for the specified key.
+ * @param highPrecedence When registering a command, it's pushed to the end of the list
+ * of commands for that key. To insert it at the start instead, set this parameter to
+ * `true`.
+ * @returns Function to remove the hotkey.
+ */
+const addHotkey = <T>(
+	map: HotkeyMap<T>,
+	key: string,
+	command: Hotkey<T>,
+	highPrecedence?: boolean,
+) => {
+	let list = (map[key == "any" ? key : normalizeKey(key)] ||= [])
 
 	list[highPrecedence ? "unshift" : "push"](command)
 
@@ -143,6 +171,93 @@ const addEditorHotkey = <T extends {}>(
 		if (index + 1) list.splice(index, 1)
 	}
 }
+
+/**
+ * Registers a sequential hotkey to the specifed editor.
+ *
+ * @param editor Editor to add the sequence to.
+ * @param sequence Sequence of keys to press for the command to be executed.
+ * @param command Command to execute when the sequence is pressed.
+ * @returns Function to remove the hotkey.
+ */
+const addEditorHotkeySequence = <T extends {}>(
+	editor: PrismEditor<T>,
+	sequence: string[],
+	command: EditorHotkey<T>,
+	options?: HotkeySequenceOptions,
+) => {
+	return addHotkeySequence(getMap(editor), sequence, command, options)
+}
+
+/**
+ * Registers a sequential hotkey to the specifed map.
+ *
+ * @param map Map to add the sequence to.
+ * @param sequence Sequence of keys to press for the command to be executed.
+ * @param command Command to execute when the sequence is pressed.
+ * @returns Function to remove the hotkey.
+ */
+const addHotkeySequence = <T>(
+	map: HotkeyMap<T>,
+	sequence: string[],
+	command: Hotkey<T>,
+	options: HotkeySequenceOptions = {},
+) => {
+	let lastTimestamp: number
+	let handledEvent: KeyboardEvent
+	let current = 0
+	let last = sequence.length - 1
+	let removeHandler: () => void
+
+	if (last < 0) throw Error("Sequence must have a least one key")
+
+	const { timeout = 2000, highPrec, preventDefault = true } = options
+
+	const handleStep: Hotkey<T> = (data, e, key) => {
+		if (current) setTimeout(removeHandler)
+		if (lastTimestamp + timeout < (lastTimestamp = Date.now())) {
+			return
+		}
+
+		handledEvent = e
+
+		if (current == last) {
+			current = 0
+			return command(data, e, key)
+		}
+
+		if (preventDefault) e.preventDefault()
+		removeHandler = addHotkey(map, sequence[++current], handleStep, true)
+	}
+
+	const removeStart = addHotkey(
+		map,
+		sequence[0],
+		(data, e, key) => {
+			if (handledEvent != e) {
+				lastTimestamp = Date.now()
+				current = 0
+				handleStep(data, e, key)
+			}
+		},
+		highPrec,
+	)
+
+	const removeAny = addHotkey(map, "any", (_, e) => {
+		if (current && handledEvent != e && !modifierCodes.has(e.keyCode)) {
+			current = 0
+			removeHandler()
+		}
+	})
+
+	return () => {
+		removeStart()
+		removeAny()
+		removeHandler?.()
+	}
+}
+
+const modifierCodes = new Set([16, 17, 18, 20, 91, 92, 224, 225])
 
 const mod = isMac ? 4 : 2
 
@@ -199,4 +314,13 @@ const modifierMap: Record<string, number | undefined> = {
 	mod: isMac ? 4 : 2,
 }
 
-export { normalizeKey, getKeysFromEvent, addEditorHotkey, runHotkeys, mod }
+export {
+	normalizeKey,
+	getKeysFromEvent,
+	addEditorHotkey,
+	addHotkey,
+	addEditorHotkeySequence,
+	addHotkeySequence,
+	runHotkeys,
+	mod,
+}
