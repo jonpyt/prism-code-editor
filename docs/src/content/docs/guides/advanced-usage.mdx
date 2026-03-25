@@ -49,7 +49,7 @@ import "prism-code-editor/languages/clike"
 import "prism-code-editor/languages/css"
 
 import { searchWidget, highlightSelectionMatches } from "prism-code-editor/search"
-import { defaultCommands, editHistory } from "prism-code-editor/commands"
+import { editorCommands, defaultKeymap, editHistory } from "prism-code-editor/commands"
 import { cursorPosition } from "prism-code-editor/cursor"
 import { copyButton } from "prism-code-editor/copy-button"
 import { matchTags } from "prism-code-editor/match-tags"
@@ -60,7 +60,7 @@ import { editor } from "./index"
 editor.addExtensions(
 	highlightSelectionMatches(),
 	searchWidget(),
-	defaultCommands(),
+	editorCommands(defaultKeymap),
 	copyButton(),
 	matchTags(),
 	highlightBracketPairs(),

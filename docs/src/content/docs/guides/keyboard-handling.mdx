@@ -3,41 +3,172 @@ title: Keyboard handling
 description: Learn how Prism code editor handles keyboard events.
 ---
 
-import MountEditors from "../../../components/languages/js.astro"
+import MountEditors from "../../../components/languages/ts.astro"
+import CommandsDemo from "../../../components/CommandsDemo/index.astro"
+import { Aside } from "@astrojs/starlight/components"
 import "../../../css/editor-theme.css"
 
 <MountEditors />
+<CommandsDemo />
 
-## Adding commands
+## Commands
 
-The [`PrismEditor.keyCommandMap{:js}`](/api-reference/index/i-prismeditor/#keycommandmap) record maps [`KeyboardEvent.key{:js}`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key) to a function called when that key is pressed. This can be useful to add a simple keyboard shortcut without adding an entire `keydown` handler.
+The `prism-code-editor/commands` entrypoint exports many editing commands. These commands receive an editor and return a boolean or void. A falsy value indicates the command doesn't apply (most commands don't apply in `readOnly` mode, for example), while `true` means it successfully executed.
 
-### Overriding commands
+## Adding hotkeys
 
-The [`defaultCommands(){:js}`](/api-reference/commands/f-defaultcommands) extension registers multiple commands to `keyCommandMap`. These can be overridden after the `defaultCommands(){:js}` is added.
+To bind a command to a specific key, use [`addEditorHotkey(){:js}`](/api-reference/commands/f-addeditorhotkey). This will add the command at the end of a list of callbacks for the specified key, or at the beginning if the 4th `highPrecedence` parameter is set to `true`. When the command is executed, it gets passed the editor and `KeyboardEvent{:js}` as arguments.
 
 ```js editor
-// Adding a Alt+Enter shortcut without removing the default enter functionality
-const oldEnterCallback = editor.keyCommandMap.Enter
+import { addEditorHotkey, toggleComment } from "prism-code-editor/commads"
 
-editor.keyCommandMap.Enter = (e, selection, value) => {
-	if (e.altKey) {
-		// Shortcut code goes here
-		return true
-	}
-	return oldEnterCallback?.(e, selection, value)
-}
-
-// Removing the default backspace command
-editor.keyCommandMap.Backspace = null
+addEditorHotkey(editor, "mod+/", () => toggleComment(editor))
 ```
 
-If the handler returns `true`, `e.preventDefault(){:js}` and `e.stopImmediatePropagation(){:js}` get called automatically.
+When multiple commands are registered for one key, they are ran in order until one returns `true`, in which case the event is considered "handled" and [`stopImmediatePropagation(){:js}`](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation) along with [`preventDefault(){:js}`](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault).
 
-## Adding keydown handlers
+Multiple different keys are usually tried when pressing punctuation keys or `Shift` + a number key for better compatibility across different keyboard layouts and platforms. The editor below will show all keys tried for the most recent keypress. For better visibility, `" "` has been replaced with `"space"`.
 
-Multiple extensions add `keydown` event handlers to the textarea instead of using the `keyCommandMap`. Some of them also use [capture mode](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#usecapture). This is because if a handler in the `keyCommandMap` returns `true`, `e.stopImmediatePropagation(){:js}` gets called. Using capture mode ensures the handler runs before any `keyCommandMap` handlers.
+```js editor
+// Try typing in this editor
+```
+
+<p id="prev-keys">Previous keys:</p>
+
+### With `editorCommands` extension
+
+The [`editorCommands(){:js}`](/api-reference/commands/f-editorcommands) can be used to add commands from a keymap, such as [`defaultKeymap`](/api-reference/commands/v-defaultkeymap) or a custom keymap if you're dissatisfied with the default one. Note that multiple instances of `editorCommands(){:js}` should not be added to an editor, because it does more than just adding the hotkeys; instead, merge the keymaps or add extra commands manually with `addEditorHotkey(){:js}`.
+
+```js editor
+import { editorCommands, defaultKeymap } from "prism-code-editor/commands"
+
+editor.addExtensions(editorCommands(defaultKeymap))
+```
+
+## Hotkey syntax
+
+Keys are strings that can appear in [`KeyboardEvent.key{:js}`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key), preceded by any number of modifiers, all separated by `+`, such as `ctrl+shift+enter`. Hotkeys are case-insensitive.
+
+### Normalization
+
+To ensure hotkeys are matched regardless of the order of modifiers, the modifiers are normalized using [`normalizeKey(){:js}`](/api-reference/commands/f-normalizekey) to a bitmask according to the following list:
+
+- `alt` → `1`
+- `ctrl` or `control` → `2`
+- `meta` or `cmd` → `4`
+- `shift` → `8`
+- `mod` → `4` on Mac, `2` otherwise
+
+If wanted, bitmasks can be used directly in combination with strings for modifiers. Here are some examples:
+
+```js editor
+normalizeKey("a") // "0+a"
+normalizeKey("ctrl+alt+A") // "3+a"
+normalizeKey("10+ALT+a") // "11+a"
+normalizeKey("shift+alt+12+a") // "13+a"
+```
+
+## Listening for any key
+
+When adding a hotkey with `"any"` as the key, it will run for any `keydown` event, even if a command returned `true`. Note that returning `true` from the command won't mark the event as "handled".
+
+```js editor
+addEditorHotkey(editor, "any", (_editor, e, key) => {
+	if (e.defaultPrevented) {
+		console.log(`${key} was handled`)
+	}
+})
+```
+
+## Sequential hotkeys
+
+This library also supports adding sequential hotkeys where multiple keys must be pressed one after another to execute the command. To bind a command to a sequence, use [`addEditorHotkeySequence(){:js}`](/api-reference/commands/f-addeditorhotkeysequence).
+
+```js editor
+import { addEditorHotkey, toggleComment } from "prism-code-editor/commads"
+
+// VS Code-like binding
+addEditorHotkeySequence(editor, ["mod+k", "mod+c"], () => {
+	return addLineComment(editor)
+})
+```
+
+### Sequential options
+
+The last, optional parameter (type [`HotkeySequenceOptions{:js}`](/api-reference/commands/t-hotkeysequenceoptions)) configures some behavior of the sequential hotkey. The example below shows the defaults:
+
+```js editor
+addEditorHotkeySequence(editor, ["mod+k", "mod+c"], command, {
+	timeout: 2000, // Time in milliseconds allowed between steps
+	preventDefault: true, // Whether to call preventDefault between steps
+	highPrec: false, // Precedence of the command that starts the sequence
+})
+```
+
+### How sequences work
+
+The first key in the sequence gets bound to a command that starts the sequence. When the sequence is advanced, a hotkey for the next key in the sequence gets added until the final step, when the command gets executed instead. If another key was pressed or the timeout expired between steps, the sequence is reset. Note that pressing modifier keys like `Alt` or `Shift` won't reset the sequence. If multiple sequences share the same steps, they will advance simultaneously, but their execution order might be unpredictable.
+
+## Removing hotkeys
+
+All functions that add hotkeys return a cleanup function to remove the hotkey.
+
+<Aside type="caution">
+Calling the cleanup function inside a command will result in the next command being skipped, causing potential bugs. To fix this, call the cleanup function with `setTimeout(){:js}`.
+
+```js editor
+const remove = addEditorHotkey(editor, "enter", () => {
+	console.log("This will only run once!")
+	setTimeout(remove)
+})
+```
+</Aside>
+
+
+## Hotkeys outside editors
+
+The utilities for adding and running hotkeys are exported, meaning you can easily add hotkeys to your own application with full control over where listeners are added and how events are filtered.
+
+```ts editor
+import {
+	runHotkeys,
+	HotkeyMap,
+	addHotkey,
+	addHotkeySequence
+} from "prism-code-editor/commands"
+
+const keyMap: HotkeyMap<undefined> = {}
+
+addEventListener("keydown", e => {
+	const target = e.target as Element
+
+	// Filter events on text fields
+	if (target.matches("input, textarea") || target.isContentEditable) {
+		return
+	}
+
+	runHotkeys(e, keyMap, undefined)
+})
+
+addHotkey(keyMap, "mod+s", () => {
+	console.log("Saved!")
+	return true
+})
+
+addHotkeySequence(keyMap, ["g", "g"], () => {
+	window.scrollTo(0, 0)
+	return true
+})
+```
+
+### Matching hotkeys
+
+The [`getKeysFromEvent(){:js}`](/api-reference/commands/f-getkeysfromevent) utility can be used to check if a key matches a keyboard event. The return values from `getKeysFromEvent(e){:js}` and `normalizeKey(){:js}` could be cached for better performance when checking multiple hotkeys.
+
+```js editor
+if (getKeysFromEvent(e).has(normalizeKey("mod+s"))) console.log("Saved!")
+```
 
 ## Adding input commands
 
-There's also an [`inputCommandMap`](/api-reference/index/i-prismeditor/#inputcommandmap) mapping user input ([`InputEvent.data`](https://developer.mozilla.org/en-US/docs/Web/API/InputEvent/data)) to functions called when that input is typed. This is used by `defaultCommands(){:js}` to automatically close brackets, quotes, and XML tags. If the handler returns `true`, `e.preventDefault(){:js}` and `e.stopImmediatePropagation(){:js}` get called in the `beforeinput` handler.
+Editors also have an [`inputCommandMap`](/api-reference/index/i-prismeditor/#inputcommandmap) that maps user input ([`InputEvent.data{:js}`](https://developer.mozilla.org/en-US/docs/Web/API/InputEvent/data)) to functions called when that input is typed. This is used by `editorCommands(){:js}` to automatically close brackets, quotes, and XML tags. If the handler returns `true`, `e.preventDefault(){:js}` and `e.stopImmediatePropagation(){:js}` get called in the `beforeinput` handler.
