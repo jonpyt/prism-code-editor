@@ -18,6 +18,7 @@ import {
 	getLineStart,
 	updateNode,
 } from "../../utils/local"
+import { mod } from "../commands/utils"
 
 const shortcut = ` (Alt+${isMac ? "Cmd+" : ""}`
 
@@ -115,28 +116,26 @@ const useSearchWidget = (editor: PrismEditor) => {
 			else if (selectMatch || selectNext) replaceAPI.selectMatch(index, prevMargin)
 		}
 
-		const keydown = (e: KeyboardEvent) => {
-			// F or G + Ctrl/Cmd
-			if (e.keyCode >> 1 == 35 && getModifierCode(e) == (isMac ? 0b0100 : 0b0010)) {
-				preventDefault(e)
-				open()
-				let [start, end] = getSelection()
-				let value = editor.value
-				let word =
-					value.slice(start, end) ||
-					/[_\p{N}\p{L}]*$/u.exec(getLineBefore(value, start))![0] +
-						/^[_\p{N}\p{L}]*/u.exec(value.slice(start))![0]
-				if (/^$|\n/.test(word)) startSearch()
-				else {
-					if (useRegExp) word = regexEscape(word)
-					doc!.execCommand("insertText", false, word)
-					findInput.select()
-				}
-			}
-		}
-
 		const cleanups = [
-			addListener2(textarea!, "keydown", keydown),
+			addListener2(wrapper!, "keydown", (e: KeyboardEvent) => {
+				// F or G + Ctrl/Cmd
+				if (e.keyCode >> 1 == 35 && getModifierCode(e) == mod) {
+					preventDefault(e)
+					open()
+					let [start, end] = getSelection()
+					let value = editor.value
+					let word =
+						value.slice(start, end) ||
+						/[_\p{N}\p{L}]*$/u.exec(getLineBefore(value, start))![0] +
+							/^[_\p{N}\p{L}]*/u.exec(value.slice(start))![0]
+					if (/^$|\n/.test(word)) startSearch()
+					else {
+						if (useRegExp) word = regexEscape(word)
+						doc!.execCommand("insertText", false, word)
+						findInput.select()
+					}
+				}
+			}),
 			addListener2(textarea!, "beforeinput", () => {
 				if (isOpen && searchSelection) currentSelection = getSelection()
 			}),
@@ -298,7 +297,6 @@ const useSearchWidget = (editor: PrismEditor) => {
 				else if (shortcut == (isMac ? 4 : 3) && !isFind) replaceAllEl.click()
 				target.focus()
 			} else if (!shortcut && keyCode == 27) close()
-			else keydown(e)
 		})
 
 		editor.extensions.searchWidget = {

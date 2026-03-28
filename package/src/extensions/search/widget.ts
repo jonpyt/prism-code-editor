@@ -10,6 +10,7 @@ import {
 } from "../../utils/index.js"
 import { createReplaceAPI } from "./replace.js"
 import { getLineEnd, getLineStart, getStyleValue, updateNode } from "../../utils/local.js"
+import { mod } from "../commands/utils.js"
 
 const shortcut = ` (Alt+${isMac ? "Cmd+" : ""}`
 
@@ -82,26 +83,6 @@ export const searchWidget = (): SearchWidget => {
 
 			if (error) errorEl.textContent = error
 			else if (selectMatch || selectNext) replaceAPI.selectMatch(index, prevMargin)
-		}
-
-		const keydown = (e: KeyboardEvent) => {
-			// F or G + Ctrl/Cmd
-			if (e.keyCode >> 1 == 35 && getModifierCode(e) == (isMac ? 0b0100 : 0b0010)) {
-				preventDefault(e)
-				open()
-				let [start, end] = getSelection(),
-					value = editor.value,
-					word =
-						value.slice(start, end) ||
-						/[_\p{N}\p{L}]*$/u.exec(getLineBefore(value, start))![0] +
-							/^[_\p{N}\p{L}]*/u.exec(value.slice(start))![0]
-				if (/^$|\n/.test(word)) startSearch()
-				else {
-					if (useRegExp) word = regexEscape(word)
-					doc!.execCommand("insertText", false, word)
-					findInput.select()
-				}
-			}
 		}
 
 		const open = (focusInput = true) => {
@@ -214,7 +195,25 @@ export const searchWidget = (): SearchWidget => {
 			],
 		])
 
-		addListener(textarea, "keydown", keydown)
+		addListener(wrapper, "keydown", (e: KeyboardEvent) => {
+			// F or G + Ctrl/Cmd
+			if (e.keyCode >> 1 == 35 && getModifierCode(e) == mod) {
+				preventDefault(e)
+				open()
+				let [start, end] = getSelection()
+				let value = editor.value
+				let word =
+					value.slice(start, end) ||
+					/[_\p{N}\p{L}]*$/u.exec(getLineBefore(value, start))![0] +
+						/^[_\p{N}\p{L}]*/u.exec(value.slice(start))![0]
+				if (/^$|\n/.test(word)) startSearch()
+				else {
+					if (useRegExp) word = regexEscape(word)
+					doc!.execCommand("insertText", false, word)
+					findInput.select()
+				}
+			}
+		})
 		addListener(textarea, "beforeinput", () => {
 			if (isOpen && searchSelection) currentSelection = getSelection()
 		})
@@ -267,7 +266,6 @@ export const searchWidget = (): SearchWidget => {
 				else if (shortcut == (isMac ? 4 : 3) && !isFind) replaceAllEl.click()
 				target.focus()
 			} else if (!shortcut && keyCode == 27) close()
-			else keydown(e)
 		})
 
 		self.open = focusInput => {
