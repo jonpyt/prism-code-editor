@@ -244,7 +244,7 @@ const addHotkeySequence = <T>(
 	)
 
 	const removeAny = addHotkey(map, "any", (_, e) => {
-		if (current && handledEvent != e && !modifierCodes.has(e.keyCode)) {
+		if (current && handledEvent != e && !isModifierKey(e)) {
 			current = 0
 			removeHandler()
 		}
@@ -257,7 +257,15 @@ const addHotkeySequence = <T>(
 	}
 }
 
-const modifierCodes = new Set([16, 17, 18, 20, 91, 92, 224, 225])
+/**
+ * Returns whether the key pressed is Alt, Shift, Control, or Meta.
+ * @param e Keyboard event to check.
+ */
+const isModifierKey = (e: KeyboardEvent) => {
+	return modifierCodes.has(e.keyCode)
+}
+
+const modifierCodes = new Set([16, 17, 18, 91, 92, 224, 225])
 
 const mod = isMac ? 4 : 2
 
@@ -322,5 +330,6 @@ export {
 	addEditorHotkeySequence,
 	addHotkeySequence,
 	runHotkeys,
+	isModifierKey,
 	mod,
 }

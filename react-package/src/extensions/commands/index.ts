@@ -269,6 +269,7 @@ export {
 	addEditorHotkeySequence,
 	addHotkeySequence,
 	runHotkeys,
+	isModifierKey,
 } from "./utils.js"
 export {
 	indentSelectedLines,
