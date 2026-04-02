@@ -116,24 +116,42 @@ const useSearchWidget = (editor: PrismEditor) => {
 			else if (selectMatch || selectNext) replaceAPI.selectMatch(index, prevMargin)
 		}
 
+		const getSelectedWord = () => {
+			let [start, end] = getSelection()
+			let value = editor.value
+			let word =
+				value.slice(start, end) ||
+				/[_\p{N}\p{L}]*$/u.exec(getLineBefore(value, start))![0] +
+					/^[_\p{N}\p{L}]*/u.exec(value.slice(start))![0]
+
+			return word.includes("\n") ? "" : useRegExp ? regexEscape(word) : word
+		}
+
 		const cleanups = [
 			addListener2(wrapper!, "keydown", (e: KeyboardEvent) => {
-				// F or G + Ctrl/Cmd
-				if (e.keyCode >> 1 == 35 && getModifierCode(e) == mod) {
+				const code = getModifierCode(e)
+				const keyCode = e.keyCode
+				const isF3 = keyCode == 114
+
+				// Mod+F
+				if (keyCode == 70 && code == mod) {
 					preventDefault(e)
 					open()
-					let [start, end] = getSelection()
-					let value = editor.value
-					let word =
-						value.slice(start, end) ||
-						/[_\p{N}\p{L}]*$/u.exec(getLineBefore(value, start))![0] +
-							/^[_\p{N}\p{L}]*/u.exec(value.slice(start))![0]
-					if (/^$|\n/.test(word)) startSearch()
-					else {
-						if (useRegExp) word = regexEscape(word)
+					let word = getSelectedWord()
+
+					if (word) {
 						doc!.execCommand("insertText", false, word)
 						findInput.select()
+					} else {
+						startSearch()
 					}
+					// Shift?+F3 or Mod+Shift?+G
+				} else if ((isF3 || keyCode == 71) && (code & 7) == (isF3 ? 0 : mod)) {
+					preventDefault(e)
+					open(false)
+					findInput.value ||= getSelectedWord()
+					startSearch()
+					move(code < 8)
 				}
 			}),
 			addListener2(textarea!, "beforeinput", () => {
