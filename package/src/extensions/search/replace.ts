@@ -62,11 +62,11 @@ const createReplaceAPI = (editor: PrismEditor): ReplaceAPI => {
 		}
 	}
 
+	const removeHandler = addTextareaListener(editor, "focus", removeSelection)
+
 	let currentLine: HTMLDivElement
 	let currentMatch: HTMLSpanElement
 	let hasSelected = false
-
-	addTextareaListener(editor, "focus", removeSelection)
 
 	return Object.assign(search, {
 		next() {
@@ -143,7 +143,7 @@ const createReplaceAPI = (editor: PrismEditor): ReplaceAPI => {
 			insertText(editor, newValue, matches[0][0], matches[l - 1][1], newStart, newEnd)
 		},
 		destroy() {
-			editor.textarea.removeEventListener("focus", removeSelection)
+			removeHandler()
 			removeSelection()
 			container.remove()
 		},

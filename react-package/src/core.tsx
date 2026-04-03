@@ -56,7 +56,7 @@ const Editor = memo(
 
 		const inputCommandMap: Record<string, InputCommandCallback | null> = {}
 
-		const updateSelection = (force?: true) => {
+		const updateSelection = (force?: boolean) => {
 			if (handleSelectionChange || force) {
 				const selection = getInputSelection()
 				const newLine =
@@ -188,7 +188,7 @@ const Editor = memo(
 				})
 				// For browsers that support selectionchange on textareas
 				addListener(textarea, "selectionchange", e => {
-					updateSelection()
+					updateSelection(!e.isTrusted)
 					preventDefault(e)
 				})
 			}
@@ -300,7 +300,6 @@ export {
 	addListener,
 	preventDefault,
 	languageMap,
-	selectionChange,
 	numLines,
 	useStableRef,
 	doc,

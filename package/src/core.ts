@@ -228,7 +228,7 @@ const createEditor = <T extends {} = {}>(
 	})
 	// For browsers that support selectionchange on textareas
 	addListener(textarea, "selectionchange", e => {
-		dispatchSelection()
+		dispatchSelection(!e.isTrusted)
 		preventDefault(e)
 	})
 
@@ -323,7 +323,6 @@ export {
 	preventDefault,
 	editorFromPlaceholder,
 	addListener,
-	selectionChange,
 	setSelectionChange,
 	doc,
 }

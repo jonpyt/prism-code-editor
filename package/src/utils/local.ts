@@ -22,12 +22,22 @@ const getLineStart = (text: string, position: number) =>
 const getLineEnd = (text: string, position: number) =>
 	(position = text.indexOf("\n", position)) + 1 ? position : text.length
 
+const addListener2 = <T extends keyof HTMLElementEventMap>(
+	element: HTMLElement,
+	type: T,
+	listener: (this: HTMLElement, ev: HTMLElementEventMap[T]) => any,
+	options?: boolean | AddEventListenerOptions,
+) => {
+	addListener(element, type, listener, options)
+	return () => element.removeEventListener(type, listener, options)
+}
+
 const addTextareaListener = <T extends keyof HTMLElementEventMap>(
 	editor: PrismEditor,
 	type: T,
 	listener: (this: HTMLElement, ev: HTMLElementEventMap[T]) => any,
 	options?: boolean | AddEventListenerOptions,
-) => addListener(editor.textarea, type, listener, options)
+) => addListener2(editor.textarea, type, listener, options)
 
 const getStyleValue = (el: HTMLElement, prop: keyof CSSStyleDeclaration) =>
 	parseFloat(<string>getComputedStyle(el)[prop])
@@ -57,6 +67,7 @@ export {
 	getLineStart,
 	getLineEnd,
 	getStyleValue,
+	addListener2,
 	addTextareaListener,
 	getPosition,
 	updateNode,

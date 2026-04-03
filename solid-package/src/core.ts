@@ -214,7 +214,7 @@ const Editor = (props: Partial<EditorProps>) => {
 
 	// For browsers that support selectionchange on textareas
 	addListener(textarea, "selectionchange", e => {
-		updateSelection()
+		updateSelection(!e.isTrusted)
 		preventDefault(e)
 	})
 
@@ -268,4 +268,4 @@ if (doc) addListener(doc, "selectionchange", () => selectionChange?.())
 
 let selectionChange: null | ((force?: boolean) => void)
 
-export { Editor, addListener, preventDefault, doc, languageMap, numLines, selectionChange }
+export { Editor, addListener, preventDefault, doc, languageMap, numLines }

@@ -1,6 +1,6 @@
-import { numLines, doc, addListener, selectionChange } from "../core"
+import { numLines, doc, addListener } from "../core"
 import { PrismEditor, InputSelection } from "../types"
-import { getLineEnd, getLineStart } from "./local"
+import { addListener2, getLineEnd, getLineStart } from "./local"
 
 /**
  * If {@link insertText} has been called, this variable stores the editor's selection
@@ -178,25 +178,16 @@ const setSelection = (
 	end = start,
 	direction?: "backward" | "forward" | "none",
 ) => {
-	let focused = editor.focused()
 	let textarea = editor.textarea
-	let relatedTarget!: HTMLElement | null
-	if (!focused) {
-		addListener(
-			textarea,
-			"focus",
-			e => {
-				relatedTarget = e.relatedTarget as HTMLElement
-			},
-			{ once: true },
-		)
-		textarea.focus()
-	}
-	textarea.setSelectionRange(start, end, direction)
+	// Webkit 18.3 and earlier focuses the textarea when changing the selection
+	let removeHandler = addListener2(textarea, "focus", e => {
+		let target = e.relatedTarget as HTMLElement
+		target ? target.focus() : textarea.blur()
+	})
 
-	// Blurs the textarea if it wasn't focused before and calls `selectionChange` with `true`
-	// This will set `selectionChange` to null, so we must access the variable before
-	selectionChange!(!(!focused && (relatedTarget ? relatedTarget.focus() : textarea.blur())))
+	textarea.setSelectionRange(start, end, direction)
+	removeHandler()
+	textarea.dispatchEvent(new Event("selectionchange"))
 }
 
 const userAgent = doc ? navigator.userAgent : ""
