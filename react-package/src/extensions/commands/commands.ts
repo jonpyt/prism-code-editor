@@ -309,8 +309,10 @@ const toggleComment = (editor: PrismEditor, isBlock?: boolean) => {
  *
  * - `Alt` + `ArrowUp`: Move line up
  * - `Alt` + `ArrowDown`: Move line down
- * - `Ctrl` + `ArrowUp`: Scroll one line up (Windows/Linux only)
- * - `Ctrl` + `ArrowDown`: Scroll one line down (Windows/Linux only)
+ * - `Ctrl` + `ArrowUp`: Scroll one line up (Windows/Linux)
+ * - `Ctrl` + `ArrowDown`: Scroll one line down (Windows/Linux)
+ * - `Ctrl` + `PageUp`: Scroll one line up (Mac)
+ * - `Ctrl` + `PageDown`: Scroll one line down (Mac)
  * - `Shift` + `Alt` + `ArrowUp`: Copy line up
  * - `Shift` + `Alt` + `ArrowDown`: Copy line down
  * - `Enter`: Insert line and indent
@@ -349,12 +351,8 @@ const defaultKeymap: Record<string, EditorHotkey> = {
 	"Mod+/": editor => toggleComment(editor),
 	"9+a": editor => toggleComment(editor, true),
 	[isMac ? "10+m" : "2+m"]: () => ((ignoreTab = !ignoreTab), true),
-	...(isMac
-		? {}
-		: {
-				"2+ArrowDown": editor => scrollByOneLine(editor),
-				"2+ArrowUp": editor => scrollByOneLine(editor, true),
-		  }),
+	[`2+${isMac ? "Page" : "Arrow"}Down`]: editor => scrollByOneLine(editor),
+	[`2+${isMac ? "Page" : "Arrow"}Up`]: editor => scrollByOneLine(editor, true),
 }
 
 export {
