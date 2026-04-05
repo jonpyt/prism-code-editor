@@ -94,22 +94,27 @@ const editorMap = new WeakMap<PrismEditor, HotkeyMap<PrismEditor>>()
  * })
  */
 const runHotkeys = <T>(e: KeyboardEvent, map: HotkeyMap<T>, data: T) => {
-	const seen = new Set<Hotkey<T>>()
-	const runAny = () => map.any?.forEach(cmd => cmd(data, e, "any"))
+	let seen = new Set<Hotkey<T>>()
+	let firstKey: string
 
-	for (const key of getKeysFromEvent(e)) {
-		for (const cmd of map[key] || []) {
-			if (!seen.has(cmd)) {
-				if (cmd(data, e, key)) {
-					preventDefault(e)
-					runAny()
-					return true
+	try {
+		for (const key of getKeysFromEvent(e)) {
+			firstKey ||= key
+			for (const set of map[key] || []) {
+				for (const cmd of set || []) {
+					if (!seen.has(cmd)) {
+						if (cmd(data, e, key)) {
+							preventDefault(e)
+							return true
+						}
+						seen.add(cmd)
+					}
 				}
-				seen.add(cmd)
 			}
 		}
+	} finally {
+		map.any?.forEach(set => set?.forEach(cmd => cmd(data, e, firstKey)))
 	}
-	runAny()
 }
 
 const getMap = (editor: PrismEditor) => {
@@ -131,9 +136,8 @@ const getMap = (editor: PrismEditor) => {
  * @param editor Editor to add the command to.
  * @param key Key the command will run for.
  * @param command Command for the specified key.
- * @param highPrecedence When registering a command, it's pushed to the end of the list
- * of commands for that key. To insert it at the start instead, set this parameter to
- * `true`.
+ * @param precedence Positive integer denoting the precedence of the command where `0`
+ * is the highest precedence. Defaults to `2`.
  * @returns Function to remove the hotkey.
  * @example
  * onCleanup(addEditorHotkey(editor, "shift-alt+f", formatDocument))
@@ -142,35 +146,28 @@ const addEditorHotkey = (
 	editor: PrismEditor,
 	key: string,
 	command: EditorHotkey,
-	highPrecedence?: boolean,
+	precedence?: number,
 ) => {
-	return addHotkey(getMap(editor), key, command, highPrecedence)
+	return addHotkey(getMap(editor), key, command, precedence)
 }
 
 /**
- * Registers a command for the specified key to the map.
+ * Registers a command for the specified key to the hotkey map.
  *
  * @param map Map to add the command to.
  * @param key Key the command will run for.
  * @param command Command for the specified key.
- * @param highPrecedence When registering a command, it's pushed to the end of the list
- * of commands for that key. To insert it at the start instead, set this parameter to
- * `true`.
+ * @param precedence Positive integer denoting the precedence of the command where `0`
+ * is the highest precedence. Defaults to `2`.
  * @returns Function to remove the hotkey.
  */
-const addHotkey = <T>(
-	map: HotkeyMap<T>,
-	key: string,
-	command: Hotkey<T>,
-	highPrecedence?: boolean,
-) => {
-	let list = (map[key == "any" ? key : normalizeKey(key)] ||= [])
+const addHotkey = <T>(map: HotkeyMap<T>, key: string, command: Hotkey<T>, precedence = 2) => {
+	let set = ((map[key == "any" ? key : normalizeKey(key)] ||= [])[precedence] ||= new Set())
 
-	list[highPrecedence ? "unshift" : "push"](command)
+	set.add(command)
 
 	return () => {
-		const index = list.indexOf(command)
-		if (index + 1) list.splice(index, 1)
+		set.delete(command)
 	}
 }
 
@@ -192,7 +189,7 @@ const addEditorHotkeySequence = (
 }
 
 /**
- * Registers a sequential hotkey to the specifed map.
+ * Registers a sequential hotkey to the specifed hotkey map.
  *
  * @param map Map to add the sequence to.
  * @param sequence Sequence of keys to press for the command to be executed.
@@ -213,10 +210,10 @@ const addHotkeySequence = <T>(
 
 	if (last < 0) throw Error("Sequence must have a least one key")
 
-	const { timeout = 2000, highPrec, preventDefault = true } = options
+	const { timeout = 2000, precedence, preventDefault = true } = options
 
 	const handleStep: Hotkey<T> = (data, e, key) => {
-		if (current) setTimeout(removeHandler)
+		if (current) removeHandler()
 		if (lastTimestamp + timeout < (lastTimestamp = Date.now())) {
 			return
 		}
@@ -229,7 +226,7 @@ const addHotkeySequence = <T>(
 		}
 
 		if (preventDefault) e.preventDefault()
-		removeHandler = addHotkey(map, sequence[++current], handleStep, true)
+		removeHandler = addHotkey(map, sequence[++current], handleStep, 0)
 	}
 
 	const removeStart = addHotkey(
@@ -242,7 +239,7 @@ const addHotkeySequence = <T>(
 				handleStep(data, e, key)
 			}
 		},
-		highPrec,
+		precedence,
 	)
 
 	const removeAny = addHotkey(map, "any", (_, e) => {

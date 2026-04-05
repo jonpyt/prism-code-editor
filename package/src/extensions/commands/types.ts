@@ -13,14 +13,17 @@ export type EditorHotkey<T extends {} = {}> = Hotkey<PrismEditor<T>>
  */
 export type Hotkey<T> = (data: T, e: KeyboardEvent, key: string) => void | boolean
 
-/** Object mapping keys to a list of hotkeys. */
-export type HotkeyMap<T> = Partial<Record<string, Hotkey<T>[]>>
+/** Object mapping keys to buckets of hotkeys. */
+export type HotkeyMap<T> = Partial<Record<string, (Set<Hotkey<T>> | undefined)[]>>
 
 export type HotkeySequenceOptions = {
 	/** Maximum number of milliseconds allowed between steps. @default 2000 */
 	timeout?: number
-	/** Whether to add the handler for the first step first in the list. @default false */
-	highPrec?: boolean
+	/**
+	 * Precedence of the handler that starts the sequence.
+	 * @default 2
+	 */
+	precedence?: number
 	/**
 	 * Whether or not to call `preventDefault()` when the sequence is advanced. This does
 	 * not apply to the final step where the return value of the command dictates whether
