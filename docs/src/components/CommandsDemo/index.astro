@@ -1,3 +1,30 @@
 <script>
 	import("./index")
 </script>
+
+<style is:global>
+	.hotkey-list {
+		max-width: 25em;
+		padding: 0;
+	}
+
+	.hotkey-item {
+		display: flex;
+		align-items: center;
+		gap: 1em;
+	}
+
+	.hotkey-item + li {
+		margin-top: 1em;
+	}
+
+	.hotkey-item kbd {
+		padding: 0.25em 0.4em;
+		margin-left: auto;
+		border: 1px solid var(--sl-color-gray-4);
+		border-bottom-width: 2px;
+		background: var(--sl-color-gray-6);
+		font: 0.8em / 1.2 var(--__sl-font);
+		border-radius: 0.4em;
+	}
+</style>

@@ -1,9 +1,9 @@
 ---
-title: Keyboard handling
-description: Learn how Prism code editor handles keyboard events.
+title: Hotkeys
+description: Learn how to use hotkeys inPrism code editor.
 ---
 
-import MountEditors from "../../../components/languages/ts.astro"
+import MountEditors from "../../../components/languages/tsx.astro"
 import CommandsDemo from "../../../components/CommandsDemo/index.astro"
 import { Aside } from "@astrojs/starlight/components"
 import "../../../css/editor-theme.css"
@@ -27,7 +27,9 @@ addEditorHotkey(editor, "mod+/", () => toggleComment(editor))
 
 When multiple commands are registered for one key, they are ran in order until one returns `true`, in which case the event is considered "handled" and [`stopImmediatePropagation(){:js}`](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation) along with [`preventDefault(){:js}`](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault).
 
-Multiple different keys are usually tried when pressing punctuation keys or `Shift` + a number key for better compatibility across different keyboard layouts and platforms. The editor below will show all keys tried for the most recent keypress. For better visibility, `" "` has been replaced with `"space"`.
+### Debugging
+
+Multiple different keys are usually tried when pressing punctuation keys or `Shift` + a number key for better compatibility across different keyboard layouts and platforms. The editor below will show all keys tried for the most recent keypress. This is useful for debugging why a command isn't executing. For better visibility, `" "` has been replaced with `"space"`.
 
 ```js editor
 // Try typing in this editor
@@ -68,9 +70,13 @@ normalizeKey("10+ALT+a") // "11+a"
 normalizeKey("shift+alt+12+a") // "13+a"
 ```
 
+## Controlling execution order
+
+The 4th [`precedence` parameter](http://localhost:4321/api-reference/commands/f-addeditorhotkey/#precedence) can be used to control the execution order when multiple hotkeys are registered to the same key. The precedence is a positive integer that defaults to `2`, where lower numbers yield higher precedence. A precedence of `1` should be used when conditionally overriding existing commands. Precedence `0`, (the highest) should be used with caution since it can override [sequential commands](#sequential-hotkeys) if the key is included in a sequence. When commands have the same precedence, they execute in the order they were added.
+
 ## Listening for any key
 
-When adding a hotkey with `"any"` as the key, it will run for any `keydown` event, even if a command returned `true`. Note that returning `true` from the command won't mark the event as "handled".
+When adding a hotkey with `"any"` as the key, it will run for any `keydown` event, after commands for the current key even if a one returned `true`. Note that returning `true` from the command won't mark the event as "handled".
 
 ```js editor
 addEditorHotkey(editor, "any", (_editor, e, key) => {
@@ -85,7 +91,7 @@ addEditorHotkey(editor, "any", (_editor, e, key) => {
 This library also supports adding sequential hotkeys where multiple keys must be pressed one after another to execute the command. To bind a command to a sequence, use [`addEditorHotkeySequence(){:js}`](/api-reference/commands/f-addeditorhotkeysequence).
 
 ```js editor
-import { addEditorHotkey, toggleComment } from "prism-code-editor/commads"
+import { addEditorHotkeySequence } from "prism-code-editor/commads"
 
 // VS Code-like binding
 addEditorHotkeySequence(editor, ["mod+k", "mod+c"], () => {
@@ -100,30 +106,25 @@ The last, optional parameter (type [`HotkeySequenceOptions{:js}`](/api-reference
 ```js editor
 addEditorHotkeySequence(editor, ["mod+k", "mod+c"], command, {
 	timeout: 2000, // Time in milliseconds allowed between steps
-	preventDefault: true, // Whether to call preventDefault between steps
-	highPrec: false, // Precedence of the command that starts the sequence
+	preventDefault: true, // Whether to call preventDefault() between steps
+	precedence: 2, // Precedence of the command that starts the sequence
 })
 ```
 
 ### How sequences work
 
-The first key in the sequence gets bound to a command that starts the sequence. When the sequence is advanced, a hotkey for the next key in the sequence gets added until the final step, when the command gets executed instead. If another key was pressed or the timeout expired between steps, the sequence is reset. Note that pressing modifier keys like `Alt` or `Shift` won't reset the sequence. If multiple sequences share the same steps, they will advance simultaneously, but their execution order might be unpredictable.
+The first key in the sequence gets bound to a command that starts the sequence. When the sequence is advanced, a hotkey for the next key in the sequence gets added until the final step, when the command gets executed instead. If another key was pressed or the timeout expired between steps, the sequence is reset. Note that pressing modifier keys like `Alt` or `Shift` won't reset the sequence. If multiple sequences share the same steps, they will advance simultaneously.
 
 ## Removing hotkeys
 
 All functions that add hotkeys return a cleanup function to remove the hotkey.
 
-<Aside type="caution">
-Calling the cleanup function inside a command will result in the next command being skipped, causing potential bugs. To fix this, call the cleanup function with `setTimeout(){:js}`.
-
 ```js editor
 const remove = addEditorHotkey(editor, "enter", () => {
 	console.log("This will only run once!")
-	setTimeout(remove)
+	remove()
 })
 ```
-</Aside>
-
 
 ## Hotkeys outside editors
 
@@ -163,7 +164,7 @@ addHotkeySequence(keyMap, ["g", "g"], () => {
 
 ### Matching hotkeys
 
-The [`getKeysFromEvent(){:js}`](/api-reference/commands/f-getkeysfromevent) utility can be used to check if a key matches a keyboard event. The return values from `getKeysFromEvent(e){:js}` and `normalizeKey(){:js}` could be cached for better performance when checking multiple hotkeys.
+The [`getKeysFromEvent(){:js}`](/api-reference/commands/f-getkeysfromevent) utility can be used to check if a key matches a keyboard event. The return values from `getKeysFromEvent(e){:js}` and `normalizeKey(){:js}` can be cached for better performance when checking multiple hotkeys.
 
 ```js editor
 if (getKeysFromEvent(e).has(normalizeKey("mod+s"))) console.log("Saved!")
@@ -172,3 +173,86 @@ if (getKeysFromEvent(e).has(normalizeKey("mod+s"))) console.log("Saved!")
 ## Adding input commands
 
 Editors also have an [`inputCommandMap`](/api-reference/index/i-prismeditor/#inputcommandmap) that maps user input ([`InputEvent.data{:js}`](https://developer.mozilla.org/en-US/docs/Web/API/InputEvent/data)) to functions called when that input is typed. This is used by `editorCommands(){:js}` to automatically close brackets, quotes, and XML tags. If the handler returns `true`, `e.preventDefault(){:js}` and `e.stopImmediatePropagation(){:js}` get called in the `beforeinput` handler.
+
+## Recording hotkeys
+
+`getKeysFromEvent(){:js}` can be used to to capture shortcuts pressed by users for customizable keybindings.
+
+```ts editor
+import {
+	getKeysFromEvent,
+	normalizeKey,
+	isModifierKey,
+	addHotkey,
+	formatHotkey
+} from "prism-code-editor/commands"
+
+const stopRecording = () => {
+	removeEventListener("keydown", recordShortcut)
+}
+
+const startRecording = () => {
+	addEventListener("keydown", recordShortcut)
+}
+
+const recordShortcut = (e: KeyboardEvent) => {
+	// Skip presses of Ctrl, Shift, Alt, and Meta
+	if (isModifierKey(e)) return
+
+	// Grab first key from Set
+	const [key] = getKeysFromEvent(e)
+
+	if (key == normalizeKey("escape")) {
+		return stopRecording()
+	}
+
+	console.log(formatHotkey(key)) // Display shortcut to user
+	addHotkey(keyMap, key, () => {}) // Register hotkey
+	stopRecording()
+}
+```
+
+## Displaying hotkeys
+
+This library exports a [`formatHotkey(){:js}`](/api-reference/commands/f-formathotkey) utility to format hotkeys before displaying them to users. In addition, you'll find lists of keyboard shortcuts and descriptions for `defaultKeymap`, [`autoComplete(){:js}`](/api-reference/autocomplete/f-autocomplete), and [`searchWidget(){:js}`](/api-reference/search/f-searchwidget). The following example shows how all shortcuts can be rendered with JSX:
+
+```tsx editor
+import {
+	formatHotkey,
+	defaultKeymapLabels,
+	searchShortcutLabels,
+	autoCompleteShortcutLabels
+} from "prism-code-editor/commands"
+
+function HotkeyList({ list }: { list: [string, string][] }) {
+	return (
+		<ul>
+			{list.map(([key, description], i) => (
+				<li key={i}>
+					<span>{description}</span>
+					<kbd>{formatHotkey(key)}</kbd>
+				</li>
+			))}
+		</ul>
+	)
+}
+
+function App() {
+	return <>
+		<h2>Code editor</h2>
+		<HotkeyList list={defaultKeymapLabels} />
+		<h2>Search widget</h2>
+		<HotkeyList list={searchShortcutLabels} />
+		<h2>Autocompletion</h2>
+		<HotkeyList list={autoCompleteShortcutLabels} />
+	</>
+}
+```
+
+<Aside type="caution">
+	If shortcuts are rendered on a server, then all users will see shortcuts for Windows/Linux.
+</Aside>
+
+### Example
+
+Below you can see all shortcuts rendered in lists.

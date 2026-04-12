@@ -108,7 +108,7 @@ export default defineConfig({
 						{ label: "Usage in Forms", slug: "guides/usage-in-forms" },
 						{ label: "Working with Prism", slug: "guides/working-with-prism" },
 						{ label: "Handling Tab", slug: "guides/handling-tab" },
-						{ label: "Keyboard Handling", slug: "guides/keyboard-handling" },
+						{ label: "Hotkeys", slug: "guides/hotkeys" },
 						{ label: "Language Specific Behavior", slug: "guides/language-specific-behavior" },
 						{ label: "Styling", slug: "guides/styling" },
 						{ label: "Extensions", slug: "guides/extensions" },
