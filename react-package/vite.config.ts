@@ -1,6 +1,6 @@
 import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
-import dts from "vite-plugin-dts"
+import dts from "unplugin-dts/vite"
 import fs from "node:fs/promises"
 
 const entries: Record<string, string> = {

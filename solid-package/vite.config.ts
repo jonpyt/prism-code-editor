@@ -1,6 +1,6 @@
 import { defineConfig } from "vite"
 import solidPlugin from "vite-plugin-solid"
-import dts from "vite-plugin-dts"
+import dts from "unplugin-dts/vite"
 import fs from "node:fs/promises"
 // import devtools from 'solid-devtools/vite'
 

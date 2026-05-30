@@ -72,8 +72,8 @@
     "solid-devtools": "^0.34.5",
     "solid-js": "^1.9.11",
     "typescript": "^5.9.3",
+    "unplugin-dts": "^1.0.1",
     "vite": "^7.3.3",
-    "vite-plugin-dts": "^4.5.4",
     "vite-plugin-solid": "^2.11.10"
   },
   "peerDependencies": {

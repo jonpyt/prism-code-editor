@@ -1,6 +1,6 @@
 import { defineConfig, Plugin } from "vite"
 import MagicString from "magic-string"
-import dts from "vite-plugin-dts"
+import dts from "unplugin-dts/vite"
 import fs from "node:fs/promises"
 
 const entries: Record<string, string> = {

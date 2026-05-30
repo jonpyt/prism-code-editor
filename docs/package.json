@@ -11,13 +11,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.38.1",
-    "astro": "^6.0.4",
-    "prism-code-editor": "^5.0.1",
-    "rehype-prism-code-editor": "^0.3.0",
-    "sharp": "^0.34.4",
+    "@astrojs/starlight": "^0.38.5",
+    "astro": "^6.4.2",
+    "prism-code-editor": "link:..\\package",
+    "rehype-prism-code-editor": "link:..\\rehype-plugin",
+    "sharp": "^0.34.5",
     "starlight-typedoc": "^0.21.3",
-    "typedoc": "^0.28.14",
+    "typedoc": "^0.28.19",
     "typescript": "^5.9.3"
   },
   "pnpm": {
