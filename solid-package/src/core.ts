@@ -17,7 +17,7 @@ import type {
 	KeyCommandCallback,
 	Extension,
 } from "./types"
-import { TokenStream, highlightTokens, languages, tokenizeText } from "./prism"
+import { TokenStream, highlightTokens, languages, tokenizeText } from "./prism/index"
 import { insert, style, template } from "solid-js/web"
 
 /**

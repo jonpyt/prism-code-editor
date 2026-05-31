@@ -17,7 +17,7 @@ import { updateMatched } from "./utils"
 import { template } from "solid-js/web"
 import { getStyleValue } from "../../utils/other"
 import { createRenderEffect, on, onCleanup } from "solid-js"
-import { TokenStream } from "../../prism"
+import { TokenStream } from "../../prism/index"
 import { addListener2, addTextareaListener, updateNode } from "../../utils/local"
 
 let count = 0

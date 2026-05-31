@@ -1,5 +1,5 @@
 import type { BracketMatcher } from "./extensions/match-brackets"
-import type { TokenStream } from "./prism"
+import type { TokenStream } from "./prism/index"
 import type { Cursor } from "./extensions/cursor"
 import { addEditorHotkey, type EditHistory } from "./extensions/commands"
 import type { TagMatcher } from "./extensions/match-tags"

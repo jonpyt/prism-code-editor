@@ -1,6 +1,6 @@
 import { template } from "solid-js/web"
 import { PrismEditor } from "../.."
-import { highlightText, languages, Token, TokenName, TokenStream } from "../../prism"
+import { highlightText, languages, Token, TokenName, TokenStream } from "../../prism/index"
 import { updateNode } from "../../utils/local"
 import { matchTemplate } from "../search/search"
 import { map } from "./tooltip"

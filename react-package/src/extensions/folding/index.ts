@@ -3,7 +3,7 @@ import { addListener, languageMap, numLines, useStableRef } from "../../core"
 import { PrismEditor } from "../../types"
 import { getLineBefore } from "../../utils"
 import { createTemplate, getLineEnd, updateNode } from "../../utils/local"
-import { Token, TokenStream } from "../../prism"
+import { Token, TokenStream } from "../../prism/index"
 import { useTagMatcher } from "../match-tags"
 import { useBracketMatcher } from "../match-brackets"
 

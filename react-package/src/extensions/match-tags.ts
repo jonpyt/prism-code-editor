@@ -1,6 +1,6 @@
 import { useLayoutEffect } from "react"
 import { PrismEditor } from "../types"
-import { Token, TokenStream } from "../prism"
+import { Token, TokenStream } from "../prism/index"
 import { getClosestToken } from "../utils"
 import { addTextareaListener, voidlessLangs, voidTags } from "../utils/local"
 

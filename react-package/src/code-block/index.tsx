@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useMemo, JSX, useContext } from "react"
-import { highlightTokens, languages, tokenizeText, TokenStream } from "../prism"
+import { highlightTokens, languages, tokenizeText, TokenStream } from "../prism/index"
 import { useStableRef } from "../core"
 
 export type CodeBlockProps = {
@@ -68,7 +68,7 @@ const CodeBlockContext = createContext<[PrismCodeBlock, CodeBlockProps, JSX.Elem
  * Hook used to access the code block and its props.
  *
  * @throws {Error} when called outside a code block.
- * 
+ *
  * @example
  * const [codeBlock, props, codeLines] = usePrismCodeBlock()
  */

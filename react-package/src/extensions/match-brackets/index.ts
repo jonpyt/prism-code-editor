@@ -1,5 +1,5 @@
 import { useLayoutEffect } from "react"
-import { Token, TokenStream } from "../../prism"
+import { Token, TokenStream } from "../../prism/index"
 import { PrismEditor } from "../../types"
 import { testBracket } from "../../utils/local"
 

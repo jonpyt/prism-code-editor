@@ -5,7 +5,7 @@ import { createReplaceAPI } from "./replace"
 import { addListener2, getLineEnd, getLineStart, updateNode } from "../../utils/local"
 import { getLineBefore, getModifierCode, isMac, isWebKit, regexEscape } from "../../utils"
 import { getStyleValue } from "../../utils/other"
-import { TokenStream } from "../../prism"
+import { TokenStream } from "../../prism/index"
 import { template as _template } from "solid-js/web"
 import { mod } from "../commands/utils"
 

@@ -7,7 +7,7 @@ import type {
 	KeyCommandCallback,
 	EditorEventMap,
 } from "./types"
-import { TokenStream, highlightTokens, languages, tokenizeText } from "./prism"
+import { TokenStream, highlightTokens, languages, tokenizeText } from "./prism/index"
 import {
 	useLayoutEffect,
 	memo,
