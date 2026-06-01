@@ -25,6 +25,7 @@ This is a rewrite of [Prism code editor](https://github.com/jonpyt/prism-code-ed
   - [Extensions property](#extensions-property)
   - [Editor helpers](#editor-helpers)
 - [Languages](#languages)
+- [Hotkeys](#hotkeys)
 - [Styling](#styling)
 - [Themes](#themes)
   - [Theme switcher](#theme-switcher)
@@ -164,7 +165,7 @@ import { IndentGuides } from "prism-react-editor/guides"
 import { useHighlightSelectionMatches, useSearchWidget, useShowInvisibles } from "prism-react-editor/search"
 import { useHighlightMatchingTags, useTagMatcher } from "prism-react-editor/match-tags"
 import { useCursorPosition } from "prism-react-editor/cursor"
-import { useDefaultCommands, useEditHistory } from "prism-react-editor/commands"
+import { useEditorCommands, useEditHistory, defaultKeymap } from "prism-react-editor/commands"
 import { useCopyButton } from "prism-react-editor/copy-button"
 import { useOverscroll } from "prism-react-editor/overscroll"
 import { usePrismEditor } from "prism-react-editor/extensions"
@@ -176,7 +177,7 @@ function MyExtensions() {
   useOverscroll(editor)
   useTagMatcher(editor)
   useHighlightMatchingTags(editor)
-  useDefaultCommands(editor)
+  useEditorCommands(editor, defaultKeymap)
   useEditHistory(editor)
   useSearchWidget(editor)
   useHighlightSelectionMatches(editor)
@@ -365,6 +366,81 @@ import("prism-react-editor/languages")
 You can also import `prism-react-editor/languages/common` instead to support a subset of common languages at less than 2kB gzipped.
 
 Lastly, if you only need support for a few languages, you can do individual imports, for example `prism-react-editor/languages/html`. [Read more](https://prism-code-editor.netlify.app/guides/language-specific-behavior#individual-imports).
+
+## Hotkeys
+
+To add key bindings to an editor, use `addEditorHotkey()` inside an editor extension.
+
+```tsx
+import { addEditorHotkey } from "prism-react-editor/commands"
+
+function MyHotkeyExtension() {
+  const [editor] = usePrismEditor()
+
+  // This could be extracted to a custom `useHotkey` hook
+  useEffect(() => {
+    return addEditorHotkey(editor, "mod+s", () => {
+      console.log("Saved!")
+    })
+  }, [])
+}
+```
+
+To avoid managing dependency arrays or dealing with stale closures inside the hotkey, the dependency array can be removed from the `useEffect`, which will reattach the hotkey on every rerender.
+
+### Hotkeys outside editors
+
+This library exports the primitives it uses for adding keyboard shortcuts. The following examples will show how these primitives can be wrapped for usage in React apps.
+
+```tsx
+import { addHotkey, Hotkey, runHotkeys } from "prism-react-editor/commands"
+import { useEffect, createContext, useContext, useRef } from "react"
+
+type HotkeyData = undefined
+const HotkeyContext = createContext<Hotkey<HotkeyData>>({})
+
+function App() {
+  const keyMap = useRef<Hotkey<HotkeyData>>({})
+
+  // For scoped hotkeys, the handler could be added as a onKeydown
+  // prop to a container instead of as a global event listener.
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const target = e.target as Element
+
+      // Filter events on text fields
+      if (target.matches("input, textarea") || target.isContentEditable) {
+        return
+      }
+
+      runHotkeys(e, keyMap.current, undefined)
+    }
+
+    addEventListener("keydown", handler)
+    return () => removeEventListener("keydown", handler)
+  }, [])
+
+  return (
+    <HotkeyContext.Provider value={keyMap.current}>
+      <MyComponent />
+    </HotkeyContext.Provider>
+  )
+}
+
+function MyComponent() {
+  const keyMap = useContext(HotkeyContext)
+
+  useEffect(() => {
+    return addHotkey(keyMap, "mod+s", () => {
+      console.log("Saved!")
+    })
+  }, [keyMap])
+
+  return null
+}
+```
+
+For more information about hotkeys, read the [hotkeys guide](https://prism-code-editor.netlify.app/guides/hotkeys/).
 
 ## Styling
 

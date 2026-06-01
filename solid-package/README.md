@@ -30,6 +30,7 @@ I realized Prism code editor's architecture made a rewrite in SolidJS not only p
   - [Extensions property](#extensions-property)
 - [Prism](#prism)
 - [Languages](#languages)
+- [Hotkeys](#hotkeys)
 - [Styling](#styling)
   - [Themes](#themes)
 - [Code blocks](#code-blocks)
@@ -132,7 +133,7 @@ import { indentGuides } from "solid-prism-editor/guides"
 import { highlightSelectionMatches, searchWidget } from "solid-prism-editor/search"
 import { highlightMatchingTags, matchTags } from "solid-prism-editor/match-tags"
 import { cursorPosition } from "solid-prism-editor/cursor"
-import { defaultCommands, editHistory } from "solid-prism-editor/commands"
+import { editorCommands, defaultKeymap, editHistory } from "solid-prism-editor/commands"
 import { copyButton } from "solid-prism-editor/copy-button"
 import { overscroll } from "solid-prism-editor/overscroll"
 
@@ -150,7 +151,7 @@ const MyEditor = () => {
         matchTags(),
         highlightMatchingTags(),
         cursorPosition(),
-        defaultCommands(),
+        editorCommands(defaultKeymap),
         editHistory(),
         copyButton(),
         overscroll(),
@@ -311,6 +312,74 @@ import("solid-prism-editor/languages")
 You can also import `solid-prism-editor/languages/common` instead to support a subset of common languages at less than 2kB gzipped.
 
 Lastly, if you only need support for a few languages, you can do individual imports, for example `solid-prism-editor/languages/html`. [Read more](https://prism-code-editor.netlify.app/guides/language-specific-behavior#individual-imports).
+
+## Hotkeys
+
+To add key bindings to an editor, use `addEditorHotkey()` inside an editor extension.
+
+```tsx
+import { addEditorHotkey } from "solid-prism-editor/commands"
+
+const MyHotkeyExtension: Extension = editor => {
+  // onUnount will remove the hotkey on unmount
+  onUnmount(
+    addEditorHotkey(keyMap, "mod+s", () => {
+      console.log("Saved!")
+    })
+  )
+}
+```
+
+### Hotkeys outside editors
+
+This library exports the primitives it uses for adding keyboard shortcuts. The following examples will show how these primitives can be wrapped for usage in SolidJS apps.
+
+```tsx
+import { addHotkey, Hotkey, runHotkeys } from "solid-prism-editor/commands"
+import { createContext, useContext, onUnmount } from "solid-js"
+
+type HotkeyData = undefined
+const HotkeyContext = createContext<Hotkey<HotkeyData>>()
+
+function App() {
+  const handler = (e: KeyboardEvent) => {
+    const target = e.target as Element
+
+    // Filter events on text fields
+    if (target.matches("input, textarea") || target.isContentEditable) {
+      return
+    }
+
+    runHotkeys(e, keyMap, undefined)
+  }
+
+  // For scoped hotkeys, the handler could be added as a onKeydown
+  // prop to a container instead of as a global event listener.
+  addEventListener("keydown", handler)
+  onUnmount(() => removeEventListener("keydown", handler))
+
+  return (
+    <HotkeyContext.Provider value={{}}>
+      <MyComponent />
+    </HotkeyContext.Provider>
+  )
+}
+
+function MyComponent() {
+  const keyMap = useContext(HotkeyContext)
+
+  // onUnount will remove the hotkey on unmount
+  onUnmount(
+    addHotkey(keyMap, "mod+s", () => {
+      console.log("Saved!")
+    })
+  )
+
+  return null
+}
+```
+
+For more information about hotkeys, read the [hotkeys guide](https://prism-code-editor.netlify.app/guides/hotkeys/).
 
 ## Styling
 
