@@ -369,7 +369,7 @@ Lastly, if you only need support for a few languages, you can do individual impo
 
 ## Hotkeys
 
-To add key bindings to an editor, use `addEditorHotkey()` inside an editor extension.
+To add key bindings to an editor, use `addEditorHotkey()` inside an editor extension or outside with a ref.
 
 ```tsx
 import { addEditorHotkey } from "prism-react-editor/commands"
@@ -383,6 +383,22 @@ function MyHotkeyExtension() {
       console.log("Saved!")
     })
   }, [])
+}
+
+function MyEditor() {
+  const editorRef = useRef<PrismEditor>()
+
+  useEffect(() => {
+    if (!editorRef.current) return
+
+    return addEditorHotkey(editorRef.current, "alt+shift+f", editor => {
+      return formatDocument(editor)
+    })
+  }, [])
+
+  return (
+    <Editor language="jsx" value="" ref={editorRef} />
+  )
 }
 ```
 
