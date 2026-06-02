@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@astrojs/starlight": "^0.38.5",
-    "astro": "^6.4.2",
+    "astro": "^6.2.2",
     "prism-code-editor": "link:..\\package",
     "rehype-prism-code-editor": "link:..\\rehype-plugin",
     "sharp": "^0.34.5",
