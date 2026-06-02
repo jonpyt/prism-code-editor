@@ -28,9 +28,6 @@ const addCommand = <T extends KeyCommandCallback | InputCommandCallback>(
 }
 
 /**
- * @deprecated Consider using {@link useEditorCommands} instead. Will be removed in next
- * major release.
- * 
  * Hook that will add automatic indentation and closing of brackets, quotes, and tags
  * along with the following commands.
  *
@@ -61,6 +58,9 @@ const addCommand = <T extends KeyCommandCallback | InputCommandCallback>(
  * @param selfCloseRegex Regex controlling whether or not a bracket/quote should
  * automatically close based on the character before and after the cursor.
  * Defaults to ``/([^$\w'"`]["'`]|.[[({])[.,:;\])}>\s]|.[[({]`/s``.
+ *
+ * @deprecated Consider using {@link useEditorCommands} instead. This will be removed in
+ * next major release.
  */
 const useDefaultCommands = (
 	editor: PrismEditor,

@@ -66,8 +66,8 @@ const formatHotkey = (hotkey: string, separator = isMac ? " " : "+") => {
 
 /**
  * Array of keyboard shortcuts and descriptions for {@link defaultKeymap}. Useful for
- * documenting keybindings to users. It consists of tuples containing two string each
- * where the first string is the keybinding and the second is the description.
+ * documenting key bindings to users. It consists of tuples containing two string each
+ * where the first string is the key binding and the second is the description.
  *
  * @example
  * for (const [key, description] of defaultKeymapLabels) {
@@ -95,8 +95,8 @@ const defaultKeymapLabels: [string, string][] = [
 
 /**
  * Array of keyboard shortcuts and descriptions for the {@link autoComplete} extension.
- * Useful for documenting keybindings to users. It consists of tuples containing two
- * string each where the first string is the keybinding and the second is the description.
+ * Useful for documenting key bindings to users. It consists of tuples containing two
+ * string each where the first string is the key binding and the second is the description.
  *
  * @example
  * for (const [key, description] of autoCompleteShortcutLabels) {
@@ -125,8 +125,8 @@ const modifiers = isMac ? 5 : 1
 
 /**
  * Array of keyboard shortcuts and descriptions for the {@link searchWidget} extension.
- * Useful for documenting keybindings to users. It consists of tuples containing two
- * string each where the first string is the keybinding and the second is the description.
+ * Useful for documenting key bindings to users. It consists of tuples containing two
+ * string each where the first string is the key binding and the second is the description.
  *
  * @example
  * for (const [key, description] of searchShortcutLabels) {

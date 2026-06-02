@@ -9,7 +9,7 @@ import { Aside } from "@astrojs/starlight/components"
 
 <MountEditors />
 
-The [`defaultCommands(){:js}`](/api-reference/commands/f-defaultcommands) extension binds the Tab key to indenting code. Users can at any time toggle tab capturing with Ctrl+M / Ctrl+Shift+M (Mac) whenever an editor is focused, but if a keyboard navigator is unaware of this, they're effectively trapped in the editor.
+The [`defaultKeymap`](/api-reference/commands/v-defaultkeymap) binds the Tab key to indenting code. Users can at any time toggle tab capturing with `Ctrl+M` or `⌃ ⇧ M` (Mac) whenever an editor is focused, but if a keyboard navigator is unaware of this, they're effectively trapped in the editor.
 
 One solution that doesn't involve disabling tab capturing by default is to disable it temporarily whenever the user tabs over to an editor. You'll notice that focusing the editor with a pointer allows the Tab key to be used for indenting as normal, whereas this isn't the case if the editor was focused with Tab.
 

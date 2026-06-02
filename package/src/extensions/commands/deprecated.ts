@@ -16,9 +16,6 @@ import { ignoreTab, setIgnoreTab, whitespaceEnd } from "./commands.js"
 import { editorCommands } from "./index.js"
 
 /**
- * @deprecated Consider using {@link editorCommands} instead. Will be removed in next
- * major release.
- *
  * Extension that will add automatic indentation and closing of brackets, quotes, and
  * tags along with the commands presented later.
  *
@@ -49,6 +46,9 @@ import { editorCommands } from "./index.js"
  * @param selfCloseRegex Regex controlling whether or not a bracket/quote should
  * automatically close based on the character before and after the cursor.
  * Defaults to ``/([^$\w'"`]["'`]|.[[({])[.,:;\])}>\s]|.[[({]`/s``.
+ *
+ * @deprecated Consider using {@link editorCommands} instead. This will be removed in next
+ * major release.
  */
 const defaultCommands = (
 	selfClosePairs = ['""', "''", "``", "()", "[]", "{}"],

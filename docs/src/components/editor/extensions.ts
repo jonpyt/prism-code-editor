@@ -14,7 +14,13 @@ import "prism-code-editor/prism/languages/regex"
 import { searchWidget, highlightSelectionMatches, showInvisibles } from "prism-code-editor/search"
 import { copyButton } from "prism-code-editor/copy-button"
 import { highlightBracketPairs } from "prism-code-editor/highlight-brackets"
-import { defaultCommands, editHistory, ignoreTab, setIgnoreTab } from "prism-code-editor/commands"
+import {
+	defaultKeymap,
+	editHistory,
+	editorCommands,
+	ignoreTab,
+	setIgnoreTab,
+} from "prism-code-editor/commands"
 import { matchTags } from "prism-code-editor/match-tags"
 import { editors } from "./mount"
 import { cursorPosition } from "prism-code-editor/cursor"
@@ -25,7 +31,7 @@ editors.forEach(editor => {
 	editor.options.insertSpaces = false
 	editor.addExtensions(
 		indentGuides(),
-		defaultCommands(),
+		editorCommands(defaultKeymap),
 		editHistory(),
 		searchWidget(),
 		highlightBracketPairs(),

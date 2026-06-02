@@ -51,7 +51,7 @@ const getKeysFromEvent = (e: KeyboardEvent) => {
 		}
 	}
 
-	const key = e.key
+	const key = e.key || ""
 	const code = getModifierCode(e)
 	const keyBase = keyCodeMap[e.keyCode]
 	const keyShift = keyCodeMapShift[e.keyCode]
