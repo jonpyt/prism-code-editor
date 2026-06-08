@@ -47,6 +47,16 @@ import { editorCommands, defaultKeymap } from "prism-code-editor/commands"
 editor.addExtensions(editorCommands(defaultKeymap))
 ```
 
+`defaultKeymap` can also be extended using object spread to add additional key bindings:
+
+```js editor
+editorCommands({
+	...defaultKeymap,
+	"alt+shift+f": formatDocument,
+	"mod+s": saveDocument
+})
+```
+
 ## Hotkey syntax
 
 Keys are strings that can appear in [`KeyboardEvent.key{:js}`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key), preceded by any number of modifiers, all separated by `+`, such as `ctrl+shift+enter`. Hotkeys are case-insensitive.
