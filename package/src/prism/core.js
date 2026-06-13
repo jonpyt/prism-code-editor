@@ -1,19 +1,24 @@
 // Slimmed down Prism core with most high level functions removed
 
-var plainTextGrammar = {};
-var rest = Symbol();
-var tokenize = Symbol();
+var globalKey = Symbol.for("prism-code-editor.prism");
+var prismGlobal = (globalThis[globalKey] ||= {});
+
+var plainTextGrammar = (prismGlobal.plainTextGrammar ||= {});
+var rest = (prismGlobal.rest ||= Symbol.for("prism-code-editor.prism.rest"));
+var tokenize =
+	(prismGlobal.tokenize ||= Symbol.for("prism-code-editor.prism.tokenize"));
 
 /** @param {*} id */
 var resolve = id => typeof id == 'string' ? languages[id] : id;
 
 /** @type {Record<string, any>} */
-var languages = {
-	plain: plainTextGrammar,
-	plaintext: plainTextGrammar,
-	text: plainTextGrammar,
-	txt: plainTextGrammar,
-};
+var languages =
+	(prismGlobal.languages ||= {
+		plain: plainTextGrammar,
+		plaintext: plainTextGrammar,
+		text: plainTextGrammar,
+		txt: plainTextGrammar,
+	});
 
 /**
  * @param {string} text
