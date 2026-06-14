@@ -1,5 +1,7 @@
 `foo bar baz`
 ``foo `bar` baz``
+```foo ``bar`` baz```
+````foo ```bar``` baz````
 
     foobar
 
@@ -10,11 +12,21 @@
 var a = 0;
 ```
 
+`````markdown
+````md
+``` js
+var a = 0;
+```
+````
+`````
+
 ----------------------------------------------------
 
 [
 	["code-snippet", "`foo bar baz`"],
 	["code-snippet", "``foo `bar` baz``"],
+	["code-snippet", "```foo ``bar`` baz```"],
+	["code-snippet", "````foo ```bar``` baz````"],
 
 	["code", "    foobar"],
 
@@ -24,6 +36,30 @@ var a = 0;
 		["punctuation", "```"], ["code-language", " js"],
 		["code-block", "var a = 0;"],
 		["punctuation", "```"]
+	]],
+
+	["code", [
+		["punctuation", "`````"],
+		["code-language", "markdown"],
+
+		["code-block", [
+			["code", [
+				["punctuation", "````"],
+				["code-language", "md"],
+
+				["code-block", [
+					["code", [
+						["punctuation", "```"], ["code-language", " js"],
+						["code-block", "var a = 0;"],
+						["punctuation", "```"]
+					]]
+				]],
+
+				["punctuation", "````"]
+			]]
+		]],
+
+		["punctuation", "`````"]
 	]]
 ]
 
