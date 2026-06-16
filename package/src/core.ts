@@ -296,7 +296,8 @@ const numLines = (str: string, start = 0, end = Infinity) => {
 }
 
 /** Object storing all language specific behavior. */
-const languageMap: Record<string, Language> = {}
+const languageMap: Record<string, Language> =
+	((globalThis as any)[Symbol.for("prism-code-editor.languageMap")] ||= {})
 
 const editorTemplate = /* @__PURE__ */ createTemplate(
 	"<div><div class=pce-wrapper><div class=pce-overlays><textarea class=pce-textarea spellcheck=false autocapitalize=off autocomplete=off>",
