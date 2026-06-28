@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useLayoutEffect, useState } from "react"
 import { EditorContext } from "../core"
 import { PrismEditor } from ".."
 
@@ -24,7 +24,7 @@ const usePrismEditor = () => {
 const useEditorValue = (editor: PrismEditor) => {
 	const [value, setValue] = useState(editor.value)
 
-	useEffect(() => editor.on("update", setValue), [])
+	useLayoutEffect(() => editor.on("update", setValue), [])
 
 	return value
 }
@@ -35,7 +35,7 @@ const useEditorValue = (editor: PrismEditor) => {
 const useEditorSelection = (editor: PrismEditor) => {
 	const [selection, setSelection] = useState(editor.getSelection)
 
-	useEffect(() => editor.on("selectionChange", setSelection), [])
+	useLayoutEffect(() => editor.on("selectionChange", setSelection), [])
 
 	return selection
 }
