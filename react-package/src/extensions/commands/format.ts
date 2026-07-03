@@ -156,6 +156,7 @@ const modifiers = isMac ? 5 : 1
  */
 const searchShortcutLabels: [string, string][] = [
 	["mod+f", "Start search"],
+	[isMac ? "5+f" : "2+h", "Start replacing"],
 	["mod+g", "Find next match"],
 	["mod+8+g", "Find previous match"],
 	["f3", "Find next match"],

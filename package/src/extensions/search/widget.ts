@@ -195,13 +195,15 @@ export const searchWidget = (): SearchWidget => {
 			],
 		])
 
-		const getSelectedWord = () => {
+		const getSelectedWord = (selectionOnly?: boolean) => {
 			let [start, end] = getSelection()
 			let value = editor.value
 			let word =
 				value.slice(start, end) ||
-				/[_\p{N}\p{L}]*$/u.exec(getLineBefore(value, start))![0] +
-					/^[_\p{N}\p{L}]*/u.exec(value.slice(start))![0]
+				(selectionOnly
+					? ""
+					: /[_\p{N}\p{L}]*$/u.exec(getLineBefore(value, start))![0] +
+					  /^[_\p{N}\p{L}]*/u.exec(value.slice(start))![0])
 
 			return word.includes("\n") ? "" : useRegExp ? regexEscape(word) : word
 		}
@@ -230,6 +232,22 @@ export const searchWidget = (): SearchWidget => {
 				findInput.value ||= getSelectedWord()
 				startSearch()
 				move(code < 8)
+				// Ctrl+H or Cmd+Alt+F (Mac)
+			} else if (isMac ? code == 5 && keyCode == 70 : code == 2 && keyCode == 72) {
+				const searchTerm = getSelectedWord(true)
+				const target = e.target as HTMLElement
+				const shouldSearch = searchTerm && target != findInput && target != replaceInput
+				const newTarget = target == findInput || shouldSearch ? replaceInput : findInput
+
+				preventDefault(e)
+				open(false)
+				if (toggle.getAttribute("aria-expanded") != "true") toggle.click()
+				if (shouldSearch) {
+					findInput.value = searchTerm
+					startSearch()
+				}
+				newTarget.focus()
+				newTarget.select()
 			}
 		})
 		addListener(textarea, "beforeinput", () => {
@@ -294,7 +312,7 @@ export const searchWidget = (): SearchWidget => {
 		replaceAPI.container.className = "pce-matches"
 	}
 
-	const searchContainer = <HTMLDivElement>template()
+	const searchContainer = template()
 	// @ts-expect-error
 	const search = (self.element = <HTMLDivElement>searchContainer.firstChild)
 	const [toggle, div] = <[HTMLButtonElement, HTMLDivElement]>(<unknown>search.children)
