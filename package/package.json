@@ -104,6 +104,9 @@
     "highlight",
     "prism"
   ],
+  "esm.sh": {
+    "bundle": false
+  },
   "author": "Jonas Pytte",
   "repository": {
     "type": "git",
