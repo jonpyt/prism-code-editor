@@ -32,7 +32,6 @@ const matchRecursive = (tokens: TokenStream, pairs: string) => {
 					let entry: [Token, number]
 
 					while ((entry = stack[--i])) {
-						let entry = stack[--i]
 						if (bracketType == entry[1]) {
 							let alias = "bracket-level-" + (i % 12)
 							let j = i
