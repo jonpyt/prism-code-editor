@@ -83,6 +83,15 @@ const omitLines = (selector: string) => (codeBlock: PrismCodeBlock) => {
 /**
  * Adds a copy button to a code block. Requires styles from
  * `prism-code-editor/copy-button.css`.
+ *
+ * By default, the copy button is only shown when the code block is hovered. To always
+ * show it, change the default opacity with the following CSS:
+ *
+ * ```less
+ * button.pce-copy {
+ *   opacity: 1; // or a lower value for a semi-transparent button
+ * }
+ * ```
  * @param codeBlock Code block to add the copy button to.
  * @param getCode Function used to get the copied code. Can be used to e.g. omit deleted
  * lines.

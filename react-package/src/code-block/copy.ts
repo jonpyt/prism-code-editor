@@ -7,6 +7,15 @@ import { addOverlay } from "../utils"
 /**
  * Copy button component for code blocks. Requires styles from
  * `prism-react-editor/copy-button.css`.
+ *
+ * By default, the copy button is only shown when the code block is hovered. To always
+ * show it, change the default opacity with the following CSS:
+ *
+ * ```less
+ * button.pce-copy {
+ *   opacity: 1; // or a lower value for a semi-transparent button
+ * }
+ * ```
  */
 const CopyButton = (): undefined => {
   const [codeBlock, props] = usePrismCodeBlock()

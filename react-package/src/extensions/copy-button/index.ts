@@ -15,6 +15,15 @@ const createCopyButton = /* @__PURE__ */ createTemplate(
 /**
  * Hook that adds a copy button to the editor. Probably best used with a read-only editor.
  * Requires styles from `prism-react-editor/copy-button.css` to work.
+ *
+ * By default, the copy button is only shown when the editor is hovered. To always show
+ * it, change the default opacity with the following CSS:
+ *
+ * ```less
+ * button.pce-copy {
+ *   opacity: 1; // or a lower value for a semi-transparent button
+ * }
+ * ```
  */
 const useCopyButton = (editor: PrismEditor) => {
 	useEffect(() => {
