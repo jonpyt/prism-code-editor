@@ -26,10 +26,26 @@
     "./code-block.css": "./dist/code-block.css",
     "./themes/*.css": "./dist/themes/*.css",
     "./themes": "./dist/themes/index.js",
-    "./languages": "./dist/languages/index.js",
-    "./languages/*": "./dist/languages/*.js",
-    "./prism/languages": "./dist/prism/languages/index.js",
-    "./prism/languages/*": "./dist/prism/languages/*.js",
+    "./languages": {
+      "types": "./dist/languages/index.d.ts",
+      "import": "./dist/languages/index.js",
+      "default": "./dist/languages/index.js"
+    },
+    "./languages/*": {
+      "types": "./dist/languages/*.d.ts",
+      "import": "./dist/languages/*.js",
+      "default": "./dist/languages/*.js"
+    },
+    "./prism/languages": {
+      "types": "./dist/prism/languages/index.d.ts",
+      "import": "./dist/prism/languages/index.js",
+      "default": "./dist/prism/languages/index.js"
+    },
+    "./prism/languages/*": {
+      "types": "./dist/prism/languages/*.d.ts",
+      "import": "./dist/prism/languages/*.js",
+      "default": "./dist/prism/languages/*.js"
+    },
     "./match-brackets": "./dist/extensions/matchBrackets/index.js",
     "./highlight-brackets": "./dist/extensions/matchBrackets/highlight.js",
     "./match-tags": "./dist/extensions/matchTags.js",
