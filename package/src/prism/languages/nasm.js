@@ -11,7 +11,7 @@ languages.nasm = {
 	'keyword': [
 		/\[?BITS (?:16|32|64)\]?/,
 		{
-			pattern: /(^\s*)section[^\S\n]*[a-z.]+:?/im,
+			pattern: /(^\s*)section[\t ]*[a-z.]+:?/im,
 			lookbehind: true
 		},
 		/(?:extern|global)[^\n;]*/i,
