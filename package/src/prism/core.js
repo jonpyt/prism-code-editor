@@ -71,14 +71,12 @@ var stringify = token => {
 		var { type, alias, content } = token;
 		var prevOpening = openingTags;
 		var prevClosing = closingTags;
-
-		var keywordClass = '';
-		if (type == 'keyword' && typeof content == 'string') {
-			keywordClass += ' keyword-';
-			keywordClass += content.replace(/"|\n/g, '');
-		}
-
-		var opening = `<span class="token ${ type + (alias ? ' ' + alias : '') + keywordClass }">`;
+		var opening = `<span class="token ${
+			type + (alias ? ' ' + alias : '') +
+			(type == 'keyword' && typeof content == 'string'
+				? ' keyword-' + content.replace(/"|\s/g, '')
+				: '')
+		}">`;
 		closingTags += closingTag;
 		openingTags += opening;
 		var contentStr = stringify(content);
