@@ -11,10 +11,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.38.5",
-    "astro": "^6.2.2",
+    "@astrojs/markdown-remark": "^7.2.1",
+    "@astrojs/starlight": "0.40.0",
+    "astro": "6.4.8",
     "prism-code-editor": "link:..\\package",
     "rehype-prism-code-editor": "link:..\\rehype-plugin",
+    "remark-gfm": "^4.0.1",
     "sharp": "^0.34.5",
     "starlight-typedoc": "^0.21.3",
     "typedoc": "^0.28.19",

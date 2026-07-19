@@ -1,4 +1,6 @@
 import { defineConfig } from "astro/config"
+import { unified } from '@astrojs/markdown-remark'
+import remarkGfm from 'remark-gfm'
 import starlight from "@astrojs/starlight"
 import starlightTypeDoc from "starlight-typedoc"
 import prismCodeEditor from "rehype-prism-code-editor"
@@ -41,7 +43,10 @@ const pluginOptions = {
 // https://astro.build/config
 export default defineConfig({
 	markdown: {
-		rehypePlugins: [[prismCodeEditor, pluginOptions]],
+		processor: unified({
+			remarkPlugins: [remarkGfm],
+			rehypePlugins: [[prismCodeEditor, pluginOptions]]
+		})
 	},
 	integrations: [
 		starlight({
@@ -160,10 +165,12 @@ export default defineConfig({
 					].map(module => ({
 						label: module,
 						collapsed: true,
-						autogenerate: {
-							directory: "api-reference/" + module,
-							collapsed: true,
-						},
+						items: [{
+							autogenerate: {
+								directory: "api-reference/" + module,
+								collapsed: true,
+							},
+						}]
 					})),
 				},
 			],
