@@ -70,3 +70,43 @@ createEditor("#editor", {}, myExtension(), (editor, options) => {
 	// This will only be called before the first render
 })
 ```
+
+## Changing extensions
+
+It's not possible to remove extensions once they've been added to an editor, and most extensions don't allow changing their configuation options after creation. One solution is to replace the exisiting editor with a new editor with different extensions added. The example below shows how:
+
+```ts editor
+import {
+	createEditor,
+	PrismEditor,
+	EditorOptions,
+	EditorExtension
+} from "prism-code-editor"
+import { setSelection } from "prism-code-editor/utils"
+
+const replaceEditor = <T extends {} = {}>(
+	editor: PrismEditor<T>,
+	newOptions: Partial<EditorOptions<T> & T>,
+	...extensions: EditorExtension<T>[]
+): PrismEditor<T> => {
+	const parent = editor.container.parentNode
+	const history = editor.extensions.history
+	const selection = editor.getSelection()
+	const focused = editor.focused
+
+	editor.remove()
+
+	const newEditor = createEditor(
+		parent,
+		{ ...editor.options, value: editor.value, ...newOptions },
+		...(history ? [history] : []),
+		...extensions,
+	)
+
+	if (focused) newEditor.textarea.focus()
+	setSelection(newEditor, ...selection)
+	return newEditor
+}
+```
+
+Here, the history extension (if present) is moved to the new editor which transfers the history.
