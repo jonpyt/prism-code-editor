@@ -61,7 +61,7 @@ const indentGuides = (): Extension => {
 
 	return {
 		update(editor, options) {
-			if (!currentEditor) {
+			if (currentEditor != editor) {
 				currentEditor = editor
 
 				let overlays = editor.lines[0]

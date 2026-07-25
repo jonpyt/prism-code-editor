@@ -195,7 +195,7 @@ const readOnlyCodeFolding = (...providers: FoldingRangeProvider[]): ReadOnlyCode
 
 	return {
 		update(editor, options) {
-			if (!cEditor) {
+			if (cEditor != editor) {
 				cEditor = editor
 				textarea = editor.textarea
 				editor.extensions.codeFold = this
