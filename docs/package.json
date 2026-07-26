@@ -17,7 +17,7 @@
     "prism-code-editor": "link:..\\package",
     "rehype-prism-code-editor": "link:..\\rehype-plugin",
     "remark-gfm": "^4.0.1",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.3",
     "starlight-typedoc": "^0.21.3",
     "typedoc": "^0.28.19",
     "typescript": "^5.9.3"
