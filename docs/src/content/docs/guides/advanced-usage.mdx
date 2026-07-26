@@ -13,36 +13,41 @@ The setups are a nice way to get an editor up and running with minimal configura
 ## Creating an editor
 
 All the setups are an abstraction over [`createEditor(){:js}`](/api-reference/index/f-createeditor) which can be used directly for more control.
+
 ```js editor file="index.js"
 import "prism-code-editor/prism/languages/javascript"
 import { createEditor } from "prism-code-editor"
 import { matchBrackets } from "prism-code-editor/match-brackets"
+import { indentGuides } from "prism-code-editor/guides"
 
 // Importing styles
 import "prism-code-editor/layout.css"
 import "prism-code-editor/themes/github-dark.css"
+// Required by indentGuides()
+import "prism-code-editor/guides.css"
 
 export const editor = createEditor(
 	"#editor",
 	{ language: "javascript" },
 	// Initial extensions
 	matchBrackets(),
+	indentGuides(),
 )
 
-import("./extensions")
+editor.textarea.addEventListener(
+	"focus",
+	() => import("./extensions"),
+	{ once: true }
+)
 ```
 
 ### Adding extensions
 
-The 3rd argument onward to `createEditor(){:js}` are the extensions you want the editor to be initialized with, but you can also add more extensions later with the [`editor.addExtensions(){:js}`](/api-reference/index/i-prismeditor#addextensions) method. The example shown uses a dynamic `import(){:js}` to load most extensions. This enables code splitting for even faster load times.
+The 3rd argument onward to `createEditor(){:js}` are the extensions you want the editor to be initialized with, but you can also add more extensions later with the [`editor.addExtensions(){:js}`](/api-reference/index/i-prismeditor#addextensions) method. The example shown uses a dynamic `import(){:js}` to load most extensions only when the editor is focused. This enables code splitting for even faster load times. Note that the extensions might not have loaded before the user starts typing in this case. In your application, there might be better events to listen to for starting the import.
 
 ```js editor file="extensions.js"
 // Required by searchWidget()
 import "prism-code-editor/search.css"
-// Required by copyButton()
-import "prism-code-editor/copy-button.css"
-// Required by indentGuides()
-import "prism-code-editor/guides.css"
 // Adds automatic indentation and comment toggling
 import "prism-code-editor/languages/html"
 import "prism-code-editor/languages/clike"
@@ -51,22 +56,18 @@ import "prism-code-editor/languages/css"
 import { searchWidget, highlightSelectionMatches } from "prism-code-editor/search"
 import { editorCommands, defaultKeymap, editHistory } from "prism-code-editor/commands"
 import { cursorPosition } from "prism-code-editor/cursor"
-import { copyButton } from "prism-code-editor/copy-button"
 import { matchTags } from "prism-code-editor/match-tags"
 import { highlightBracketPairs } from "prism-code-editor/highlight-brackets"
-import { indentGuides } from "prism-code-editor/guides"
 import { editor } from "./index"
 
 editor.addExtensions(
 	highlightSelectionMatches(),
 	searchWidget(),
 	editorCommands(defaultKeymap),
-	copyButton(),
 	matchTags(),
 	highlightBracketPairs(),
 	cursorPosition(),
 	editHistory(),
-	indentGuides(),
 )
 ```
 

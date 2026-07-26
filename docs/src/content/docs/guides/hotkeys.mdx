@@ -86,7 +86,7 @@ The 4th [`precedence` parameter](http://localhost:4321/api-reference/commands/f-
 
 ## Listening for any key
 
-When adding a hotkey with `"any"` as the key, it will run for any `keydown` event, after commands for the current key even if a one returned `true`. Note that returning `true` from the command won't mark the event as "handled".
+When adding a hotkey with `"any"` as the key, it will run for any `keydown` event, after commands for the current key even if one returned `true`. Note that returning `true` from the command won't mark the event as "handled".
 
 ```js editor
 addEditorHotkey(editor, "any", (_editor, e, key) => {
