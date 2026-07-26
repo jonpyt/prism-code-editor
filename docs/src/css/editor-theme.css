@@ -47,6 +47,7 @@
 	--selector-id: #fad430;
 	--attr-punctuation: #d9f5dd;
 	--attr-name: #c5e478;
+	--inserted: #c5e478;
 	--function: #82aaff;
 	--pce-string: #ecc48d;
 	--pce-class: #ffcb8b;
@@ -54,7 +55,7 @@
 	--bracket-1: #ffd700;
 	--bracket-2: #da70d6;
 	--bracket-3: #179fff;
-	--interpolation-punctuation: #ff5652;
+	--interpolation-punctuation: #d3423e;
 	--bracket-border: #b3cfe7a1;
 	--bracket-bg: #5f7e974d;
 	--active-tag: #f6bbe533;
@@ -112,6 +113,7 @@
 	--selector-id: #aa0982;
 	--attr-punctuation: #111;
 	--attr-name: #3c63b3;
+	--inserted: #5aa329;
 	--function: #3c63b3;
 	--pce-string: #9b504e;
 	--pce-class: #111;
@@ -245,7 +247,7 @@ div.code-block {
 .token.property-access,
 .token.quantifier,
 .token.alternation,
-.token.url .markup-bracket {
+.token.url > .markup-bracket {
 	color: var(--selector-operator);
 }
 
@@ -270,7 +272,6 @@ div.code-block {
 .token.attr-name,
 .token.doctype,
 .token.variable,
-.token.inserted,
 .selector .class,
 .selector .pseudo-element,
 .selector .pseudo-class,
@@ -278,6 +279,10 @@ div.code-block {
 .token.bold *,
 .token.code.code-snippet {
 	color: var(--attr-name);
+}
+
+.token.inserted {
+	color: var(--inserted);
 }
 
 .token.function,
