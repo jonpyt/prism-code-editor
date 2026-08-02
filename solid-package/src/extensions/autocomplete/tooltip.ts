@@ -16,7 +16,7 @@ import { searchTemplate } from "../search/search"
 import { updateMatched } from "./utils"
 import { template } from "solid-js/web"
 import { getStyleValue } from "../../utils/other"
-import { createRenderEffect, on, onCleanup } from "solid-js"
+import { createEffect, on, onCleanup } from "solid-js"
 import { TokenStream } from "../../prism/index"
 import { addListener2, addTextareaListener, updateNode } from "../../utils/local"
 
@@ -509,7 +509,7 @@ const autoComplete =
 			if (!updateOffset()) updateActive()
 		})
 
-		createRenderEffect(
+		createEffect(
 			on(editor.selection, selection => {
 				if (prevTokens != (prevTokens = editor.tokens()) && stops) {
 					let value = editor.value

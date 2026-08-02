@@ -1,13 +1,4 @@
-import {
-	createSignal,
-	type Component,
-	createEffect,
-	For,
-	batch,
-	on,
-	Show,
-	createRenderEffect,
-} from "solid-js"
+import { createSignal, type Component, createEffect, For, batch, on, Show } from "solid-js"
 import { Editor } from "../core"
 import "../prism/languages/typescript"
 import "../prism/languages/jsdoc"
@@ -134,7 +125,7 @@ const App: Component = () => {
 			filter: fuzzyFilter,
 		}),
 		editor => {
-			createRenderEffect(() => {
+			createEffect(() => {
 				editor.props.value
 				editor.container.scrollTo(0, 0)
 			})

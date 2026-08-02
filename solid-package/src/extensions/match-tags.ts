@@ -1,6 +1,6 @@
 import { Token, TokenStream } from "../prism/index"
 import { Extension } from ".."
-import { createEffect, onCleanup, untrack } from "solid-js"
+import { createEffect, createRenderEffect, on, onCleanup, untrack } from "solid-js"
 import { getClosestToken } from "../utils"
 import { voidlessLangs, voidTags } from "../utils/local"
 
@@ -94,15 +94,13 @@ const matchTags = (): Extension => editor => {
 		}
 	}
 
-	createEffect(() => {
-		code = editor.value
-		tags.length = pairMap.length = sp = tagIndex = 0
-		matchTagsRecursive(
-			editor.tokens(),
-			untrack(() => editor.props.language),
-			0,
-		)
-	})
+	createRenderEffect(
+		on(editor.tokens, tokens => {
+			code = editor.value
+			tags.length = pairMap.length = sp = tagIndex = 0
+			matchTagsRecursive(tokens, editor.props.language, 0)
+		}),
+	)
 
 	editor.extensions.matchTags = {
 		tags,
@@ -130,30 +128,32 @@ const highlightMatchingTags = (): Extension => editor => {
 			el && el.classList.toggle("active-tagname", !remove)
 		})
 
-	createEffect(() => {
-		let [start, end] = editor.selection()
-		let newEl1: Element | undefined
-		let newEl2: Element | undefined
-		let index: number
-		let matcher = editor.extensions.matchTags
-		if (start == end && matcher && untrack(editor.focused)) {
-			index = getClosestTagIndex(start, matcher.tags)!
+	createEffect(
+		on(editor.selection, selection => {
+			let [start, end] = selection
+			let newEl1: Element | undefined
+			let newEl2: Element | undefined
+			let index: number
+			let matcher = editor.extensions.matchTags
+			if (start == end && matcher && editor.focused()) {
+				index = getClosestTagIndex(start, matcher.tags)!
 
-			if (index + 1) {
-				index = matcher.pairs[index]!
+				if (index + 1) {
+					index = matcher.pairs[index]!
 
-				if (index + 1 && (newEl1 = getClosestToken(editor, ".tag>.tag"))) {
-					newEl2 = getClosestToken(editor, ".tag>.tag", 2, 0, matcher.tags[index][1])
+					if (index + 1 && (newEl1 = getClosestToken(editor, ".tag>.tag"))) {
+						newEl2 = getClosestToken(editor, ".tag>.tag", 2, 0, matcher.tags[index][1])
+					}
 				}
 			}
-		}
-		if (openEl != newEl1) {
-			highlight(true)
-			openEl = newEl1
-			closeEl = newEl2
-			highlight()
-		}
-	})
+			if (openEl != newEl1) {
+				highlight(true)
+				openEl = newEl1
+				closeEl = newEl2
+				highlight()
+			}
+		}),
+	)
 }
 
 /**

@@ -1,6 +1,7 @@
 import {
 	For,
 	createComponent,
+	createEffect,
 	createRenderEffect,
 	createSignal,
 	mergeProps,
@@ -32,10 +33,8 @@ const Editor = (props: Partial<EditorProps>) => {
 	let language = ""
 	let value = ""
 	let prevValue: string
-	let prevClass: string
 	let activeLineNumber = 0
 	let lineCount = 0
-	let isFirstRender = true
 	let editorProps: EditorProps = mergeProps({ language: "text", value }, props)
 
 	const container = editorTemplate() as HTMLDivElement
@@ -67,6 +66,7 @@ const Editor = (props: Partial<EditorProps>) => {
 			}
 
 			setSelection(selection)
+			editorProps.onSelectionChange?.(selection, value, editor)
 		}
 	}
 
@@ -104,93 +104,6 @@ const Editor = (props: Partial<EditorProps>) => {
 		getSelection: getInputSelection,
 	}
 
-	createRenderEffect(() => {
-		let readOnly = !!editorProps.readOnly
-		textarea.inputMode = readOnly ? "none" : ""
-		textarea.setAttribute("aria-readonly", readOnly as any)
-	})
-
-	createRenderEffect(() => {
-		let propClass = editorProps.class
-		let newClass = `prism-code-editor language-${editorProps.language}${
-			editorProps.lineNumbers == false ? "" : " show-line-numbers"
-		} pce-${editorProps.wordWrap ? "" : "no"}wrap${editorProps.rtl ? " pce-rtl" : ""} pce-${
-			selection()[0] < selection()[1] ? "has" : "no"
-		}-selection${focused() ? " pce-focus" : ""}${editorProps.readOnly ? " pce-readonly" : ""}${
-			propClass ? " " + propClass : ""
-		}`
-		if (prevClass != newClass) container.className = prevClass = newClass
-	})
-
-	createRenderEffect(() => {
-		container.style.tabSize = editorProps.tabSize || (2 as any)
-	})
-
-	createRenderEffect(
-		on(selection, s => {
-			if (!isFirstRender) editorProps.onSelectionChange?.(s, value, editor)
-		}),
-	)
-
-	createRenderEffect(() => {
-		tokens()
-		if (isFirstRender) return
-		let newLines = highlightTokens(tokens()).split("\n")
-		let start = 0
-		let end2 = lineCount
-		let end1 = (lineCount = newLines.length)
-
-		// Manual dom manipulation is significantly faster here than using the <For> control flow
-		while (newLines[start] == prevLines[start] && start < end1) ++start
-		while (end1 && newLines[--end1] == prevLines[--end2]);
-
-		if (start == end1 && start == end2) lines[start + 1].innerHTML = newLines[start] + "\n"
-		else {
-			let insertStart = end2 < start ? end2 : start - 1
-			let i = insertStart
-			let newHTML = ""
-
-			while (i < end1) newHTML += `<div class=pce-line aria-hidden=true>${newLines[++i]}\n</div>`
-			for (i = end1 < start ? end1 : start - 1; i < end2; i++) lines[start + 1].remove()
-			if (newHTML) lines[insertStart + 1].insertAdjacentHTML("afterend", newHTML)
-			container.style.setProperty("--number-width", Math.ceil(Math.log10(lineCount + 1)) + ".001ch")
-		}
-
-		updateSelection(true)
-		if (handleSelecionChange) setTimeout(setTimeout, 0, () => (handleSelecionChange = true))
-
-		prevLines = newLines
-		handleSelecionChange = false
-	})
-
-	createRenderEffect(
-		on(tokens, () => {
-			if (!isFirstRender) editorProps.onUpdate?.(value, editor)
-		}),
-	)
-
-	createRenderEffect(() => {
-		let newValue = editorProps.value
-		let isFocused = untrack(focused)
-		if (prevValue != newValue) {
-			if (!isFocused) textarea.remove()
-			textarea.value = prevValue = newValue
-			textarea.selectionEnd = 0
-			if (!isFocused) overlays.prepend(textarea)
-		}
-		language = editorProps.language
-		isFirstRender = false
-		update()
-	})
-
-	createRenderEffect<Record<string, string>>(
-		prev => style(container, props.style as Record<string, string>, prev)!,
-	)
-
-	onMount(() => {
-		editorProps.onMount?.(editor)
-	})
-
 	addListener(textarea, "keydown", e => {
 		keyCommandMap[e.key]?.(e, getInputSelection(), value) && preventDefault(e)
 	})
@@ -217,6 +130,83 @@ const Editor = (props: Partial<EditorProps>) => {
 		updateSelection(!e.isTrusted)
 		preventDefault(e)
 	})
+
+	createRenderEffect(() => {
+		let newValue = editorProps.value
+		let isFocused = untrack(focused)
+		if (prevValue != newValue) {
+			if (!isFocused) textarea.remove()
+			textarea.value = prevValue = newValue
+			textarea.selectionEnd = 0
+			if (!isFocused) overlays.prepend(textarea)
+		}
+		language = editorProps.language
+		update()
+	})
+
+	createEffect(() => {
+		container.style.tabSize = editorProps.tabSize || (2 as any)
+	})
+
+	createEffect<Record<string, string>>(
+		prev => style(container, props.style as Record<string, string>, prev)!,
+	)
+
+	createEffect(
+		on(tokens, t => {
+			let newLines = highlightTokens(t).split("\n")
+			let start = 0
+			let end2 = lineCount
+			let end1 = (lineCount = newLines.length)
+
+			// Manual dom manipulation is significantly faster here than using the <For> control flow
+			while (newLines[start] == prevLines[start] && start < end1) ++start
+			while (end1 && newLines[--end1] == prevLines[--end2]);
+
+			if (start == end1 && start == end2) lines[start + 1].innerHTML = newLines[start] + "\n"
+			else {
+				let insertStart = end2 < start ? end2 : start - 1
+				let i = insertStart
+				let newHTML = ""
+
+				while (i < end1) newHTML += `<div class=pce-line aria-hidden=true>${newLines[++i]}\n</div>`
+				for (i = end1 < start ? end1 : start - 1; i < end2; i++) lines[start + 1].remove()
+				if (newHTML) lines[insertStart + 1].insertAdjacentHTML("afterend", newHTML)
+				container.style.setProperty("--number-width", (0 | Math.log10(lineCount)) + 1 + ".001ch")
+			}
+
+			editorProps.onUpdate?.(value, editor)
+			updateSelection(true)
+			if (handleSelecionChange) setTimeout(setTimeout, 0, () => (handleSelecionChange = true))
+
+			prevLines = newLines
+			handleSelecionChange = false
+		}),
+	)
+
+	createEffect(() => {
+		let readOnly = !!editorProps.readOnly
+		textarea.inputMode = readOnly ? "none" : ""
+		textarea.setAttribute("aria-readonly", readOnly as any)
+	})
+
+	createEffect(
+		on(
+			() =>
+				`prism-code-editor language-${editorProps.language}${
+					editorProps.lineNumbers == false ? "" : " show-line-numbers"
+				} pce-${editorProps.wordWrap ? "" : "no"}wrap${editorProps.rtl ? " pce-rtl" : ""} pce-${
+					selection()[0] < selection()[1] ? "has" : "no"
+				}-selection${focused() ? " pce-focus" : ""}${editorProps.readOnly ? " pce-readonly" : ""}${
+					editorProps.class ? " " + editorProps.class : ""
+				}`,
+			(newClass, prevClass) => {
+				if (prevClass != newClass) container.className = newClass
+			},
+		),
+	)
+
+	onMount(() => editorProps.onMount?.(editor))
 
 	insert(
 		overlays,

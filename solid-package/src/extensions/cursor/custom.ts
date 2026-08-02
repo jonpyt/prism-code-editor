@@ -1,6 +1,6 @@
 import { template } from "solid-js/web"
 import { Extension } from "../.."
-import { createRenderEffect, onCleanup } from "solid-js"
+import { createEffect, onCleanup } from "solid-js"
 import { cursorPosition } from "./position"
 import { addTextareaListener } from "../../utils/local"
 
@@ -24,7 +24,7 @@ const customCursor = (): Extension => {
 		let textareaStyle = editor.textarea.style
 		let toggle: number
 
-		createRenderEffect(() => {
+		createEffect(() => {
 			editor.selection()
 			const pos = editor.extensions.cursor?.getPosition()
 

@@ -1,6 +1,6 @@
 import { Token, TokenStream } from "../../prism/index"
 import { Extension } from "../../types"
-import { createComputed, onCleanup } from "solid-js"
+import { createRenderEffect, onCleanup } from "solid-js"
 import { testBracket } from "../../utils/local"
 
 export interface BracketMatcher {
@@ -94,7 +94,7 @@ export const matchBrackets = (rainbowBrackets = true, pairs = "()[]{}"): Extensi
 			pairs: pairMap,
 		}
 
-		createComputed(() => {
+		createRenderEffect(() => {
 			pairMap.length = brackets.length = sp = bracketIndex = 0
 			matchRecursive(editor.tokens(), 0)
 			if (rainbowBrackets) {

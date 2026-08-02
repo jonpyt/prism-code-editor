@@ -148,7 +148,7 @@ export function tokenizeStrings(tokens: TokenStream, tokenize: (code: string) =>
  *     // More extensions before
  *
  *     editor => {
- *       createComputed(() => {
+ *       createRenderEffect(() => {
  *         tokenizeInvisibles(editor.tokens())
  *       })
  *     }
@@ -181,7 +181,7 @@ export function tokenizeInvisibles(tokens: TokenStream): void
  *   language="jsx" value="foo"
  *   extensions={[
  *     editor => {
- *       createComputed(() => {
+ *       createRenderEffect(() => {
  *         tokenizeDataUris(editor.tokens())
  *       })
  *     }
