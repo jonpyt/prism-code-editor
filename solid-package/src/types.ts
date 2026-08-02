@@ -36,7 +36,7 @@ export type EditorProps = {
 	style?: Omit<JSX.CSSProperties, "tab-size">
 	/** Additional classes for the container element. */
 	class?: string
-	/** Callback used to access the underlying editor */
+	/** Callback used to access the underlying editor. */
 	onMount?(editor: PrismEditor): void
 	/**
 	 * Function called after the editor's value has been updated as a result of user input.
@@ -45,6 +45,8 @@ export type EditorProps = {
 	onUpdate?(value: string, editor: PrismEditor): void
 	/** Function called after the editor's selection changes. */
 	onSelectionChange?(selection: InputSelection, value: string, editor: PrismEditor): void
+	/** Function called before the tokens are stringified to HTML. */
+	onTokenize?(tokens: TokenStream, language: string, value: string, editor: PrismEditor): void
 	/** List of extensions added to the editor */
 	extensions?: Extension[]
 }

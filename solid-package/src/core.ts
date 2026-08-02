@@ -154,6 +154,7 @@ const Editor = (props: Partial<EditorProps>) => {
 
 	createEffect(
 		on(tokens, t => {
+			editorProps.onTokenize?.(t, language, value, editor)
 			let newLines = highlightTokens(t).split("\n")
 			let start = 0
 			let end2 = lineCount
