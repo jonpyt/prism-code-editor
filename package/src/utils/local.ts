@@ -60,7 +60,7 @@ const updateNode = (node: Text, text: string) => {
 }
 
 const voidlessLangs = new Set("xml,rss,atom,jsx,tsx,xquery,xeora,xeoracube,actionscript".split(","))
-const voidTags = /^(?:area|base|w?br|col|embed|hr|img|input|link|meta|source|track)$/
+const voidTags = /^(?:area|base|w?br|col|embed|hr|img|input|link|meta|source|track)$/i
 
 export {
 	scrollToEl,
