@@ -334,21 +334,17 @@ const autoComplete =
 				currentOptions = []
 				definition.sources.forEach(source => {
 					const result = source(context, editor)
-					if (result) {
-						const from = result.from
-						const query = before.slice(from)
-
-						result.options.forEach(option => {
-							const filterResult = filter(query, option.label)
-							if (filterResult) {
-								filterResult[0] += option.boost || 0
-								// @ts-expect-error Allow mutation
-								filterResult.push(from, result.to ?? end, option)
-								// @ts-expect-error Allow mutation
-								currentOptions.push(filterResult)
-							}
-						})
-					}
+					const from = result?.from!
+					result?.options.forEach(option => {
+						const filterResult = filter(before.slice(option.from ?? from), option.label)
+						if (filterResult) {
+							filterResult[0] += option.boost || 0
+							// @ts-expect-error Allow mutation
+							filterResult.push(from, result.to ?? end, option)
+							// @ts-expect-error Allow mutation
+							currentOptions.push(filterResult)
+						}
+					})
 				})
 
 				if (currentOptions[0]) {
@@ -373,6 +369,7 @@ const autoComplete =
 					list.style.paddingTop = ""
 					list.style.height = rowHeight ? rowHeight * numOptions + "px" : 1.4 * numOptions + "em"
 					tooltip.scrollTop = 0
+					updateActive()
 
 					isOpen = true
 					show(config.preferAbove)
@@ -380,7 +377,6 @@ const autoComplete =
 					setDocsPosition()
 					textarea.setAttribute("aria-controls", id)
 					textarea.setAttribute("aria-haspopup", "listbox")
-					updateActive()
 				} else hide()
 			} else hide()
 		}

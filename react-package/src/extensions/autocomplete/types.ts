@@ -39,6 +39,12 @@ export interface Completion {
 	/** Optional, short piece of information displayed after the label. */
 	detail?: string
 	/**
+	 * Allows overriding the position the label is filtered and matched from.
+	 * The {@link CompletionResult}'s `from` value will still be used to determine which
+	 * range to replace when the completion is inserted.
+	 */
+	from?: number
+	/**
 	 * Name of the icon shown before the label. This name is appended to the class
 	 * `pce-ac-icon-`, so i.e. `.pce-ac-icon-variable` can be used to style icons with the
 	 * name `variable`.
