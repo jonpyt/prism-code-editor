@@ -1,0 +1,2 @@
+patchedDependencies:
+  emmet@2.4.11: patches/emmet@2.4.11.patch

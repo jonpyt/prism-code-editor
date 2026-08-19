@@ -13,7 +13,11 @@ import {
 import { AttributeConfig, Completion, CompletionSource, TagConfig } from "../types.js"
 import { attrSnippet, completionsFromRecords, optionsFromKeys } from "../utils.js"
 
-const tagPattern = /* @__PURE__ */ re(
+/**
+ * Pattern used to determine if a string ends inside a Svelte or Astro tag. The pattern
+ * has two capturing groups: the tag's name and the last attribute's name.
+ */
+const svelteTag = /* @__PURE__ */ re(
 	/<$|<(?![\d!])([^\s%=<>/]+)(?:\s(?:\s*([^\s{=<>/]+)(?:\s*=\s*(?!\s)(?:"[^"]*(?:"|$)|'[^']*(?:'|$)|[^\s{=<>/"']+(?!\S])|<0>)?|(?![^\s=]))|\s*<0>)*)?\s*$/
 		.source,
 	[braces],
@@ -135,7 +139,7 @@ const svelteCompletion =
 		nestedSource?: CompletionSource,
 	): CompletionSource =>
 	(context, editor) => {
-		const tagMatch = getTagMatch(context, editor, tagPattern)
+		const tagMatch = getTagMatch(context, editor, svelteTag)
 
 		if (tagMatch) {
 			let [tag, tagName, lastAttr] = tagMatch
@@ -193,5 +197,5 @@ const svelteCompletion =
 		}
 	}
 
-export { svelteCompletion }
+export { svelteCompletion, svelteTag, svelteTags }
 export * from "./snippets.js"

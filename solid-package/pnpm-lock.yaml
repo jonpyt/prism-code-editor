@@ -7,6 +7,11 @@ settings:
 overrides:
   prism-code-editor: link:../package
 
+patchedDependencies:
+  emmet:
+    hash: fd266dcaab9353dac774f961f454d45c19b72002d6d7209392c6146758c41a8e
+    path: patches/emmet.patch
+
 importers:
 
   .:
@@ -14,11 +19,14 @@ importers:
       '@types/node':
         specifier: ^20.19.43
         version: 20.19.43
+      emmet:
+        specifier: ^2.4.11
+        version: 2.4.11(patch_hash=fd266dcaab9353dac774f961f454d45c19b72002d6d7209392c6146758c41a8e)
       esbuild:
         specifier: ^0.27.7
         version: 0.27.7
       prism-code-editor:
-        specifier: link:..\package
+        specifier: link:../package
         version: link:../package
       solid-devtools:
         specifier: ^0.34.5
@@ -127,6 +135,15 @@ packages:
   '@babel/types@7.29.7':
     resolution: {integrity: sha512-4zBIxpPzowiZpusoFkyGVwakdRJUyuH5PxQ/PrqghfdFWWasvnCdPfQXHrenDai+gyLARulZjZowCOj6fjT4pA==}
     engines: {node: '>=6.9.0'}
+
+  '@emmetio/abbreviation@2.3.3':
+    resolution: {integrity: sha512-mgv58UrU3rh4YgbE/TzgLQwJ3pFsHHhCLqY20aJq+9comytTXUDNGG/SMtSeMJdkpxgXSXunBGLD8Boka3JyVA==}
+
+  '@emmetio/css-abbreviation@2.1.8':
+    resolution: {integrity: sha512-s9yjhJ6saOO/uk1V74eifykk2CBYi01STTK3WlXWGOepyKa23ymJ053+DNQjpFcy1ingpaO7AxCcwLvHFY9tuw==}
+
+  '@emmetio/scanner@1.0.4':
+    resolution: {integrity: sha512-IqRuJtQff7YHHBk4G8YZ45uB9BaAGcwQeVzgj/zj8/UdOhtQpEIupUhSk8dys6spFIWVZVeK20CzGEnqR5SbqA==}
 
   '@esbuild/aix-ppc64@0.27.7':
     resolution: {integrity: sha512-EKX3Qwmhz1eMdEJokhALr0YiD0lhQNwDqkPYyPhiSwKrh7/4KRjQc04sZ8db+5DVVnZ1LmbNDI1uAMPEUBnQPg==}
@@ -591,6 +608,9 @@ packages:
 
   electron-to-chromium@1.5.393:
     resolution: {integrity: sha512-kiDJdIUawuEIcp9XoICKp1iTYDEbgguIPq526N1Q7jIQDeQ3CqoMx71025PI/7E48Ddtw2HuWsVjY7afEgNxmg==}
+
+  emmet@2.4.11:
+    resolution: {integrity: sha512-23QPJB3moh/U9sT4rQzGgeyyGIrcM+GH5uVYg2C6wZIxAIJq7Ng3QLT79tl8FUwDXhyq9SusfknOrofAKqvgyQ==}
 
   entities@6.0.1:
     resolution: {integrity: sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==}
@@ -1060,6 +1080,16 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
+  '@emmetio/abbreviation@2.3.3':
+    dependencies:
+      '@emmetio/scanner': 1.0.4
+
+  '@emmetio/css-abbreviation@2.1.8':
+    dependencies:
+      '@emmetio/scanner': 1.0.4
+
+  '@emmetio/scanner@1.0.4': {}
+
   '@esbuild/aix-ppc64@0.27.7':
     optional: true
 
@@ -1420,6 +1450,11 @@ snapshots:
     optional: true
 
   electron-to-chromium@1.5.393: {}
+
+  emmet@2.4.11(patch_hash=fd266dcaab9353dac774f961f454d45c19b72002d6d7209392c6146758c41a8e):
+    dependencies:
+      '@emmetio/abbreviation': 2.3.3
+      '@emmetio/css-abbreviation': 2.1.8
 
   entities@6.0.1: {}
 

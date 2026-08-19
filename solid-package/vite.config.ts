@@ -26,6 +26,7 @@ const entries: Record<string, string> = {
 	"extensions/autocomplete/javascript/index": "src/extensions/autocomplete/javascript/index.ts",
 	"extensions/autocomplete/svelte/index": "src/extensions/autocomplete/svelte/index.ts",
 	"extensions/autocomplete/vue/index": "src/extensions/autocomplete/vue/index.ts",
+	"extensions/autocomplete/emmet/markup": "src/extensions/autocomplete/emmet/markup.ts",
 	autocomplete: "src/extensions/autocomplete/style.css",
 	"autocomplete-icons": "src/extensions/autocomplete/icons.css",
 	"extensions/overscroll": "src/extensions/overscroll.ts",
@@ -90,7 +91,7 @@ export default defineConfig({
 		cssMinify: "esbuild",
 		minify: false,
 		rollupOptions: {
-			external: ["solid-js", "solid-js/web"],
+			external: ["solid-js", "solid-js/web", "emmet"],
 		},
 		lib: {
 			entry: entries,

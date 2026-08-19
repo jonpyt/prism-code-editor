@@ -1,2 +1,5 @@
 overrides:
   prism-code-editor: link:../package
+
+patchedDependencies:
+  emmet: patches/emmet.patch

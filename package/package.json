@@ -40,6 +40,7 @@
     "./autocomplete/javascript": "./dist/extensions/autocomplete/javascript/index.js",
     "./autocomplete/vue": "./dist/extensions/autocomplete/vue/index.js",
     "./autocomplete/svelte": "./dist/extensions/autocomplete/svelte/index.js",
+    "./autocomplete/emmet": "./dist/extensions/autocomplete/emmet/markup.js",
     "./ssr": "./dist/ssr/index.js",
     "./client": "./dist/client/index.js",
     "./code-blocks": "./dist/client/code-block.js",
@@ -82,6 +83,7 @@
     "@types/yargs": "^17.0.35",
     "@vscode/web-custom-data": "^0.6.3",
     "chai": "^5.3.3",
+    "emmet": "^2.4.11",
     "esbuild": "^0.27.7",
     "magic-string": "^0.30.21",
     "mocha": "^11.7.6",
@@ -94,6 +96,14 @@
     "unplugin-dts": "^1.0.3",
     "vite": "^8.1.5",
     "yargs": "^17.7.3"
+  },
+  "peerDependencies": {
+    "emmet": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "emmet": {
+      "optional": true
+    }
   },
   "keywords": [
     "code",

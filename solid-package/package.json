@@ -38,6 +38,7 @@
     "./autocomplete/javascript": "./dist/extensions/autocomplete/javascript/index.js",
     "./autocomplete/svelte": "./dist/extensions/autocomplete/svelte/index.js",
     "./autocomplete/vue": "./dist/extensions/autocomplete/vue/index.js",
+    "./autocomplete/emmet": "./dist/extensions/autocomplete/emmet/markup.js",
     "./code-blocks": "./dist/code-block/index.js",
     "./commands": "./dist/extensions/commands/index.js",
     "./cursor": "./dist/extensions/cursor/index.js",
@@ -67,6 +68,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.19.43",
+    "emmet": "^2.4.11",
     "esbuild": "^0.27.7",
     "prism-code-editor": "link:..\\package",
     "solid-devtools": "^0.34.5",
@@ -77,7 +79,13 @@
     "vite-plugin-solid": "^2.11.13"
   },
   "peerDependencies": {
-    "solid-js": "*"
+    "solid-js": "^1.0.0",
+    "emmet": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "emmet": {
+      "optional": true
+    }
   },
   "keywords": [
     "code",

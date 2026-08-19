@@ -58,8 +58,10 @@ import { rainbowBrackets } from "../ssr"
 import { addCopyButton, forEachCodeBlock } from "../client/code-block"
 import { addHoverDescriptions, highlightBracketPairsOnHover } from "../client/hover"
 import { vueCompletion } from "../extensions/autocomplete/vue"
-import { svelteCompletion } from "../extensions/autocomplete/svelte"
+import { svelteCompletion, svelteTag, svelteTags } from "../extensions/autocomplete/svelte"
 import { svelteBlockSnippets } from "../extensions/autocomplete/svelte/snippets"
+import { addEditorHotkey, addEditorHotkeySequence } from "../extensions/commands/utils"
+import { markupEmmetCompletion } from "../extensions/autocomplete/emmet/markup"
 
 const runBtn = <HTMLButtonElement>document.getElementById("run"),
 	wrapper = document.querySelector<HTMLDivElement>(".editor-wrapper")!,
@@ -261,6 +263,7 @@ registerCompletions(["javascript", "js", "jsx", "tsx", "typescript", "ts"], {
 		jsDocCompletion,
 		jsxTagCompletion(reactTags, globalReactAttributes),
 		completeFromList(jsSnipets),
+		markupEmmetCompletion({ tags: [reactTags] }),
 	],
 })
 
@@ -282,11 +285,16 @@ registerCompletions(["html", "markup"], {
 			],
 			globalHtmlAttributes,
 		),
+		markupEmmetCompletion({ tags: [htmlTags, svgTags, mathMLTags] }),
 	],
 })
 
 registerCompletions(["css"], {
 	sources: [cssCompletion()],
+})
+
+registerCompletions(["xml"], {
+	sources: [markupEmmetCompletion({ tags: [] })],
 })
 
 registerCompletions(["vue"], {
@@ -297,6 +305,7 @@ registerCompletions(["vue"], {
 				hello: ["world"],
 			},
 		}),
+		markupEmmetCompletion({ tags: [htmlTags, svgTags] }),
 	],
 })
 
@@ -308,6 +317,7 @@ registerCompletions(["svelte"], {
 				hello: ["world"],
 			},
 		}),
+		markupEmmetCompletion({ tags: [htmlTags, svgTags, svelteTags], tagPattern: svelteTag }),
 	],
 })
 

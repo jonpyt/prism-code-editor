@@ -39,6 +39,7 @@
     "./autocomplete/javascript": "./dist/extensions/autocomplete/javascript/index.js",
     "./autocomplete/svelte": "./dist/extensions/autocomplete/svelte/index.js",
     "./autocomplete/vue": "./dist/extensions/autocomplete/vue/index.js",
+    "./autocomplete/emmet": "./dist/extensions/autocomplete/emmet/markup.js",
     "./code-blocks": "./dist/code-block/index.js",
     "./commands": "./dist/extensions/commands/index.js",
     "./cursor": "./dist/extensions/cursor/index.js",
@@ -65,13 +66,20 @@
   },
   "peerDependencies": {
     "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react-dom": ">=16.8.0",
+    "emmet": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "emmet": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/node": "^20.19.43",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.2.0",
+    "emmet": "^2.4.11",
     "esbuild": "^0.27.7",
     "prism-code-editor": "link:..\\package",
     "react": "^19.2.7",

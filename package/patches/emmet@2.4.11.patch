@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index 6d7322dba37365952234e637c7285998962c8854..fb4d7d3e955090aac623e2c9fd2fbe8238e30cdc 100644
+--- a/package.json
++++ b/package.json
+@@ -8,6 +8,7 @@
+   "type": "module",
+   "exports": {
+     "import": "./dist/emmet.es.js",
++    "types": "./dist/index.d.ts",
+     "require": "./dist/emmet.cjs"
+   },
+   "scripts": {

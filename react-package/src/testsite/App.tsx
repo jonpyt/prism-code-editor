@@ -62,9 +62,15 @@ import {
 	HoverDescriptions,
 	rainbowBrackets,
 } from "../code-block"
-import { svelteBlockSnippets, svelteCompletion } from "../extensions/autocomplete/svelte"
+import {
+	svelteBlockSnippets,
+	svelteCompletion,
+	svelteTag,
+	svelteTags,
+} from "../extensions/autocomplete/svelte"
 import { vueCompletion } from "../extensions/autocomplete/vue"
 import { usePrismEditor } from "../extensions"
+import { markupEmmetCompletion } from "../extensions/autocomplete/emmet/markup"
 
 const ReadOnly = lazy(() => import("./readOnly"))
 
@@ -222,6 +228,7 @@ registerCompletions(["javascript", "js", "jsx", "tsx", "typescript", "ts"], {
 		jsDocCompletion,
 		jsxTagCompletion(reactTags, globalReactAttributes),
 		completeFromList(jsSnipets),
+		markupEmmetCompletion({ tags: [reactTags] }),
 	],
 })
 
@@ -247,7 +254,12 @@ registerCompletions(["html", "markup"], {
 			],
 			globalHtmlAttributes,
 		),
+		markupEmmetCompletion({ tags: [htmlTags, svgTags, mathMLTags] }),
 	],
+})
+
+registerCompletions(["xml"], {
+	sources: [markupEmmetCompletion({ tags: [] })],
 })
 
 registerCompletions(["vue"], {
@@ -258,6 +270,7 @@ registerCompletions(["vue"], {
 				hello: ["world"],
 			},
 		}),
+		markupEmmetCompletion({ tags: [htmlTags, svgTags] }),
 	],
 })
 
@@ -269,6 +282,7 @@ registerCompletions(["svelte"], {
 				hello: ["world"],
 			},
 		}),
+		markupEmmetCompletion({ tags: [htmlTags, svgTags, svelteTags], tagPattern: svelteTag }),
 	],
 })
 
