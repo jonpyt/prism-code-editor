@@ -145,22 +145,23 @@ export const markupEmmetCompletion = (
 
 	return (context, editor) => {
 		const isJsx = "tagMatch" in context
+		const language = context.language
 
 		if (
 			isJsx
-				? context.tagMatch ||
+				? language.slice(1) != "sx" ||
+				  context.tagMatch ||
 				  (context.disabled && !getClosestToken(editor, ".plain-text", 0, 0, context.pos))
 				: getTagMatch(context, editor, tagPattern) != null
 		)
 			return
 
 		const { abbreviation, start, end } = extract(editor.value, context.pos, extractOptions) || {}
-		const language = context.language
 
 		if (
 			!abbreviation ||
-			// Filter abbrevations wrapped in () or {}, starting with a digit or more than one dot
-			/^\d|^\{[^}]*\}$|^\([^)]*\)$|^\.\.+$/.test(abbreviation) ||
+			// Filter abbrevations wrapped in () or {}, starting with a digit, $ or more than one dot
+			/^[\d$]|^\{[^}]*\}$|^\([^)]*\)$|^\.\.+$/.test(abbreviation) ||
 			// Filter object[expression] in JSX
 			(isJsx && /^\w*\[[^\]]*\]$/.test(abbreviation))
 		)
