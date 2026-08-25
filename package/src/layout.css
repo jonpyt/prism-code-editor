@@ -120,6 +120,7 @@ pre.pce-guides .pce-line::after,
 
 .pce-wrap {
 	white-space: pre-wrap;
+	white-space: break-spaces;
 	word-break: break-word;
 }
 
