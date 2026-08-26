@@ -94,7 +94,7 @@
     "scslre": "0.1.6",
     "typescript": "^5.9.3",
     "unplugin-dts": "^1.0.3",
-    "vite": "^8.1.5",
+    "vite": "^8.2.2",
     "yargs": "^17.7.3"
   },
   "peerDependencies": {

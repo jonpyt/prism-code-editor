@@ -14,6 +14,7 @@
     "@astrojs/markdown-remark": "^7.2.1",
     "@astrojs/starlight": "0.40.0",
     "astro": "6.4.8",
+    "emmet": "^2.4.11",
     "prism-code-editor": "link:..\\package",
     "rehype-prism-code-editor": "link:..\\rehype-plugin",
     "remark-gfm": "^4.0.1",

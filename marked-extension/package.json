@@ -18,7 +18,7 @@
     "prism-code-editor": "link:..\\package",
     "typescript": "^5.9.3",
     "unplugin-dts": "^1.0.3",
-    "vite": "^8.1.5"
+    "vite": "^8.2.2"
   },
   "author": "Jonas Pytte",
   "repository": {
