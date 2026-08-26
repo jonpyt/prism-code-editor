@@ -28,7 +28,15 @@ import {
 } from "prism-code-editor/autocomplete/markup"
 import { editors } from "./mount"
 import { vueCompletion } from "prism-code-editor/autocomplete/vue"
-import { svelteBlockSnippets, svelteCompletion } from "prism-code-editor/autocomplete/svelte"
+import {
+	svelteBlockSnippets,
+	svelteCompletion,
+	svelteTag,
+	svelteTags,
+} from "prism-code-editor/autocomplete/svelte"
+import { markupEmmetCompletion } from "prism-code-editor/autocomplete/emmet"
+import "prism-code-editor/languages/svelte"
+import "prism-code-editor/languages/vue"
 
 registerCompletions(["javascript", "js", "jsx", "tsx", "typescript", "ts"], {
 	context: jsContext,
@@ -38,6 +46,7 @@ registerCompletions(["javascript", "js", "jsx", "tsx", "typescript", "ts"], {
 		jsDocCompletion,
 		jsxTagCompletion(reactTags, globalReactAttributes),
 		completeFromList(jsSnipets),
+		markupEmmetCompletion({ tags: [reactTags] }),
 	],
 })
 
@@ -68,6 +77,7 @@ registerCompletions(["html", "markup"], {
 			],
 			globalHtmlAttributes,
 		),
+		markupEmmetCompletion({ tags: [htmlTags, svgTags, mathMLTags] }),
 	],
 })
 
@@ -83,6 +93,7 @@ registerCompletions(["vue"], {
 				onevent: null,
 			},
 		}),
+		markupEmmetCompletion({ tags: [htmlTags, svgTags] }),
 	],
 })
 
@@ -94,6 +105,7 @@ registerCompletions(["svelte"], {
 				onevent: null,
 			},
 		}),
+		markupEmmetCompletion({ tags: [htmlTags, svgTags, svelteTags], tagPattern: svelteTag }),
 	],
 })
 

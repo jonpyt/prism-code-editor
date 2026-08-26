@@ -270,6 +270,50 @@ Try it:
 </style>
 ```
 
+### Emmet snippets
+
+Completion of [Emmet](https://emmet.io/) snippets requires installing `emmet`.
+
+```bash editor
+npm install emmet
+```
+
+[`markupEmmetCompletion(){:js}`](/api-reference/autocomplete/emmet/f-markupemmetcompletion/) is a completion source that can expand Emmet abbreviations at the cursor's position. It supports `markup`, `javascript`, `typescript`, `jsx`, `tsx`, `vue`, `svelte`, `astro`, and `xml`.
+
+```js editor
+import { markupEmmetCompletion } from "prism-code-editor/autocomplete/emmet"
+import { svelteTag, svelteTags } from "prism-code-editor/autocomplete/svelte"
+
+registerCompletions(["html", "markup"], {
+	sources: [
+		markupCompletion(namespaces, globalHtmlAttributes),
+		// Pass tags also passed to `markupCompletion`
+		markupEmmetCompletion({ tags: [htmlTags, svgTags, mathMLTags] })
+	]
+})
+
+// Recommended options for React JSX
+markupEmmetCompletion({ tags: [reactTags] })
+// Recommended options for Vue
+markupEmmetCompletion({ tags: [htmlTags, svgTags] })
+// Recommended options for Svelte
+markupEmmetCompletion({
+	tags: [htmlTags, svgTags, svelteTags],
+	// Svelte and Astro use a different tag pattern
+	tagPattern: svelteTag
+})
+```
+
+The completion source can be tried in the `markup`, `tsx`, `vue`, and `svelte` code blocks on this page.
+
+#### Emmet configuration
+
+`markupEmmetCompletion(){:js}` takes a single [`MarkupEmmetOptions{:js}`](/api-reference/autocomplete/emmet/t-markupemmetoptions/) object to configure its behavior. The most important option is probably [`tags`](/api-reference/autocomplete/emmet/t-markupemmetoptions/#tags) which allows specifying which single word completions should be allowed even if they aren't Emmet snippets. Other options allow customizing which suggested snippets are returned and configuring Emmet itself.
+
+## Bundle size
+
+The `autoComplete(){:js}` extension itself is rather small at ~3kB gzipped, but some of the completion data is a bit larger. This includes the tag data for HTML, SVG, and React JSX completion, the CSS data, and especially the `emmet` package for Emmet completion. It's therefore recommended to utilize code splitting by importing everything autocompletion related in a separate module that gets dynamically imported with `import("./autocomplete"){:js}` for example when a user interacts with an editor. This will keep all the autocompletion data away from your main bundle.
+
 ## Creating your own definitions
 
 [`CompletionDefinition{:js}`](/api-reference/autocomplete/t-completiondefinition) objects passed to `registerCompletions(){:js}` have two properties: `context` and `sources`. The optional `context` property is a function that's supposed to return an object with extra properties that are added to the [`CompletionContext{:js}`](/api-reference/autocomplete/t-completioncontext) passed to the sources. This is useful to avoid repeating logic between multiple completion sources.
