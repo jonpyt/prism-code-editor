@@ -60,6 +60,8 @@ export type PrismCodeBlock = {
 	 * are the code lines. This means the first line starts at index 1.
 	 */
 	lines?: HTMLCollectionOf<HTMLDivElement>
+	/** Code inside the code block after normalizing white space. */
+	value: string
 }
 
 const CodeBlockContext = createContext<[PrismCodeBlock, CodeBlockProps, JSX.Element[]] | null>(null)
@@ -102,21 +104,19 @@ const CodeBlock = (props: CodeBlockProps) => {
 	const lnOffset = lineNumberStart! - 1 || 0
 
 	const normalizedCode = useMemo(() => {
-		return preserveIndent ? code.replace(/\t/g, " ".repeat(tabSize)) : code
+		const temp = preserveIndent ? code.replace(/\t/g, " ".repeat(tabSize)) : code
+		return temp.includes("r") ? temp.replace(/\r\n?/g, "\n") : temp
 	}, [code, preserveIndent && tabSize])
 
 	const lines = useMemo(() => {
-		let tokens = tokenizeText(
-			normalizedCode.includes("\r") ? normalizedCode.replace(/\r\n?/g, "\n") : normalizedCode,
-			languages[language] || {},
-		)
+		const tokens = tokenizeText(normalizedCode, languages[language] || {})
 		onTokenize?.(tokens)
 		return highlightTokens(tokens).split("\n")
 	}, [onTokenize, language, normalizedCode])
 
 	const indents = useMemo(() => {
 		if (preserveIndent || hasGuides) {
-			const lines = code.split("\n")
+			const lines = normalizedCode.split("\n")
 			const l = lines.length
 			const result = Array<number>(l).fill(0)
 
@@ -142,7 +142,7 @@ const CodeBlock = (props: CodeBlockProps) => {
 			}
 			return result
 		}
-	}, [preserveIndent || hasGuides, code, tabSize])
+	}, [preserveIndent || hasGuides, normalizedCode, tabSize])
 
 	const codeLines = useMemo(() => {
 		const keymap: Record<string, number> = {}
@@ -162,7 +162,9 @@ const CodeBlock = (props: CodeBlockProps) => {
 		))
 	}, [lines, indents])
 
-	const codeBlock = useStableRef<PrismCodeBlock>({})
+	const codeBlock = useStableRef({} as PrismCodeBlock)
+
+	codeBlock.value = normalizedCode
 
 	return (
 		<pre

@@ -60,6 +60,8 @@ export type PrismCodeBlock = {
 	 * are the code lines. This means the first line starts at index 1.
 	 */
 	readonly lines: HTMLCollectionOf<HTMLDivElement>
+	/** Reactive accessor for the code in the code block after normalizing white space. */
+	readonly value: string
 }
 
 export type CodeBlockOverlay = (
@@ -78,14 +80,14 @@ const line = /* @__PURE__ */ template("<div class=pce-line>")
  * grammar.
  */
 const CodeBlock = (props: CodeBlockProps) => {
-	const hasGuides = createMemo(() => props.guideIndents && !props.rtl)
-	const preserve = createMemo(() => props.preserveIndent ?? props.wordWrap)
+	const hasGuides = () => props.guideIndents && !props.rtl
+	const preserve = () => props.preserveIndent ?? props.wordWrap
+	const normalized = createMemo(() => {
+		const temp = preserve() ? props.code.replace(/\t/g, " ".repeat(props.tabSize || 2)) : props.code
+		return temp.includes("\r") ? temp.replace(/\r\n?/g, "\n") : temp
+	})
 	const lines = createMemo(() => {
-		let code = preserve() ? props.code.replace(/\t/g, " ".repeat(props.tabSize || 2)) : props.code
-		let tokens = tokenizeText(
-			code.includes("\r") ? code.replace(/\r\n?/g, "\n") : code,
-			languages[props.language] || {},
-		)
+		const tokens = tokenizeText(normalized(), languages[props.language] || {})
 		props.onTokenize?.(tokens)
 		return highlightTokens(tokens).split("\n")
 	})
@@ -95,7 +97,7 @@ const CodeBlock = (props: CodeBlockProps) => {
 
 	const indents = createMemo(() => {
 		if (preserve() || hasGuides()) {
-			const code = props.code
+			const code = normalized()
 			const tabSize = props.tabSize || 2
 			const lines = code.split("\n")
 			const l = lines.length
@@ -125,10 +127,13 @@ const CodeBlock = (props: CodeBlockProps) => {
 		}
 	})
 
-	const codeBlock = {
+	const codeBlock: PrismCodeBlock = {
 		container,
 		wrapper,
 		lines: lineEls,
+		get value() {
+			return normalized()
+		},
 	}
 
 	insert(
