@@ -1,3 +1,4 @@
+import { PrismCodeBlock } from "../code-block"
 import { numLines, doc, addListener } from "../core"
 import { PrismEditor, InputSelection } from "../types"
 import { addListener2, getLineEnd, getLineStart } from "./local"
@@ -239,6 +240,42 @@ const getDocumentPosition = (editor: PrismEditor): [number, number, number] => {
 	return [editor.activeLine, col + 1, chars]
 }
 
+/**
+ * Computes the offset at which the specified token begins in the editor's value.
+ * @param editor Editor or code block the token is inside.
+ * @param token Token to compute the offset for.
+ * @throws {Error} If the token isn't inside the specified editor.
+ */
+const getTokenOffset = (editor: PrismEditor | PrismCodeBlock, token: HTMLSpanElement) => {
+	let line = token.closest(".pce-line")
+
+	if (editor.wrapper != line?.parentNode) throw Error("Editor doesn't include this token")
+
+	let walker = doc!.createTreeWalker(line, 4 /* NodeFilter.SHOW_TEXT */)
+	let code = editor.value
+	let lines = editor.lines
+	let offset = 0
+	let node: Text
+	let i = 0
+
+	walker.currentNode = token
+
+	while (((offset = code.indexOf("\n", offset) + 1), line != lines[++i]));
+	if (!offset) offset = code.length + 1
+	while ((node = walker.nextNode() as Text)) offset -= node.length
+
+	return offset
+}
+
+/**
+ * Gets the language used for syntax highlighting at the token's position.
+ */
+const getTokenLanguage = (token: Element) => {
+	return /language-(\S*)/.exec(
+		token.closest("[class*=language-]")?.className || "language-text",
+	)![1]
+}
+
 export {
 	regexEscape,
 	getLineBefore,
@@ -249,6 +286,8 @@ export {
 	getModifierCode,
 	setSelection,
 	getDocumentPosition,
+	getTokenOffset,
+	getTokenLanguage,
 	isMac,
 	isChrome,
 	isWebKit,
