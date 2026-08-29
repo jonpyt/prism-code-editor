@@ -1,7 +1,9 @@
-import { addListener, createTemplate } from "../core.js"
+import { addListener } from "../core.js"
+import { HoverCallback } from "../extensions/hover.js"
 import { testBracket } from "../utils/bracket.js"
-import { addOverlay } from "../utils/index.js"
-import { getPosition, voidlessLangs, voidTags } from "../utils/local.js"
+import { createHoverTooltip } from "../utils/hover.js"
+import { getTokenLanguage } from "../utils/index.js"
+import { voidlessLangs, voidTags } from "../utils/local.js"
 import { PrismCodeBlock } from "./code-block.js"
 
 export type HoverOptions = {
@@ -11,20 +13,14 @@ export type HoverOptions = {
 	maxWidth?: string
 	/** A CSS length value for the tooltip's max height. */
 	maxHeight?: string
+	/**
+	 * Whether the callback will be called for tokens that have elements as children.
+	 * @default false
+	 */
+	allowChildren?: boolean
 }
 
-let counter = 0
 let sp: number
-
-const template = /* @__PURE__ */ createTemplate(
-	"<div class=pce-tooltip style=z-index:5;top:auto;display:flex><div></div><div class=pce-hover-tooltip style=flex-shrink:0>",
-)
-
-const getLanguageAt = (token: Element) => {
-	return /language-(\S*)/.exec(
-		token.closest("[class*=language-]")?.className || "language-text",
-	)![1]
-}
 
 /**
  * Utility that makes it easier to add hover descriptions to tokens.
@@ -43,68 +39,20 @@ const getLanguageAt = (token: Element) => {
  */
 const addHoverDescriptions = (
 	codeBlock: PrismCodeBlock,
-	callback: (
-		types: string[],
-		language: string,
-		text: string,
-		element: HTMLSpanElement,
-	) => (string | Node)[] | null | undefined,
+	callback: HoverCallback,
 	options: HoverOptions = {},
 ) => {
-	let current: HTMLSpanElement
-	const { above, maxHeight, maxWidth } = options
-	const container = template()
-	const pre = codeBlock.container
-	const style = container.style
-	const [spacer, tooltip] = container.children as HTMLCollectionOf<HTMLDivElement>
-	const wrapper = codeBlock.wrapper
-	const id = (tooltip.id = "pce-hover-" + counter++)
-
-	const show = (target: HTMLElement) => {
-		const types = target.className.slice(6).split(" ")
-		const text = target.textContent!
-		const content = callback(types, getLanguageAt(target), text, target)
-		if (content) {
-			let { left, right, top, bottom, height } = getPosition(codeBlock, target)
-			let { clientHeight, clientWidth } = pre
-			let max = bottom > top ? bottom : top
-
-			tooltip.style.maxWidth = `min(${
-				maxWidth ? maxWidth + "," : ""
-			}${clientWidth}px - var(--padding-left) - 1em)`
-			tooltip.style.maxHeight = `min(${maxHeight ? maxHeight + "," : ""}${max}px, ${
-				clientHeight * 0.6
-			}px - 2em)`
-			spacer.style.width = (pre.matches(".pce-rtl") ? right : left) + "px"
-			tooltip.textContent = ""
-			tooltip.append(...content)
-			container.parentNode || addOverlay(codeBlock, container)
-
-			let placeAbove =
-				!above == top > bottom && (above ? top : bottom) < container.clientHeight ? !above : above
-
-			style[placeAbove ? "bottom" : "top"] = height + (placeAbove ? bottom : top) + "px"
-			style[placeAbove ? "top" : "bottom"] = "auto"
-			current?.removeAttribute("aria-describedby")
-			target.setAttribute("aria-describedby", id)
-			current = target
-		} else hide()
-	}
-
-	const hide = () => {
-		current?.removeAttribute("aria-describedby")
-		container.remove()
-	}
+	const [show, hide, tooltip] = createHoverTooltip(codeBlock, callback, options)
 
 	addListener(tooltip, "pointerleave", hide)
 
-	addListener(wrapper, "pointerover", e => {
+	addListener(codeBlock.wrapper, "pointerover", e => {
 		const target = e.target as HTMLSpanElement
 		if (!tooltip.contains(target)) {
 			if (
 				target.matches(".token") &&
 				(e.pointerType != "mouse" || !e.buttons) &&
-				!target.childElementCount
+				(options.allowChildren || !target.childElementCount)
 			) {
 				show(target)
 			} else hide()
@@ -177,7 +125,7 @@ const highlightTagPairsOnHover = (container: PrismCodeBlock | HTMLElement) => {
 		stack: [Element, string][],
 		map: WeakMap<Element, Element>,
 	) => {
-		const noVoidTags = voidlessLangs.has(getLanguageAt(nameEl))
+		const noVoidTags = voidlessLangs.has(getTokenLanguage(nameEl))
 		const name = nameEl.textContent!
 		const tagName = noVoidTags ? name : name.toLowerCase()
 		const notSelfClosing = !lastChild.textContent![1] && (noVoidTags || !voidTags.test(tagName))

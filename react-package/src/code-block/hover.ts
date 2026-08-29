@@ -1,33 +1,12 @@
 import { useCallback, useEffect } from "react"
-import {
-	addListener2,
-	createTemplate,
-	getPosition,
-	testBracket,
-	voidlessLangs,
-	voidTags,
-} from "../utils/local"
+import { addListener2, testBracket, voidlessLangs, voidTags } from "../utils/local"
 import { usePrismCodeBlock } from "."
 import { useStableRef } from "../core"
-import { addOverlay } from "../utils"
+import { createHoverTooltip } from "../utils/hover"
+import { getTokenLanguage } from "../utils"
+import { HoverCallback } from "../extensions/hover"
 
-let counter = 0
 let sp: number
-
-const createTooltip = /* @__PURE__ */ createTemplate(
-	"<div class=pce-tooltip style=z-index:5;top:auto;display:flex><div></div><div class=pce-hover-tooltip style=flex-shrink:0>",
-)
-
-const getLanguageAt = (token: Element) => {
-	return /language-(\S*)/.exec(token.closest("[class*=language-]")!.className)![1]
-}
-
-type HoverCallback = (
-	types: string[],
-	language: string,
-	text: string,
-	element: HTMLSpanElement,
-) => (string | Node)[] | null | undefined
 
 /**
  * Component that makes it easier to add hover descriptions to tokens.
@@ -37,6 +16,7 @@ const HoverDescriptions = ({
 	above,
 	maxWidth,
 	maxHeight,
+	allowChildren,
 }: {
 	/** Function called when a token with only textual children is hovered.
 	 *
@@ -56,69 +36,32 @@ const HoverDescriptions = ({
 	maxWidth?: string
 	/** A CSS length value for the tooltip's max height. */
 	maxHeight?: string
+	/**
+	 * Whether the callback will be called for tokens that have elements as children.
+	 * @default false
+	 */
+	allowChildren?: boolean
 }): undefined => {
 	const [codeBlock] = usePrismCodeBlock()
-	const props = useStableRef<[string | undefined, string | undefined, boolean, HoverCallback]>(
-		[] as any,
-	)
-	props[0] = maxWidth
-	props[1] = maxHeight
-	props[2] = !!above
-	props[3] = callback
+	const props = useStableRef<
+		[HoverCallback, string | undefined, string | undefined, boolean, boolean | undefined]
+	>([] as any)
+	props[0] = callback
+	props[1] = maxWidth
+	props[2] = maxHeight
+	props[3] = !!above
+	props[4] = allowChildren
 
 	useEffect(() => {
-		let current: HTMLSpanElement
-		const container = createTooltip() as HTMLDivElement
-		const pre = codeBlock.container!
-		const style = container.style
-		const [spacer, tooltip] = container.children as HTMLCollectionOf<HTMLDivElement>
-		const wrapper = codeBlock.wrapper!
-		const id = (tooltip.id = "pce-hover-" + counter++)
+		const [show, hide, tooltip] = createHoverTooltip(codeBlock, props)
 
-		const show = (target: HTMLElement) => {
-			const types = target.className.slice(6).split(" ")
-			const text = target.textContent!
-			const [maxWidth, maxHeight, above, callback] = props
-			const content = callback(types, getLanguageAt(target), text, target)
-			if (content) {
-				let { left, right, top, bottom, height } = getPosition(codeBlock, target)
-				let { clientHeight, clientWidth } = pre
-				let max = bottom > top ? bottom : top
-
-				tooltip.style.maxWidth = `min(${
-					maxWidth ? maxWidth + "," : ""
-				}${clientWidth}px - var(--padding-left) - 1em)`
-				tooltip.style.maxHeight = `min(${maxHeight ? maxHeight + "," : ""}${max}px, ${
-					clientHeight * 0.6
-				}px - 2em)`
-				spacer.style.width = (pre.matches(".pce-rtl") ? right : left) + "px"
-				tooltip.textContent = ""
-				tooltip.append(...content)
-				container.parentNode || addOverlay(codeBlock, container)
-
-				let placeAbove =
-					!above == top > bottom && (above ? top : bottom) < container.clientHeight ? !above : above
-
-				style[placeAbove ? "bottom" : "top"] = height + (placeAbove ? bottom : top) + "px"
-				style[placeAbove ? "top" : "bottom"] = "auto"
-				current?.removeAttribute("aria-describedby")
-				target.setAttribute("aria-describedby", id)
-				current = target
-			} else hide()
-		}
-
-		const hide = () => {
-			current?.removeAttribute("aria-describedby")
-			container.remove()
-		}
-
-		const cleanUp = addListener2(wrapper, "pointerover", e => {
+		const cleanUp = addListener2(codeBlock.wrapper!, "pointerover", e => {
 			const target = e.target as HTMLSpanElement
 			if (!tooltip.contains(target)) {
 				if (
 					target.matches(".token") &&
 					(e.pointerType != "mouse" || !e.buttons) &&
-					!target.childElementCount
+					(props[4] || !target.childElementCount)
 				) {
 					show(target)
 				} else hide()
@@ -192,7 +135,7 @@ const HighlightTagPairsOnHover = (): undefined => {
 		stack: [Element, string][],
 		map: WeakMap<Element, Element>,
 	) => {
-		const noVoidTags = voidlessLangs.has(getLanguageAt(nameEl))
+		const noVoidTags = voidlessLangs.has(getTokenLanguage(nameEl))
 		const name = nameEl.textContent!
 		const tagName = noVoidTags ? name : name.toLowerCase()
 		const notSelfClosing = !lastChild.textContent![1] && (noVoidTags || !voidTags.test(tagName))

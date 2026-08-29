@@ -1,7 +1,10 @@
-import { createComponent, createEffect, createSignal, onCleanup, Show } from "solid-js"
-import { addListener2, getPosition, testBracket, voidlessLangs, voidTags } from "../utils/local.js"
-import { template } from "solid-js/web"
+import { createEffect, onCleanup } from "solid-js"
+import { addListener2, testBracket, voidlessLangs, voidTags } from "../utils/local.js"
 import { CodeBlockOverlay, CodeBlockProps, PrismCodeBlock } from "./index.js"
+import { createHoverTooltip } from "../utils/hover.js"
+import { addListener } from "../core.js"
+import { getTokenLanguage } from "../utils/index.js"
+import { HoverCallback } from "../extensions/hover.js"
 
 export type HoverOptions = {
 	/** Whether the prefered position of the tooltip is above the token. @default false */
@@ -10,18 +13,14 @@ export type HoverOptions = {
 	maxWidth?: string
 	/** A CSS length value for the tooltip's max height. */
 	maxHeight?: string
+	/**
+	 * Whether the callback will be called for tokens that have elements as children.
+	 * @default false
+	 */
+	allowChildren?: boolean
 }
 
-let counter = 0
 let sp: number
-
-const createTooltip = /* @__PURE__ */ template(
-	"<div class=pce-tooltip style=z-index:5;top:auto;display:flex><div></div><div class=pce-hover-tooltip style=flex-shrink:0>",
-)
-
-const getLanguageAt = (token: Element) => {
-	return /language-(\S*)/.exec(token.closest("[class*=language-]")!.className)![1]
-}
 
 /**
  * Utility that makes it easier to add hover descriptions to tokens.
@@ -38,73 +37,23 @@ const getLanguageAt = (token: Element) => {
  * If `null` or `undefined` is returned, no tooltip is shown for the token.
  * @param options Options for configuring the size and position of the tooltip.
  */
-const addHoverDescriptions =
-	(
-		callback: (
-			types: string[],
-			language: string,
-			text: string,
-			element: HTMLSpanElement,
-		) => (string | Node)[] | null | undefined,
-		options: HoverOptions = {},
-	): CodeBlockOverlay =>
-	codeBlock => {
-		let current: HTMLSpanElement
-		const { above, maxHeight, maxWidth } = options
-		const container = createTooltip() as HTMLDivElement
-		const pre = codeBlock.container
-		const style = container.style
-		const [spacer, tooltip] = container.children as HTMLCollectionOf<HTMLDivElement>
-		const wrapper = codeBlock.wrapper
-		const id = (tooltip.id = "pce-hover-" + counter++)
-		const [open, setOpen] = createSignal(false)
+const addHoverDescriptions = (
+	callback: HoverCallback,
+	options: HoverOptions = {},
+): CodeBlockOverlay => {
+	return codeBlock => {
+		const [show, hide, tooltip, container] = createHoverTooltip(codeBlock, callback, options)
 
-		const show = (target: HTMLElement) => {
-			const types = target.className.slice(6).split(" ")
-			const text = target.textContent!
-			const content = callback(types, getLanguageAt(target), text, target)
-			if (content) {
-				let { left, right, top, bottom, height } = getPosition(codeBlock, target)
-				let { clientHeight, clientWidth } = pre
-				let max = bottom > top ? bottom : top
-
-				tooltip.style.maxWidth = `min(${
-					maxWidth ? maxWidth + "," : ""
-				}${clientWidth}px - var(--padding-left) - 1em)`
-				tooltip.style.maxHeight = `min(${maxHeight ? maxHeight + "," : ""}${max}px, ${
-					clientHeight * 0.6
-				}px - 2em)`
-				spacer.style.width = (pre.matches(".pce-rtl") ? right : left) + "px"
-				tooltip.textContent = ""
-				tooltip.append(...content)
-				setOpen(true)
-
-				let placeAbove =
-					!above == top > bottom && (above ? top : bottom) < container.clientHeight ? !above : above
-
-				style[placeAbove ? "bottom" : "top"] = height + (placeAbove ? bottom : top) + "px"
-				style[placeAbove ? "top" : "bottom"] = "auto"
-				current?.removeAttribute("aria-describedby")
-				target.setAttribute("aria-describedby", id)
-				current = target
-			} else hide()
-		}
-
-		const hide = () => {
-			current?.removeAttribute("aria-describedby")
-			setOpen(false)
-		}
-
-		onCleanup(addListener2(tooltip, "pointerleave", hide))
+		addListener(tooltip, "pointerleave", hide)
 
 		onCleanup(
-			addListener2(wrapper, "pointerover", e => {
+			addListener2(codeBlock.wrapper, "pointerover", e => {
 				const target = e.target as HTMLSpanElement
 				if (!tooltip.contains(target)) {
 					if (
 						target.matches(".token") &&
 						(e.pointerType != "mouse" || !e.buttons) &&
-						!target.childElementCount
+						(options.allowChildren || !target.childElementCount)
 					) {
 						show(target)
 					} else hide()
@@ -112,14 +61,9 @@ const addHoverDescriptions =
 			}),
 		)
 
-		// @ts-ignore
-		return createComponent(Show, {
-			get when() {
-				return open()
-			},
-			children: container,
-		})
+		return container
 	}
+}
 
 /**
  * Highlights bracket pairs when hovered. Clicking on a pair keeps it highlighted.
@@ -181,7 +125,7 @@ const highlightTagPairsOnHover = (): CodeBlockOverlay => (codeBlock, props) => {
 		stack: [Element, string][],
 		map: WeakMap<Element, Element>,
 	) => {
-		const noVoidTags = voidlessLangs.has(getLanguageAt(nameEl))
+		const noVoidTags = voidlessLangs.has(getTokenLanguage(nameEl))
 		const name = nameEl.textContent!
 		const tagName = noVoidTags ? name : name.toLowerCase()
 		const notSelfClosing = !lastChild.textContent![1] && (noVoidTags || !voidTags.test(tagName))
