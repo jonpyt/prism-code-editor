@@ -30,7 +30,7 @@ import { addBasicEditor, addReadonlyEditor, PrismEditorElement } from "../webCom
 import "./style.css"
 import { matchTags } from "../extensions/matchTags"
 import { addOverscroll } from "../tooltips"
-import { getClosestToken } from "../utils"
+import { getClosestToken, getTokenOffset } from "../utils"
 import { autoComplete, completeFromList, registerCompletions } from "../extensions/autocomplete"
 import {
 	completeKeywords,
@@ -62,6 +62,14 @@ import { svelteCompletion, svelteTag, svelteTags } from "../extensions/autocompl
 import { svelteBlockSnippets } from "../extensions/autocomplete/svelte/snippets"
 import { addEditorHotkey, addEditorHotkeySequence } from "../extensions/commands/utils"
 import { markupEmmetCompletion } from "../extensions/autocomplete/emmet/markup"
+import { addPointerListener, editorHoverDescriptions } from "../extensions/hover"
+
+let current: HTMLElement | undefined
+
+const clearHover = () => {
+	current?.classList.remove("token-hover")
+	current = undefined
+}
 
 const runBtn = <HTMLButtonElement>document.getElementById("run"),
 	wrapper = document.querySelector<HTMLDivElement>(".editor-wrapper")!,
@@ -84,6 +92,29 @@ const runBtn = <HTMLButtonElement>document.getElementById("run"),
 			editHistory(),
 			showInvisibles(),
 			customCursor(),
+			editorHoverDescriptions(
+				(types, _language, _text, token, editor) => {
+					return [`.token.${types.join(".")} (${getTokenOffset(editor, token)})`]
+				},
+				{
+					allowChildren: true,
+				},
+			),
+			editor => {
+				addPointerListener(editor, "pointermove", (e, target) => {
+					if (target == current) return
+
+					clearHover()
+
+					if (target.matches(".token") && (e.pointerType != "mouse" || !e.buttons)) {
+						target.classList.add("token-hover")
+						current = target
+					}
+				})
+
+				editor.textarea.addEventListener("pointerleave", clearHover)
+				editor.on("selectionChange", clearHover)
+			},
 			autoComplete({
 				filter: fuzzyFilter,
 				// closeOnBlur: false,

@@ -320,7 +320,7 @@ pre.prism-code-editor {
 	position: sticky;
 	left: 0.5em;
 	right: 0.5em;
-	white-space: normal;
+	white-space: pre;
 	padding: 0.4em;
 	border: 1px solid var(--pce-widget-border);
 	background: var(--pce-widget-bg);
@@ -335,4 +335,10 @@ pre .token.string {
 
 pre:hover .token.string {
 	border-color: #888;
+}
+
+.token-hover {
+	border-radius: 0.15em;
+	background: color(from currentColor srgb r g b / 0.15);
+	text-decoration: underline;
 }

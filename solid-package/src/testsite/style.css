@@ -146,3 +146,22 @@ pre .token.string {
 pre:hover .token.string {
 	border-color: #888;
 }
+
+
+.pce-hover-tooltip {
+	position: sticky;
+	left: 0.5em;
+	right: 0.5em;
+	padding: 0.4em;
+	border: 1px solid var(--pce-widget-border);
+	background: var(--pce-widget-bg);
+	border-radius: 0.3em;
+	overflow-y: auto;
+	white-space: pre-wrap;
+}
+
+.token-hover {
+	border-radius: 0.15em;
+	background: color(from currentColor srgb r g b / 0.15);
+	text-decoration: underline;
+}

@@ -1,4 +1,13 @@
-import { createSignal, type Component, createEffect, For, batch, on, Show } from "solid-js"
+import {
+	createSignal,
+	type Component,
+	createEffect,
+	For,
+	batch,
+	on,
+	Show,
+	onCleanup,
+} from "solid-js"
 import { Editor } from "../core"
 import "../prism/languages/typescript"
 import "../prism/languages/jsdoc"
@@ -80,6 +89,26 @@ import {
 	svelteTags,
 } from "../extensions/autocomplete/svelte"
 import { markupEmmetCompletion } from "../extensions/autocomplete/emmet/markup"
+import { addPointerListener, editorHoverDescriptions } from "../extensions/hover"
+import { getTokenOffset } from "../utils"
+
+let current: HTMLElement | undefined
+
+const clearHover = () => {
+	current?.classList.remove("token-hover")
+	current = undefined
+}
+
+const handler = (e: PointerEvent, target: HTMLElement) => {
+	if (target == current) return
+
+	clearHover()
+
+	if (target.matches(".token") && (e.pointerType != "mouse" || !e.buttons)) {
+		target.classList.add("token-hover")
+		current = target
+	}
+}
 
 const tooltip: Extension = editor => {
 	const { show, hide, element } = addTooltip(
@@ -130,11 +159,23 @@ const App: Component = () => {
 		autoComplete({
 			filter: fuzzyFilter,
 		}),
+		editorHoverDescriptions(
+			(types, _language, _text, token, editor) => {
+				return [`.token.${types.join(".")} (${getTokenOffset(editor, token)})`]
+			},
+			{ allowChildren: true },
+		),
 		editor => {
 			createEffect(() => {
 				editor.props.value
 				editor.container.scrollTo(0, 0)
 			})
+
+			onCleanup(addPointerListener(editor, "pointermove", handler))
+			onCleanup(addPointerListener(editor, "pointerdown", handler))
+			onCleanup(addTextareaListener(editor, "mouseleave", clearHover))
+
+			createEffect(on(editor.selection, clearHover))
 		},
 	]
 

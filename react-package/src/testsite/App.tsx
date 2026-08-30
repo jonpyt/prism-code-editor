@@ -71,6 +71,27 @@ import {
 import { vueCompletion } from "../extensions/autocomplete/vue"
 import { usePrismEditor } from "../extensions"
 import { markupEmmetCompletion } from "../extensions/autocomplete/emmet/markup"
+import { addPointerListener, useEditorHoverDescriptions } from "../extensions/hover"
+import { addTextareaListener } from "../utils/local"
+import { getTokenOffset } from "../utils"
+
+let current: HTMLElement | undefined
+
+const clearHover = () => {
+	current?.classList.remove("token-hover")
+	current = undefined
+}
+
+const handler = (e: PointerEvent, target: HTMLElement) => {
+	if (target == current) return
+
+	clearHover()
+
+	if (target.matches(".token") && (e.pointerType != "mouse" || !e.buttons)) {
+		target.classList.add("token-hover")
+		current = target
+	}
+}
 
 const ReadOnly = lazy(() => import("./readOnly"))
 
@@ -92,10 +113,30 @@ const Extensions = () => {
 		filter: fuzzyFilter,
 	})
 	useCustomCursor(editor)
+	useEditorHoverDescriptions(
+		editor,
+		(types, _language, _text, token) => {
+			return [`.token.${types.join(".")} (${getTokenOffset(editor, token)})`]
+		},
+		{ allowChildren: true },
+	)
 
 	useLayoutEffect(() => {
 		editor.container?.scrollTo(0, 0)
 	}, [props.value])
+
+	useEffect(() => {
+		const cleanUp = [
+			addPointerListener(editor, "pointermove", handler),
+			addPointerListener(editor, "pointerdown", handler),
+			addTextareaListener(editor, "mouseleave", clearHover),
+			editor.on("selectionChange", clearHover),
+		]
+
+		return () => {
+			cleanUp.forEach(c => c())
+		}
+	}, [])
 
 	if (props.readOnly) {
 		return (
