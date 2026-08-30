@@ -1,10 +1,11 @@
 .pce-fold {
-	position: absolute;
+	position: sticky;
 	display: inline-grid;
 	margin: 0 0 0 calc(2px - var(--_ns));
 	width: calc(var(--_ns) - 2px);
 	place-items: center;
 	z-index: 2;
+	left: calc(2px + var(--padding-left) - var(--_ns));
 }
 
 .pce-fold,
@@ -31,11 +32,6 @@
 
 .closed-fold > ::after {
 	transform: translateY(-50%) rotate(-90deg);
-}
-
-.pce-nowrap .pce-fold {
-	position: sticky;
-	left: calc(2px + var(--padding-left) - var(--_ns));
 }
 
 .pce-unfold {

@@ -109,7 +109,7 @@ pre.pce-guides .pce-line::after,
 }
 
 .show-line-numbers .pce-line::after {
-	inset-inline-start: var(--padding-left);
+	left: var(--padding-left);
 }
 
 .active-line::after {

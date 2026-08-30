@@ -37,6 +37,11 @@
 	background: var(--pce-bg);
 }
 
+.pce-rtl.show-line-numbers .pce-line::after {
+	left: 0;
+	right: var(--padding-left);
+}
+
 .pce-rtl.pce-nowrap .pce-line::before {
 	margin: 0 calc(-1 * var(--padding-left)) 0 0;
 }
@@ -45,12 +50,9 @@
 	padding: 0 var(--padding-left) 0 var(--_pse);
 }
 
-.pce-rtl.pce-nowrap .pce-fold {
-	right: calc(2px + var(--padding-left) - var(--_ns));
-}
-
 .pce-rtl .pce-fold {
 	margin: 0 calc(2px - var(--_ns)) 0 0;
+	right: calc(2px + var(--padding-left) - var(--_ns));
 }
 
 .pce-rtl .closed-fold > ::after {
