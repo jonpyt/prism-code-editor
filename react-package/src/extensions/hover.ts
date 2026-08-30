@@ -106,11 +106,12 @@ export type EditorHoverOptions = {
 	allowChildren?: boolean
 }
 
-export type HoverCallback = (
+export type EditorHoverCallback = (
 	types: string[],
 	language: string,
 	text: string,
 	element: HTMLSpanElement,
+	editor: PrismEditor,
 ) => (string | Node)[] | null | undefined
 
 /**
@@ -130,12 +131,12 @@ export type HoverCallback = (
  */
 const useEditorHoverDescriptions = (
 	editor: PrismEditor,
-	callback: HoverCallback,
+	callback: EditorHoverCallback,
 	options: EditorHoverOptions = {},
 ) => {
 	const props = useStableRef<
 		[
-			HoverCallback,
+			EditorHoverCallback,
 			string | undefined,
 			string | undefined,
 			boolean,

@@ -2,7 +2,6 @@ import { addOverlay, getTokenLanguage } from "./index.js"
 import { PrismEditor } from ".."
 import { createTemplate, getPosition } from "./local.js"
 import { PrismCodeBlock } from "../code-block/index.js"
-import { HoverCallback } from "../extensions/hover.js"
 
 let counter = 0
 
@@ -10,9 +9,21 @@ const template = /* @__PURE__ */ createTemplate(
 	"<div class=pce-tooltip style=z-index:5;top:auto;display:flex><div></div><div class=pce-hover-tooltip style=flex-shrink:0>",
 )
 
-const createHoverTooltip = (
-	editor: PrismEditor | PrismCodeBlock,
-	ref: [HoverCallback, string | undefined, string | undefined, boolean, ...unknown[]],
+const createHoverTooltip = <T extends PrismEditor | PrismCodeBlock>(
+	editor: T,
+	ref: [
+		(
+			types: string[],
+			language: string,
+			text: string,
+			element: HTMLSpanElement,
+			editor: T,
+		) => (string | Node)[] | null | undefined,
+		string | undefined,
+		string | undefined,
+		boolean,
+		...unknown[],
+	],
 ) => {
 	let current: HTMLSpanElement | null
 	const container = template()
@@ -24,7 +35,7 @@ const createHoverTooltip = (
 		if (current == target) return
 		const types = target.className.slice(6).split(" ")
 		const text = target.textContent
-		const content = ref[0](types, getTokenLanguage(target), text, target)
+		const content = ref[0](types, getTokenLanguage(target), text, target, editor)
 		if (content) {
 			let { left, right, top, bottom, height } = getPosition(editor, target)
 			let { clientHeight, clientWidth } = editorContainer

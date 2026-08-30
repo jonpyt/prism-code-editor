@@ -3,7 +3,6 @@ import { PrismEditor } from ".."
 import { HoverOptions, PrismCodeBlock } from "../client/code-block.js"
 import { createTemplate } from "../core.js"
 import { getPosition } from "./local.js"
-import { HoverCallback } from "../extensions/hover.js"
 
 let counter = 0
 
@@ -11,9 +10,15 @@ const template = /* @__PURE__ */ createTemplate(
 	"<div class=pce-tooltip style=z-index:5;top:auto;display:flex><div></div><div class=pce-hover-tooltip style=flex-shrink:0>",
 )
 
-const createHoverTooltip = (
-	editor: PrismEditor | PrismCodeBlock,
-	callback: HoverCallback,
+const createHoverTooltip = <T extends PrismEditor | PrismCodeBlock>(
+	editor: T,
+	callback: (
+		types: string[],
+		language: string,
+		text: string,
+		element: HTMLSpanElement,
+		editor: T,
+	) => (string | Node)[] | null | undefined,
 	options: HoverOptions,
 ) => {
 	let current: HTMLSpanElement | null
@@ -27,7 +32,7 @@ const createHoverTooltip = (
 		if (current == target) return
 		const types = target.className.slice(6).split(" ")
 		const text = target.textContent
-		const content = callback(types, getTokenLanguage(target), text, target)
+		const content = callback(types, getTokenLanguage(target), text, target, editor)
 		if (content) {
 			let { left, right, top, bottom, height } = getPosition(editor, target)
 			let { clientHeight, clientWidth } = editorContainer

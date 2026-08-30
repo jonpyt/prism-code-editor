@@ -4,7 +4,6 @@ import { CodeBlockOverlay, CodeBlockProps, PrismCodeBlock } from "./index.js"
 import { createHoverTooltip } from "../utils/hover.js"
 import { addListener } from "../core.js"
 import { getTokenLanguage } from "../utils/index.js"
-import { HoverCallback } from "../extensions/hover.js"
 
 export type HoverOptions = {
 	/** Whether the prefered position of the tooltip is above the token. @default false */
@@ -19,6 +18,14 @@ export type HoverOptions = {
 	 */
 	allowChildren?: boolean
 }
+
+export type HoverCallback = (
+	types: string[],
+	language: string,
+	text: string,
+	element: HTMLSpanElement,
+	codeBlock: PrismCodeBlock,
+) => (string | Node)[] | null | undefined
 
 let sp: number
 

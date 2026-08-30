@@ -1,5 +1,4 @@
 import { createEffect, on, onCleanup } from "solid-js"
-import { addListener } from "../core.js"
 import { Extension, PrismEditor } from "../types.js"
 import { createHoverTooltip } from "../utils/hover.js"
 import { addTextareaListener } from "../utils/local.js"
@@ -106,11 +105,12 @@ export type EditorHoverOptions = {
 	allowChildren?: boolean
 }
 
-export type HoverCallback = (
+export type EditorHoverCallback = (
 	types: string[],
 	language: string,
 	text: string,
 	element: HTMLSpanElement,
+	editor: PrismEditor,
 ) => (string | Node)[] | null | undefined
 
 /**
@@ -129,7 +129,7 @@ export type HoverCallback = (
  * line filter for better performance.
  */
 const editorHoverDescriptions = (
-	callback: HoverCallback,
+	callback: EditorHoverCallback,
 	options: EditorHoverOptions = {},
 ): Extension => {
 	return editor => {

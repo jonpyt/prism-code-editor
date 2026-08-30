@@ -1,12 +1,19 @@
 import { useCallback, useEffect } from "react"
 import { addListener2, testBracket, voidlessLangs, voidTags } from "../utils/local"
-import { usePrismCodeBlock } from "."
+import { PrismCodeBlock, usePrismCodeBlock } from "."
 import { useStableRef } from "../core"
 import { createHoverTooltip } from "../utils/hover"
 import { getTokenLanguage } from "../utils"
-import { HoverCallback } from "../extensions/hover"
 
 let sp: number
+
+export type HoverCallback = (
+	types: string[],
+	language: string,
+	text: string,
+	element: HTMLSpanElement,
+	codeBlock: PrismCodeBlock,
+) => (string | Node)[] | null | undefined
 
 /**
  * Component that makes it easier to add hover descriptions to tokens.

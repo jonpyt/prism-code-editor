@@ -107,11 +107,12 @@ export type EditorHoverOptions = {
 	allowChildren?: boolean
 }
 
-export type HoverCallback = (
+export type EditorHoverCallback<T extends {}> = (
 	types: string[],
 	language: string,
 	text: string,
 	element: HTMLSpanElement,
+	editor: PrismEditor<T>,
 ) => (string | Node)[] | null | undefined
 
 /**
@@ -129,10 +130,10 @@ export type HoverCallback = (
  * @param options Options for configuring the size and position of the tooltip and the
  * line filter for better performance.
  */
-const editorHoverDescriptions = (
-	callback: HoverCallback,
+const editorHoverDescriptions = <T extends {}>(
+	callback: EditorHoverCallback<T>,
 	options: EditorHoverOptions = {},
-): BasicExtension => {
+): BasicExtension<T> => {
 	return editor => {
 		const [show, hide, tooltip] = createHoverTooltip(editor, callback, options)
 		const handler = (e: PointerEvent, target: HTMLElement) => {
