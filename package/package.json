@@ -41,6 +41,7 @@
     "./autocomplete/vue": "./dist/extensions/autocomplete/vue/index.js",
     "./autocomplete/svelte": "./dist/extensions/autocomplete/svelte/index.js",
     "./autocomplete/emmet": "./dist/extensions/autocomplete/emmet/markup.js",
+    "./hover": "./dist/extensions/hover.js",
     "./ssr": "./dist/ssr/index.js",
     "./client": "./dist/client/index.js",
     "./code-blocks": "./dist/client/code-block.js",

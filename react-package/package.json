@@ -40,6 +40,7 @@
     "./autocomplete/svelte": "./dist/extensions/autocomplete/svelte/index.js",
     "./autocomplete/vue": "./dist/extensions/autocomplete/vue/index.js",
     "./autocomplete/emmet": "./dist/extensions/autocomplete/emmet/markup.js",
+    "./hover": "./dist/extensions/hover.js",
     "./code-blocks": "./dist/code-block/index.js",
     "./commands": "./dist/extensions/commands/index.js",
     "./cursor": "./dist/extensions/cursor/index.js",
