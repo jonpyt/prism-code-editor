@@ -205,3 +205,13 @@ export function tokenizeInvisibles(tokens: TokenStream): void
  * @param tokens Tokens to mutate.
  */
 export function tokenizeDataUris(tokens: TokenStream): void
+
+/**
+ * Appends the given alias to the token's alias. If the token doesn't already have an
+ * alias, it simply assigns the token's alias.
+ *
+ * @param token Token to add the alias to.
+ * @param alias Alias to add. To add multiple aliases, separate them with spaces.
+ * @returns The token's new alias.
+ */
+export declare const addAlias: (token: Token, alias: string) => string

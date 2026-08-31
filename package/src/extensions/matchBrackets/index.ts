@@ -2,6 +2,7 @@
 
 import { BasicExtension } from "../../index.js"
 import { Token, TokenStream } from "../../prism/index.js"
+import { addAlias } from "../../prism/utils/language.js"
 import { testBracket } from "../../utils/bracket.js"
 
 export interface BracketMatcher extends BasicExtension {
@@ -61,11 +62,7 @@ export const matchBrackets = (rainbowBrackets = true, pairs = "()[]{}") => {
 
 		if (rainbowBrackets) {
 			for (let i = 0, bracket: Bracket; (bracket = brackets[i]); ) {
-				let alias = bracket[0].alias
-
-				bracket[0].alias =
-					(alias ? alias + " " : "") +
-					`bracket-${i++ in pairMap ? "level-" + (bracket[3] % 12) : "error"}`
+				addAlias(bracket[0], `bracket-${i++ in pairMap ? "level-" + (bracket[3] % 12) : "error"}`)
 			}
 		}
 	}

@@ -44,6 +44,10 @@ var insertBefore = (grammar, before, insert) => {
 	}
 }
 
+var addAlias = (token, alias) => {
+	return token.alias = token.alias ? token.alias + " " + alias : alias;
+}
+
 var toString = {}.toString;
 
-export { clone, insertBefore, extend }
+export { clone, insertBefore, extend, addAlias };

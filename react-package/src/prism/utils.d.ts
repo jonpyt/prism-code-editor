@@ -91,12 +91,12 @@ export declare const extend: (id: string, reDef?: Grammar) => Grammar
 
 /**
  * Custom tokenizer for languages that are embedded in another language.
- * 
+ *
  * This works by first tokenizing everything using the grammar of the embedded language.
  * Then, all tokens whose name doesn't start with `ignore` are replaced with whitespace
  * of the same length. This new string is then tokenized using `hostGrammar`, and all the
  * replaced tokens are inserted into the new token stream.
- * 
+ *
  * @param hostGrammar The grammar this language is embedded in. Can either be a grammar object
  * or the name of a grammar.
  */
@@ -176,7 +176,7 @@ export function tokenizeInvisibles(tokens: TokenStream): void
  *   useLayoutEffect(() => {
  *     return editor.on("tokenize", tokenizeDataUris)
  *   }, [])
- * 
+ *
  *   // Call extensions like useMatchBrackets after
  * }
  * ```
@@ -199,3 +199,13 @@ export function tokenizeInvisibles(tokens: TokenStream): void
  * @param tokens Tokens to mutate.
  */
 export function tokenizeDataUris(tokens: TokenStream): void
+
+/**
+ * Appends the given alias to the token's alias. If the token doesn't already have an
+ * alias, it simply assigns the token's alias.
+ *
+ * @param token Token to add the alias to.
+ * @param alias Alias to add. To add multiple aliases, separate them with spaces.
+ * @returns The token's new alias.
+ */
+export declare const addAlias: (token: Token, alias: string) => string

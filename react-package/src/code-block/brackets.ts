@@ -1,14 +1,10 @@
 import { useBracketMatcher } from "../extensions/match-brackets/index.js"
 import { Token, TokenStream } from "../prism/index.js"
+import { addAlias } from "../prism/utils.js"
 import { testBracket } from "../utils/local.js"
 
 let stack: [Token, number][] = []
 let sp: number
-
-const addAlias = (token: Token, newAlias = "bracket-error") => {
-	let alias = token.alias
-	token.alias = alias ? alias + " " + newAlias : newAlias
-}
 
 const matchRecursive = (tokens: TokenStream, pairs: string) => {
 	let token: string | Token
@@ -36,7 +32,7 @@ const matchRecursive = (tokens: TokenStream, pairs: string) => {
 							let alias = "bracket-level-" + (i % 12)
 							let j = i
 							while (++j < sp) {
-								addAlias(stack[j][0])
+								addAlias(stack[j][0], "bracket-error")
 							}
 							addAlias(token, alias)
 							addAlias(entry[0], alias)
@@ -44,7 +40,7 @@ const matchRecursive = (tokens: TokenStream, pairs: string) => {
 							break
 						}
 					}
-					if (!entry) addAlias(token)
+					if (!entry) addAlias(token, "bracket-error")
 				}
 			}
 		}

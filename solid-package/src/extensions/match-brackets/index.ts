@@ -2,6 +2,7 @@ import { Token, TokenStream } from "../../prism/index"
 import { Extension } from "../../types"
 import { createRenderEffect, onCleanup } from "solid-js"
 import { testBracket } from "../../utils/local"
+import { addAlias } from "../../prism/utils"
 
 export interface BracketMatcher {
 	/**
@@ -99,11 +100,7 @@ export const matchBrackets = (rainbowBrackets = true, pairs = "()[]{}"): Extensi
 			matchRecursive(editor.tokens(), 0)
 			if (rainbowBrackets) {
 				for (let i = 0, bracket: Bracket; (bracket = brackets[i]); ) {
-					let alias = bracket[0].alias
-
-					bracket[0].alias =
-						(alias ? alias + " " : "") +
-						`bracket-${i++ in pairMap ? "level-" + (bracket[3] % 12) : "error"}`
+					addAlias(bracket[0], `bracket-${i++ in pairMap ? "level-" + (bracket[3] % 12) : "error"}`)
 				}
 			}
 		})

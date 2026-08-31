@@ -2,6 +2,7 @@ import { useLayoutEffect } from "react"
 import { Token, TokenStream } from "../../prism/index"
 import { PrismEditor } from "../../types"
 import { testBracket } from "../../utils/local"
+import { addAlias } from "../../prism/utils"
 
 export interface BracketMatcher {
 	/**
@@ -96,11 +97,7 @@ export const useBracketMatcher = (
 			matchRecursive(tokens, 0)
 			if (rainbowBrackets) {
 				for (let i = 0, bracket: Bracket; (bracket = brackets[i]); ) {
-					let alias = bracket[0].alias
-
-					bracket[0].alias =
-						(alias ? alias + " " : "") +
-						`bracket-${i++ in pairMap ? "level-" + (bracket[3] % 12) : "error"}`
+					addAlias(bracket[0], `bracket-${i++ in pairMap ? "level-" + (bracket[3] % 12) : "error"}`)
 				}
 			}
 		})
