@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config"
-import { unified } from '@astrojs/markdown-remark'
-import remarkGfm from 'remark-gfm'
+import { unified } from "@astrojs/markdown-remark"
+import remarkGfm from "remark-gfm"
 import starlight from "@astrojs/starlight"
 import starlightTypeDoc from "starlight-typedoc"
 import prismCodeEditor from "rehype-prism-code-editor"
@@ -10,6 +10,7 @@ import "prism-code-editor/prism/languages/common"
 import "prism-code-editor/prism/languages/jsdoc"
 import "prism-code-editor/prism/languages/svelte"
 import "prism-code-editor/prism/languages/vue"
+import starlightLlmsTxt from "starlight-llms-txt"
 
 languages.selector = {
 	selector: {
@@ -42,11 +43,12 @@ const pluginOptions = {
 
 // https://astro.build/config
 export default defineConfig({
+	site: "https://prism-code-editor.netlify.app",
 	markdown: {
 		processor: unified({
 			remarkPlugins: [remarkGfm],
-			rehypePlugins: [[prismCodeEditor, pluginOptions]]
-		})
+			rehypePlugins: [[prismCodeEditor, pluginOptions]],
+		}),
 	},
 	integrations: [
 		starlight({
@@ -64,6 +66,34 @@ export default defineConfig({
 				},
 			],
 			plugins: [
+				starlightLlmsTxt({
+					rawContent: true,
+					promote: [
+						"guides/introduction",
+						"guides/getting-started",
+						"guides/advanced-usage",
+						"guides/usage-with-frameworks",
+						"guides/usage-in-forms",
+						"guides/working-with-prism",
+						"guides/handling-tab",
+						"guides/hotkeys",
+						"guides/language-specific-behavior",
+						"guides/styling",
+						"guides/extensions",
+						"guides/custom-cursor",
+						"guides/searching",
+						"guides/autocomplete",
+						"guides/code-folding",
+						"guides/tooltips",
+						"guides/server-side-rendering",
+						"guides/code-blocks",
+						"guides/migration",
+						"markdown-plugins/getting-started",
+						"markdown-plugins/configuration",
+						"markdown-plugins/features",
+					],
+					exclude: ["playground", "api-reference/**", "markdown-plugins/**", "guides/migration", "index"],
+				}),
 				// Generate the documentation.
 				starlightTypeDoc({
 					entryPoints: [
@@ -165,12 +195,14 @@ export default defineConfig({
 					].map(module => ({
 						label: module,
 						collapsed: true,
-						items: [{
-							autogenerate: {
-								directory: "api-reference/" + module,
-								collapsed: true,
+						items: [
+							{
+								autogenerate: {
+									directory: "api-reference/" + module,
+									collapsed: true,
+								},
 							},
-						}]
+						],
 					})),
 				},
 			],

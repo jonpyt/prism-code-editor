@@ -19,6 +19,7 @@
     "rehype-prism-code-editor": "link:..\\rehype-plugin",
     "remark-gfm": "^4.0.1",
     "sharp": "^0.35.3",
+    "starlight-llms-txt": "0.10.0",
     "starlight-typedoc": "^0.21.3",
     "typedoc": "^0.28.19",
     "typescript": "^5.9.3"
