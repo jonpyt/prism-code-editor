@@ -1,5 +1,6 @@
 /** @module hover */
 
+import { HoverOptions } from "../client/hover.js"
 import { addListener } from "../core.js"
 import { BasicExtension, PrismEditor } from "../types.js"
 import { createHoverTooltip } from "../utils/hover.js"
@@ -87,24 +88,13 @@ const addPointerListener = <T extends AllowedEditorPointerEvents>(
 	}
 }
 
-export type EditorHoverOptions = {
-	/** Whether the prefered position of the tooltip is above the token. @default false */
-	above?: boolean
-	/** A CSS length value for the tooltip's max width. */
-	maxWidth?: string
-	/** A CSS length value for the tooltip's max height. */
-	maxHeight?: string
+export type EditorHoverOptions = HoverOptions & {
 	/**
 	 * If a line won't have any tokens the callback is interested in, then this filter can
 	 * return false to skip computing the target token at the cursor's position for a
 	 * performance boost. If ommitted, the callback will be invoked for all lines.
 	 */
 	filter?: (line: HTMLDivElement, lineNumber: number, e: PointerEvent) => boolean
-	/**
-	 * Whether the callback will be called for tokens that have elements as children.
-	 * @default false
-	 */
-	allowChildren?: boolean
 }
 
 export type EditorHoverCallback<T extends {}> = (

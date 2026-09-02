@@ -21,11 +21,16 @@ const createHoverTooltip = <T extends PrismEditor | PrismCodeBlock>(
 		) => (string | Node)[] | null | undefined,
 		string | undefined,
 		string | undefined,
+		number | undefined,
+		number | undefined,
 		boolean,
 		...unknown[],
 	],
 ) => {
 	let current: HTMLSpanElement | null
+	let openTimeout: number
+	let cooldownTimeout: number
+	let isWarm: boolean
 	const container = template()
 	const editorContainer = editor.container!
 	const style = container.style
@@ -33,6 +38,18 @@ const createHoverTooltip = <T extends PrismEditor | PrismCodeBlock>(
 
 	const show = (target: HTMLElement) => {
 		if (current == target) return
+
+		if (ref[3] && !isWarm) {
+			clearTimeout(openTimeout)
+			openTimeout = setTimeout(() => showDelayed(target), ref[3])
+		} else {
+			clearTimeout(cooldownTimeout)
+			showDelayed(target)
+		}
+		current = target
+	}
+
+	const showDelayed = (target: HTMLElement) => {
 		const types = target.className.slice(6).split(" ")
 		const text = target.textContent
 		const content = ref[0](types, getTokenLanguage(target), text, target, editor)
@@ -50,27 +67,40 @@ const createHoverTooltip = <T extends PrismEditor | PrismCodeBlock>(
 			spacer.style.width = (editorContainer.matches(".pce-rtl") ? right : left) + "px"
 			tooltip.textContent = ""
 			tooltip.append(...content)
+			if (ref[4]) {
+				tooltip.classList.toggle("pce-instant", isWarm)
+			}
 			container.parentNode || addOverlay(editor, container)
 
 			let placeAbove =
-				!ref[3] == top > bottom && (ref[3] ? top : bottom) < container.clientHeight
-					? !ref[3]
-					: ref[3]
+				!ref[5] == top > bottom && (ref[5] ? top : bottom) < container.clientHeight
+					? !ref[5]
+					: ref[5]
 
 			style[placeAbove ? "bottom" : "top"] = height + (placeAbove ? bottom : top) + "px"
 			style[placeAbove ? "top" : "bottom"] = "auto"
 			current?.removeAttribute("aria-describedby")
 			target.setAttribute("aria-describedby", tooltip.id)
-			current = target
+			isWarm = true
 		} else hide()
 	}
+
 	const hide = () => {
-		current?.removeAttribute("aria-describedby")
-		current = null
-		container.remove()
+		clearTimeout(openTimeout)
+
+		if (current) {
+			current.removeAttribute("aria-describedby")
+			current = null
+			container.remove()
+
+			if (ref[4]) {
+				clearTimeout(cooldownTimeout)
+				cooldownTimeout = setTimeout(() => (isWarm = false), ref[4])
+			}
+		}
 	}
 
-	tooltip.id = "pce-e-hover-" + counter++
+	tooltip.id = "pce-hover-" + counter++
 
 	return [show, hide, tooltip] as const
 }

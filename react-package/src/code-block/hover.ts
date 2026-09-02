@@ -15,16 +15,7 @@ export type HoverCallback = (
 	codeBlock: PrismCodeBlock,
 ) => (string | Node)[] | null | undefined
 
-/**
- * Component that makes it easier to add hover descriptions to tokens.
- */
-const HoverDescriptions = ({
-	callback,
-	above,
-	maxWidth,
-	maxHeight,
-	allowChildren,
-}: {
+export type HoverProps = {
 	/** Function called when a token with only textual children is hovered.
 	 *
 	 * The function gets called with the following arguments:
@@ -48,16 +39,52 @@ const HoverDescriptions = ({
 	 * @default false
 	 */
 	allowChildren?: boolean
-}): undefined => {
+	/**
+	 * Delay before the tooltip is opened in milliseconds. If omitted, the tooltip opens
+	 * immediately.
+	 */
+	delay?: number
+	/**
+	 * The opening delay can be temporarily removed after closing a tooltip, and this option
+	 * controls for how many milliseconds it is removed. If omitted, the delay is always
+	 * applied. When a tooltip gets opened with no delay, it gets the `pce-instant` class
+	 * added. The `.pce-instant` selector can therefore be used to remove CSS transitions
+	 * when opened with no delay for example.
+	 */
+	warmDuration?: number
+}
+
+/**
+ * Component that makes it easier to add hover descriptions to tokens.
+ */
+const HoverDescriptions = ({
+	callback,
+	above,
+	maxWidth,
+	maxHeight,
+	allowChildren,
+	delay,
+	warmDuration,
+}: HoverProps): undefined => {
 	const [codeBlock] = usePrismCodeBlock()
 	const props = useStableRef<
-		[HoverCallback, string | undefined, string | undefined, boolean, boolean | undefined]
+		[
+			HoverCallback,
+			string | undefined,
+			string | undefined,
+			number | undefined,
+			number | undefined,
+			boolean,
+			boolean | undefined,
+		]
 	>([] as any)
 	props[0] = callback
 	props[1] = maxWidth
 	props[2] = maxHeight
-	props[3] = !!above
-	props[4] = allowChildren
+	props[3] = delay
+	props[4] = warmDuration
+	props[5] = !!above
+	props[6] = allowChildren
 
 	useEffect(() => {
 		const [show, hide, tooltip] = createHoverTooltip(codeBlock, props)
@@ -68,7 +95,7 @@ const HoverDescriptions = ({
 				if (
 					target.matches(".token") &&
 					(e.pointerType != "mouse" || !e.buttons) &&
-					(props[4] || !target.childElementCount)
+					(props[6] || !target.childElementCount)
 				) {
 					show(target)
 				} else hide()

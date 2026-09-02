@@ -17,6 +17,19 @@ export type HoverOptions = {
 	 * @default false
 	 */
 	allowChildren?: boolean
+	/**
+	 * Delay before the tooltip is opened in milliseconds. If omitted, the tooltip opens
+	 * immediately.
+	 */
+	delay?: number
+	/**
+	 * The opening delay can be temporarily removed after closing a tooltip, and this option
+	 * controls for how many milliseconds it is removed. If omitted, the delay is always
+	 * applied. When a tooltip gets opened with no delay, it gets the `pce-instant` class
+	 * added. The `.pce-instant` selector can therefore be used to remove CSS transitions
+	 * when opened with no delay for example.
+	 */
+	warmDuration?: number
 }
 
 export type HoverCallback = (

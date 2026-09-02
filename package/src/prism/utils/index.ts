@@ -1,4 +1,4 @@
-export { clone, insertBefore, extend } from "./language.js"
+export { clone, insertBefore, extend, addAlias } from "./language.js"
 export { embeddedIn } from "./templating.js"
 export { tokenizeDataUris } from "./data-uri.js"
 export { tokenizeInvisibles } from "./invisibles.js"

@@ -23,7 +23,10 @@ const createHoverTooltip = <T extends PrismEditor | PrismCodeBlock>(
 	options: HoverOptions,
 ) => {
 	let current: HTMLSpanElement | null
-	const { above, maxHeight, maxWidth } = options
+	let openTimeout: number
+	let cooldownTimeout: number
+	let isWarm: boolean
+	const { above, maxHeight, maxWidth, delay, warmDuration } = options
 	const container = tooltipTemplate() as HTMLDivElement
 	const editorContainer = editor.container
 	const style = container.style
@@ -32,6 +35,18 @@ const createHoverTooltip = <T extends PrismEditor | PrismCodeBlock>(
 
 	const show = (target: HTMLElement) => {
 		if (current == target) return
+
+		if (delay && !isWarm) {
+			clearTimeout(openTimeout)
+			openTimeout = setTimeout(() => showDelayed(target), delay)
+		} else {
+			clearTimeout(cooldownTimeout)
+			showDelayed(target)
+		}
+		current = target
+	}
+
+	const showDelayed = (target: HTMLElement) => {
 		const types = target.className.slice(6).split(" ")
 		const text = target.textContent
 		const content = callback(types, getTokenLanguage(target), text, target, editor)
@@ -49,6 +64,9 @@ const createHoverTooltip = <T extends PrismEditor | PrismCodeBlock>(
 			spacer.style.width = (editorContainer.matches(".pce-rtl") ? right : left) + "px"
 			tooltip.textContent = ""
 			tooltip.append(...content)
+			if (warmDuration) {
+				tooltip.classList.toggle("pce-instant", isWarm)
+			}
 			setOpen(true)
 
 			let placeAbove =
@@ -58,16 +76,26 @@ const createHoverTooltip = <T extends PrismEditor | PrismCodeBlock>(
 			style[placeAbove ? "top" : "bottom"] = "auto"
 			current?.removeAttribute("aria-describedby")
 			target.setAttribute("aria-describedby", tooltip.id)
-			current = target
+			isWarm = true
 		} else hide()
 	}
+
 	const hide = () => {
-		current?.removeAttribute("aria-describedby")
-		current = null
-		setOpen(false)
+		clearTimeout(openTimeout)
+
+		if (current) {
+			current.removeAttribute("aria-describedby")
+			current = null
+			setOpen(false)
+
+			if (warmDuration) {
+				clearTimeout(cooldownTimeout)
+				cooldownTimeout = setTimeout(() => (isWarm = false), warmDuration)
+			}
+		}
 	}
 
-	tooltip.id = "pce-e-hover-" + counter++
+	tooltip.id = "pce-hover-" + counter++
 
 	return [
 		show,

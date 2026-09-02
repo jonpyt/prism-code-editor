@@ -3,6 +3,7 @@ import { useStableRef } from "../core.js"
 import { PrismEditor } from "../types.js"
 import { addTextareaListener } from "../utils/local.js"
 import { createHoverTooltip } from "../utils/hover.js"
+import { HoverProps } from "../code-block/hover.js"
 
 export type AllowedEditorPointerEvents =
 	| "pointermove"
@@ -86,24 +87,13 @@ const addPointerListener = <T extends AllowedEditorPointerEvents>(
 	}
 }
 
-export type EditorHoverOptions = {
-	/** Whether the prefered position of the tooltip is above the token. @default false */
-	above?: boolean
-	/** A CSS length value for the tooltip's max width. */
-	maxWidth?: string
-	/** A CSS length value for the tooltip's max height. */
-	maxHeight?: string
+export type EditorHoverOptions = Omit<HoverProps, "callback"> & {
 	/**
 	 * If a line won't have any tokens the callback is interested in, then this filter can
 	 * return false to skip computing the target token at the cursor's position for a
 	 * performance boost. If ommitted, the callback will be invoked for all lines.
 	 */
 	filter?: (line: HTMLDivElement, lineNumber: number, e: PointerEvent) => boolean
-	/**
-	 * Whether the callback will be called for tokens that have elements as children.
-	 * @default false
-	 */
-	allowChildren?: boolean
 }
 
 export type EditorHoverCallback = (
@@ -139,6 +129,8 @@ const useEditorHoverDescriptions = (
 			EditorHoverCallback,
 			string | undefined,
 			string | undefined,
+			number | undefined,
+			number | undefined,
 			boolean,
 			boolean | undefined,
 			((line: HTMLDivElement, lineNumber: number, e: PointerEvent) => boolean) | undefined,
@@ -148,9 +140,11 @@ const useEditorHoverDescriptions = (
 	props[0] = callback
 	props[1] = options.maxWidth
 	props[2] = options.maxHeight
-	props[3] = !!options.above
-	props[4] = options.allowChildren
-	props[5] = options.filter
+	props[3] = options.delay
+	props[4] = options.warmDuration
+	props[5] = !!options.above
+	props[6] = options.allowChildren
+	props[7] = options.filter
 
 	useEffect(() => {
 		const [show, hide, tooltip] = createHoverTooltip(editor, props)
@@ -158,14 +152,14 @@ const useEditorHoverDescriptions = (
 			if (
 				target.matches(".token") &&
 				(e.pointerType != "mouse" || !e.buttons) &&
-				(props[4] || !target.childElementCount)
+				(props[6] || !target.childElementCount)
 			) {
 				show(target)
 			} else hide()
 		}
 
 		const filter = (line: HTMLDivElement, lineNumber: number, e: PointerEvent) => {
-			return props[5]?.(line, lineNumber, e) ?? true
+			return props[7]?.(line, lineNumber, e) ?? true
 		}
 
 		const cleanUp = [
