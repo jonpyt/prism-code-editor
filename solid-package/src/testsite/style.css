@@ -126,18 +126,6 @@ label {
 	}
 }
 
-.pce-hover-tooltip {
-	position: sticky;
-	left: 0.5em;
-	right: 0.5em;
-	white-space: normal;
-	padding: 0.25em 0.4em;
-	border: 1px solid var(--pce-widget-border);
-	background: var(--pce-widget-bg);
-	border-radius: 0.3em;
-	overflow-y: auto;
-}
-
 pre .token.string {
 	border-bottom: 1px dotted #0000;
 	transition: border-color 0.2s;
@@ -152,15 +140,17 @@ pre:hover .token.string {
 	position: sticky;
 	left: 0.5em;
 	right: 0.5em;
-	padding: 0.4em;
+	padding: 0.3em 0.4em;
 	border: 1px solid var(--pce-widget-border);
 	background: var(--pce-widget-bg);
 	border-radius: 0.3em;
 	overflow-y: auto;
 	white-space: pre-wrap;
+	word-break: break-word;
+	pointer-events: auto;
 }
 
-.token-hover {
+.token[data-hover] {
 	border-radius: 0.15em;
 	background: color(from currentColor srgb r g b / 0.15);
 	text-decoration: underline;

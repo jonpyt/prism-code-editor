@@ -95,7 +95,7 @@ import { getTokenOffset } from "../utils"
 let current: HTMLElement | undefined
 
 const clearHover = () => {
-	current?.classList.remove("token-hover")
+	delete current?.dataset.hover
 	current = undefined
 }
 
@@ -105,7 +105,7 @@ const handler = (e: PointerEvent, target: HTMLElement) => {
 	clearHover()
 
 	if (target.matches(".token") && (e.pointerType != "mouse" || !e.buttons)) {
-		target.classList.add("token-hover")
+		target.dataset.hover = ""
 		current = target
 	}
 }
@@ -163,7 +163,12 @@ const App: Component = () => {
 			(types, _language, _text, token, editor) => {
 				return [`.token.${types.join(".")} (${getTokenOffset(editor, token)})`]
 			},
-			{ allowChildren: true },
+			{
+				allowChildren: true,
+				above: true,
+				delay: 500,
+				warmDuration: 500,
+			},
 		),
 		editor => {
 			createEffect(() => {

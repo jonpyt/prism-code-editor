@@ -67,7 +67,7 @@ import { addPointerListener, editorHoverDescriptions } from "../extensions/hover
 let current: HTMLElement | undefined
 
 const clearHover = () => {
-	current?.classList.remove("token-hover")
+	delete current?.dataset.hover
 	current = undefined
 }
 
@@ -98,6 +98,9 @@ const runBtn = <HTMLButtonElement>document.getElementById("run"),
 				},
 				{
 					allowChildren: true,
+					above: true,
+					delay: 500,
+					warmDuration: 500,
 				},
 			),
 			editor => {
@@ -107,7 +110,7 @@ const runBtn = <HTMLButtonElement>document.getElementById("run"),
 					clearHover()
 
 					if (target.matches(".token") && (e.pointerType != "mouse" || !e.buttons)) {
-						target.classList.add("token-hover")
+						target.dataset.hover = ""
 						current = target
 					}
 				})
