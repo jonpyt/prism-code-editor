@@ -115,7 +115,7 @@ const runBtn = <HTMLButtonElement>document.getElementById("run"),
 					}
 				})
 
-				editor.textarea.addEventListener("pointerleave", clearHover)
+				editor.textarea.addEventListener("mouseleave", clearHover)
 				editor.on("selectionChange", clearHover)
 			},
 			autoComplete({

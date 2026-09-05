@@ -1,0 +1,128 @@
+---
+title: Pointer events
+description: Learn how to handle pointer events for an editor.
+---
+
+import MountEditors from "../../../components/languages/ts+css.astro"
+import HoverDemo from "../../../components/HoverDemo/index.astro"
+import "../../../css/editor-theme.css"
+import { Aside } from "@astrojs/starlight/components"
+
+<MountEditors />
+<HoverDemo />
+
+All the syntax highlighted code in an editor has `pointer-events: none{:css}`. Therefore all pointer events are being handled by the editor's underlying `<textarea>{:html}` element. This makes it difficult to add any hover or click functionality to the editor's tokens. This guide will showcase some utilities that make this easier.
+
+## Adding pointer listeners
+
+When adding pointer event handlers to the textarea itself, the event target will be the textarea. To obtain the token element or line the pointer is currently on, use the [`addPointerListener(){:js}`](/api-reference/hover/f-addpointerlistener/) function. It supports `pointermove`, `pointerdown`, `pointerup`, `mousemove`, `mousedown`, `mouseup`, and `click` events and returns a cleanup function that removes the listener.
+
+```js editor
+import { addPointerListener } from "prism-code-editor/hover"
+
+const cleanUp = addPointerListener(
+	editor,
+	"click",
+	(event, target) => console.log(target)
+)
+```
+
+## Example
+
+The example below uses `addPointerListener(){:js}` to add a `data-hover` attribute to the token the pointer is on.
+
+```ts editor
+import { addPointerListener, editorHoverDescriptions } from "prism-code-editor/hover"
+
+let current: HTMLElement | undefined
+
+const clearHover = () => {
+	delete current?.dataset.hover
+	current = undefined
+}
+
+const handler = (e: PointerEvent, target: HTMLElement) => {
+	if (target == current) return
+
+	clearHover()
+
+	// Don't hover lines or when dragging to select text
+	if (target.matches(".token") && (e.pointerType != "mouse" || !e.buttons)) {
+		target.dataset.hover = ""
+		current = target
+	}
+}
+
+addPointerListener(editor, "pointermove", handler)
+addPointerListener(editor, "pointerdown", handler)
+editor.textarea.addEventListener("mouseleave", clearHover)
+editor.on("selectionChange", clearHover)
+```
+
+Below, the [`editorHoverDescriptions(){:js}`](/api-reference/hover/f-editorhoverdescriptions/) extension has been used to display a tooltip with a CSS selector for the token along with its position in the editor computed by [`getTokenOffset(){:js}`](/api-reference/utils/f-gettokenoffset/).
+
+```ts editor
+import { editorHoverDescriptions } from "prism-code-editor/hover"
+import { getTokenOffset } from "prism-code-editor/utils"
+
+editor.addExtensions(
+	editorHoverDescriptions(
+		(types, _language, _text, token) => {
+			return [`.token.${types.join('.')} (${getTokenOffset(editor, token)})`]
+		},
+		{
+			allowChildren: true,
+			above: true,
+			delay: 500,
+			warmDuration: 500
+		}
+	)
+)
+```
+
+The following styles are added to the tooltip and hovered tokens:
+
+```css editor
+.pce-hover-tooltip {
+	position: sticky;
+	left: 0.5em;
+	right: 0.5em;
+	padding: 0.3em 0.4em;
+	border: 1px solid var(--pce-widget-border);
+	background: var(--pce-widget-bg);
+	border-radius: 0.3em;
+	overflow-y: auto;
+	white-space: pre-wrap;
+	word-break: break-word;
+	pointer-events: auto;
+	user-select: text;
+}
+
+.token[data-hover] {
+	border-radius: 0.15em;
+	background: color(from currentColor srgb r g b / 0.15);
+	text-decoration: underline;
+}
+```
+
+The hover and tooltip functionality from this example are added to all editors on this page in case you want to try it.
+
+## Performance
+
+Computing the token at the pointer's location is done with [`document.elementsFromPoint(){:js}`](https://developer.mozilla.org/en-US/docs/Web/API/Document/elementsFromPoint), which requires changing the `pointer-events` property of the line the pointer is on. This can be expensive for lines with lots of elements. If this causes any issues, a filter function that receives the line, line number, and event can be passed to both `addPointerListener(){:js}` and `editorHoverDescriptions(){:js}`. If this filter returns `false`, then computing the target and running the listener is skipped.
+
+```ts editor
+// Example filter
+const filter = (line: HTMLDivElement, lineNumber: number, e: PointerEvent) => {
+	// Exclude the second line
+	if (lineNumber == 2) return false
+	// Exclude lines with lots of tokens
+	if (line.getElementsByTagName("span").length > 100) return false
+
+	return true
+}
+
+// Passing the filter
+editorHoverDescriptions(callback, { filter })
+addPointerListener(editor, "pointermove", listener, filter)
+```
