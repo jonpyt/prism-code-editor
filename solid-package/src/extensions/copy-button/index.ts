@@ -8,7 +8,7 @@ import { setSelection } from "../../utils"
  * block. The `firstChild` of the element returned is the button itself.
  */
 const createCopyButton = /* @__PURE__ */ template(
-	'<div style=display:flex;align-items:flex-start;justify-content:flex-end><button type=button dir=ltr style=display:none class=pce-copy aria-label=Copy><svg width=1.2em aria-hidden=true viewBox="0 0 16 16" overflow=visible stroke-linecap=round fill=none stroke=currentColor><rect x=4 y=4 width=11 height=11 rx=1 /><path d="m12 2a1 1 0 00-1-1H2A1 1 0 001 2v9a1 1 0 001 1">',
+	'<div style=display:flex;align-items:flex-start;justify-content:flex-end><button type=button dir=ltr style=display:none class=pce-copy><svg width=1.2em aria-hidden=true viewBox="0 0 16 16" overflow=visible stroke-linecap=round fill=none stroke=currentColor><rect x=4 y=4 width=11 height=11 rx=1 /><path d="m12 2a1 1 0 00-1-1H2A1 1 0 001 2v9a1 1 0 001 1">',
 )
 
 /**
@@ -23,23 +23,32 @@ const createCopyButton = /* @__PURE__ */ template(
  *   opacity: 1; // or a lower value for a semi-transparent button
  * }
  * ```
+ *
+ * @param label `aria-label` for the button. Defaults to `"Copy"`.
+ * @param copiedLabel Temporary `aria-label` for the button after it has been clicked.
+ * Defaults to `"Copied!"`.
  */
-const copyButton = (): Extension => editor => {
-	const container = createCopyButton()
-	const btn = container.firstChild as HTMLButtonElement
+const copyButton = (label = "Copy", copiedLabel = "Copied!"): Extension => {
+	return editor => {
+		const container = createCopyButton()
+		const btn = container.firstChild as HTMLButtonElement
+		const setLabel = (label: string) => btn.setAttribute("aria-label", label)
 
-	btn.addEventListener("click", () => {
-		btn.setAttribute("aria-label", "Copied!")
-		if (!navigator.clipboard?.writeText(editor.extensions.folding?.fullCode ?? editor.value)) {
-			editor.textarea.select()
-			doc!.execCommand("copy")
-			setSelection(editor, 0)
-		}
-	})
+		btn.addEventListener("click", () => {
+			setLabel(copiedLabel)
+			if (!navigator.clipboard?.writeText(editor.extensions.folding?.fullCode ?? editor.value)) {
+				editor.textarea.select()
+				doc!.execCommand("copy")
+				setSelection(editor, 0)
+			}
+		})
 
-	btn.addEventListener("pointerenter", () => btn.setAttribute("aria-label", "Copy"))
+		btn.addEventListener("pointerenter", () => setLabel(label))
 
-	return container
+		setLabel(label)
+
+		return container
+	}
 }
 
 export { createCopyButton, copyButton }

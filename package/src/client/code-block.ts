@@ -95,16 +95,22 @@ const omitLines = (selector: string) => (codeBlock: PrismCodeBlock) => {
  * @param codeBlock Code block to add the copy button to.
  * @param getCode Function used to get the copied code. Can be used to e.g. omit deleted
  * lines.
+ * @param label `aria-label` for the button. Defaults to `"Copy"`.
+ * @param copiedLabel Temporary `aria-label` for the button after it has been clicked.
+ * Defaults to `"Copied!"`.
  */
 const addCopyButton = (
 	codeBlock: PrismCodeBlock,
 	getCode?: (codeBlock: PrismCodeBlock) => string,
+	label = "Copy",
+	copiedLabel = "Copied!",
 ) => {
 	const container = createCopyButton()
 	const btn = container.firstChild as HTMLButtonElement
+	const setLabel = (label: string) => btn.setAttribute("aria-label", label)
 
 	addListener(btn, "click", () => {
-		btn.setAttribute("aria-label", "Copied!")
+		setLabel(copiedLabel)
 		if (!navigator.clipboard?.writeText(getCode ? getCode(codeBlock) : codeBlock.code)) {
 			const selection = getSelection()!
 			const range = new Range()
@@ -117,7 +123,9 @@ const addCopyButton = (
 		}
 	})
 
-	addListener(btn, "pointerenter", () => btn.setAttribute("aria-label", "Copy"))
+	addListener(btn, "pointerenter", () => setLabel(label))
+
+	setLabel(label)
 
 	addOverlay(codeBlock, container)
 }

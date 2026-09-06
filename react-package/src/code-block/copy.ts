@@ -4,6 +4,15 @@ import { addListener, doc, useStableRef } from "../core"
 import { createCopyButton } from "../extensions/copy-button"
 import { addOverlay } from "../utils"
 
+export type CopyButtonProps = {
+	/** `aria-label` for the button. @default "Copy" */
+	label?: string
+	/**
+	 * Temporary `aria-label` for the button after it has been clicked.
+	 * @default "Copied!" */
+	copiedLabel?: string
+}
+
 /**
  * Copy button component for code blocks. Requires styles from
  * `prism-react-editor/copy-button.css`.
@@ -17,34 +26,37 @@ import { addOverlay } from "../utils"
  * }
  * ```
  */
-const CopyButton = (): undefined => {
-  const [codeBlock, props] = usePrismCodeBlock()
-  const code = useStableRef<string[]>([])
-  code[0] = props.code
+const CopyButton = ({ label = "Copy", copiedLabel = "Copied!" }: CopyButtonProps): undefined => {
+	const [codeBlock, props] = usePrismCodeBlock()
+	const code = useStableRef<string[]>([])
+	code[0] = props.code
 
-  useEffect(() => {
-    const container = createCopyButton()
-    const btn = container.firstChild as HTMLButtonElement
-  
-    addListener(btn, "click", () => {
-      btn.setAttribute("aria-label", "Copied!")
-      if (!navigator.clipboard?.writeText(code[0])) {
-        const selection = getSelection()!
-        const range = new Range()
-        selection.removeAllRanges()
-        selection.addRange(range)
-        range.setStartAfter(codeBlock.lines![0])
-        range.setEndAfter(codeBlock.wrapper!)
-        doc!.execCommand("copy")
-        range.collapse()
-      }
-    })
-  
-    addListener(btn, "pointerenter", () => btn.setAttribute("aria-label", "Copy"))
+	useEffect(() => {
+		const container = createCopyButton()
+		const btn = container.firstChild as HTMLButtonElement
+		const setLabel = (label: string) => btn.setAttribute("aria-label", label)
 
-    addOverlay(codeBlock, container)
-    return () => container.remove()
-  }, [])
+		addListener(btn, "click", () => {
+			setLabel(copiedLabel)
+			if (!navigator.clipboard?.writeText(code[0])) {
+				const selection = getSelection()!
+				const range = new Range()
+				selection.removeAllRanges()
+				selection.addRange(range)
+				range.setStartAfter(codeBlock.lines![0])
+				range.setEndAfter(codeBlock.wrapper!)
+				doc!.execCommand("copy")
+				range.collapse()
+			}
+		})
+
+		addListener(btn, "pointerenter", () => setLabel(label))
+
+		setLabel(label)
+
+		addOverlay(codeBlock, container)
+		return () => container.remove()
+	}, [label, copiedLabel])
 }
 
 export { CopyButton }

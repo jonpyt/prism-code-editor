@@ -18,9 +18,10 @@ import { createCopyButton } from "../extensions/copy-button"
 const addCopyButton: CodeBlockOverlay = (codeBlock, props) => {
 	const container = createCopyButton()
 	const btn = container.firstChild as HTMLButtonElement
+	const setLabel = (label: string) => btn.setAttribute("aria-label", label)
 
 	addListener(btn, "click", () => {
-		btn.setAttribute("aria-label", "Copied!")
+		setLabel("Copied!")
 		if (!navigator.clipboard?.writeText(props.code)) {
 			const selection = getSelection()!
 			const range = new Range()
@@ -33,7 +34,9 @@ const addCopyButton: CodeBlockOverlay = (codeBlock, props) => {
 		}
 	})
 
-	addListener(btn, "pointerenter", () => btn.setAttribute("aria-label", "Copy"))
+	addListener(btn, "pointerenter", () => setLabel("Copy"))
+
+	setLabel("Copy")
 
 	return container
 }
