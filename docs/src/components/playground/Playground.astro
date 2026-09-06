@@ -19,6 +19,9 @@ const example = await readFile("./public/examples/xml.txt", { encoding: "utf-8" 
 			<label>
 				<input type="checkbox" /> Read-only
 			</label>
+			<label>
+				<input type="checkbox" checked /> Show hovered token
+			</label>
 		</div>
 		<div>
 			<label class="select-label">
@@ -139,6 +142,11 @@ const example = await readFile("./public/examples/xml.txt", { encoding: "utf-8" 
 
 	import("../editor/extensions")
 	import("../editor/autocomplete")
+	import("../HoverDemo").then(module => {
+		;(inputs[3].onchange = () => {
+			module.setEnableHover(inputs[3].checked)
+		})()
+	})
 </script>
 
 <style is:global>
@@ -159,7 +167,7 @@ const example = await readFile("./public/examples/xml.txt", { encoding: "utf-8" 
 
 	.playground > div > div {
 		display: grid;
-		align-content: space-around;
+		align-content: space-evenly;
 	}
 
 	.select-label {

@@ -4,6 +4,11 @@ import { addPointerListener, editorHoverDescriptions } from "prism-code-editor/h
 import "./hover.css"
 
 let current: HTMLElement | undefined
+let enableHover = true
+
+const setEnableHover = (value: boolean) => (enableHover = value)
+
+const filter = () => enableHover
 
 const clearHover = () => {
 	delete current?.dataset.hover
@@ -32,13 +37,16 @@ editors.forEach(editor => {
 				above: true,
 				delay: 500,
 				warmDuration: 500,
+				filter,
 			},
 		),
 	)
 
-	addPointerListener(editor, "pointermove", handler)
-	addPointerListener(editor, "pointerdown", handler)
+	addPointerListener(editor, "pointermove", handler, filter)
+	addPointerListener(editor, "pointerdown", handler, filter)
 
 	editor.textarea.addEventListener("mouseleave", clearHover)
 	editor.on("selectionChange", clearHover)
 })
+
+export { setEnableHover }
