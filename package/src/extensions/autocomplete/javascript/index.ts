@@ -63,14 +63,15 @@ const jsContext = (context: CompletionContext, editor: PrismEditor): JSContext =
 
 	if (enabled) {
 		if (context.language.slice(1) == "sx") {
-			tagMatch = tagPattern.exec(before)
-			if (tagMatch?.[0][1] == "<") {
-				tagMatch[0] = tagMatch[0].slice(1)
-				tagMatch.index++
+			if ((tagMatch = tagPattern.exec(before))) {
+				if (tagMatch[0][1] == "<") {
+					tagMatch[0] = tagMatch[0].slice(1)
+					tagMatch.index++
+				}
+				if (getClosestToken(editor, ".string,.comment,.regex", 0, 0, tagMatch.index + 1)) {
+					tagMatch = null
+				}
 			}
-		}
-		if (tagMatch && getClosestToken(editor, ".string,.comment,.regex", 0, 0, tagMatch.index + 1)) {
-			tagMatch = null
 		}
 		if (!tagMatch) {
 			enabled =
@@ -78,22 +79,21 @@ const jsContext = (context: CompletionContext, editor: PrismEditor): JSContext =
 				!/\b(?:const|let|var|class|enum|function|interface|type)\s+(?:(?!\s)[$\w\xa0-\uffff])*$/.test(
 					context.lineBefore,
 				)
-		}
-	}
-
-	if (enabled && matcher && !tagMatch) {
-		let { brackets, pairs } = matcher
-		let i = 0
-		let bracket: Bracket
-		for (; (bracket = brackets[i]); i++) {
-			if (
-				bracket[5] &&
-				bracket[1] < pos &&
-				brackets[pairs[i]!]?.[2] > pos &&
-				/\b(?:const|let|var)\s*$/.test(before.slice(0, bracket[1]))
-			) {
-				enabled = false
-				i = 9e9
+			if (enabled && matcher) {
+				let { brackets, pairs } = matcher
+				let i = 0
+				let bracket: Bracket
+				for (; (bracket = brackets[i]); i++) {
+					if (
+						bracket[5] &&
+						bracket[1] < pos &&
+						brackets[pairs[i]!]?.[2] > pos &&
+						/\b(?:const|let|var)\s*$/.test(before.slice(0, bracket[1]))
+					) {
+						enabled = false
+						i = 9e9
+					}
+				}
 			}
 		}
 	}

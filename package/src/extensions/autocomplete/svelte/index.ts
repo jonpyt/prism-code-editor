@@ -164,7 +164,7 @@ const svelteCompletion =
 								createCompletion(val, "unit"),
 							)
 						} else {
-							options = enumerateAttrs(tagAttrs, [])
+							options = enumerateAttrs(tagAttrs)
 							if (globals) enumerateAttrs(globals, options)
 							if (bindAttrs[tagName]) addBinds(bindAttrs[tagName], options)
 							if (globals || (i == 2 && "onclick" in tagAttrs)) addBinds(globalBinds, options)

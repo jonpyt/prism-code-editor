@@ -1,11 +1,11 @@
 /** @module autocomplete/emmet */
 
 import { Config, extract, ExtractOptions, markup, resolveConfig, UserConfig } from "emmet"
-import { Completion, CompletionSource, TagConfig } from "../types"
-import { getTagMatch } from "../markup"
-import { JSContext } from "../javascript"
-import { renderSnippet } from "../utils"
-import { getClosestToken } from "../../../utils"
+import { Completion, CompletionSource, TagConfig } from "../types.js"
+import { getTagMatch } from "../markup/index.js"
+import { JSContext } from "../javascript/index.js"
+import { renderSnippet } from "../utils.js"
+import { getClosestToken } from "../../../utils/index.js"
 
 const replaceStopsWithCursors = (expanded: string, tabStops: number[]) => {
 	let result = ""

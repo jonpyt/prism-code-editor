@@ -120,10 +120,7 @@ const Editor = memo(
 				while (i < end1) newHTML += `<div class=pce-line aria-hidden=true>${newLines[++i]}\n</div>`
 				for (i = end1 < start ? end1 : start - 1; i < end2; i++) lines[start + 1].remove()
 				if (newHTML) lines[insertStart + 1].insertAdjacentHTML("afterend", newHTML)
-				container.style.setProperty(
-					"--number-width",
-					Math.ceil(Math.log10(lineCount + 1)) + ".001ch",
-				)
+				container.style.setProperty("--number-width", (0 | Math.log10(lineCount)) + 1 + ".001ch")
 			}
 
 			dispatchEvent("update", value)
