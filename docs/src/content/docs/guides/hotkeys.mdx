@@ -17,7 +17,7 @@ The `prism-code-editor/commands` entrypoint exports many editing commands. These
 
 ## Adding hotkeys
 
-To bind a command to a specific key, use [`addEditorHotkey(){:js}`](/api-reference/commands/f-addeditorhotkey). This will add the command at the end of a list of callbacks for the specified key, or at the beginning if the 4th `highPrecedence` parameter is set to `true`. When the command is executed, it gets passed the editor and `KeyboardEvent{:js}` as arguments.
+To bind a command to a specific key, use [`addEditorHotkey(){:js}`](/api-reference/commands/f-addeditorhotkey). When the command is executed, it gets passed the editor and `KeyboardEvent{:js}` as arguments.
 
 ```js editor
 import { addEditorHotkey, toggleComment } from "prism-code-editor/commads"
@@ -25,7 +25,7 @@ import { addEditorHotkey, toggleComment } from "prism-code-editor/commads"
 addEditorHotkey(editor, "mod+/", () => toggleComment(editor))
 ```
 
-When multiple commands are registered for one key, they are ran in order until one returns `true`, in which case the event is considered "handled" and [`stopImmediatePropagation(){:js}`](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation) along with [`preventDefault(){:js}`](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault).
+When multiple commands are registered for one key, they are ran in order until one returns `true`, in which case the event is considered "handled" and [`stopImmediatePropagation(){:js}`](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation) along with [`preventDefault(){:js}`](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault) are called.
 
 ### Debugging
 
@@ -59,7 +59,7 @@ editorCommands({
 
 ## Hotkey syntax
 
-Keys are strings that can appear in [`KeyboardEvent.key{:js}`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key), preceded by any number of modifiers, all separated by `+`, such as `ctrl+shift+enter`. Hotkeys are case-insensitive.
+Hotkeys are strings that can appear in [`KeyboardEvent.key{:js}`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key), preceded by any number of modifiers, all separated by `+`, such as `ctrl+shift+enter`. Hotkeys are case-insensitive.
 
 ### Normalization
 
@@ -82,7 +82,7 @@ normalizeKey("shift+alt+12+a") // "13+a"
 
 ## Controlling execution order
 
-The 4th [`precedence` parameter](http://localhost:4321/api-reference/commands/f-addeditorhotkey/#precedence) can be used to control the execution order when multiple hotkeys are registered to the same key. The precedence is a positive integer that defaults to `2`, where lower numbers yield higher precedence. A precedence of `1` should be used when conditionally overriding existing commands. Precedence `0`, (the highest) should be used with caution since it can override [sequential commands](#sequential-hotkeys) if the key is included in a sequence. When commands have the same precedence, they execute in the order they were added.
+The 4th [`precedence` parameter](/api-reference/commands/f-addeditorhotkey/#precedence) can be used to control the execution order when multiple hotkeys are registered to the same key. The precedence is a positive integer that defaults to `2`, where lower numbers yield higher precedence. A precedence of `1` should be used when conditionally overriding existing commands. Precedence `0`, (the highest) should be used with caution since it can override [sequential commands](#sequential-hotkeys) if the key is included in a sequence. When commands have the same precedence, they execute in the order they were added.
 
 ## Listening for any key
 

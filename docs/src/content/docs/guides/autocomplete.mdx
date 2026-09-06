@@ -312,7 +312,7 @@ The completion source can be tried in the `markup`, `tsx`, `vue`, and `svelte` c
 
 ## Bundle size
 
-The `autoComplete(){:js}` extension itself is rather small at ~3kB gzipped, but some of the completion data is a bit larger. This includes the tag data for HTML, SVG, and React JSX completion, the CSS data, and especially the `emmet` package for Emmet completion. It's therefore recommended to utilize code splitting by importing everything autocompletion related in a separate module that gets dynamically imported with `import("./autocomplete"){:js}` for example when a user interacts with an editor. This will keep all the autocompletion data away from your main bundle.
+The `autoComplete(){:js}` extension itself is rather small at ~3kB gzipped, but some of the completion data is a bit larger. This includes the tag data for HTML, SVG, and React JSX completion, the CSS data, and especially the `emmet` package for Emmet completion. To keep this autocompletion data out of your main bundle you could enable code splitting by importing everything autocompletion related in a separate module that gets dynamically imported with `import("./autocomplete"){:js}`, for example when a user first interacts with an editor.
 
 ## Creating your own definitions
 
