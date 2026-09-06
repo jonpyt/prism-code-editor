@@ -116,7 +116,11 @@ const shouldComplete = ({ path, explicit }: CompletionContext & { path: string[]
 const getFrom = ({ path, pos }: CompletionContext & { path: string[] | null }) =>
 	pos - path![path!.length - 1].length
 
-const enumerateOwnProperties = (obj: any, commitChars?: string): [Completion[], Set<string>] => {
+const enumerateOwnProperties = (
+	obj: any,
+	commitChars?: string,
+	functionCommitChars = commitChars,
+): [Completion[], Set<string>] => {
 	let options: Completion[] = []
 	let seen = new Set<string>()
 	let boost = 0
@@ -133,14 +137,14 @@ const enumerateOwnProperties = (obj: any, commitChars?: string): [Completion[], 
 				options.push({
 					label: name,
 					boost,
-					commitChars,
+					commitChars: isFunc ? functionCommitChars : commitChars,
 					icon: isFunc
 						? /[A-Z]/.test(name[0])
 							? "class"
 							: "function"
-						: /^[A-Z_]+$/.test(name)
-						? "constant"
-						: "variable",
+						: /[^A-Z_]/.test(name)
+						? "variable"
+						: "constant",
 				})
 			}
 		})
@@ -152,15 +156,20 @@ const enumerateOwnProperties = (obj: any, commitChars?: string): [Completion[], 
 /**
  * Returns a completion source that adds completions for a scope object.
  * @param scope Scope object you want to provide completions for. For example `window`.
- * @param commitChars If a character in this string is typed and one of these options
- * is selected, the option is inserted right before typing that character.
+ * @param commitChars Commit characters for variables in the scope. If a character in this
+ * string is typed and one of these options is selected, the option  is inserted right
+ * before typing that character.
+ * @param functionCommitChars Commit characters for functions in the scope.
+ * If a character in this string is typed and one of these options is selected, the option
+ * is inserted right before typing that character. Defaults to `commitChars`.
  */
 const completeScope = (
 	scope: any,
 	commitChars?: string,
+	functionCommitChars?: string,
 ): CompletionSource<{ path: string[] | null }> => {
 	const cache = new WeakMap<any, [Completion[], Set<string>]>()
-	const scopeSource = _completeScope(cache, scope, commitChars)
+	const scopeSource = _completeScope(cache, scope, commitChars, functionCommitChars)
 	return context => {
 		const result = scopeSource(context)
 		if (result)
@@ -175,6 +184,7 @@ const _completeScope = (
 	cache: WeakMap<any, [Completion[], Set<string>]>,
 	scope: any,
 	commitChars?: string,
+	functionCommitChars?: string,
 ) => {
 	return (context: CompletionContext & { path: string[] | null }) => {
 		if (shouldComplete(context)) {
@@ -192,7 +202,9 @@ const _completeScope = (
 			}
 			target = Object(target)
 
-			if (!cache.has(target)) cache.set(target, enumerateOwnProperties(target, commitChars))
+			if (!cache.has(target)) {
+				cache.set(target, enumerateOwnProperties(target, commitChars, functionCommitChars))
+			}
 
 			return cache.get(target)!
 		}
@@ -253,10 +265,21 @@ const completeIdentifiers = (identifiers?: Iterable<string>): CompletionSource<J
  * @param scope Scope object you want to provide completions for. For example `window`.
  * @param identifiers List of identifiers that should be completed even if they're not
  * found in the document.
+ * @param commitChars Commit characters for the scope completion. If one of the characters
+ * in the provided string is typed and a scope option is selected, then it's inserted
+ * right before the character is typed.
+ * @param functionCommitChars Commit characters for functions in the scope completion. If
+ * one of the characters in the provided string is typed and a scope option is selected,
+ * then it's inserted right before the character is typed. Defaults to `commitChars`.
  */
-const jsCompletion = (scope: any, identifiers?: Iterable<string>): CompletionSource<JSContext> => {
+const jsCompletion = (
+	scope: any,
+	identifiers?: Iterable<string>,
+	commitChars?: string,
+	functionCommitChars?: string,
+): CompletionSource<JSContext> => {
 	const cache = new WeakMap<any, [Completion[], Set<string>]>()
-	const scopeSource = _completeScope(cache, scope)
+	const scopeSource = _completeScope(cache, scope, commitChars, functionCommitChars)
 
 	return (context, editor) => {
 		if (shouldComplete(context)) {
