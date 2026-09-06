@@ -82,22 +82,23 @@ const MyEditor = () => (
 
 ## Props
 
-| Name                | Type                                                                      | Description                                                                                                                                     |
-| ------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `language`          | `string`                                                                  | Language used for syntax highlighting. Defaults to `text`.                                                                                      |
-| `tabSize`           | `number`                                                                  | Tab size used for indentation. Defaults to `2`.                                                                                                 |
-| `insertSpaces`      | `boolean`                                                                 | Whether the editor should insert spaces for indentation. Defaults to `true`. Requires the `defaultCommands()` extension to work.                |
-| `lineNumbers`       | `boolean`                                                                 | Whether line numbers should be shown. Defaults to `true`.                                                                                       |
-| `readOnly`          | `boolean`                                                                 | Whether the editor should be read only. Defaults to `false`.                                                                                    |
-| `wordWrap`          | `boolean`                                                                 | Whether the editor should have word wrap. Defaults to `false`.                                                                                  |
-| `value`             | `string`                                                                  | Initial value to display in the editor.                                                                                                         |
-| `rtl`               | `boolean`                                                                 | Whether the editor uses right to left directionality. Defaults to `false`. Requires extra CSS from `solid-prism-editor/rtl-layout.css` to work. |
-| `style`             | `Omit<JSX.CSSProperties, "tab-size">`                                     | Inline styles for the container element                                                                                                         |
-| `class`             | `string`                                                                  | Additional classes for the container element.                                                                                                   |
-| `onMount`           | `(editor: PrismEditor) => void`                                           | Callback used to access the underlying editor.                                                                                                  |
-| `onUpdate`          | `(value: string, editor: PrismEditor) => void`                            | Function called after the editor updates.                                                                                                       |
-| `onSelectionChange` | `(selection: InputSelection, value: string, editor: PrismEditor) => void` | Function called when the editor's selection changes.                                                                                            |
-| `extensions`        | `Extension[]`                                                             | List of extensions added to the editor. More on extensions later.                                                                               |
+| Name                | Type                                                                                  | Description                                                                                                                                     |
+| ------------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `language`          | `string`                                                                              | Language used for syntax highlighting. Defaults to `text`.                                                                                      |
+| `tabSize`           | `number`                                                                              | Tab size used for indentation. Defaults to `2`.                                                                                                 |
+| `insertSpaces`      | `boolean`                                                                             | Whether the editor should insert spaces for indentation. Defaults to `true`.                                                                    |
+| `lineNumbers`       | `boolean`                                                                             | Whether line numbers should be shown. Defaults to `true`.                                                                                       |
+| `readOnly`          | `boolean`                                                                             | Whether the editor should be read only. Defaults to `false`.                                                                                    |
+| `wordWrap`          | `boolean`                                                                             | Whether the editor should have word wrap. Defaults to `false`.                                                                                  |
+| `value`             | `string`                                                                              | Initial value to display in the editor.                                                                                                         |
+| `rtl`               | `boolean`                                                                             | Whether the editor uses right to left directionality. Defaults to `false`. Requires extra CSS from `solid-prism-editor/rtl-layout.css` to work. |
+| `style`             | `Omit<JSX.CSSProperties, "tab-size">`                                                 | Inline styles for the container element                                                                                                         |
+| `class`             | `string`                                                                              | Additional classes for the container element.                                                                                                   |
+| `onMount`           | `(editor: PrismEditor) => void`                                                       | Callback used to access the underlying editor.                                                                                                  |
+| `onUpdate`          | `(value: string, editor: PrismEditor) => void`                                        | Function called after the editor updates.                                                                                                       |
+| `onSelectionChange` | `(selection: InputSelection, value: string, editor: PrismEditor) => void`             | Function called when the editor's selection changes.                                                                                            |
+| `onTokenize`        | `(tokens: TokenStream, language: string, value: string, editor: PrismEditor) => void` | Function called before the tokens are stringified to HTML.                                                                                      |
+| `extensions`        | `Extension[]`                                                                         | List of extensions added to the editor. More on extensions later.                                                                               |
 
 ## Extensions
 
@@ -269,7 +270,7 @@ The editor object you can access with the `onMount` prop or by creating an exten
 ### Signals
 
 - `focused(): boolean`: Reactive accessor for whether the `textarea` is focused. Effects depending on this signal will run during `focus` or `blur` events on the `textarea`.
-- `tokens(): TokenStream`: Reactive accessor for the current tokens. [Computations](https://docs.solidjs.com/reference/secondary-primitives/create-computed) depending on this signal will run right before the tokens are converted to an HTML string.
+- `tokens(): TokenStream`: Reactive accessor for the current tokens. [Render effects](https://docs.solidjs.com/reference/secondary-primitives/create-render-effect) depending on this signal will run right before the tokens are converted to an HTML string. Normal effects run after.
 - `selection(): InputSelection`: Reactive accessor for the current selection. Effects depending on this signal will run after the syntax highlighting is finished or when the selection changes.
 
 ### Extensions property
