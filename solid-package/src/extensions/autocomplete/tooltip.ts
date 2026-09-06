@@ -440,6 +440,7 @@ const autoComplete =
 								preventDefault(e)
 							} else if (key == "Tab" || key == "Enter") {
 								insertOption(activeIndex)
+								hide()
 								preventDefault(e)
 							} else if (key == "Escape") {
 								hide()
@@ -576,6 +577,7 @@ const autoComplete =
 				insertOption(
 					[].indexOf.call(rows, (e.target as HTMLElement).closest("li") as never) + offset,
 				)
+				hide()
 			}
 			preventDefault(e)
 		})

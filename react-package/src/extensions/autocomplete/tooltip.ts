@@ -440,6 +440,7 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 							preventDefault(e)
 						} else if (/Tab|Enter/.test(key)) {
 							insertOption(activeIndex)
+							hide()
 							preventDefault(e)
 						} else if (key == "Escape") {
 							hide()
@@ -554,6 +555,7 @@ const useAutoComplete = (editor: PrismEditor, config: AutoCompleteConfig) => {
 					insertOption(
 						[].indexOf.call(rows, (e.target as HTMLElement).closest("li") as never) + offset,
 					)
+					hide()
 				}
 				preventDefault(e)
 			}),
