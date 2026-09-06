@@ -1,36 +1,25 @@
 ---
-import Editor from "../components/editor/index.astro"
+import "prism-code-editor/layout.css"
+import "prism-code-editor/scrollbar.css"
+import "prism-code-editor/guides.css"
 import Button from "../components/Button.astro"
 ---
 
-<form>
-	<Editor language="javascript" value={`const initial = "foo"
-const form = document.getElementById("form")
-const editor = createEditor(
-	"#editor",
-	{
-		language: "javascript",
-		value: initial
-	}
-)
-
-editor.textarea.name = "editor"
-editor.textarea.defaultValue = initial
-
-form.addEventListener("reset", () => {
-	editor.setOptions({ value: initial })
-})`} />
-	<Button type="reset">Reset editor</Button>
-</form>
+<Button type="reset">Reset editor</Button>
 
 <script>
-	import { editors } from "./editor/mount"
+	import "prism-code-editor/prism/languages/javascript"
+	import { editors, mount } from "./editor/mount"
+
+	mount()
 
 	const form = document.forms[0]
 	const editor = editors[0]
-	const initial = editor.textarea.defaultValue = editor.options.value
+	const initial = (editor.textarea.defaultValue = editor.options.value)
 
 	form.onreset = () => {
 		editor.setOptions({ value: initial })
 	}
+
+	import("./editor/extensions")
 </script>

@@ -3,11 +3,8 @@ title: Usage in Forms
 description: Learn how to use Prism code editor in forms.
 ---
 
-import MountEditors from "../../../components/languages/js.astro"
 import FormExample from "../../../components/FormExample.astro"
 import "../../../css/editor-theme.css"
-
-<MountEditors />
 
 Since this library is using a textarea element under the hood, it's trivial to use the editor in forms. The [`PrismEditor{:js}`](/api-reference/index/i-prismeditor#textarea) object exposes the editor's textarea through its `textarea` property, so all you need to do is to add a `name` attribute to it. Ideally, you'd also add an `id` to it to bind a `<label>{:html}` element to the editor. [Working example](https://stackblitz.com/edit/vitejs-vite-pk9ud7?file=src%2Fmain.ts).
 
@@ -19,4 +16,27 @@ The setups won't work in forms at all since the shadow root doesn't expose the t
 
 If you want to add a reset button to your form, it won't work by default. One solution is to set the `defaultValue` property on the textarea and add a `reset` event listener that sets the editor's value to the initial value. Try it below:
 
+<form>
+
+```js editor
+const initial = "foo"
+const form = document.getElementById("form")
+const editor = createEditor(
+	"#editor",
+	{
+		language: "javascript",
+		value: initial
+	}
+)
+
+editor.textarea.name = "editor"
+editor.textarea.defaultValue = initial
+
+form.addEventListener("reset", () => {
+	editor.setOptions({ value: initial })
+})
+```
 <FormExample />
+
+</form>
+

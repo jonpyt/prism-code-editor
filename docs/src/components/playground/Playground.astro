@@ -50,8 +50,9 @@ const example = await readFile("./public/examples/xml.txt", { encoding: "utf-8" 
 	import { loadTheme } from "prism-code-editor/themes"
 	import { languages } from "prism-code-editor/prism"
 	import "prism-code-editor/prism/languages/xml"
-	import { editors } from "../editor/mount"
+	import { editors, mount } from "../editor/mount"
 
+	mount()
 	const editor = editors[0]
 
 	const initSelect = (
