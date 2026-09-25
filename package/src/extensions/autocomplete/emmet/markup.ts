@@ -161,7 +161,7 @@ export const markupEmmetCompletion = (
 		if (
 			!abbreviation ||
 			// Filter abbrevations wrapped in () or {}, starting with a digit, $ or more than one dot
-			/^[\d$]|^\{[^}]*\}$|^\([^)]*\)$|^\.\.+$/.test(abbreviation) ||
+			/^[\d$]|^\{[^}]*\}$|^\w*\([^)]*\)$|^\.\.+$/.test(abbreviation) ||
 			// Filter object[expression] in JSX
 			(isJsx && /^\w*\[[^\]]*\]$/.test(abbreviation))
 		)
