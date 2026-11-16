@@ -1,7 +1,14 @@
 import type { useBracketMatcher } from "../extensions/match-brackets/index.js"
 import type { useTagMatcher } from "../extensions/match-tags.js"
 import type { useShowInvisibles } from "../extensions/search/invisibles.js"
-import type { CustomTokenizer, Grammar, GrammarTokens, TokenName, TokenStream } from "./index.js"
+import type {
+	CustomTokenizer,
+	Grammar,
+	GrammarTokens,
+	Token,
+	TokenName,
+	TokenStream,
+} from "./index.js"
 
 /**
  * Creates a deep clone of the given grammar definition.

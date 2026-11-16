@@ -8,7 +8,7 @@
   "exports": {
     ".": "./dist/index.js",
     "./prism": "./dist/prism/index.js",
-    "./prism/utils": "./dist/prism/utils/index.js",
+    "./prism/utils": "./dist/prism/utils.js",
     "./guides": "./dist/extensions/guides.js",
     "./copy-button": "./dist/extensions/copy-button/index.js",
     "./copy-button.css": "./dist/copy.css",
