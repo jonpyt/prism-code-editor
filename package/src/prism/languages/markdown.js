@@ -73,17 +73,10 @@ insertBefore(markdown, 'prolog', {
 			},
 		}
 	},
-	'code-snippet': {
-		// `code`
-		// ``code``
-		pattern: /(^|[^\\`])(`+)[^\n`](?:|.*?[^\n`])\2(?!`)/g,
-		lookbehind: true,
-		alias: 'code keyword'
-	},
 	'code': [
 		{
 			// Prefixed by 4 spaces or 1 tab and preceded by an empty line
-			pattern: /(^[ \t]*\n)(?:    |\t).+(?:\n(?:    |\t).+)*/mg,
+			pattern: /(^[ \t]*\n)(?:    |\t).+(?:\n(?:    |\t).+)*/m,
 			lookbehind: true,
 			alias: 'keyword'
 		},
@@ -91,7 +84,8 @@ insertBefore(markdown, 'prolog', {
 			// ```optional language
 			// code block
 			// ```
-			pattern: /^(```+)[^`][\s\S]*?^\1`*$/mg,
+			pattern: /^( ? ? ?)(```+)[^\n`]*\n[\s\S]*?^ ? ? ?\2`*(?=[ \t]*$)/mg,
+			lookbehind: true,
 			inside: {
 				'punctuation': /^`+|`+$/,
 				'code-language': /^.+/,
@@ -124,7 +118,7 @@ insertBefore(markdown, 'prolog', {
 
 			// title 2
 			// -------
-			pattern: /\S.*\n(?:==+|--+)(?=[ \t]*$)/mg,
+			pattern: /\S.*\n(?:==+|--+)(?=[ \t]*$)/m,
 			alias: 'important',
 			inside: {
 				punctuation: /=+$|-+$/
@@ -133,7 +127,7 @@ insertBefore(markdown, 'prolog', {
 		{
 			// # title 1
 			// ###### title 6
-			pattern: /(^\s*)#.+/mg,
+			pattern: /(^\s*)#.+/m,
 			lookbehind: true,
 			alias: 'important',
 			inside: {
@@ -155,16 +149,23 @@ insertBefore(markdown, 'prolog', {
 		// + item
 		// - item
 		// 1. item
-		pattern: /(^\s*)(?:[*+-]|\d+\.)(?=[ \t].)/mg,
+		pattern: /(^\s*)(?:[*+-]|\d+\.)(?=[ \t].)/m,
 		lookbehind: true,
 		alias: 'punctuation'
+	},
+	'code-snippet': {
+		// `code`
+		// ``code``
+		pattern: /(^|[^\\`])(`+)(?!`)(?:.|\n(?=.))*?[^`]\2(?!`)/,
+		lookbehind: true,
+		alias: 'code keyword'
 	},
 	'url-reference': {
 		// [id]: http://example.com "Optional title"
 		// [id]: http://example.com 'Optional title'
 		// [id]: http://example.com (Optional title)
 		// [id]: <http://example.com> "Optional title"
-		pattern: /!?\[[^\]]+\]:[ \t]+(?:\S+|<(?:\\.|[^\\>])+>)(?:[ \t]+(?:"(?:\\.|[^\\"])*"|'(?:\\.|[^\\'])*'|\((?:\\.|[^\\)])*\)))?/g,
+		pattern: /!?\[[^\]]+\]:[ \t]+(?:\S+|<(?:\\.|[^\\>])+>)(?:[ \t]+(?:"(?:\\.|[^\\"])*"|'(?:\\.|[^\\'])*'|\((?:\\.|[^\\)])*\)))?/,
 		inside: {
 			'variable': {
 				pattern: /^(!?\[)[^\]]+/,
