@@ -11,17 +11,17 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^7.2.1",
+    "@astrojs/markdown-remark": "^7.3.10",
     "@astrojs/starlight": "0.40.0",
     "astro": "6.4.8",
     "emmet": "^2.4.11",
     "prism-code-editor": "link:..\\package",
     "rehype-prism-code-editor": "link:..\\rehype-plugin",
     "remark-gfm": "^4.0.1",
-    "sharp": "^0.35.3",
+    "sharp": "^0.35.5",
     "starlight-llms-txt": "0.10.0",
-    "starlight-typedoc": "^0.21.3",
-    "typedoc": "^0.28.19",
+    "starlight-typedoc": "^0.21.5",
+    "typedoc": "^0.28.20",
     "typescript": "^5.9.3"
   },
   "pnpm": {

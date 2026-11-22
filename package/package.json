@@ -87,15 +87,15 @@
     "emmet": "^2.4.11",
     "esbuild": "^0.27.7",
     "magic-string": "^0.30.21",
-    "mocha": "^11.7.6",
+    "mocha": "^12.0.3",
     "prettier": "2.7.1",
     "refa": "0.9.1",
     "regexp-ast-analysis": "0.2.4",
     "regexpp": "^3.2.0",
     "scslre": "0.1.6",
     "typescript": "^5.9.3",
-    "unplugin-dts": "^1.0.3",
-    "vite": "^8.2.2",
+    "unplugin-dts": "^1.1.2",
+    "vite": "^8.3.8",
     "yargs": "^17.7.3"
   },
   "peerDependencies": {

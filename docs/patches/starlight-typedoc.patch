@@ -1,5 +1,5 @@
 diff --git a/libs/typedoc.ts b/libs/typedoc.ts
-index aac6cd1dae63e7b5bc1fda564ac36b4d75e52901..d4f0663747dd69ae007a908b12e8d7598f9abcab 100644
+index aac6cd1dae63e7b5bc1fda564ac36b4d75e52901..91fd0c172dc30a879a922b91370e824cbd1d827e 100644
 --- a/libs/typedoc.ts
 +++ b/libs/typedoc.ts
 @@ -161,6 +161,17 @@ function onRendererPageEnd(event: MarkdownPageEvent, outputDirectory: string, pa

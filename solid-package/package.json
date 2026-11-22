@@ -73,15 +73,15 @@
     "esbuild": "^0.27.7",
     "prism-code-editor": "link:..\\package",
     "solid-devtools": "^0.34.5",
-    "solid-js": "^1.9.14",
+    "solid-js": "^1.9.20",
     "typescript": "^5.9.3",
-    "unplugin-dts": "^1.0.3",
-    "vite": "^7.3.6",
-    "vite-plugin-solid": "^2.11.13"
+    "unplugin-dts": "^1.1.2",
+    "vite": "^7.3.8",
+    "vite-plugin-solid": "^2.11.17"
   },
   "peerDependencies": {
-    "solid-js": "^1.0.0",
-    "emmet": "^2.0.0"
+    "emmet": "^2.0.0",
+    "solid-js": "^1.0.0"
   },
   "peerDependenciesMeta": {
     "emmet": {
