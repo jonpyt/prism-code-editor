@@ -26,8 +26,8 @@ importers:
         specifier: ^17.0.35
         version: 17.0.35
       '@vscode/web-custom-data':
-        specifier: ^0.6.3
-        version: 0.6.3
+        specifier: ^0.6.4
+        version: 0.6.4
       chai:
         specifier: ^5.3.3
         version: 5.3.3
@@ -394,8 +394,8 @@ packages:
   '@volar/typescript@2.4.28':
     resolution: {integrity: sha512-Ja6yvWrbis2QtN4ClAKreeUZPVYMARDYZl9LMEv1iQ1QdepB6wn0jTRxA9MftYmYa4DQ4k/DaSZpFPUfxl8giw==}
 
-  '@vscode/web-custom-data@0.6.3':
-    resolution: {integrity: sha512-3pDUAPGVkra1KjR2L5m3b7BgzLTlWdep4ijsRoqeLcrp+e7cJcyjnae8IkAdF/xS6Zo3B1YZSmIBIhRAEYBIog==}
+  '@vscode/web-custom-data@0.6.4':
+    resolution: {integrity: sha512-xnKnHLrCB5GO+oNjq2sCxTAGKRmZd8rBmHOPT8jIILvDpqYJyIp41ONluRGe25Cth8gKAIpMaQe+5mr5OTc8Xg==}
 
   acorn@8.17.0:
     resolution: {integrity: sha512-xRQbDb9BnwDafYNn6Vwl839DYVjqXYb1XVGtWAZ1kcDc6iwAL4hg3B1dZlRiuENFeO2H53gFG3in621AdERVAg==}
@@ -1196,7 +1196,7 @@ snapshots:
       path-browserify: 1.0.1
       vscode-uri: 3.1.0
 
-  '@vscode/web-custom-data@0.6.3': {}
+  '@vscode/web-custom-data@0.6.4': {}
 
   acorn@8.17.0: {}
 
